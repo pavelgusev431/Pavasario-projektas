@@ -1,2 +1,2 @@
-# Pavasario-projektas
-TECHIN Pavasario Projektas
+# TECHIN pavasario projektas
+Prekių skelbimų portalas
