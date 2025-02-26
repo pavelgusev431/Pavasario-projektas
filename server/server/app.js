@@ -10,10 +10,12 @@ const CLIENT_PORT = process.env.CLIENT_PORT;
 
 const app = express();
 app.use(express.json());
-app.use(cors({
+app.use(
+  cors({
     origin: `http://${CLIENT_HOST}:${CLIENT_PORT}`,
     credentials: true,
-}));
+  }),
+);
 app.use(cookieParser());
 //==============
 
