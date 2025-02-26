@@ -1,2 +1,4 @@
-npm lint
-npm prettier
+npm run lint
+npm run prettier
+git add .
+git add .
