@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "renew": "bash ./utilities/envBackup.sh && node ./utilities/createNewJWTSecret.js",
+    "renew": "npx bash ./utilities/envBackup.sh && node ./utilities/createNewJWTSecret.js",
     "start": "npm run renew -s && nodemon --quiet server/server.js"
   },
   "keywords": [],
