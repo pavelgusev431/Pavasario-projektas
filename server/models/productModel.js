@@ -10,9 +10,13 @@ import User from "./userModel.js";
 // Aprašome Product modelį
 const Product = sq.define("Product", { 
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
-  price: { type: DataTypes.FLOAT, allowNull: false },
-  user_id: { type: DataTypes.INTEGER, allowNull: false }
+  user_id: { type: DataTypes.INTEGER, allowNull: false},
+  subcategory_id: { type: DataTypes.INTEGER, allowNull: false},
+  name: { type: DataTypes.STRING(255), allowNull: false },
+  price: { type: DataTypes.BIGINT, allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: false },
+  image_url: { type: DataTypes.TEXT, allowNull: false },
+  amount_in_stock: { type: DataTypes.BIGINT, allowNull: false }
 },
 { timestamps: false, tableName: "products" });
 

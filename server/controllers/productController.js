@@ -18,7 +18,7 @@ const getUserProducts = async (req, res) => {
       return res.status(404).json({ message: "Vartotojas nerastas" });
     }
 
-    const products = Product.findAll(
+    const products =  await Product.findAll(
       { where: { user_id: userId } }
     ) 
     console.log(products);
