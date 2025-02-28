@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router';
 
 const Home = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleAuth = () => {
-        navigate('/auth')
-    }
+        navigate('/');
+    };
     return (
         <>
             <div>Home</div>
@@ -16,7 +16,7 @@ const Home = () => {
                 Login/signup
             </button>
         </>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

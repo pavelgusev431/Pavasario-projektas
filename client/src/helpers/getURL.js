@@ -1,5 +1,5 @@
-const url = () => {
-    return 'http://localhost:5173'
-}
+const url = (resource) => {
+    return `http://localhost:3000/${resource}`;
+};
 
-export default url
+export default url;

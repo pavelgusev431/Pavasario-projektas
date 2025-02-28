@@ -1,10 +1,10 @@
-import { FaUserPlus, FaRegUserCircle } from 'react-icons/fa'
+import { FaUserPlus, FaRegUserCircle } from 'react-icons/fa';
 
 const ToggleAuthType = ({ authType, setAuthType }) => {
     const toggleAuth = () => {
-        if (authType === 'login') setAuthType('signup')
-        else setAuthType('login')
-    }
+        if (authType === 'login') setAuthType('signup');
+        else setAuthType('login');
+    };
 
     return (
         <>
@@ -31,7 +31,7 @@ const ToggleAuthType = ({ authType, setAuthType }) => {
                 <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300"></span>
             </label>
         </>
-    )
-}
+    );
+};
 
-export default ToggleAuthType
+export default ToggleAuthType;

@@ -1,7 +1,7 @@
-import { AuthContextProvider } from './AuthContext.jsx'
+import { AuthContextProvider } from './AuthContext.jsx';
 
 const MainContextProvider = ({ children }) => {
-    return <AuthContextProvider>{children}</AuthContextProvider>
-}
+    return <AuthContextProvider>{children}</AuthContextProvider>;
+};
 
-export default MainContextProvider
+export default MainContextProvider;

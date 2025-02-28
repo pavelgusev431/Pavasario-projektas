@@ -1,59 +1,60 @@
-import { useForm } from 'react-hook-form'
-import { useContext, useState } from 'react'
-import createUser from '../../helpers/createUser.js'
-import loginUser from '../../helpers/loginUser.js'
-import { AuthContext } from '../../contexts/AuthContext.jsx'
-import ToggleAuthType from '../buttons/ToggleAuthType.jsx'
-import { useLocation, useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form';
+import { useContext, useState } from 'react';
+import createUser from '../../helpers/createUser.js';
+import loginUser from '../../helpers/loginUser.js';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
+import ToggleAuthType from '../buttons/ToggleAuthType.jsx';
+import { useLocation, useNavigate } from 'react-router';
 
 const Auth = () => {
     //check if navigated from other page
-    const navigate = useNavigate()
-    const location = useLocation()
-    let from = location.state?.from?.pathname || '/home'
-    if (from === '/logout') from = '/home'
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || '/home';
+    if (from === '/logout') from = '/home';
     //form setup
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm()
+    } = useForm();
 
     //states
-    const [error, setError] = useState('')
-    const { auth, setAuth } = useContext(AuthContext)
-    const [authType, setAuthType] = useState('signup')
+    const [error, setError] = useState('');
+    const { auth, setAuth } = useContext(AuthContext);
+    const [authType, setAuthType] = useState('signup');
 
     //submit formdata
     const onSubmit = async (data) => {
         //signup
         if (authType === 'signup') {
+            const response = await createUser(data);
             try {
-                const response = await createUser(data)
                 if (response.status === 201) {
-                    alert('User created successfully')
-                    setValue('username', '')
-                    setValue('email', '')
-                    setValue('password', '')
-                    setError('')
-                } else setError(response.data.message)
+                    alert('User created successfully');
+                    setValue('username', '');
+                    setValue('email', '');
+                    setValue('password', '');
+                    setError('');
+                }
             } catch (error) {
-                setError(error.message)
+                console.log(error);
+                setError(response.data.message);
             }
         } //login
         else {
             try {
-                const user = await loginUser(data)
-                setAuth(user)
-                navigate(from, { replace: true })
-                alert('You are now logged in')
+                const user = await loginUser(data);
+                setAuth(user);
+                navigate(from, { replace: true });
+                alert('You are now logged in');
             } catch (error) {
-                setAuth(!auth)
-                setError(error.message)
+                setAuth(!auth);
+                setError(error.message);
             }
         }
-    }
+    };
 
     return (
         <div>
@@ -104,7 +105,7 @@ const Auth = () => {
             {/* toggle auth */}
             <ToggleAuthType authType={authType} setAuthType={setAuthType} />
         </div>
-    )
-}
+    );
+};
 
-export default Auth
+export default Auth;

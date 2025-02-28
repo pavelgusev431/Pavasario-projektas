@@ -1,6 +1,6 @@
-import { DataTypes } from 'sequelize'
-import sq from '../database/sequelize.js'
-import AppError from '../utilities/AppError.js'
+import { DataTypes } from 'sequelize';
+import sq from '../database/sequelize.js';
+import AppError from '../utilities/AppError.js';
 
 const Secret = sq.define(
     'Secret',
@@ -25,13 +25,13 @@ const Secret = sq.define(
         timestamps: false,
         tableName: 'userSecrets',
     }
-)
+);
 
 try {
-    await Secret.sync({ alter: true, force: true })
-    console.log('\x1b[35mSecret\x1b[34m table created\x1b[0m')
+    await Secret.sync({ alter: true, force: true });
+    console.log('\x1b[35mSecret\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while creating secret model', 500)
+    throw new AppError('Error while creating secret model', 500);
 }
 
-export default Secret
+export default Secret;

@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router';
 
 const NotFound = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const goBack = () => {
-        navigate('/')
-    }
+        navigate('/');
+    };
     return (
         <>
             <div>404 Page not found.</div>
@@ -15,7 +15,7 @@ const NotFound = () => {
                 Return
             </button>
         </>
-    )
-}
+    );
+};
 
-export default NotFound
+export default NotFound;
