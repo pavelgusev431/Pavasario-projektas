@@ -1,6 +1,11 @@
-import BannerCarousel from '../Carousel'
+import BannerCarousel from '../Carousel';
 
 const Home = () => {
+    const navigate = useNavigate();
+
+    const handleAuth = () => {
+        navigate('/');
+    };
     return (
         <>
             <div>
@@ -8,7 +13,7 @@ const Home = () => {
             </div>
             <div>1</div>
         </>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

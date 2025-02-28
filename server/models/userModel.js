@@ -1,6 +1,6 @@
-import sq from '../database/sequelize.js'
-import { DataTypes } from 'sequelize'
-import AppError from '../utilities/AppError.js'
+import sq from '../database/sequelize.js';
+import { DataTypes } from 'sequelize';
+import AppError from '../utilities/AppError.js';
 
 const User = sq.define(
     'User',
@@ -15,10 +15,6 @@ const User = sq.define(
             allowNull: false,
             unique: true,
         },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -29,7 +25,6 @@ const User = sq.define(
         },
         contacts: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
         imageURL: {
             type: DataTypes.STRING,
@@ -39,13 +34,13 @@ const User = sq.define(
         timestamps: false,
         tableName: 'users',
     }
-)
+);
 
 try {
-    await User.sync({ alter: true, force: true })
-    console.log('\x1b[35mUser\x1b[34m table created\x1b[0m')
+    await User.sync({ alter: true, force: true });
+    console.log('\x1b[35mUser\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while creating user model', 500)
+    throw new AppError('Error while creating user model', 500);
 }
 
-export default User
+export default User;
