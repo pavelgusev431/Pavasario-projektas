@@ -10,8 +10,8 @@ const Auth = () => {
     //check if navigated from other page
     const navigate = useNavigate()
     const location = useLocation()
-    let from = location.state?.from?.pathname || '/invoices'
-    if (from === '/logout') from = '/invoices'
+    let from = location.state?.from?.pathname || '/home'
+    if (from === '/logout') from = '/home'
     //form setup
     const {
         register,
