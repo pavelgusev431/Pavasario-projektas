@@ -1,0 +1,51 @@
+import sq from '../database/sequelize.js'
+import { DataTypes } from 'sequelize'
+import AppError from '../utilities/AppError.js'
+
+const User = sq.define(
+    'User',
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
+        description: {
+            type: DataTypes.STRING,
+        },
+        contacts: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        imageURL: {
+            type: DataTypes.STRING,
+        },
+    },
+    {
+        timestamps: false,
+        tableName: 'users',
+    }
+)
+
+try {
+    await User.sync({ alter: true, force: true })
+    console.log('\x1b[35mUser\x1b[34m table created\x1b[0m')
+} catch (error) {
+    throw new AppError('Error while creating user model', 500)
+}
+
+export default User
