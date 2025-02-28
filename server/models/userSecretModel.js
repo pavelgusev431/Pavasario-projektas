@@ -1,4 +1,4 @@
-import { Datatypes } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import sq from '../database/sequelize.js'
 import AppError from '../utilities/AppError.js'
 
@@ -18,7 +18,7 @@ const Secret = sq.define(
             allowNull: false,
         },
         balance: {
-            type: Datatypes.INTEGER,
+            type: DataTypes.INTEGER,
         },
     },
     {
