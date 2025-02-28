@@ -9,7 +9,7 @@ const DB_PASS = process.env.DB_PASS
 const DB_PORT = process.env.DB_PORT
 
 const sq = new Sequelize({
-    dialect: postgres,
+    dialect: 'postgres',
     host: DB_HOST,
     port: DB_PORT,
     database: DB_NAME,

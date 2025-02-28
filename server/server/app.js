@@ -3,6 +3,7 @@ import cors from 'cors'
 import errorHandler from '../middlewares/errorHandler.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+import userRouter from '../routers/userRouter.js'
 
 dotenv.config()
 const CLIENT_HOST = process.env.CLIENT_HOST
@@ -18,9 +19,8 @@ app.use(
 )
 app.use(cookieParser())
 //==============
-
 //routes go here
-
+app.use('/users', userRouter)
 //==============
 //last
 app.use(errorHandler)
