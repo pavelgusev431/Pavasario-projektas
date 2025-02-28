@@ -1,7 +1,11 @@
+import BannerCarousel from '../Carousel'
+
 const Home = () => {
     return (
         <>
-            <div>Home</div>
+            <div>
+                <BannerCarousel />
+            </div>
         </>
     )
 }
