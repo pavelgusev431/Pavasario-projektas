@@ -1,22 +1,21 @@
 import { useNavigate } from 'react-router';
 
-const Home = () => {
+const NotFound = () => {
     const navigate = useNavigate();
-
-    const handleAuth = () => {
+    const goBack = () => {
         navigate('/');
     };
     return (
         <>
-            <div>Home</div>
+            <div>404 Page not found.</div>
             <button
-                onClick={handleAuth}
+                onClick={goBack}
                 className="border-black rounded bg-slate-100"
             >
-                Login/signup
+                Return
             </button>
         </>
     );
 };
 
-export default Home;
+export default NotFound;
