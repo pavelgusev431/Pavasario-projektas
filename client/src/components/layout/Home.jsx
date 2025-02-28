@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import BannerCarousel from '../Carousel';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -8,13 +8,10 @@ const Home = () => {
     };
     return (
         <>
-            <div>Home</div>
-            <button
-                onClick={handleAuth}
-                className="border-black rounded bg-slate-100"
-            >
-                Login/signup
-            </button>
+            <div>
+                <BannerCarousel />
+            </div>
+            <div>1</div>
         </>
     );
 };
