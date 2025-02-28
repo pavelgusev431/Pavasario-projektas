@@ -15,11 +15,12 @@ export default function UserProducts() {
       try {
         
 
-        const response = await axios.get(`http://localhost:3000/products/?user_id=${id}`);//?user_id=${id} gal reiks prideti
+        const response = await axios.get(`http://localhost:3000/products/${id}`);
         setProducts(response.data.data);
 
-        // const userResponse = await axios.get(`http://localhost:3000/users/id/${id}`);
-        // setUserName(userResponse.data.username);
+        const userResponse = await axios.get(`http://localhost:3000/users/${id}`);
+        
+        setUserName(userResponse.data.data.username);
       } catch (err) {
         setError(err.message);
       } finally {

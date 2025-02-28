@@ -13,7 +13,7 @@ function App() {
                     <Route index element={<Auth />} />
                     <Route path="home" element={<Home />} />
                     {ProtectedRoutes()}
-                    <Route path='/products' element={<UserProducts />} />
+                    <Route path='/products/:id' element={<UserProducts />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>
