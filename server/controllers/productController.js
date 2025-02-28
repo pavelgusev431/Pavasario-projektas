@@ -1,6 +1,6 @@
+import User from '../models/userModel.js';
+import Product from '../models/productModel.js';
 
-
-// Užklausa vartotojo produktams gauti
 const getUserProducts = async (req, res) => {
   const userId = parseInt(req.params.id);
 
@@ -11,20 +11,25 @@ const getUserProducts = async (req, res) => {
   try {
     const user = await User.findOne({
       where: { id: userId },
-      include: [{ model: Product, attributes: ["name", "price"] }],
+     
     });
 
     if (!user) {
       return res.status(404).json({ message: "Vartotojas nerastas" });
     }
 
-    res.json(user.Products); // ⬅️ Pataisyta, kad grąžintų tik produktus
+    const products = Product.findAll(
+      { where: { user_id: userId } }
+    ) 
+    console.log(products);
+    
+    return res.json({data:products});  // Send the products in the response
   } catch (err) {
     console.error(err);
-    res.status(500).send("Klaida gaunant duomenis");
+    return res.status(500).json({ message: "Klaida gaunant duomenis" });
   }
 };
+export {getUserProducts}
 
-export { getUserProducts };
 
 
