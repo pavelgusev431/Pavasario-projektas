@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const NavBar = () => {
     return (
-        <nav style={{ backgroundColor: 'white', padding: '10px' }}>
+        <nav style={{ backgroundColor: 'white', padding: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 1000 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <img src="/path/to/logo.png" alt="Logo" style={{ height: '40px', marginRight: '20px' }} />
