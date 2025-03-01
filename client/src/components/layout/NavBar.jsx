@@ -7,7 +7,7 @@ const NavBar = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <img src="/path/to/logo.png" alt="Logo" style={{ height: '40px', marginRight: '20px' }} />
-                    <Link to="/" style={{ marginRight: '20px', color: 'black', textDecoration: 'none' }}>Home</Link>
+                    <Link to="/home" style={{ marginRight: '20px', color: 'black', textDecoration: 'none' }}>Home</Link>
                     <Link to="/contact" style={{ marginRight: '20px', color: 'black', textDecoration: 'none' }}>Contact</Link>
                     <Link to="/about" style={{ marginRight: '20px', color: 'black', textDecoration: 'none' }}>About</Link>
                     <Link to="/signup" style={{ color: 'black', textDecoration: 'none' }}>Sign Up</Link>

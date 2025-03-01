@@ -9,8 +9,9 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    <Route index element={<Auth />} />
+                    <Route index element={<Auth authType="login" />} />
                     <Route path="home" element={<Home />} />
+                    <Route path="signup" element={<Auth />} />
                     {ProtectedRoutes()}
                     <Route path="*" element={<NotFound />} />
                 </Routes>
