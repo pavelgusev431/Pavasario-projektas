@@ -134,6 +134,16 @@ const getUserId = async (req, res) => {
     });
 };
 
+const getAllUsers = async (req, res) => {
+   
+      const users = await User.findAll(); 
+      res.status(200).json({ 
+        status: 'success',
+        data: users 
+    });
+    
+  };
+
 export {
     createAdmin,
     createUser,
@@ -142,5 +152,6 @@ export {
     login,
     logout,
     me,
-    getUserId
+    getUserId,
+    getAllUsers
 };
