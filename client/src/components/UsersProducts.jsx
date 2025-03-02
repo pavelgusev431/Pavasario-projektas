@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "./ProductCard";
 
-export default function MainPage() {
+export default function UsersProducts() {
   const [usersWithProducts, setUsersWithProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
