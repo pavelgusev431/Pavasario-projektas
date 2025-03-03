@@ -38,7 +38,7 @@ export default function UserProducts() {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-2">{userName}</h2>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
+      <div className="flex flex-row  mt-2 flex-wrap">
         {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}

@@ -39,11 +39,15 @@ export default function UsersProducts() {
   if (error) return <p>Klaida: {error}</p>;
 
   return (
-    <div>
+    <div className="w-full">
       {usersWithProducts.map(user => (
         <div key={user.id} className="mb-4">
+          <div className="flex flex-row gap-2 mt-2 ">
+            <div className="w-2 h-6 bg-red-500"></div>
+            <h2 className="text-l text-red-500 font-bold mb-2">Spotlight</h2>
+          </div>
           <h2 className="text-2xl font-bold mb-2">Explore {user.username} products</h2>
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
+          <div className="flex flex-wrap flex-row  ">
             {user.products.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}

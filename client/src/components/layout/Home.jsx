@@ -6,7 +6,9 @@ const Home = () => {
         <>
             <div>
                 <BannerCarousel />
-                <Outlet/>
+                <div className='pl-2'>
+                <Outlet/> 
+                </div>
             </div>
         </>
     );

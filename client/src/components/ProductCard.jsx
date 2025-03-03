@@ -3,9 +3,11 @@ import { FaStar } from "react-icons/fa";
 export default function ProductCard({ product }) {
   return(
     <>
-      <div>
+      <div className="flex justify-center lg:w-1/4 md:w-1/3 sm:w-1/2 w-full flex-col ">
         
-        <div className="flex justify-center lg:w-1/4 md:w-1/3 sm:w-1/2 w-1/2"><img src={product.image_url} alt={product.name} /></div>
+        
+        <div className="flex flex-col items-center">
+        <div className="lg:w-1/4 md:w-1/3 sm:w-1/2 w-1/2"><img src={product.image_url} alt={product.name} /></div>
         <h2 className="font-semibold">{product.name}</h2>
         <div className="flex gap-2">
           <div className="text-red-500">${product.price}</div>
@@ -18,6 +20,7 @@ export default function ProductCard({ product }) {
                 <span className="self-center"><FaStar /></span>
                 <span className="self-center">(35)</span>
           </div>
+        </div>
         </div>
         
       </div>
