@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router';
 import BannerCarousel from '../Carousel';
 
 const Home = () => {
@@ -5,6 +6,7 @@ const Home = () => {
         <>
             <div>
                 <BannerCarousel />
+                <Outlet/>
             </div>
         </>
     );
