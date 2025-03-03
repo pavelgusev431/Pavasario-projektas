@@ -37,8 +37,8 @@ export default function UserProducts() {
 
   return (
     <div>
-      <h2>{userName}</h2>
-      <div>
+      <h2 className="text-2xl font-bold mb-2">{userName}</h2>
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
         {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}

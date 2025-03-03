@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "./ProductCard";
-
+import { Link } from "react-router";
 export default function UsersProducts() {
   const [usersWithProducts, setUsersWithProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,11 +42,14 @@ export default function UsersProducts() {
     <div>
       {usersWithProducts.map(user => (
         <div key={user.id} className="mb-4">
-          <h2>{user.username}</h2>
-          <div className="grid grid-cols-4 gap-4">
+          <h2 className="text-2xl font-bold mb-2">Explore {user.username} products</h2>
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
             {user.products.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className="text-center">
+            <Link to={`/home/${user.id}`}><button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">View All Products</button></Link>
           </div>
         </div>
       ))}

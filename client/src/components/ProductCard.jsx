@@ -1,11 +1,25 @@
+import { FaStar } from "react-icons/fa";
+
 export default function ProductCard({ product }) {
   return(
     <>
       <div>
         
-        <div><img src={product.image_url} alt={product.name} /></div>
-        <h2>{product.name}</h2>
-        <div>{product.price}</div>
+        <div className="flex justify-center lg:w-1/4 md:w-1/3 sm:w-1/2 w-1/2"><img src={product.image_url} alt={product.name} /></div>
+        <h2 className="font-semibold">{product.name}</h2>
+        <div className="flex gap-2">
+          <div className="text-red-500">${product.price}</div>
+          <div className="flex flex-row gap-1">
+           
+                <span className="text-yellow-500 self-center"><FaStar /></span>
+                <span className="text-yellow-500 self-center"><FaStar /></span>
+                <span className="text-yellow-500 self-center"><FaStar /></span>
+                <span className="self-center"><FaStar /></span>
+                <span className="self-center"><FaStar /></span>
+                <span className="self-center">(35)</span>
+          </div>
+        </div>
+        
       </div>
     </>
   )
