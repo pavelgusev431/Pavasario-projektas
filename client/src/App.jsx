@@ -13,10 +13,12 @@ function App() {
             <Router>
                 <Routes>
                     <Route index element={<Auth />} />
-                    <Route path="home" element={<Home />} />
+                    <Route path="home" element={<Home />} >
+                    <Route path='/home' element={<UsersProducts />} />
+                    <Route path='/home/:id' element={<UserProducts />} />
+                    </Route>
                     {ProtectedRoutes()}
-                    <Route path='/products' element={<UsersProducts />} />
-                    <Route path='/products/:id' element={<UserProducts />} />
+                    
                     <Route path="*" element={<NotFound />} />
                    
                 </Routes>
