@@ -4,6 +4,8 @@ import fs from 'fs';
 
 const fileData = fs.readFileSync('./database/database.sql', 'utf8');
 
+console.log('\x1b[32mPopulating tables...\x1b[0m');
+
 const populate = async () => {
     try {
         await sq.query(fileData);

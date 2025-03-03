@@ -1,6 +1,7 @@
 INSERT INTO "users" (username, email) VALUES
 ('Pavel Gusev', 'pavel.gusev431@gmail.com'),
-('example', 'example@rxample.com');
+('example', 'example@rxample.com')
+;
 
 -- INSERT INTO "user_secrets" (user_id, password) VALUES
 -- (2, )
