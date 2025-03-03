@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import Auth from './components/layout/Auth.jsx';
 import Home from './components/layout/Home.jsx';
-
 import UserProducts from './components/UserProducts.jsx';
 import UsersProducts from './components/UsersProducts.jsx';
 import NotFound from './components/layout/NotFound.jsx';
