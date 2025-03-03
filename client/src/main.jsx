@@ -8,9 +8,7 @@ import MainContextProvider from './contexts/MainContext.jsx';
 createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <MainContextProvider>
-            <Router>
                 <App />
-            </Router>
         </MainContextProvider>
     </React.StrictMode>
 );
