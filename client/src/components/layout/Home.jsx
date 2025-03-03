@@ -1,17 +1,13 @@
+import { Outlet } from 'react-router';
 import BannerCarousel from '../Carousel';
 
 const Home = () => {
-    const navigate = useNavigate();
-
-    const handleAuth = () => {
-        navigate('/');
-    };
     return (
         <>
             <div>
                 <BannerCarousel />
+                <Outlet />
             </div>
-            <div>1</div>
         </>
     );
 };

@@ -26,7 +26,7 @@ const User = sq.define(
         contacts: {
             type: DataTypes.STRING,
         },
-        imageURL: {
+        image_url: {
             type: DataTypes.STRING,
         },
     },

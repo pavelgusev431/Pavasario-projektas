@@ -23,7 +23,7 @@ const Secret = sq.define(
     },
     {
         timestamps: false,
-        tableName: 'userSecrets',
+        tableName: 'user_secrets',
     }
 );
 

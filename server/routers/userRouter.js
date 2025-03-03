@@ -5,6 +5,8 @@ import {
     login,
     logout,
     me,
+    getUserId,
+    getAllUsers,
 } from '../controllers/userController.js';
 import express from 'express';
 import protect from '../validators/validateJWT.js';
@@ -15,7 +17,11 @@ import Subcategory from '../models/subcategoryModel.js';
 
 const userRouter = express.Router();
 
-userRouter.route('/').post(validateCreateUser, validate, createUser);
+userRouter
+    .route('/')
+    .post(validateCreateUser, validate, createUser)
+    .get(getAllUsers);
+userRouter.route('/:id').get(getUserId);
 userRouter.route('/login').post(login);
 userRouter.route('/logout').post(logout);
 userRouter.use(protect);
