@@ -18,7 +18,6 @@ function App() {
                         <Route path="/home/:id" element={<UserProducts />} />
                     </Route>
                     {ProtectedRoutes()}
-
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>

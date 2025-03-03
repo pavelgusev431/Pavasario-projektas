@@ -1,6 +1,9 @@
 INSERT INTO "users" (username, email) VALUES
-('Pavel gusev', 'pavel.gusev431@gmail.com'),
+('Pavel Gusev', 'pavel.gusev431@gmail.com'),
 ('example', 'example@rxample.com');
+
+-- INSERT INTO "user_secrets" (user_id, password) VALUES
+-- (2, )
 
 INSERT INTO products (user_id, subcategory_id, name, price, description, image_url, amount_in_stock) 
 VALUES 
