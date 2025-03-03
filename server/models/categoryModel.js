@@ -40,7 +40,7 @@ try {
     await Category.create({ name: 'Books & Media' });
     await Category.create({ name: 'Groceries & Food' });
     await Category.create({ name: 'Office & School Supplies' });
-    console.log('\x1b[35mCategory\x1b[34m table populated\x1b[0m');
+    console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
 } catch (error) {
     throw new AppError('Error while populating category model', 500);
 }

@@ -43,8 +43,8 @@ try {
     await Subcategory.create({ category_Id: 1, name: 'Wearable Tech' });
     await Subcategory.create({ category_Id: 1, name: 'Home Electronics' });
 
-    await Subcategory.create({ category_Id: 2, name: 'Men’s Clothing' });
-    await Subcategory.create({ category_Id: 2, name: 'Women’s Clothing' });
+    await Subcategory.create({ category_Id: 2, name: "Men's Clothing" });
+    await Subcategory.create({ category_Id: 2, name: "Women's Clothing" });
     await Subcategory.create({ category_Id: 2, name: 'Shoes & Footwear' });
     await Subcategory.create({ category_Id: 2, name: 'Accessories' });
     await Subcategory.create({ category_Id: 2, name: 'Jewelry' });
@@ -114,7 +114,7 @@ try {
         name: 'Organization & Storage',
     });
     await Subcategory.create({ category_Id: 10, name: 'Printing & Paper' });
-    console.log('\x1b[35mSubcategory\x1b[34m table populated\x1b[0m');
+    console.log('\x1b[35mSubcategory\x1b[36m table populated\x1b[0m');
 } catch (error) {
     throw new AppError('Error while populating subcategory model', 500);
 }
