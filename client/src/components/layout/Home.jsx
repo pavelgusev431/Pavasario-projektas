@@ -1,22 +1,15 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import BannerCarousel from '../Carousel';
 import NavBar from './NavBar';
 
 const Home = () => {
-    const navigate = useNavigate();
-
-    const handleAuth = () => {
-        navigate('/');
-    };
-
     return (
         <>
             <NavBar />
             <div>
                 <BannerCarousel />
+                <Outlet/>
             </div>
-            <div>1</div>
         </>
     );
 };
