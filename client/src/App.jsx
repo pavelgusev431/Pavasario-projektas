@@ -9,15 +9,18 @@ import NavBar from './components/layout/NavBar.jsx';
 function App() {
     return (
         <>
-            <NavBar />
-            <Routes>
-                <Route index element={<Auth />} />
-                <Route path="home" element={<Home />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="about" element={<About />} />
-                <Route path="signup" element={<Auth authType="signup" />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Router>
+                <Routes>
+                    <Route index element={<Auth />} />
+                    <Route path="home" element={<Home />}>
+                        <Route path="/home" element={<UsersProducts />} />
+                        <Route path="/home/:id" element={<UserProducts />} />
+                    </Route>
+                    {ProtectedRoutes()}
+
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Router>
         </>
     );
 }
