@@ -127,7 +127,6 @@ const getUserId = async (req, res) => {
     const { id } = req.params;
     const user = await User.findByPk(id);
 
-
     res.status(200).json({
         status: 'success',
         data: user,
@@ -135,14 +134,12 @@ const getUserId = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-   
-      const users = await User.findAll(); 
-      res.status(200).json({ 
+    const users = await User.findAll();
+    res.status(200).json({
         status: 'success',
-        data: users 
+        data: users,
     });
-    
-  };
+};
 
 export {
     createAdmin,
@@ -153,5 +150,5 @@ export {
     logout,
     me,
     getUserId,
-    getAllUsers
+    getAllUsers,
 };
