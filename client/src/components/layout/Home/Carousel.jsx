@@ -11,12 +11,12 @@ const images = [
 const BannerCarousel = () => {
     return (
         <Carousel
-            autoPlay
-            interval={5000}
+            showThumbs={false}
             infiniteLoop
+            autoPlay
             stopOnHover
             swipeable
-            showThumbs={false}
+            emulateTouch
             showStatus={false}
         >
             {images.map((src, index) => (
