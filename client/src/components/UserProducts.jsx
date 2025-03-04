@@ -37,14 +37,14 @@ export default function UserProducts() {
     if (error) return <p>Klaida: {error}</p>;
     if (products.length === 0) return <p>Produktų nerasta</p>;
 
-    return (
-        <div>
-            <h2>{userName}</h2>
-            <div>
-                {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
-            </div>
-        </div>
-    );
-}
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-2">{userName}</h2>
+      <div className="flex flex-row  mt-2 flex-wrap">
+        {products.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+};
