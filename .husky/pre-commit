@@ -1,6 +1,6 @@
 npm install -s
 npm run lint -s
-echo "Linted"
+echo -e "\e[30mLinted\e[0m"
 npm run prettify -s
 git add .
 git add .
