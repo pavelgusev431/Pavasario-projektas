@@ -12,8 +12,6 @@ import express from 'express';
 import protect from '../validators/validateJWT.js';
 import validateCreateUser from '../validators/validateCreateUser.js';
 import validate from '../middlewares/validate.js';
-import Category from '../models/categoryModel.js';
-import Subcategory from '../models/subcategoryModel.js';
 
 const userRouter = express.Router();
 
