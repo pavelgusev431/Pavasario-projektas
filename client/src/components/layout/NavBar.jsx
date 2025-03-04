@@ -1,11 +1,12 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 
 const NavBar = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const handleNavigation = (path) => {
-        window.location.href = path;
+        navigate(path);
     };
 
     const isActive = (path) => {

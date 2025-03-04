@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import Auth from './components/layout/Auth.jsx';
 import Home from './components/layout/Home.jsx';
 import Contact from './components/layout/Contact.jsx';
@@ -8,20 +8,18 @@ import NavBar from './components/layout/NavBar.jsx';
 
 function App() {
     return (
-        <>
-            <Router>
-                <NavBar />
-                <Routes>
-                    <Route index element={<Auth />} />
-                    <Route path="home" element={<Home />} />
-                    <Route path="contact" element={<Contact />} />
-                    <Route path="about" element={<About />} />
-                    <Route path="signup" element={<Auth authType="signup" />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-            </Router>
-        </>
+        <Router>
+            <NavBar />
+            <Routes>
+                <Route index element={<Auth />} />
+                <Route path="home" element={<Home />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="about" element={<About />} />
+                <Route path="signup" element={<Auth authType="signup" />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </Router>
     );
 }
-    
+
 export default App;
