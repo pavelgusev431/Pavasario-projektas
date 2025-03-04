@@ -29,6 +29,6 @@ try {
     await Product.sync({ alter: true, force: true });
     console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while creating Product model', 500);
+    throw new AppError(`Error while creating Product model: ${error}`, 500);
 }
 export default Product;
