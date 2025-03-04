@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "renew": "node ./utilities/env.js && node ./utilities/createNewJWTSecret.js",
+    "renew": "node ./utilities/env.js && node ./utilities/database.js && node ./utilities/createNewJWTSecret.js",
     "start": "npm run renew -s && nodemon --quiet server/server.js"
   },
   "keywords": [],
