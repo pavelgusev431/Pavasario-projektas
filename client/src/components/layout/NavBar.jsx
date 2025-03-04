@@ -1,18 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 const NavBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { auth } = useContext(AuthContext);
+    const { auth, setAuth } = useContext(AuthContext);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const handleNavigation = (path) => {
         navigate(path);
     };
-
     const isActive = (path) => {
         return location.pathname === path ? { textDecoration: 'underline' } : {};
+    };
+
+    const handleLogout = () => {
+        setAuth(null);
+        navigate('/home');
     };
 
     return (
@@ -29,6 +34,11 @@ const NavBar = () => {
                         <button onClick={() => handleNavigation('/signup')} style={{ ...styles.button, ...isActive('/signup') }}>Sign Up</button>
                     )}
                 </div>
+                {auth && (
+                    <div style={styles.accountContainer}>
+                        <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>
+                    </div>
+                )}
             </div>
         </nav>
     );
@@ -45,7 +55,7 @@ const styles = {
     },
     container: {
         display: 'flex',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
     },
@@ -64,6 +74,18 @@ const styles = {
     },
     button: {
         marginRight: '60px',
+        color: 'black',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        padding: '10px 20px',
+        fontSize: '16px',
+    },
+    accountContainer: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    logoutButton: {
         color: 'black',
         background: 'none',
         border: 'none',
