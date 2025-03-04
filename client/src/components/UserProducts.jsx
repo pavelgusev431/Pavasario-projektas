@@ -38,7 +38,7 @@ export default function UserProducts() {
     if (products.length === 0) return <p>Produktų nerasta</p>;
 
   return (
-    <div>
+    <div className='pt-30'>
       <h2 className="text-2xl font-bold mb-2">{userName}</h2>
       <div className="flex flex-row  mt-2 flex-wrap">
         {products.map(product => (
