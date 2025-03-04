@@ -20,7 +20,6 @@ const getUserProducts = async (req, res) => {
         }
 
         const products = await Product.findAll({ where: { user_id: userId } });
-        console.log(products);
 
         return res.json({ data: products }); // Send the products in the response
     } catch (err) {

@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASS = process.env.ADMIN_PASS;
-const ADMIN_HASH = sha256(sha1(sha256(sha1(ADMIN_PASS))));
+const ADMIN_HASH = sha256(sha1(sha256(sha1(ADMIN_PASS)) + 'salt'));
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 const createAdmin = async () => {
@@ -22,7 +22,7 @@ const createAdmin = async () => {
         );
         await Secret.create({
             userId: admin.id,
-            password: ADMIN_HASH,
+            password: `${ADMIN_HASH}:${'salt'}`,
             role: 'admin',
         });
         console.log(
@@ -39,11 +39,13 @@ const createAdmin = async () => {
 const createUser = async (req, res) => {
     const { username, password, email } = req.body;
     const role = 'user';
-    const hashedPassword = sha256(sha1(password));
+    const now = new Date();
+    const salt = sha256(sha1(now.toString() + username));
+    const hashedPassword = sha256(sha1(password + salt));
     const user = await User.create({ username: username, email: email });
     await Secret.create({
         userId: user.id,
-        password: hashedPassword,
+        password: `${hashedPassword}:${salt}`,
         role: role,
     });
     res.status(201).json({
@@ -78,12 +80,16 @@ const getUserById = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-    const hashedPassword = sha256(sha1(password));
     const user = await User.findOne({ where: { username: username } });
     if (!user) throw new AppError('Invalid username or password', 401);
     const secret = await Secret.findOne({
-        where: { id: user.id, password: hashedPassword },
+        where: { id: user.id },
     });
+    const salt = secret.password.split(':')[1];
+    const hashedPassword = sha256(sha1(password + salt));
+    if (hashedPassword !== secret.password.split(':')[0]) {
+        throw new AppError('Invalid username or password', 401);
+    }
     const token = jsonwebtoken.sign(
         { id: user.id, role: secret.role },
         process.env.JWT_SECRET,
