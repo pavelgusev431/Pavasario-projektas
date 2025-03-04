@@ -20,5 +20,5 @@ app.listen(port, async () => {
     cleanup();
     await createAdmin();
     await populate();
-    console.log(`\x1b[36mServer started on port \x1b[35m${port}`, '\x1b[0m');
+    console.log(`\x1b[36mServer started on port \x1b[35m${port}`, '\x1b[0m\n');
 });
