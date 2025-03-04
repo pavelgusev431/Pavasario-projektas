@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router';
-import BannerCarousel from '../Carousel';
+    import { Outlet } from 'react-router';
+import BannerCarousel from './Home/Carousel';
 import NavBar from './NavBar';
 
 const Home = () => {
