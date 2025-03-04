@@ -15,7 +15,7 @@
   },
   "scripts": {
     "lint": "node ./node_modules/eslint/bin/eslint.js --config ./configs/eslint.config.js .",
-    "prettify": "node ./node_modules/prettier/bin/prettier.cjs --write --config ./configs/prettier.config.js . | grep -v 'changed' | xargs echo -e '\\e[30mPrettiered\\e[0m'",
+    "prettify": "node ./node_modules/prettier/bin/prettier.cjs --write --config ./configs/prettier.config.js --ignore-path ./configs/.prettierignore . | grep -v 'changed' | xargs echo -e '\\e[30mPrettiered\\e[0m'",
     "prepare": "husky"
   }
 }
