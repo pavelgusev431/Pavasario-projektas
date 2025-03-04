@@ -11,6 +11,7 @@ const NavBar = () => {
     const handleNavigation = (path) => {
         navigate(path);
     };
+
     const isActive = (path) => {
         return location.pathname === path ? { textDecoration: 'underline' } : {};
     };
@@ -36,7 +37,17 @@ const NavBar = () => {
                 </div>
                 {auth && (
                     <div style={styles.accountContainer}>
-                        <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>
+                        <img
+                            src="../src/public/banner_images/user.png"
+                            alt="User"
+                            style={styles.accountIcon}
+                            onClick={() => setMenuOpen(!menuOpen)}
+                        />
+                        {menuOpen && (
+                            <div style={styles.menu}>
+                                <button onClick={handleLogout} style={styles.menuButton}>Logout</button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -82,16 +93,31 @@ const styles = {
         fontSize: '16px',
     },
     accountContainer: {
+        position: 'relative',
         display: 'flex',
         alignItems: 'center',
     },
-    logoutButton: {
+    accountIcon: {
+        height: '40px',
+        cursor: 'pointer',
+    },
+    menu: {
+        position: 'absolute',
+        top: '50px',
+        right: '0',
+        backgroundColor: 'white',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        borderRadius: '4px',
+        zIndex: 1001,
+    },
+    menuButton: {
+        padding: '10px 20px',
         color: 'black',
         background: 'none',
         border: 'none',
         cursor: 'pointer',
-        padding: '10px 20px',
-        fontSize: '16px',
+        width: '100%',
+        textAlign: 'left',
     },
     '@media (max-width: 768px)': {
         nav: {
