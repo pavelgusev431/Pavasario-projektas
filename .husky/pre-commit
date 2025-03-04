@@ -1,4 +1,6 @@
-npm run lint
-npm run prettier
+npm run lint -s
+echo "Linted"
+npm run prettier -s
+echo "Prettiered"
 git add .
 git add .
