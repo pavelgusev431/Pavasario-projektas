@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 const NavBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { auth } = useContext(AuthContext);
 
     const handleNavigation = (path) => {
         navigate(path);
@@ -23,7 +25,9 @@ const NavBar = () => {
                     <button onClick={() => handleNavigation('/home')} style={{ ...styles.button, ...isActive('/home') }}>Home</button>
                     <button onClick={() => handleNavigation('/contact')} style={{ ...styles.button, ...isActive('/contact') }}>Contact</button>
                     <button onClick={() => handleNavigation('/about')} style={{ ...styles.button, ...isActive('/about') }}>About</button>
-                    <button onClick={() => handleNavigation('/signup')} style={{ ...styles.button, ...isActive('/signup') }}>Sign Up</button>
+                    {!auth && (
+                        <button onClick={() => handleNavigation('/signup')} style={{ ...styles.button, ...isActive('/signup') }}>Sign Up</button>
+                    )}
                 </div>
             </div>
         </nav>
