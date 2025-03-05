@@ -75,6 +75,16 @@ const NavBar = () => {
         </div>
         {auth && (
           <div style={styles.accountContainer}>
+            <i
+              className="fas fa-heart"
+              style={styles.heartIcon}
+              onClick={() => handleNavigation("/favorites")}
+            ></i>
+            <i
+              className="fas fa-shopping-cart"
+              style={styles.cartIcon}
+              onClick={() => handleNavigation("/cart")}
+            ></i>
             <img
               src="../src/public/banner_images/user.png"
               alt="User"
@@ -180,6 +190,20 @@ const styles = {
   },
   accountIconHover: {
     transform: "scale(1.1)",
+  },
+  heartIcon: {
+    fontSize: "24px",
+    color: "black",
+    cursor: "pointer",
+    marginRight: "30px", // Increased margin for bigger indent
+    transition: "color 0.3s",
+  },
+  cartIcon: {
+    fontSize: "24px",
+    color: "black",
+    cursor: "pointer",
+    marginRight: "30px", // Increased margin for bigger indent
+    transition: "color 0.3s",
   },
   menu: {
     position: "absolute",
