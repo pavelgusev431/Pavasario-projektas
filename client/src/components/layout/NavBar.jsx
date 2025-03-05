@@ -45,6 +45,10 @@ const NavBar = () => {
                         />
                         {menuOpen && (
                             <div style={styles.menu}>
+                                <button onClick={() => handleNavigation('/account')} style={styles.menuButton}>Manage my account</button>
+                                <button onClick={() => handleNavigation('/orders')} style={styles.menuButton}>My orders</button>
+                                <button onClick={() => handleNavigation('/cancellations')} style={styles.menuButton}>My cancellations</button>
+                                <button onClick={() => handleNavigation('/reviews')} style={styles.menuButton}>My reviews</button>
                                 <button onClick={handleLogout} style={styles.menuButton}>Logout</button>
                             </div>
                         )}
@@ -63,10 +67,11 @@ const styles = {
         top: 0,
         width: '100%',
         zIndex: 1000,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     },
     container: {
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         flexWrap: 'wrap',
     },
@@ -91,15 +96,24 @@ const styles = {
         cursor: 'pointer',
         padding: '10px 20px',
         fontSize: '16px',
+        transition: 'color 0.3s',
+    },
+    buttonHover: {
+        color: '#007BFF',
     },
     accountContainer: {
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
+        marginLeft: 'auto',
     },
     accountIcon: {
         height: '40px',
         cursor: 'pointer',
+        transition: 'transform 0.3s',
+    },
+    accountIconHover: {
+        transform: 'scale(1.1)',
     },
     menu: {
         position: 'absolute',
@@ -109,6 +123,7 @@ const styles = {
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         borderRadius: '4px',
         zIndex: 1001,
+        overflow: 'hidden',
     },
     menuButton: {
         padding: '10px 20px',
@@ -118,6 +133,10 @@ const styles = {
         cursor: 'pointer',
         width: '100%',
         textAlign: 'left',
+        transition: 'background-color 0.3s',
+    },
+    menuButtonHover: {
+        backgroundColor: '#f0f0f0',
     },
     '@media (max-width: 768px)': {
         nav: {
