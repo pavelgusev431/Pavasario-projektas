@@ -30,7 +30,7 @@ try {
     await Subcategory.sync({ alter: true, force: true });
     console.log('\x1b[35mSubcategory\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while creating subcategory model', 500);
+    throw new AppError(`Error while creating subcategory model: ${error}`, 500);
 }
 
 try {
@@ -116,7 +116,10 @@ try {
     await Subcategory.create({ category_Id: 10, name: 'Printing & Paper' });
     console.log('\x1b[35mSubcategory\x1b[36m table populated\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while populating subcategory model', 500);
+    throw new AppError(
+        `Error while populating subcategory model: ${error}`,
+        500
+    );
 }
 
 export default Subcategory;
