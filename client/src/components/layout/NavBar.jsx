@@ -161,7 +161,7 @@ const styles = {
     position: "absolute",
     top: "50px",
     right: "0",
-    backgroundColor: "white",
+    background: "linear-gradient(to top, black, gray)", // Gradient background
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     borderRadius: "4px",
     zIndex: 1001,
@@ -169,7 +169,7 @@ const styles = {
   },
   menuButton: {
     padding: "10px 20px",
-    color: "black",
+    color: "white",
     background: "none",
     border: "none",
     cursor: "pointer",
@@ -178,7 +178,7 @@ const styles = {
     transition: "background-color 0.3s",
   },
   menuButtonHover: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   "@media (max-width: 768px)": {
     nav: {
