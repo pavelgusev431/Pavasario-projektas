@@ -1,4 +1,3 @@
-import React, { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 
@@ -13,27 +12,98 @@ const NavBar = () => {
     };
 
     const isActive = (path) => {
-        return location.pathname === path ? { textDecoration: 'underline' } : {};
-    };
-
-    const handleLogout = () => {
-        setAuth(null);
-        navigate('/home');
+        return location.pathname === path
+            ? { textDecoration: 'underline' }
+            : {};
     };
 
     return (
-        <nav style={styles.nav}>
-            <div style={styles.container}>
-                <div style={styles.logoContainer}>
-                    <img src="../src/public/banner_images/logo.png" alt="Logo" style={styles.logo} />
+        <nav
+            style={{
+                backgroundColor: 'white',
+                padding: '30px 40px',
+                position: 'fixed',
+                top: 0,
+                width: '100%',
+                zIndex: 1000,
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img
+                        src="/path/to/logo.png"
+                        alt="Logo"
+                        style={{ height: '40px', marginRight: '150px' }}
+                    />
+                    <button
+                        onClick={() => handleNavigation('/home')}
+                        style={{
+                            ...isActive('/home'),
+                            marginRight: '60px',
+                            color: 'black',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Home
+                    </button>
+                    <button
+                        onClick={() => handleNavigation('/contact')}
+                        style={{
+                            ...isActive('/contact'),
+                            marginRight: '60px',
+                            color: 'black',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Contact
+                    </button>
+                    <button
+                        onClick={() => handleNavigation('/about')}
+                        style={{
+                            ...isActive('/about'),
+                            marginRight: '60px',
+                            color: 'black',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        About
+                    </button>
+                    <button
+                        onClick={() => handleNavigation('/signup')}
+                        style={{
+                            ...isActive('/signup'),
+                            color: 'black',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Sign Up
+                    </button>
                 </div>
-                <div style={styles.menuContainer}>
-                    <button onClick={() => handleNavigation('/home')} style={{ ...styles.button, ...isActive('/home') }}>Home</button>
-                    <button onClick={() => handleNavigation('/contact')} style={{ ...styles.button, ...isActive('/contact') }}>Contact</button>
-                    <button onClick={() => handleNavigation('/about')} style={{ ...styles.button, ...isActive('/about') }}>About</button>
-                    {!auth && (
-                        <button onClick={() => handleNavigation('/signup')} style={{ ...styles.button, ...isActive('/signup') }}>Sign Up</button>
-                    )}
+                <div>
+                    <input
+                        type="text"
+                        placeholder="What are you looking for?"
+                        style={{
+                            padding: '10px',
+                            width: '400px',
+                            border: '1px solid gray',
+                            borderRadius: '4px',
+                        }}
+                    />
                 </div>
                 {auth && (
                     <div style={styles.accountContainer}>

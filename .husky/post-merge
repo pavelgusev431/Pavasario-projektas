@@ -1,3 +1,5 @@
+rm **/.env
+
 IFS=$'\n'
 # regex supports mono-repos with a package.json at root-level and at package-level
 PACKAGE_LOCK_REGEX="(^packages\/.*\/package-lock\.json)|(^package-lock\.json)"

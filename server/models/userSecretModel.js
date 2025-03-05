@@ -31,7 +31,7 @@ try {
     await Secret.sync({ alter: true, force: true });
     console.log('\x1b[35mSecret\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while creating secret model', 500);
+    throw new AppError(`Error while creating secret model: ${error}`, 500);
 }
 
 export default Secret;
