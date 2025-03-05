@@ -163,9 +163,14 @@ const styles = {
     right: "0",
     background: "linear-gradient(to top, black, gray)", // Gradient background
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    borderRadius: "4px",
+    borderRadius: "8px", // Increased border radius
     zIndex: 1001,
     overflow: "hidden",
+    border: "1px solid black", // Black outline
+    padding: "20px 40px", // Increased padding for width
+    transition: "all 0.3s ease", // Smooth transition effect
+    width: "250px", // Set a fixed width
+    fontFamily: "'Arial', sans-serif", // Set a font family
   },
   menuButton: {
     padding: "10px 20px",
@@ -176,6 +181,7 @@ const styles = {
     width: "100%",
     textAlign: "left",
     transition: "background-color 0.3s",
+    fontFamily: "'Arial', sans-serif", // Set a font family
   },
   menuButtonHover: {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
