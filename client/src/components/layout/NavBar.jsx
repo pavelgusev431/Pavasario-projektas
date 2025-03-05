@@ -6,7 +6,7 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
@@ -74,7 +74,11 @@ const NavBar = () => {
           )}
         </div>
         {auth && (
-          <div style={styles.accountContainer}>
+          <div
+            style={styles.accountContainer}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <i
               className="fas fa-heart"
               style={styles.heartIcon}
@@ -89,9 +93,8 @@ const NavBar = () => {
               src="../src/public/banner_images/user.png"
               alt="User"
               style={styles.accountIcon}
-              onClick={() => setMenuOpen(!menuOpen)}
             />
-            {menuOpen && (
+            {isHovered && (
               <div style={styles.menu}>
                 <button
                   onClick={() => handleNavigation("/balance")}
@@ -219,7 +222,7 @@ const styles = {
   },
   menu: {
     position: "absolute",
-    top: "50px",
+    top: "40px", // Adjusted top to raise the menu closer to the icon
     right: "0",
     background: "linear-gradient(to top, black, gray)", // Gradient background
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
