@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
 
-const EventType = sq.define(  
+const EventType = sq.define(
   'EventType',
   {
     id: {
@@ -37,8 +37,8 @@ try {
   await EventType.create({ name: 'expired' });
   await EventType.create({ name: 'cancelled' });
   await EventType.create({ name: 'executed' });
-        
-  
+
+
   console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
 } catch (error) {
   throw new AppError(`Error while populating event type model: ${error}`, 500);

@@ -27,7 +27,7 @@ const Rating = sq.define(
     },
     image_url: {
       type: DataTypes.STRING,
-      
+
     },
   },
   { timestamps: false, tableName: 'ratings' }
