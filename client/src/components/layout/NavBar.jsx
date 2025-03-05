@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 
@@ -7,6 +7,24 @@ const NavBar = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    // Fetch the balance from the database
+    const fetchBalance = async () => {
+      try {
+        const response = await fetch("/api/balance"); // Adjust the API endpoint as needed
+        const data = await response.json();
+        setBalance(data.balance);
+      } catch (error) {
+        console.error("Error fetching balance:", error);
+      }
+    };
+
+    if (auth) {
+      fetchBalance();
+    }
+  }, [auth]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -65,6 +83,12 @@ const NavBar = () => {
             />
             {menuOpen && (
               <div style={styles.menu}>
+                <button
+                  onClick={() => handleNavigation("/balance")}
+                  style={styles.menuButton}
+                >
+                  Balance: ${balance.toFixed(2)}
+                </button>
                 <button
                   onClick={() => handleNavigation("/account")}
                   style={styles.menuButton}
