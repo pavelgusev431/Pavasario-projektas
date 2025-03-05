@@ -185,8 +185,8 @@ const styles = {
     background: "none",
     border: "none",
     cursor: "pointer",
-    padding: "10px 20px",
-    fontSize: "16px",
+    padding: "20px 30px", // Increased padding
+    fontSize: "18px", // Increased font size
     transition: "color 0.3s",
   },
   buttonHover: {
@@ -229,7 +229,7 @@ const styles = {
     borderRadius: "8px", // Increased border radius
     zIndex: 1001,
     overflow: "hidden",
-    border: "1px solid black", // Black outline
+    border: "1px solid white", // Black outline
     padding: "20px 0", // Removed left and right padding
     transition: "all 0.3s ease", // Smooth transition effect
     width: "250px", // Set a fixed width
@@ -246,11 +246,11 @@ const styles = {
     transition: "background-color 0.3s",
     fontFamily: "'Arial', sans-serif", // Set a font family
   },
+  menuButtonHover: {
+    backgroundColor: "rgba(128, 128, 128, 0.3)", // Gray background on hover
+  },
   menuIcon: {
     marginRight: "15px", // Add more space between the icon and the text
-  },
-  menuButtonHover: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   "@media (max-width: 768px)": {
     nav: {
