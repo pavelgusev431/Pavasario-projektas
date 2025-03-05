@@ -97,33 +97,45 @@ const NavBar = () => {
                   onClick={() => handleNavigation("/balance")}
                   style={styles.menuButton}
                 >
+                  <i className="fas fa-wallet" style={styles.menuIcon}></i>
                   Balance: ${balance.toFixed(2)}
                 </button>
                 <button
                   onClick={() => handleNavigation("/account")}
                   style={styles.menuButton}
                 >
+                  <i className="fas fa-user" style={styles.menuIcon}></i>
                   Manage my account
                 </button>
                 <button
                   onClick={() => handleNavigation("/orders")}
                   style={styles.menuButton}
                 >
+                  <i className="fas fa-box" style={styles.menuIcon}></i>
                   My orders
                 </button>
                 <button
                   onClick={() => handleNavigation("/cancellations")}
                   style={styles.menuButton}
                 >
+                  <i
+                    className="fas fa-times-circle"
+                    style={styles.menuIcon}
+                  ></i>
                   My cancellations
                 </button>
                 <button
                   onClick={() => handleNavigation("/reviews")}
                   style={styles.menuButton}
                 >
+                  <i className="fas fa-star" style={styles.menuIcon}></i>
                   My reviews
                 </button>
                 <button onClick={handleLogout} style={styles.menuButton}>
+                  <i
+                    className="fas fa-sign-out-alt"
+                    style={styles.menuIcon}
+                  ></i>
                   Logout
                 </button>
               </div>
@@ -215,21 +227,24 @@ const styles = {
     zIndex: 1001,
     overflow: "hidden",
     border: "1px solid black", // Black outline
-    padding: "20px 40px", // Increased padding for width
+    padding: "20px 0", // Removed left and right padding
     transition: "all 0.3s ease", // Smooth transition effect
     width: "250px", // Set a fixed width
     fontFamily: "'Arial', sans-serif", // Set a font family
   },
   menuButton: {
-    padding: "10px 20px",
+    padding: "10px 20px", // Adjusted padding to remove left and right padding
     color: "white",
     background: "none",
     border: "none",
     cursor: "pointer",
     width: "100%",
-    textAlign: "left",
+    textAlign: "left", // Align text to the left
     transition: "background-color 0.3s",
     fontFamily: "'Arial', sans-serif", // Set a font family
+  },
+  menuIcon: {
+    marginRight: "15px", // Add more space between the icon and the text
   },
   menuButtonHover: {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
