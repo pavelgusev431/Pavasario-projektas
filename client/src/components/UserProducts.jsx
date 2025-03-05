@@ -14,9 +14,9 @@ export default function UserProducts() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = getProductById(id);
+                const response = await getProductById(id);
                 setProducts(response.data.data);
-                const userResponse = getUserById(id);
+                const userResponse = await getUserById(id);
                 setUserName(userResponse.data.data.username);
             } catch (err) {
                 setError(err.message);
@@ -32,14 +32,14 @@ export default function UserProducts() {
     if (error) return <p>Klaida: {error}</p>;
     if (products.length === 0) return <p>Produktų nerasta</p>;
 
-  return (
-    <div>
-      <h2 className="text-2xl font-bold mb-2">{userName}</h2>
-      <div className="flex flex-row  mt-2 flex-wrap">
-        {products.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
-  );
-};
+    return (
+        <div>
+            <h2 className="text-2xl font-bold mb-2">{userName}</h2>
+            <div className="flex flex-row  mt-2 flex-wrap">
+                {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                ))}
+            </div>
+        </div>
+    );
+}

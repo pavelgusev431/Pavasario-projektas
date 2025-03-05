@@ -6,14 +6,18 @@ import { AuthContext } from '../../contexts/AuthContext.jsx';
 import ToggleAuthType from '../buttons/ToggleAuthType.jsx';
 import { useLocation, useNavigate } from 'react-router';
 
-
 const Auth = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || '/home';
     if (from === '/logout') from = '/home';
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+    } = useForm();
     const { setAuth } = useContext(AuthContext);
 
     const [authType, setAuthType] = useState('signup');
@@ -32,13 +36,15 @@ const Auth = () => {
                     setError('');
                     navigate('/home');
                 } else {
-                    throw new Error(response?.data?.message || "Failed to create user");
+                    throw new Error(
+                        response?.data?.message || 'Failed to create user'
+                    );
                 }
             } else {
                 const user = await loginUser(data);
 
                 if (!user) {
-                    throw new Error("Invalid login credentials");
+                    throw new Error('Invalid login credentials');
                 }
 
                 setAuth(user);
@@ -63,9 +69,15 @@ const Auth = () => {
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             type="text"
                             placeholder="Username"
-                            {...register('username', { required: "Username is required" })}
+                            {...register('username', {
+                                required: 'Username is required',
+                            })}
                         />
-                        {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
+                        {errors.username && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.username.message}
+                            </p>
+                        )}
                     </div>
 
                     {authType === 'signup' && (
@@ -74,9 +86,15 @@ const Auth = () => {
                                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 type="email"
                                 placeholder="Email"
-                                {...register('email', { required: "Email is required" })}
+                                {...register('email', {
+                                    required: 'Email is required',
+                                })}
                             />
-                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                            {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.email.message}
+                                </p>
+                            )}
                         </div>
                     )}
 
@@ -85,23 +103,36 @@ const Auth = () => {
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             type="password"
                             placeholder="Password"
-                            {...register('password', { required: "Password is required" })}
+                            {...register('password', {
+                                required: 'Password is required',
+                            })}
                         />
-                        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+                        {errors.password && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.password.message}
+                            </p>
+                        )}
                     </div>
 
                     <button
                         type="submit"
                         className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300"
                     >
-                        {authType === 'login' ? "Login" : "Sign Up"}
+                        {authType === 'login' ? 'Login' : 'Sign Up'}
                     </button>
 
-                    {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
+                    {error && (
+                        <p className="text-red-500 text-sm mt-2 text-center">
+                            {error}
+                        </p>
+                    )}
                 </form>
 
                 <div className="mt-4 text-center">
-                    <ToggleAuthType authType={authType} setAuthType={setAuthType} />
+                    <ToggleAuthType
+                        authType={authType}
+                        setAuthType={setAuthType}
+                    />
                 </div>
             </div>
         </div>

@@ -5,7 +5,6 @@ import {
     login,
     logout,
     me,
-    getUserId,
     getAllUsers,
 } from '../controllers/userController.js';
 import express from 'express';
@@ -19,12 +18,11 @@ userRouter
     .route('/')
     .post(validateCreateUser, validate, createUser)
     .get(getAllUsers);
-userRouter.route('/:id').get(getUserId);
+userRouter.route('/id/:id').get(getUserById);
 userRouter.route('/login').post(login);
 userRouter.route('/logout').post(logout);
 userRouter.use(protect);
 userRouter.route('/me').get(me);
 userRouter.route('/:username').get(getUserByUsername);
-userRouter.route('/id/:id').get(getUserById);
 
 export default userRouter;
