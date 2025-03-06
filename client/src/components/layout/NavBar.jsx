@@ -36,7 +36,7 @@ const NavBar = () => {
   };
 
   const isActive = (path) => {
-    return location.pathname === path ? { textDecoration: "underline" } : {};
+    return location.pathname === path ? styles.activeButton : {};
   };
 
   const handleLogout = () => {
@@ -190,12 +190,33 @@ const styles = {
     background: "none",
     border: "none",
     cursor: "pointer",
-    padding: "20px 30px", // Increased padding
-    fontSize: "18px", // Increased font size
+    padding: "20px 30px",
+    fontSize: "18px",
+    position: "relative",
     transition: "color 0.3s",
   },
-  buttonHover: {
-    color: "#007BFF",
+  activeButton: {
+    color: "#800020",
+  },
+  "button::after": {
+    content: '""',
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "2px",
+    backgroundColor: "#800020",
+    transform: "scaleX(0)",
+    transformOrigin: "bottom right",
+    transition: "transform 0.3s ease-out",
+  },
+  "button:hover::after": {
+    transform: "scaleX(1)",
+    transformOrigin: "bottom left",
+  },
+  "button.active::after": {
+    transform: "scaleX(1)",
+    transformOrigin: "bottom left",
   },
   accountContainer: {
     position: "relative",
@@ -215,47 +236,47 @@ const styles = {
     fontSize: "24px",
     color: "black",
     cursor: "pointer",
-    marginRight: "30px", // Increased margin for bigger indent
+    marginRight: "30px",
     transition: "color 0.3s",
   },
   cartIcon: {
     fontSize: "24px",
     color: "black",
     cursor: "pointer",
-    marginRight: "30px", // Increased margin for bigger indent
+    marginRight: "30px",
     transition: "color 0.3s",
   },
   menu: {
     position: "absolute",
-    top: "40px", // Adjusted top to raise the menu closer to the icon
+    top: "40px",
     right: "0",
-    background: "linear-gradient(to top, black, gray)", // Gradient background
+    background: "linear-gradient(to top, black, gray)",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    borderRadius: "8px", // Increased border radius
+    borderRadius: "8px",
     zIndex: 1001,
     overflow: "hidden",
-    border: "1px solid white", // Black outline
-    padding: "20px 0", // Removed left and right padding
-    transition: "all 0.3s ease", // Smooth transition effect
-    width: "250px", // Set a fixed width
-    fontFamily: "'Arial', sans-serif", // Set a font family
+    border: "1px solid white",
+    padding: "20px 0",
+    transition: "all 0.3s ease",
+    width: "250px",
+    fontFamily: "'Arial', sans-serif",
   },
   menuButton: {
-    padding: "10px 20px", // Adjusted padding to remove left and right padding
+    padding: "10px 20px",
     color: "white",
     background: "none",
     border: "none",
     cursor: "pointer",
     width: "100%",
-    textAlign: "left", // Align text to the left
+    textAlign: "left",
     transition: "background-color 0.3s",
-    fontFamily: "'Arial', sans-serif", // Set a font family
+    fontFamily: "'Arial', sans-serif",
   },
   menuButtonHover: {
-    backgroundColor: "rgba(128, 128, 128, 0.3)", // Gray background on hover
+    backgroundColor: "rgba(128, 128, 128, 0.3)",
   },
   menuIcon: {
-    marginRight: "15px", // Add more space between the icon and the text
+    marginRight: "15px",
   },
   "@media (max-width: 768px)": {
     nav: {
