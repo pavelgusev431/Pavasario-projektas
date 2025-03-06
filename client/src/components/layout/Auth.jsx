@@ -6,6 +6,8 @@ import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useLocation, useNavigate } from 'react-router';
 import UserCount from '../../helpers/getAllUserCount.js';
 import ProductCount from '../../helpers/getAllProductCount.js';
+import { ToastContainer, toast } from 'react-toastify';
+
 const Auth = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -30,12 +32,26 @@ const Auth = () => {
             if (authType === 'signup') {
                 const response = await createUser(data);
                 if (response?.status === 201) {
-                    alert('User created successfully');
                     setValue('username', '');
                     setValue('email', '');
                     setValue('password', '');
                     setError('');
-                    navigate('/home');
+                    toast.success('Your account is created successfully!', {
+                        position: 'top-center',
+                        autoClose: 10000,
+                        style: {
+                            background: '#161D2F',
+                            color: '#FFFFFF',
+                        },
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: false,
+                    });
+
+                    setTimeout(() => {
+                        navigate('/home');
+                    }, 3000);
                 } else {
                     throw new Error(
                         response?.data?.message || 'Failed to create user'
@@ -47,8 +63,21 @@ const Auth = () => {
                     throw new Error('Invalid login credentials');
                 }
                 setAuth(user);
-                navigate(from, { replace: true });
-                alert('You are now logged in');
+                toast.success('Logged in successfully!', {
+                    position: 'top-center',
+                    autoClose: 10000,
+                    style: {
+                        background: '#161D2F',
+                        color: '#FFFFFF',
+                    },
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                });
+                setTimeout(() => {
+                    navigate(from, { replace: true });
+                }, 3000);
             }
         } catch (err) {
             setError(err.message);
@@ -58,6 +87,7 @@ const Auth = () => {
     return (
         <div className="relative flex min-h-screen w-full bg-gray-700 overflow-hidden">
             {/* Animated Container */}
+            <ToastContainer />
             <div
                 className={`flex w-[200%] transition-transform duration-700 ease-in-out ${
                     authType === 'signup' ? 'translate-x-0' : '-translate-x-1/2'
