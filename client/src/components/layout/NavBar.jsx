@@ -24,7 +24,12 @@ const NavBar = () => {
     if (auth) {
       fetchBalance();
     }
-  }, [auth]);
+
+    // Cleanup effect to reset isHovered state on location change
+    return () => {
+      setIsHovered(false);
+    };
+  }, [auth, location]);
 
   const handleNavigation = (path) => {
     navigate(path);
