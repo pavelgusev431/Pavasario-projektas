@@ -5,7 +5,7 @@ import loginUser from '../../helpers/loginUser.js';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import { useLocation, useNavigate } from 'react-router';
 import UserCount from '../../helpers/getAllUserCount.js';
-
+import ProductCount from '../../helpers/getAllProductCount.js';
 const Auth = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,6 +21,7 @@ const Auth = () => {
     const { setAuth } = useContext(AuthContext);
 
     const userCount = UserCount();
+    const productCount = ProductCount();
     const [authType, setAuthType] = useState('signup');
     const [error, setError] = useState('');
 
@@ -65,13 +66,35 @@ const Auth = () => {
                 {/* Left Section (Signup) */}
                 <div className="w-1/2 flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-700 text-white p-10">
                     <div className="text-center">
-                        <h1 className="text-4xl font-bold">
-                            Biggest marketplace on localhost!
+                        <h1 className="text-4xl font-bold text-white mb-10">
+                            The{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+                                Biggest Marketplace
+                            </span>{' '}
+                            on the Web!
                         </h1>
-                        <p className="mt-2 text-lg opacity-75">
-                            Join a community of{' '}
+                        <p className="animate-fade animate-ease-in-out animate-delay-[100ms] text-lg opacity-80 mt-2">
+                            Join over{' '}
                             <span className="font-semibold">{userCount}</span>{' '}
-                            users.
+                            users in our vibrant community.
+                        </p>
+                        <p className="animate-fade animate-ease-in-out animate-delay-[100ms] text-lg opacity-80 mt-4">
+                            Start selling your products today and showcase them
+                            to a massive audience.
+                        </p>
+                        <p className="animate-fade animate-ease-in-out animate-delay-[200ms] mt-4 text-lg opacity-80">
+                            Browse and shop from a variety of{' '}
+                            <span className="font-semibold">
+                                {productCount}
+                            </span>{' '}
+                            products.
+                        </p>
+                        <p className="mt-6 text-xl font-semibold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                            Ready to be part of something big?{' '}
+                            <span className="animate-pulse bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-pink-500">
+                                Sign up
+                            </span>{' '}
+                            now!
                         </p>
                     </div>
                 </div>
@@ -211,11 +234,15 @@ const Auth = () => {
                     }`}
             >
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold mb-4 animate-fade-in">
+                    <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 animate-fade-in">
                         Welcome Back!
                     </h1>
                     <p className="text-lg opacity-75 animate-fade-in delay-200">
-                        Log in to continue your journey on localhost marketplace
+                        Log in to continue your journey on{' '}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r to-[#c4768f] from-[#DB0045]">
+                            Just do it
+                        </span>{' '}
+                        marketplace
                     </p>
                 </div>
             </div>
