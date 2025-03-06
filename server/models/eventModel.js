@@ -21,13 +21,18 @@ const Event = sq.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    timestamp: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
     
     description: {
       type: DataTypes.STRING,
       allowNull: false,
     }
   },
-  { createdAt: true, updatedAt: false, tableName: 'events' }
+  { timestamps: false, tableName: 'events' }
 );
 
 try {

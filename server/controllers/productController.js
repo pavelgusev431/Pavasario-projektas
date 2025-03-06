@@ -1,6 +1,9 @@
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
-
+import Rating from '../models/ratingModel.js';
+import Event from '../models/eventModel.js';
+import EventTarget from '../models/event_targetModel.js';
+import EventType from '../models/event_typeModel.js';
 const getUserProducts = async (req, res) => {
     const userId = parseInt(req.params.id);
 
@@ -45,5 +48,7 @@ const getAllProducts = async (req, res) => {
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
     }
 };
+
+
 
 export { getUserProducts, getAllProducts };
