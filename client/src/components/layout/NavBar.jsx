@@ -31,18 +31,18 @@ const NavBar = () => {
     };
   }, [auth, location]);
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
 
   const isActive = (path) => {
     return location.pathname === path ? styles.activeButton : {};
   };
 
-  const handleLogout = () => {
-    setAuth(null);
-    navigate("/home");
-  };
+    const handleLogout = () => {
+        setAuth(null);
+        navigate('/home');
+    };
 
   return (
     <nav style={styles.nav}>

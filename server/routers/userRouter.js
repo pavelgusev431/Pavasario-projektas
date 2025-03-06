@@ -6,6 +6,7 @@ import {
     logout,
     me,
     getAllUsers,
+    getAllUsersCount,
 } from '../controllers/userController.js';
 import express from 'express';
 import protect from '../validators/validateJWT.js';
@@ -18,7 +19,8 @@ userRouter
     .route('/')
     .post(validateCreateUser, validate, createUser)
     .get(getAllUsers);
-userRouter.route('/id/:id').get(getUserById);
+userRouter.route('/count').get(getAllUsersCount);
+// userRouter.route('/:id').get(getUserId);
 userRouter.route('/login').post(login);
 userRouter.route('/logout').post(logout);
 userRouter.use(protect);
