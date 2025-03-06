@@ -46,4 +46,11 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-export { getUserProducts, getAllProducts };
+const getAllProductCount = async (req, res) => {
+    const userCount = await Product.count();
+    res.status(200).json({
+        status: 'success',
+        data: userCount,
+    });
+};
+export { getUserProducts, getAllProducts, getAllProductCount };
