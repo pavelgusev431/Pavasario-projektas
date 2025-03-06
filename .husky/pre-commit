@@ -3,6 +3,5 @@ npm run lint -s
 echo -e "\e[30mLinted\e[0m"
 npm run prettify -s
 git config core.autocrlf true
-
 git add .
 git add .
