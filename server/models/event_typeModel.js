@@ -34,6 +34,8 @@ try {
   await EventType.create({ name: 'deleted' });
   await EventType.create({ name: 'banned' });
   await EventType.create({ name: 'viewed' });
+  await EventType.create({ name: 'bought' });
+  await EventType.create({ name: 'sold' });
   await EventType.create({ name: 'expired' });
   await EventType.create({ name: 'cancelled' });
   await EventType.create({ name: 'executed' });
