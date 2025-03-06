@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router';
 import ProductCard from './ProductCard';
+import { getUserById } from '../helpers/getUser.js';
+import { getProductById } from '../helpers/getProduct.js';
 
 export default function UserProducts() {
     const { id } = useParams();
@@ -13,15 +14,9 @@ export default function UserProducts() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(
-                    `http://localhost:3000/products/${id}`
-                );
+                const response = await getProductById(id);
                 setProducts(response.data.data);
-
-                const userResponse = await axios.get(
-                    `http://localhost:3000/users/${id}`
-                );
-
+                const userResponse = await getUserById(id);
                 setUserName(userResponse.data.data.username);
             } catch (err) {
                 setError(err.message);
@@ -39,8 +34,8 @@ export default function UserProducts() {
 
     return (
         <div>
-            <h2>{userName}</h2>
-            <div>
+            <h2 className="text-2xl font-bold mb-2">{userName}</h2>
+            <div className="flex flex-row  mt-2 flex-wrap">
                 {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                 ))}

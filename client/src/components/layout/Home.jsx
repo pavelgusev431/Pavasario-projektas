@@ -8,7 +8,9 @@ const Home = () => {
             <NavBar />
             <div>
                 <BannerCarousel />
-                <Outlet />
+                <div className="pl-2">
+                    <Outlet />
+                </div>
             </div>
         </>
     );

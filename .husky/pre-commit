@@ -1,6 +1,4 @@
+npm install -s
 npm run lint -s
-echo "Linted"
-npm run prettier -s
-echo "Prettiered"
-git add .
-git add .
+echo -e "\e[30mLinted\e[0m"
+npm run prettify -s

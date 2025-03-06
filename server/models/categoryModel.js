@@ -26,7 +26,7 @@ try {
     await Category.sync({ alter: true, force: true });
     console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while creating category model', 500);
+    throw new AppError(`Error while creating category model: ${error}`, 500);
 }
 
 try {
@@ -42,7 +42,7 @@ try {
     await Category.create({ name: 'Office & School Supplies' });
     console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
 } catch (error) {
-    throw new AppError('Error while populating category model', 500);
+    throw new AppError(`Error while populating category model: ${error}`, 500);
 }
 
 export default Category;

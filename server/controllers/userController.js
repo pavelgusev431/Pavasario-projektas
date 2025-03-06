@@ -129,15 +129,6 @@ const me = async (_req, res) => {
         });
     } else throw new AppError('User not found', 404);
 };
-const getUserId = async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findByPk(id);
-
-    res.status(200).json({
-        status: 'success',
-        data: user,
-    });
-};
 
 const getAllUsers = async (req, res) => {
     const users = await User.findAll();
@@ -161,7 +152,6 @@ export {
     login,
     logout,
     me,
-    getUserId,
     getAllUsers,
     getAllUsersCount,
 };
