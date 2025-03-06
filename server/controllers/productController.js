@@ -2,8 +2,7 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
-import EventTarget from '../models/event_targetModel.js';
-import EventType from '../models/event_typeModel.js';
+import { Op } from 'sequelize';
 const getUserProducts = async (req, res) => {
     const userId = parseInt(req.params.id);
 
@@ -49,6 +48,51 @@ const getAllProducts = async (req, res) => {
     }
 };
 
+const getBestNewUsersProducts = async (req, res, next) => {
+    try {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        // Randame naujus vartotojus pagal jų registracijos įvykį
+        const newUserEvents = await Event.findAll({
+            where: {
+                type_id: 1, // 'created' event type
+                timestamp: { [Op.gte]: oneWeekAgo }
+            },
+            attributes: ['user_id'],
+        });
+
+        const newUserIds = newUserEvents.map(event => event.user_id);
+
+        if (newUserIds.length === 0) {
+            return res.json([]);
+        }
+
+        // Randame produktus, kurie priklauso naujiems vartotojams ir turi reitingą 4+
+        const products = await Product.findAll({
+            where: {
+                user_id: newUserIds
+            },
+            include: [{
+                model: Rating,
+                attributes: ['stars'],
+            }]
+        });
+
+        // Filtruojame pagal vidutinį reitingą
+        const filteredProducts = products.filter(product => {
+            if (!product.Ratings || product.Ratings.length === 0) return false;
+            
+            const avgRating = product.Ratings.reduce((sum, rating) => sum + rating.stars, 0) / product.Ratings.length;
+            return avgRating >= 4;
+        });
+
+        res.json(filteredProducts);
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-export { getUserProducts, getAllProducts };
+
+export { getUserProducts, getAllProducts, getBestNewUsersProducts };
