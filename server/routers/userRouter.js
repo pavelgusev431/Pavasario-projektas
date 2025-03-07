@@ -4,6 +4,8 @@ import {
     getUserById,
     login,
     logout,
+    forgot,
+    passwordReset,
     me,
     getAllUsers,
     getAllUsersCount,
@@ -20,9 +22,11 @@ userRouter
     .post(validateCreateUser, validate, createUser)
     .get(getAllUsers);
 userRouter.route('/count').get(getAllUsersCount);
-// userRouter.route('/:id').get(getUserId);
+userRouter.route('/id/:id').get(getUserById);
 userRouter.route('/login').post(login);
 userRouter.route('/logout').post(logout);
+userRouter.route('/forgot').post(forgot);
+userRouter.route('/reset/:id').post(passwordReset);
 userRouter.use(protect);
 userRouter.route('/me').get(me);
 userRouter.route('/:username').get(getUserByUsername);

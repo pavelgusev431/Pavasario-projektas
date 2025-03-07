@@ -27,6 +27,12 @@ const Auth = () => {
     const [authType, setAuthType] = useState('signup');
     const [error, setError] = useState('');
 
+    const [showReset, setShowReset] = useState(false);
+
+    const handleResetShow = () => {
+        setShowReset(!showReset);
+    };
+
     const onSubmit = async (data) => {
         try {
             if (authType === 'signup') {
@@ -275,6 +281,17 @@ const Auth = () => {
                         marketplace
                     </p>
                 </div>
+                {authType === 'login' && (
+                    <>
+                        <button
+                            onClick={handleResetShow}
+                            className="text-blue-400 underline bg-none border-none hover:cursor-pointer"
+                        >
+                            Forgot password
+                        </button>
+                        {showReset && <SubmitEmailForPasswordReset />}
+                    </>
+                )}
             </div>
         </div>
     );
