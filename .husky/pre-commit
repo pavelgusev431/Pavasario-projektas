@@ -1,8 +1,15 @@
 #!/bin/sh
-git config --global core.autocrlf input
 npm run lint -s
 printf "\033[35mLinted\033[0m"
 npm run prettify -s
 printf "\033[35mPrettified\033[0m"
+rm -f ./package-lock.json
+cd server
+rm -f ./package-lock.json
+cd ../client
+rm -f ./package-lock.json
+cd ..
+printf "\033[35mRemoved package-lock.json\033[0m"
+git config --global core.autocrlf input
 git add --all
 git add --all
