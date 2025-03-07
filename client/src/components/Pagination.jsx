@@ -1,6 +1,3 @@
-// components/Pagination.jsx
-import React from 'react';
-
 export default function Pagination({
     currentPage,
     totalItems,
