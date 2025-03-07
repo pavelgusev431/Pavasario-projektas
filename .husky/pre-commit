@@ -1,8 +1,8 @@
 #!/bin/sh
 npm run lint -s
-printf "\033[35mLinted\033[0m"
+printf "\033[35mLinted\033[0m\n"
 npm run prettify -s
-printf "\033[35mPrettified\033[0m"
+printf "\033[35mPrettified\033[0m\n"
 rm -f ./package-lock.json
 cd server
 rm -f ./package-lock.json
