@@ -207,7 +207,13 @@ const passwordReset = async (req, res, next) => {
         next(error);
     }
 };
-
+const getAllUsersCount = async (req, res) => {
+    const userCount = await User.count();
+    res.status(200).json({
+        status: 'success',
+        data: userCount,
+    });
+};
 export {
     createAdmin,
     createUser,
@@ -219,4 +225,5 @@ export {
     passwordReset,
     me,
     getAllUsers,
+    getAllUsersCount,
 };
