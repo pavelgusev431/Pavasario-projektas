@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router';
 import UserCount from '../../helpers/getAllUserCount.js';
 import ProductCount from '../../helpers/getAllProductCount.js';
 import { ToastContainer, toast } from 'react-toastify';
+import SubmitEmailForPasswordReset from './SubmitEmailForPasswordReset.jsx';
 
 const Auth = () => {
     const navigate = useNavigate();
