@@ -14,6 +14,7 @@
     "eslint-plugin-react-refresh": "^0.4.16"
   },
   "scripts": {
+    "start":"printf '\\033[31mYou are now in root.\\nUse `cd server` or `cd client`\\033[0m'",
     "lint": "npx eslint --no-cache --config ./configs/eslint.config.js . --quiet 2> ./configs/error_logs.txt",
     "prettify": "node ./node_modules/prettier/bin/prettier.cjs --write --config ./configs/prettier.config.js --ignore-path ./configs/.prettierignore . 2>> ./configs/error_logs.txt --list-different",
     "prepare": "husky"
