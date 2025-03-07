@@ -2,7 +2,7 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 const getUserProducts = async (req, res) => {
     const userId = parseInt(req.params.id);
 
@@ -73,17 +73,26 @@ const getBestNewUsersProducts = async (req, res, next) => {
             where: {
                 user_id: newUserIds
             },
-            include: [{
-                model: Rating,
-                attributes: ['stars'],
-            }]
+        });
+
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map(product => product.id)
+                }
+            }
+        })
+
+        const results = products.map(product => {
+            const productRatings = ratings.filter(rating => rating.product_id === product.id);
+            return { ...product.dataValues, productRatings };
         });
 
         // Filtruojame pagal vidutinį reitingą
-        const filteredProducts = products.filter(product => {
-            if (!product.Ratings || product.Ratings.length === 0) return false;
+        const filteredProducts = results.filter(result => {
+            if (!result.productRatings || result.productRatings.length === 0) return false;
             
-            const avgRating = product.Ratings.reduce((sum, rating) => sum + rating.stars, 0) / product.Ratings.length;
+            const avgRating = result.productRatings.reduce((sum, rating) => sum + rating.stars, 0) / result.productRatings.length;
             return avgRating >= 4;
         });
 
