@@ -114,9 +114,7 @@ export default function UsersProducts() {
                     <select
                         id="usersPerPage"
                         value={usersPerPage}
-                        onChange={(e) =>
-                            setUsersPerPage(Number(e.target.value))
-                        }
+                        onChange={handleUsersPerPageChange}
                         className="px-2 py-1 border rounded"
                     >
                         <option value={5}>5</option>
