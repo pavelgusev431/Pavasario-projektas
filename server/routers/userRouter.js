@@ -22,7 +22,7 @@ userRouter
     .post(validateCreateUser, validate, createUser)
     .get(getAllUsers);
 userRouter.route('/count').get(getAllUsersCount);
-// userRouter.route('/:id').get(getUserId);
+userRouter.route('/id/:id').get(getUserById);
 userRouter.route('/login').post(login);
 userRouter.route('/logout').post(logout);
 userRouter.route('/forgot').post(forgot);
