@@ -7,6 +7,7 @@ import NotFound from './components/layout/NotFound.jsx';
 import NavBar from './components/layout/NavBar.jsx';
 import UsersProducts from './components/UsersProducts.jsx';
 import UserProducts from './components/UserProducts.jsx';
+import PasswordReset from './components/layout/PasswordReset.jsx';
 function App() {
     return (
         <Router>
@@ -20,6 +21,7 @@ function App() {
                 <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />
                 <Route path="signup" element={<Auth authType="signup" />} />
+                <Route path="reset/:userid/:salt" element={<PasswordReset />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

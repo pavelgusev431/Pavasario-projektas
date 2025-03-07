@@ -1,7 +1,8 @@
-npm install -s
+#!/bin/sh
+git config --global core.autocrlf input
 npm run lint -s
-echo -e "\e[30mLinted\e[0m"
+printf "\033[35mLinted\033[0m"
 npm run prettify -s
-git config core.autocrlf true
-git add .
-git add .
+printf "\033[35mPrettified\033[0m"
+git add --all
+git add --all

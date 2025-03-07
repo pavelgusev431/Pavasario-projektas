@@ -5,6 +5,7 @@ import loginUser from '../../helpers/loginUser.js';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 import ToggleAuthType from '../buttons/ToggleAuthType.jsx';
 import { useLocation, useNavigate } from 'react-router';
+import SubmitEmailForPasswordReset from './SubmitEmailForPasswordReset.jsx';
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -22,6 +23,12 @@ const Auth = () => {
 
     const [authType, setAuthType] = useState('signup');
     const [error, setError] = useState('');
+
+    const [showReset, setShowReset] = useState(false);
+
+    const handleResetShow = () => {
+        setShowReset(!showReset);
+    };
 
     const onSubmit = async (data) => {
         try {
@@ -134,6 +141,17 @@ const Auth = () => {
                         setAuthType={setAuthType}
                     />
                 </div>
+                {authType === 'login' && (
+                    <>
+                        <button
+                            onClick={handleResetShow}
+                            className="text-blue-400 underline bg-none border-none hover:cursor-pointer"
+                        >
+                            Forgot password
+                        </button>
+                        {showReset && <SubmitEmailForPasswordReset />}
+                    </>
+                )}
             </div>
         </div>
     );
