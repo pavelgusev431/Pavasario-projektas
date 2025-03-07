@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 
@@ -6,16 +6,37 @@ const NavBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [balance, setBalance] = useState(0);
+
+    useEffect(() => {
+        // Fetch the balance from the database
+        const fetchBalance = async () => {
+            try {
+                const response = await fetch('/api/balance'); // Adjust the API endpoint as needed
+                const data = await response.json();
+                setBalance(data.balance);
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+            }
+        };
+
+        if (auth) {
+            fetchBalance();
+        }
+
+        // Cleanup effect to reset isHovered state on location change
+        return () => {
+            setIsHovered(false);
+        };
+    }, [auth, location]);
 
     const handleNavigation = (path) => {
         navigate(path);
     };
 
     const isActive = (path) => {
-        return location.pathname === path
-            ? { textDecoration: 'underline' }
-            : {};
+        return location.pathname === path ? styles.activeButton : {};
     };
 
     const handleLogout = () => {
@@ -62,25 +83,56 @@ const NavBar = () => {
                     )}
                 </div>
                 {auth && (
-                    <div style={styles.accountContainer}>
+                    <div
+                        style={styles.accountContainer}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
+                        <i
+                            className="fas fa-heart"
+                            style={styles.heartIcon}
+                            onClick={() => handleNavigation('/favorites')}
+                        ></i>
+                        <i
+                            className="fas fa-shopping-cart"
+                            style={styles.cartIcon}
+                            onClick={() => handleNavigation('/cart')}
+                        ></i>
                         <img
                             src="../src/public/banner_images/user.png"
                             alt="User"
                             style={styles.accountIcon}
-                            onClick={() => setMenuOpen(!menuOpen)}
                         />
-                        {menuOpen && (
+                        {isHovered && (
                             <div style={styles.menu}>
+                                <button
+                                    onClick={() => handleNavigation('/balance')}
+                                    style={styles.menuButton}
+                                >
+                                    <i
+                                        className="fas fa-wallet"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    Balance: ${balance.toFixed(2)}
+                                </button>
                                 <button
                                     onClick={() => handleNavigation('/account')}
                                     style={styles.menuButton}
                                 >
+                                    <i
+                                        className="fas fa-user"
+                                        style={styles.menuIcon}
+                                    ></i>
                                     Manage my account
                                 </button>
                                 <button
                                     onClick={() => handleNavigation('/orders')}
                                     style={styles.menuButton}
                                 >
+                                    <i
+                                        className="fas fa-box"
+                                        style={styles.menuIcon}
+                                    ></i>
                                     My orders
                                 </button>
                                 <button
@@ -89,18 +141,30 @@ const NavBar = () => {
                                     }
                                     style={styles.menuButton}
                                 >
+                                    <i
+                                        className="fas fa-times-circle"
+                                        style={styles.menuIcon}
+                                    ></i>
                                     My cancellations
                                 </button>
                                 <button
                                     onClick={() => handleNavigation('/reviews')}
                                     style={styles.menuButton}
                                 >
+                                    <i
+                                        className="fas fa-star"
+                                        style={styles.menuIcon}
+                                    ></i>
                                     My reviews
                                 </button>
                                 <button
                                     onClick={handleLogout}
                                     style={styles.menuButton}
                                 >
+                                    <i
+                                        className="fas fa-sign-out-alt"
+                                        style={styles.menuIcon}
+                                    ></i>
                                     Logout
                                 </button>
                             </div>
@@ -147,12 +211,33 @@ const styles = {
         background: 'none',
         border: 'none',
         cursor: 'pointer',
-        padding: '10px 20px',
-        fontSize: '16px',
+        padding: '20px 30px',
+        fontSize: '18px',
+        position: 'relative',
         transition: 'color 0.3s',
     },
-    buttonHover: {
-        color: '#007BFF',
+    activeButton: {
+        color: '#800020',
+    },
+    'button::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '2px',
+        backgroundColor: '#800020',
+        transform: 'scaleX(0)',
+        transformOrigin: 'bottom right',
+        transition: 'transform 0.3s ease-out',
+    },
+    'button:hover::after': {
+        transform: 'scaleX(1)',
+        transformOrigin: 'bottom left',
+    },
+    'button.active::after': {
+        transform: 'scaleX(1)',
+        transformOrigin: 'bottom left',
     },
     accountContainer: {
         position: 'relative',
@@ -168,28 +253,51 @@ const styles = {
     accountIconHover: {
         transform: 'scale(1.1)',
     },
+    heartIcon: {
+        fontSize: '24px',
+        color: 'black',
+        cursor: 'pointer',
+        marginRight: '30px',
+        transition: 'color 0.3s',
+    },
+    cartIcon: {
+        fontSize: '24px',
+        color: 'black',
+        cursor: 'pointer',
+        marginRight: '30px',
+        transition: 'color 0.3s',
+    },
     menu: {
         position: 'absolute',
-        top: '50px',
+        top: '40px',
         right: '0',
-        backgroundColor: 'white',
+        background: 'linear-gradient(to top, black, gray)',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '4px',
+        borderRadius: '8px',
         zIndex: 1001,
         overflow: 'hidden',
+        border: '1px solid white',
+        padding: '20px 0',
+        transition: 'all 0.3s ease',
+        width: '250px',
+        fontFamily: "'Arial', sans-serif",
     },
     menuButton: {
         padding: '10px 20px',
-        color: 'black',
+        color: 'white',
         background: 'none',
         border: 'none',
         cursor: 'pointer',
         width: '100%',
         textAlign: 'left',
         transition: 'background-color 0.3s',
+        fontFamily: "'Arial', sans-serif",
     },
     menuButtonHover: {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: 'rgba(128, 128, 128, 0.3)',
+    },
+    menuIcon: {
+        marginRight: '15px',
     },
     '@media (max-width: 768px)': {
         nav: {
@@ -222,5 +330,4 @@ const styles = {
         },
     },
 };
-
 export default NavBar;
