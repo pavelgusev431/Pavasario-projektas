@@ -31,24 +31,28 @@ const NavBar = () => {
     };
   }, [auth, location]);
 
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   const isActive = (path) => {
     return location.pathname === path ? styles.activeButton : {};
   };
 
-    const handleLogout = () => {
-        setAuth(null);
-        navigate('/home');
-    };
+  const handleLogout = () => {
+    setAuth(null);
+    navigate("/home");
+  };
 
   return (
     <nav style={styles.nav}>
       <div style={styles.container}>
         <div style={styles.logoContainer}>
-          <img src="/path/to/logo.png" alt="Logo" style={styles.logo} />
+          <img
+            src="../src/public/banner_images/logo.png"
+            alt="Logo"
+            style={styles.logo}
+          />
         </div>
         <div style={styles.menuContainer}>
           <button
@@ -84,11 +88,6 @@ const NavBar = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <i
-              className="fas fa-heart"
-              style={styles.heartIcon}
-              onClick={() => handleNavigation("/favorites")}
-            ></i>
             <i
               className="fas fa-shopping-cart"
               style={styles.cartIcon}
@@ -177,7 +176,7 @@ const styles = {
     marginRight: "150px",
   },
   logo: {
-    height: "40px",
+    height: "80px", // Increased height for the logo
   },
   menuContainer: {
     display: "flex",
@@ -232,13 +231,6 @@ const styles = {
   accountIconHover: {
     transform: "scale(1.1)",
   },
-  heartIcon: {
-    fontSize: "24px",
-    color: "black",
-    cursor: "pointer",
-    marginRight: "30px",
-    transition: "color 0.3s",
-  },
   cartIcon: {
     fontSize: "24px",
     color: "black",
@@ -286,7 +278,7 @@ const styles = {
       marginRight: "50px",
     },
     logo: {
-      height: "30px",
+      height: "40px",
     },
     button: {
       marginRight: "20px",
@@ -301,7 +293,7 @@ const styles = {
       marginRight: "20px",
     },
     logo: {
-      height: "20px",
+      height: "30px",
     },
     button: {
       marginRight: "10px",
