@@ -2,7 +2,7 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
-import { Op, where } from 'sequelize';
+import { Op} from 'sequelize';
 const getUserProducts = async (req, res) => {
     const userId = parseInt(req.params.id);
 
@@ -96,7 +96,67 @@ const getBestNewUsersProducts = async (req, res, next) => {
             return avgRating >= 4;
         });
 
-        res.json(filteredProducts);
+        res.json({
+            status: 'success',
+            data: filteredProducts
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getTopRatedUsersProducts = async (req, res, next) => {
+    try {
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+        // Randame naujus vartotojus pagal jų registracijos įvykį
+        const newUserEvents = await Event.findAll({
+            where: {
+                type_id: 1, // 'created' event type
+                timestamp: { [Op.gte]: oneMonthAgo }
+            },
+            attributes: ['user_id'],
+        });
+
+        const newUserIds = newUserEvents.map(event => event.user_id);
+
+        if (newUserIds.length === 0) {
+            return res.json([]);
+        }
+
+        // Randame produktus, kurie priklauso naujiems vartotojams ir turi reitingą 4.5+
+        const products = await Product.findAll({
+            where: {
+                user_id: newUserIds
+            },
+        });
+
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map(product => product.id)
+                }
+            }
+        })
+
+        const results = products.map(product => {
+            const productRatings = ratings.filter(rating => rating.product_id === product.id);
+            const ratingCount = productRatings.length;
+            const avgRating = ratingCount > 0 
+                ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                : 0;
+            
+            return { ...product.dataValues, productRatings, ratingCount, avgRating };
+        });
+
+         // Filtruojame pagal vidutinį reitingą ir minimalų reitingų kiekį
+         const filteredProducts = results.filter(result => result.avgRating >= 4.5 && result.ratingCount >= 5);
+
+        res.json({
+            status: 'success', 
+            data: filteredProducts
+        });
     } catch (error) {
         next(error);
     }
@@ -104,4 +164,6 @@ const getBestNewUsersProducts = async (req, res, next) => {
 
 
 
-export { getUserProducts, getAllProducts, getBestNewUsersProducts };
+
+
+export { getUserProducts, getAllProducts, getBestNewUsersProducts,getTopRatedUsersProducts };
