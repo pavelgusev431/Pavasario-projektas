@@ -162,8 +162,96 @@ const getTopRatedUsersProducts = async (req, res, next) => {
     }
 };
 
+const getTopUserProducts = async (req, res, next) => {
+    try {
+        // Paimame visus produktus su jų vartotojais
+        const products = await Product.findAll();
+
+        // Paimame visus reitingus susijusius su šiais produktais
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map(product => product.id)
+                }
+            }
+        });
+
+        // Grupavimas pagal vartotoją
+        const userStats = {};
+
+        products.forEach(product => {
+            if (!userStats[product.user_id]) {
+                userStats[product.user_id] = { 
+                    products: [], 
+                    totalRatings: 0, 
+                    totalStars: 0 
+                };
+            }
+            userStats[product.user_id].products.push(product);
+        });
+
+        ratings.forEach(rating => {
+            const product = products.find(p => p.id === rating.product_id);
+            if (product && userStats[product.user_id]) {
+                userStats[product.user_id].totalRatings++;
+                userStats[product.user_id].totalStars += rating.stars;
+            }
+        });
+
+        // Renkame vartotoją su daugiausiai reitingų, bent 4 produktais ir vidutiniu reitingu ≥ 4.5
+        let topUserId = null;
+        let maxRatings = 0;
+        let topUserRating = 0; // Čia išsaugosime vartotojo bendrą įvertinimą
+
+        Object.entries(userStats).forEach(([userId, stats]) => {
+            // Apskaičiuojame vartotojo bendrą vidutinį reitingą tik iš įvertintų produktų
+            const avgUserRating = stats.totalRatings > 0 ? stats.totalStars / stats.totalRatings : 0;
+            
+            if (stats.products.length >= 4 && avgUserRating >= 4.5 && stats.totalRatings > maxRatings) {
+                maxRatings = stats.totalRatings;
+                topUserId = userId;
+                topUserRating = avgUserRating; // Išsaugome geriausio vartotojo reitingą
+            }
+        });
+
+        // Jei nerastas tinkamas vartotojas arba jo bendras reitingas < 4.5, grąžiname klaidą
+        if (!topUserId || topUserRating < 4.5) {
+            return res.status(404).json({ message: "No suitable user found" });
+        }
+
+        // Atrenkame tik vartotojo produktus, kurie turi bent 1 reitingą
+        const topUserProducts = userStats[topUserId].products
+            .map(product => {
+                const productRatings = ratings.filter(rating => rating.product_id === product.id);
+                const ratingCount = productRatings.length;
+                const avgRating = ratingCount > 0 
+                    ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                    : 0;
+                
+                return ratingCount > 0 ? { ...product.dataValues, ratingCount, avgRating } : null;
+            })
+            .filter(product => product !== null) // Pašaliname produktus be reitingų
+            .sort((a, b) => b.avgRating - a.avgRating) // Rikiuojame nuo geriausio
+            .slice(0, 4); // Paimame tik 4 geriausius produktus
+
+        // Jei vartotojas turi mažiau nei 4 produktus su reitingais, jo nerodome
+        if (topUserProducts.length < 4) {
+            return res.status(404).json({ message: "No suitable user found" });
+        }
+
+        res.json({
+            status: "success",
+            user_id: topUserId, // Geriausio vartotojo ID
+            userRating: topUserRating.toFixed(2), // Bendras vartotojo vidutinis įvertinimas
+            data: topUserProducts
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 
 
-export { getUserProducts, getAllProducts, getBestNewUsersProducts,getTopRatedUsersProducts };
+
+export { getUserProducts, getAllProducts, getBestNewUsersProducts,getTopRatedUsersProducts, getTopUserProducts };
