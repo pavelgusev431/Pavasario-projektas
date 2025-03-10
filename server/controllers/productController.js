@@ -207,6 +207,7 @@ const getTopUserProducts = async (req, res, next) => {
             // Apskaičiuojame vartotojo bendrą vidutinį reitingą tik iš įvertintų produktų
             const avgUserRating = stats.totalRatings > 0 ? stats.totalStars / stats.totalRatings : 0;
             
+            // Tikriname, ar šis vartotojas turi daugiau reitingų nei ankstesnis geriausias
             if (stats.products.length >= 4 && avgUserRating >= 4.5 && stats.totalRatings > maxRatings) {
                 maxRatings = stats.totalRatings;
                 topUserId = userId;
@@ -243,6 +244,7 @@ const getTopUserProducts = async (req, res, next) => {
             status: "success",
             user_id: topUserId, // Geriausio vartotojo ID
             userRating: topUserRating.toFixed(2), // Bendras vartotojo vidutinis įvertinimas
+            totalRatings: maxRatings, // Bendras vartotojo reitingų skaičius
             data: topUserProducts
         });
     } catch (error) {
