@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npm i > logs.txt 2>> logs.txt && vite"
+    "start": "npm i && vite"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
