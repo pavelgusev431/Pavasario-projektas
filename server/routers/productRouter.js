@@ -3,7 +3,7 @@ import {
     getUserProducts,
     getAllProducts,
     getHotProducts,
-    getTopRatedUsersProducts,
+    getTopRatedProducts,
     getTopUserProducts,
     getTrendingUserProducts
 } from '../controllers/productController.js';
@@ -13,7 +13,7 @@ productRouter.route('/').get(getAllProducts);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
 productRouter.route('/trending').get(getTrendingUserProducts);
 productRouter.route('/bestnew').get(getHotProducts);
-productRouter.route('/bestmonth').get(getTopRatedUsersProducts);
+productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/:id').get(getUserProducts);
 
 export default productRouter;

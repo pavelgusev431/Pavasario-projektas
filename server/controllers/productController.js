@@ -122,16 +122,16 @@ const getHotProducts = async (req, res, next) => {
 
 
 
-const getTopRatedUsersProducts = async (req, res, next) => {
+const getTopRatedProducts = async (req, res, next) => {
     try {
-        const oneMonthAgo = new Date();
-        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+        
 
         // Randame naujus vartotojus pagal jų registracijos įvykį
         const newUserEvents = await Event.findAll({
             where: {
                 type_id: 1, // 'created' event type
-                timestamp: { [Op.gte]: oneMonthAgo }
+                target_id: 2, // produktų įvykiai
+                
             },
             attributes: ['user_id'],
         });
@@ -142,7 +142,7 @@ const getTopRatedUsersProducts = async (req, res, next) => {
             return res.json([]);
         }
 
-        // Randame produktus, kurie priklauso naujiems vartotojams ir turi reitingą 4.5+
+        // Randame produktus, kurie priklauso naujiems vartotojams
         const products = await Product.findAll({
             where: {
                 user_id: newUserIds
@@ -155,7 +155,7 @@ const getTopRatedUsersProducts = async (req, res, next) => {
                     [Op.in]: products.map(product => product.id)
                 }
             }
-        })
+        });
 
         const results = products.map(product => {
             const productRatings = ratings.filter(rating => rating.product_id === product.id);
@@ -164,11 +164,14 @@ const getTopRatedUsersProducts = async (req, res, next) => {
                 ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
                 : 0;
             
-            return { ...product.dataValues, productRatings, ratingCount, avgRating };
+            return { ...product.dataValues, ratingCount, avgRating };
         });
 
-         // Filtruojame pagal vidutinį reitingą ir minimalų reitingų kiekį
-         const filteredProducts = results.filter(result => result.avgRating >= 4.5 && result.ratingCount >= 5);
+        // Filtruojame pagal vidutinį reitingą (≥ 4.5) ir rūšiuojame pagal didžiausią reitingų kiekį
+        const filteredProducts = results
+            .filter(result => result.avgRating >= 4.5) // Vidutinė įvertinimo žvaigždutė ≥ 4.5
+            .sort((a, b) => b.ratingCount - a.ratingCount) // Rikiuojame pagal didžiausią reitingų kiekį
+            .slice(0, 4); // Pasirenkame tik 4 geriausius produktus
 
         res.json({
             status: 'success', 
@@ -178,6 +181,7 @@ const getTopRatedUsersProducts = async (req, res, next) => {
         next(error);
     }
 };
+
 
 const getTopUserProducts = async (req, res, next) => {
     try {
@@ -392,4 +396,4 @@ const getTrendingUserProducts = async (req, res, next) => {
 
 
 
-export { getUserProducts, getAllProducts, getHotProducts,getTopRatedUsersProducts, getTopUserProducts, getTrendingUserProducts };
+export { getUserProducts, getAllProducts, getHotProducts,getTopRatedProducts, getTopUserProducts, getTrendingUserProducts };
