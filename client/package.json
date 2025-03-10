@@ -8,17 +8,19 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
-    "axios": "^1.7.9",
+    "axios": "^1.8.1",
     "js-cookie": "^3.0.5",
     "js-sha1": "^0.7.0",
     "js-sha256": "^0.11.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "lucide-react": "^0.477.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-form-hook": "^0.0.1",
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.5.0",
     "react-responsive-carousel": "^3.2.23",
-    "react-router": "^7.1.5",
+    "react-router": "^7.2.0",
+    "react-router-dom": "^7.2.0",
     "tailwindcss": "^4.0.3"
   },
   "devDependencies": {

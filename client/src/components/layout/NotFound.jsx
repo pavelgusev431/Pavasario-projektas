@@ -1,20 +1,14 @@
-import { useNavigate } from 'react-router';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
     const navigate = useNavigate();
-    const goBack = () => {
-        navigate('/');
-    };
+
     return (
-        <>
-            <div>404 Page not found.</div>
-            <button
-                onClick={goBack}
-                className="border-black rounded bg-slate-100"
-            >
-                Return
-            </button>
-        </>
+        <div>
+            <h1>404 - Page Not Found</h1>
+            <button onClick={() => navigate('/home')}>Go to Home</button>
+        </div>
     );
 };
 

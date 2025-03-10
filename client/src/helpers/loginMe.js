@@ -1,17 +1,19 @@
 import axios from 'axios';
 import url from './getURL.js';
 
-const loginMe = async () => {
-    let response;
-    await axios
-        .get(url('users/me'), { withCredentials: true })
-        .then((resp) => {
-            response = resp.data.data;
-        })
-        .catch((error) => {
-            response = error;
+const loginUser = async (user) => {
+    try {
+        const response = await axios.post("http://localhost:3000/users/login", user, {
+            withCredentials: true, // ✅ Обязательно включаем куки
         });
-    return response;
+
+        localStorage.setItem("authToken", response.data.token); // ✅ Сохраняем токен
+        return response.data.data;
+    } catch (error) {
+        console.error("Ошибка входа:", error.response?.data || error.message);
+        return null;
+    }
 };
 
-export default loginMe;
+
+export default loginUser;

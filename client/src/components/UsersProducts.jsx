@@ -10,31 +10,38 @@ export default function UsersProducts() {
     useEffect(() => {
         const fetchUsersAndProducts = async () => {
             try {
-                // Gauti visus vartotojus
-                const usersResponse = await axios.get(
-                    'http://localhost:3000/users'
-                );
-                const users = usersResponse.data.data;
+                // 🔹 Загружаем пользователей
+                const usersResponse = await axios.get('http://localhost:3000/users');
+                console.log("Ответ API /users:", usersResponse.data);
 
-                // Gauti visų vartotojų produktus
-                const usersWithProductsPromises = users.map(async (user) => {
-                    const productsResponse = await axios.get(
-                        `http://localhost:3000/products/${user.id}`
-                    );
-                    return { ...user, products: productsResponse.data.data };
+                const users = usersResponse.data?.data;
+                
+                if (!Array.isArray(users)) {
+                    throw new Error("Ошибка: API /users вернул некорректные данные!");
+                }
+
+                // 🔹 Фильтруем пользователей с корректными ID
+                const validUsers = users.filter(user => user.id && !isNaN(user.id));
+
+                // 🔹 Загружаем товары для каждого пользователя
+                const usersWithProductsPromises = validUsers.map(async (user) => {
+                    console.log(`Запрос к /products/${user.id}`);
+                    try {
+                        const productsResponse = await axios.get(
+                            `http://localhost:3000/products/${user.id}`
+                        );
+                        return { ...user, products: productsResponse.data?.data || [] };
+                    } catch (error) {
+                        console.error(`Ошибка при загрузке продуктов для ID ${user.id}:`, error.message);
+                        return { ...user, products: [] };
+                    }
                 });
 
-                // Palaukti, kol visi vartotojų produktai bus gauti
-                const usersWithProductsData = await Promise.all(
-                    usersWithProductsPromises
-                );
-
-                // Filtruojame tik tuos vartotojus, kurie turi bent vieną produktą
-                setUsersWithProducts(
-                    usersWithProductsData.filter(
-                        (user) => user.products.length > 0
-                    )
-                );
+                // 🔹 Дожидаемся всех запросов
+                const usersWithProductsData = await Promise.all(usersWithProductsPromises);
+                
+                // 🔹 Фильтруем пользователей, у которых есть товары
+                setUsersWithProducts(usersWithProductsData.filter(user => user.products.length > 0));
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -45,16 +52,19 @@ export default function UsersProducts() {
         fetchUsersAndProducts();
     }, []);
 
-    if (loading) return <p>Kraunama...</p>;
-    if (error) return <p>Klaida: {error}</p>;
+    if (loading) return <p className="text-center text-lg font-semibold mt-6">🔄 Загрузка...</p>;
+    if (error) return <p className="text-center text-red-500 text-lg font-semibold mt-6">❌ Ошибка: {error}</p>;
 
     return (
-        <div>
+        <div className="container mx-auto px-4 mt-8">
             {usersWithProducts.map((user) => (
-                <div key={user.id} className="mb-4">
-                    <h2>{user.username}</h2>
-                    <div className="grid grid-cols-4 gap-4">
-                        {user.products.map((product) => (
+                <div key={user.id} className="mb-10">
+                    {/* Имя пользователя */}
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">{user?.username || "Неизвестный пользователь"}</h2>
+                    
+                    {/* Контейнер для товаров */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {user?.products?.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>

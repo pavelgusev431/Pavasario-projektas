@@ -1,13 +1,24 @@
-import { DataTypes } from 'sequelize';
-import sq from '../database/sequelize.js';
-import AppError from '../utilities/AppError.js';
+import { DataTypes } from "sequelize";
+import sq from "../database/sequelize.js";
+import { User } from "./userModel.js";
 
-const Secret = sq.define(
-    'Secret',
+const UserSecret = sq.define(
+    "user_secrets",
     {
-        userId: {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            allowNull: false,
+            primaryKey: true,
+        },
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: User,
+                key: 'id',
+            },
+            onDelete: "CASCADE",
         },
         password: {
             type: DataTypes.STRING,
@@ -19,19 +30,17 @@ const Secret = sq.define(
         },
         balance: {
             type: DataTypes.INTEGER,
+            defaultValue: 0,
         },
     },
     {
         timestamps: false,
-        tableName: 'user_secrets',
+        tableName: "user_secrets",
     }
 );
 
-try {
-    await Secret.sync({ alter: true, force: true });
-    console.log('\x1b[35mSecret\x1b[34m table created\x1b[0m');
-} catch (error) {
-    throw new AppError('Error while creating secret model', 500);
-}
+// 🔥 Устанавливаем связь с таблицей users
+User.hasOne(UserSecret, { foreignKey: "user_id", onDelete: "CASCADE" });
+UserSecret.belongsTo(User, { foreignKey: "user_id" });
 
-export default Secret;
+export default UserSecret; // Теперь экспортируется корректно

@@ -1,4 +1,4 @@
-import User from '../models/userModel.js';
+import {User} from '../models/userModel.js';
 import { body } from 'express-validator';
 import AppError from '../utilities/AppError.js';
 

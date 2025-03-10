@@ -5,28 +5,32 @@ import {
     login,
     logout,
     me,
-    getUserId,
     getAllUsers,
+    getSalt,
+    updateUserProfile,
+    updateUserPassword
 } from '../controllers/userController.js';
 import express from 'express';
 import protect from '../validators/validateJWT.js';
 import validateCreateUser from '../validators/validateCreateUser.js';
 import validate from '../middlewares/validate.js';
-import Category from '../models/categoryModel.js';
-import Subcategory from '../models/subcategoryModel.js';
 
 const userRouter = express.Router();
 
-userRouter
-    .route('/')
-    .post(validateCreateUser, validate, createUser)
-    .get(getAllUsers);
-userRouter.route('/:id').get(getUserId);
+// Эти маршруты не требуют аутентификации
+userRouter.route('/signup').post(validateCreateUser, validate, createUser);
 userRouter.route('/login').post(login);
 userRouter.route('/logout').post(logout);
+userRouter.route('/getSalt/:username').get(getSalt);
+userRouter.route('/').get(getAllUsers);
+
+// Эти маршруты требуют аутентификации
 userRouter.use(protect);
+
 userRouter.route('/me').get(me);
+userRouter.route("/profile/edit").put(updateUserProfile);
+userRouter.route("/profile/password").put(updateUserPassword);
+userRouter.route('/:id').get(getUserById);
 userRouter.route('/:username').get(getUserByUsername);
-userRouter.route('/id/:id').get(getUserById);
 
 export default userRouter;

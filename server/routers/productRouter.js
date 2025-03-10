@@ -5,7 +5,7 @@ import {
 } from '../controllers/productController.js';
 
 const productRouter = express.Router();
-productRouter.route('/').get(getAllProducts);
-productRouter.route('/:id').get(getUserProducts);
+productRouter.get('/', getAllProducts);
+productRouter.get('/:id', getUserProducts);
 
 export default productRouter;

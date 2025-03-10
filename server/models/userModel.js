@@ -1,5 +1,5 @@
-import sq from '../database/sequelize.js';
 import { DataTypes } from 'sequelize';
+import sq from '../database/sequelize.js';
 import AppError from '../utilities/AppError.js';
 
 const User = sq.define(
@@ -36,11 +36,15 @@ const User = sq.define(
     }
 );
 
-try {
-    await User.sync({ alter: true, force: true });
-    console.log('\x1b[35mUser\x1b[34m table created\x1b[0m');
-} catch (error) {
-    throw new AppError('Error while creating user model', 500);
-}
+// ✅ Функция для синхронизации модели
+const syncUserModel = async () => {
+    try {
+        await User.sync({ alter: true });
+        console.log('\x1b[35mUser\x1b[34m table synced\x1b[0m');
+    } catch (error) {
+        console.error('Error while syncing User model:', error);
+        throw new AppError('Error while creating user model', 500);
+    }
+};
 
-export default User;
+export { User, syncUserModel };

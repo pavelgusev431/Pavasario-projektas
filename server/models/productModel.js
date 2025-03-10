@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
-import User from './userModel.js';
+import {User} from './userModel.js';
 
 // Aprašome User modelį
 // Define User model

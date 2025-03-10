@@ -1,38 +1,56 @@
-import { createContext } from 'react';
+import { createContext, useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext(null);
 
-import loginMe from '../helpers/loginMe.js';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
 const AuthContextProvider = ({ children }) => {
-    const [auth, setAuth] = useState();
+    const [user, setUser] = useState(null);  // ✅ Пользователь по умолчанию NULL
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        const fetchMe = async () => {
+        const fetchUserData = async () => {
+            // 🔥 Проверяем токен в куках и localStorage
+            let token = Cookies.get("authToken") || localStorage.getItem("authToken");
+        
+            if (!token) {
+                console.warn("⚠️ Токен отсутствует в куках и localStorage, пользователь не авторизован.");
+                setLoading(false);
+                return;  // ✅ Выходим, если нет токена
+            }
+        
+            console.log("🚀 Отправка запроса с токеном:", token);
+        
             try {
-                if (Cookies.get('tokenJS')) {
-                    const data = await loginMe();
-                    if (axios.isAxiosError(data))
-                        throw new Error(
-                            'Unauthorized. Perhaps the server has restarted and your session ended.'
-                        );
-                    setAuth(data);
-                }
+                const response = await axios.get("http://localhost:3000/auth/me", {
+                    withCredentials: true,
+                    credentials: "include",
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+        
+                console.log("✅ Успешный ответ от сервера:", response.data);
+                setUser(response.data.data);
             } catch (error) {
-                if (error) setAuth(null);
-                Cookies.remove('tokenJS');
+                console.error("❌ Ошибка загрузки пользователя:", error.response?.data || error.message);
+                
+                // Если ошибка 401 (Unauthorized) - очищаем токен
+                if (error.response?.status === 401) {
+                    console.warn("⚠️ Токен недействителен, удаляем его из хранилищ.");
+                    Cookies.remove("authToken");
+                    localStorage.removeItem("authToken");
+                    setUser(null);
+                }
             } finally {
                 setLoading(false);
             }
         };
-        fetchMe();
-    }, []);
+        
+        fetchUserData();
+    }, []);        
+
     return (
-        <AuthContext.Provider value={{ auth, setAuth, loading }}>
-            {children}
+        <AuthContext.Provider value={{ user, setUser, loading }}>
+            {loading ? <div className="text-center py-4">Загрузка...</div> : children}
         </AuthContext.Provider>
     );
 };
