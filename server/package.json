@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "renew": "node ./utilities/env.js && node ./utilities/envBackup.js && node ./utilities/database.js && node ./utilities/createNewJWTSecret.js && node ./utilities/mailerTester.js",
-    "start": "npm run renew -s && nodemon --quiet server/server.js"
+    "start": "npm i > logs.txt 2>> logs.txt npm run renew -s && nodemon --quiet server/server.js"
   },
   "keywords": [],
   "author": "",
