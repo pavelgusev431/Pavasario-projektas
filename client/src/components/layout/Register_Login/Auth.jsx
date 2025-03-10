@@ -95,8 +95,148 @@ const Auth = () => {
         <div className="relative flex min-h-screen w-full bg-gray-700 overflow-hidden">
             {/* Animated Container */}
             <ToastContainer />
+            
+            {/* Mobile View - Only Form */}
+            <div className="hidden max-sm:block w-full">
+                <div className="w-full flex items-center justify-center p-4 bg-white min-h-screen">
+                    <div className="w-full max-w-md bg-white p-6 rounded-lg">
+                        <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+                            {authType === 'login'
+                                ? 'Login'
+                                : 'Create an Account'}
+                        </h2>
+
+                        {/* Toggle Auth Type */}
+                        <div className="flex justify-center mb-4">
+                            <button
+                                onClick={() => setAuthType('signup')}
+                                className={`px-4 py-2 w-1/2 text-sm font-medium rounded-l-lg transition ${
+                                    authType === 'signup'
+                                        ? 'bg-[#D30043] text-white'
+                                        : 'bg-gray-200 hover:bg-gray-300'
+                                }`}
+                            >
+                                Sign Up
+                            </button>
+                            <button
+                                onClick={() => setAuthType('login')}
+                                className={`px-4 py-2 w-1/2 text-sm font-medium rounded-r-lg transition ${
+                                    authType === 'login'
+                                        ? 'bg-[#D30043] text-white'
+                                        : 'bg-gray-200 hover:bg-gray-300'
+                                }`}
+                            >
+                                Login
+                            </button>
+                        </div>
+
+                        {/* Form */}
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="mt-4"
+                        >
+                            <div className="mb-4">
+                                <input
+                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                    type="text"
+                                    placeholder="Username"
+                                    {...register('username', {
+                                        required: 'Username is required',
+                                    })}
+                                />
+                                {errors.username && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.username.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            {authType === 'signup' && (
+                                <div className="mb-4">
+                                    <input
+                                        className="w-full px-4 py-3 rounded-lg border-0 border-b-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                        type="email"
+                                        placeholder="Email"
+                                        {...register('email', {
+                                            required: 'Email is required',
+                                        })}
+                                    />
+                                    {errors.email && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
+                            <div className="mb-4">
+                                <input
+                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                    type="password"
+                                    placeholder="Password"
+                                    {...register('password', {
+                                        required: 'Password is required',
+                                    })}
+                                />
+                                {errors.password && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.password.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full px-4 py-3 text-white bg-[#D30043] rounded-lg hover:bg-gray-800 transition duration-300"
+                            >
+                                {authType === 'login' ? 'Login' : 'Sign Up'}
+                            </button>
+
+                            {error && (
+                                <p className="text-red-500 text-sm mt-2 text-center">
+                                    {error}
+                                </p>
+                            )}
+                        </form>
+
+                        {/* Footer */}
+                        <div className="mt-4 text-sm text-center">
+                            {authType === 'login'
+                                ? "Don't have an account?"
+                                : 'Already have an account?'}{' '}
+                            <button
+                                onClick={() =>
+                                    setAuthType(
+                                        authType === 'login'
+                                            ? 'signup'
+                                            : 'login'
+                                    )
+                                }
+                                className="text-blue-400 underline bg-none border-none hover:cursor-pointer"
+                            >
+                                {authType === 'login' ? 'Sign Up' : 'Log In'}
+                            </button>
+                        </div>
+                        {authType === 'login' && (
+                            <>
+                                <div className="text-center mt-2">
+                                    <button
+                                        onClick={handleResetShow}
+                                        className="text-blue-400 text-sm underline bg-none border-none hover:cursor-pointer"
+                                    >
+                                        Forgot password
+                                    </button>
+                                </div>
+                                {showReset && <SubmitEmailForPasswordReset />}
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+            
+            {/* Desktop View */}
             <div
-                className={`flex w-[200%] transition-transform duration-700 ease-in-out ${
+                className={`max-sm:hidden flex w-[200%] transition-transform duration-700 ease-in-out ${
                     authType === 'signup' ? 'translate-x-0' : '-translate-x-1/2'
                 }`}
             >
@@ -137,7 +277,7 @@ const Auth = () => {
                 </div>
 
                 {/* Right Section (Form) */}
-                <div className="w-1/2 max:sm:w-full flex items-center rounded-2xl justify-center p-6 bg-white">
+                <div className="w-1/2 flex items-center rounded-2xl justify-center p-6 bg-white">
                     <div className="max-w-md w-full bg-white p-8 rounded-lg">
                         <h2 className="text-3xl font-bold text-center text-gray-800">
                             {authType === 'login'
@@ -257,24 +397,25 @@ const Auth = () => {
                             </button>
                         </div>
                         {authType === 'login' && (
-                    <>
-                        <button
-                            onClick={handleResetShow}
-                            className="text-blue-400 text-sm mb-3 underline bg-none border-none hover:cursor-pointer"
-                        >
-                            Forgot password
-                        </button>
-                        {showReset && <SubmitEmailForPasswordReset />}
-                    </>
-                )}
+                            <>
+                                <button
+                                    onClick={handleResetShow}
+                                    className="text-blue-400 text-sm mt-2 underline bg-none border-none hover:cursor-pointer"
+                                >
+                                    Forgot password
+                                </button>
+                                {showReset && <SubmitEmailForPasswordReset />}
+                            </>
+                        )}
                     </div>
                 </div>
-
-                {/* Login Welcome Container */}
             </div>
+            
+            {/* Login Welcome Container - Desktop only */}
             <div
-                className={`absolute top-0 max-sm:hidden right-0 w-1/2 h-full bg-gradient-to-br from-gray-900 to-gray-700 
+                className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-gray-900 to-gray-700 
                     flex items-center justify-center text-white p-10 transition-all duration-700 ease-in-out 
+                    max-sm:hidden
                     ${
                         authType === 'login'
                             ? 'opacity-100 translate-x-0 z-10'
