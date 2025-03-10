@@ -1,12 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { useContext, useState } from 'react';
-import createUser from '../../helpers/createUser.js';
-import loginUser from '../../helpers/loginUser.js';
-import { AuthContext } from '../../contexts/AuthContext.jsx';
+import createUser from '../../../helpers/createUser.js';
+import loginUser from '../../../helpers/loginUser.js';
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import { useLocation, useNavigate } from 'react-router';
-import UserCount from '../../helpers/getAllUserCount.js';
-import ProductCount from '../../helpers/getAllProductCount.js';
+import UserCount from '../../../helpers/getAllUserCount.js';
+import ProductCount from '../../../helpers/getAllProductCount.js';
 import { ToastContainer, toast } from 'react-toastify';
+import SubmitEmailForPasswordReset from './SubmitEmailForPasswordReset.jsx';
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -136,7 +137,7 @@ const Auth = () => {
                 </div>
 
                 {/* Right Section (Form) */}
-                <div className="w-1/2 flex items-center rounded-2xl justify-center p-6 bg-white">
+                <div className="w-1/2 max:sm:w-full flex items-center rounded-2xl justify-center p-6 bg-white">
                     <div className="max-w-md w-full bg-white p-8 rounded-lg">
                         <h2 className="text-3xl font-bold text-center text-gray-800">
                             {authType === 'login'
@@ -158,7 +159,7 @@ const Auth = () => {
                             </button>
                             <button
                                 onClick={() => setAuthType('login')}
-                                className={`px-4 py-2 w-1/2 text-sm font-medium rounded-r-lg transition ${
+                                className={`px-4 py-2 w-1/2  text-sm font-medium rounded-r-lg transition ${
                                     authType === 'login'
                                         ? 'bg-[#D30043] text-white'
                                         : 'bg-gray-200 hover:bg-gray-300'
@@ -238,7 +239,7 @@ const Auth = () => {
                         </form>
 
                         {/* Footer */}
-                        <div className="mt-4 text-center text-sm">
+                        <div className="mt-4 text-sm">
                             {authType === 'login'
                                 ? "Don't have an account?"
                                 : 'Already have an account?'}{' '}
@@ -250,18 +251,29 @@ const Auth = () => {
                                             : 'login'
                                     )
                                 }
-                                className="text-black font-medium hover:underline"
+                                className="text-blue-400 underline bg-none border-none hover:cursor-pointer"
                             >
                                 {authType === 'login' ? 'Sign Up' : 'Log In'}
                             </button>
                         </div>
+                        {authType === 'login' && (
+                    <>
+                        <button
+                            onClick={handleResetShow}
+                            className="text-blue-400 text-sm mb-3 underline bg-none border-none hover:cursor-pointer"
+                        >
+                            Forgot password
+                        </button>
+                        {showReset && <SubmitEmailForPasswordReset />}
+                    </>
+                )}
                     </div>
                 </div>
 
                 {/* Login Welcome Container */}
             </div>
             <div
-                className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-gray-900 to-gray-700 
+                className={`absolute top-0 max-sm:hidden right-0 w-1/2 h-full bg-gradient-to-br from-gray-900 to-gray-700 
                     flex items-center justify-center text-white p-10 transition-all duration-700 ease-in-out 
                     ${
                         authType === 'login'
@@ -281,17 +293,6 @@ const Auth = () => {
                         marketplace
                     </p>
                 </div>
-                {authType === 'login' && (
-                    <>
-                        <button
-                            onClick={handleResetShow}
-                            className="text-blue-400 underline bg-none border-none hover:cursor-pointer"
-                        >
-                            Forgot password
-                        </button>
-                        {showReset && <SubmitEmailForPasswordReset />}
-                    </>
-                )}
             </div>
         </div>
     );
