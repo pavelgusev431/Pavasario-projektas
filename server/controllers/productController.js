@@ -252,8 +252,127 @@ const getTopUserProducts = async (req, res, next) => {
     }
 };
 
+const getTrendingUserProducts = async (req, res, next) => {
+
+    try {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        // Randame vartotojus, kurie buvo sukurti PRIEŠ 7 dienas ar anksčiau
+        const newUserEvents = await Event.findAll({
+            where: {
+                type_id: 1, // 'created' event type
+                timestamp: { [Op.gte]: oneWeekAgo } // Pasirenkame TIK senesnius nei 7 dienos
+            },
+            attributes: ['user_id'],
+        });
+        
+        const newUserIds = newUserEvents.map(event => event.user_id);
+
+        if (newUserIds.length === 0) {
+            return res.status(404).json({ message: "No new users found" });
+        }
+
+        // Randame šių vartotojų produktus
+        const products = await Product.findAll({
+            where: {
+                user_id: newUserIds
+            },
+        });
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found for new users" });
+        }
+
+        // Randame visus produktų reitingus
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map(product => product.id)
+                }
+            }
+        });
+
+        // Grupavimas pagal vartotojus
+        const userStats = {};
+
+        products.forEach(product => {
+            if (!userStats[product.user_id]) {
+                userStats[product.user_id] = { 
+                    products: [], 
+                    totalRatings: 0, 
+                    totalStars: 0 
+                };
+            }
+            userStats[product.user_id].products.push(product);
+        });
+
+        ratings.forEach(rating => {
+            const product = products.find(p => p.id === rating.product_id);
+            if (product && userStats[product.user_id]) {
+                userStats[product.user_id].totalRatings++;
+                userStats[product.user_id].totalStars += rating.stars;
+            }
+        });
+
+        // Ieškome vartotojo su bent 4 įvertintais produktais ir vidutiniu reitingu ≥ 4
+        let trendingUserId = null;
+        let highestAvgRating = 0;
+
+        Object.entries(userStats).forEach(([userId, stats]) => {
+            // Apskaičiuojame vartotojo vidutinį reitingą iš įvertintų produktų
+            const avgUserRating = stats.totalRatings > 0 ? stats.totalStars / stats.totalRatings : 0;
+
+            // Tikriname, ar atitinka kriterijus (bent 4 produktai ir avgRating ≥ 4)
+            if (stats.products.length >= 4 && avgUserRating >= 4) {
+                if (avgUserRating > highestAvgRating) {
+                    trendingUserId = userId;
+                    highestAvgRating = avgUserRating;
+                }
+            }
+        });
+
+        // Jei neradome tinkamo vartotojo, grąžiname klaidą
+        if (!trendingUserId) {
+            return res.status(404).json({ message: "No trending user found" });
+        }
+
+        // Atrenkame tik to vartotojo produktus su reitingais
+        const trendingUserProducts = userStats[trendingUserId].products
+            .map(product => {
+                const productRatings = ratings.filter(rating => rating.product_id === product.id);
+                const ratingCount = productRatings.length;
+                const avgRating = ratingCount > 0 
+                    ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                    : 0;
+                
+                return ratingCount > 0 ? { ...product.dataValues, ratingCount, avgRating } : null;
+            })
+            .filter(product => product !== null) // Pašaliname produktus be reitingų
+            .sort((a, b) => b.avgRating - a.avgRating) // Rikiuojame pagal avgRating
+            .slice(0, 4); // Paimame 4 geriausius produktus
+
+        // Jei nerandame 4 produktų su reitingais, vartotojo nerodome
+        if (trendingUserProducts.length < 4) {
+            return res.status(404).json({ message: "No suitable trending user found" });
+        }
+
+        res.json({
+            status: "success",
+            user_id: trendingUserId, // Vartotojo ID
+            userRating: highestAvgRating.toFixed(2), // Vartotojo vidutinis įvertinimas
+            data: trendingUserProducts
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 
 
-export { getUserProducts, getAllProducts, getBestNewUsersProducts,getTopRatedUsersProducts, getTopUserProducts };
+
+
+
+export { getUserProducts, getAllProducts, getBestNewUsersProducts,getTopRatedUsersProducts, getTopUserProducts, getTrendingUserProducts };
