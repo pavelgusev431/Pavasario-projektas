@@ -2,7 +2,7 @@ import express from 'express';
 import {
     getUserProducts,
     getAllProducts,
-    getBestNewUsersProducts,
+    getHotProducts,
     getTopRatedUsersProducts,
     getTopUserProducts,
     getTrendingUserProducts
@@ -12,7 +12,7 @@ const productRouter = express.Router();
 productRouter.route('/').get(getAllProducts);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
 productRouter.route('/trending').get(getTrendingUserProducts);
-productRouter.route('/bestnew').get(getBestNewUsersProducts);
+productRouter.route('/bestnew').get(getHotProducts);
 productRouter.route('/bestmonth').get(getTopRatedUsersProducts);
 productRouter.route('/:id').get(getUserProducts);
 

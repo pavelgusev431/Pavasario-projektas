@@ -48,33 +48,40 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-const getBestNewUsersProducts = async (req, res, next) => {
+const getHotProducts = async (req, res, next) => {
     try {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        // Randame naujus vartotojus pagal jų registracijos įvykį
+        // Randame per pastarąją savaitę sukurtų produktų įvykius (target_event = 2 reiškia produktą)
         const newUserEvents = await Event.findAll({
             where: {
                 type_id: 1, // 'created' event type
-                timestamp: { [Op.gte]: oneWeekAgo }
+                target_id: 2, // Produktų įvykiai
+                timestamp: { [Op.gte]: oneWeekAgo }, // Tik naujausi įrašai
             },
-            attributes: ['user_id'],
+            attributes: ['user_id'], // user_id atitinka produkto ID
         });
 
         const newUserIds = newUserEvents.map(event => event.user_id);
+        
 
         if (newUserIds.length === 0) {
             return res.json([]);
         }
 
-        // Randame produktus, kurie priklauso naujiems vartotojams ir turi reitingą 4+
+        // Randame produktus pagal ID (Naudokime id, o ne user_id)
         const products = await Product.findAll({
             where: {
                 user_id: newUserIds
             },
         });
 
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No matching products found" });
+        }
+
+        // Randame visus produktų reitingus
         const ratings = await Rating.findAll({
             where: {
                 product_id: {
@@ -83,27 +90,37 @@ const getBestNewUsersProducts = async (req, res, next) => {
             }
         })
 
-        const results = products.map(product => {
+        // Apdorojame produktus su jų reitingais
+        const processedProducts = products.map(product => {
             const productRatings = ratings.filter(rating => rating.product_id === product.id);
-            return { ...product.dataValues, productRatings };
+            const ratingCount = productRatings.length;
+            const avgRating = ratingCount > 0 
+                ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                : 0;
+
+            return { ...product.dataValues, ratingCount, avgRating };
         });
 
-        // Filtruojame pagal vidutinį reitingą
-        const filteredProducts = results.filter(result => {
-            if (!result.productRatings || result.productRatings.length === 0) return false;
-            
-            const avgRating = result.productRatings.reduce((sum, rating) => sum + rating.stars, 0) / result.productRatings.length;
-            return avgRating >= 4;
-        });
+        // Filtruojame produktus, kurie turi vidutinį reitingą ≥ 4.5 ir bent vieną įvertinimą
+        const filteredProducts = processedProducts
+            .filter(product => product.avgRating >= 4.5 && product.ratingCount > 0)
+            .sort((a, b) => b.avgRating - a.avgRating) // Rikiuojame pagal didžiausią reitingų kiekį
+            .slice(0, 4); // Paimame tik 4 geriausius
+
+        if (filteredProducts.length === 0) {
+            return res.status(404).json({ message: "No hot products found" });
+        }
 
         res.json({
             status: 'success',
-            data: filteredProducts
+            data: filteredProducts,
         });
     } catch (error) {
         next(error);
     }
 };
+
+
 
 const getTopRatedUsersProducts = async (req, res, next) => {
     try {
@@ -375,4 +392,4 @@ const getTrendingUserProducts = async (req, res, next) => {
 
 
 
-export { getUserProducts, getAllProducts, getBestNewUsersProducts,getTopRatedUsersProducts, getTopUserProducts, getTrendingUserProducts };
+export { getUserProducts, getAllProducts, getHotProducts,getTopRatedUsersProducts, getTopUserProducts, getTrendingUserProducts };
