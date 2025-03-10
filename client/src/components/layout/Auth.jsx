@@ -17,6 +17,7 @@ const Auth = () => {
 
     const {
         register,
+        watch,
         handleSubmit,
         formState: { errors },
         setValue,
@@ -37,11 +38,15 @@ const Auth = () => {
     const onSubmit = async (data) => {
         try {
             if (authType === 'signup') {
-                const response = await createUser(data);
+                const response = await createUser({
+                    ...data,
+                    repeatPassword: undefined,
+                });
                 if (response?.status === 201) {
                     setValue('username', '');
                     setValue('email', '');
                     setValue('password', '');
+                    setValue('repeatPassword', '');
                     setError('');
                     toast.success('Your account is created successfully!', {
                         position: 'top-center',
@@ -198,6 +203,22 @@ const Auth = () => {
                                         placeholder="Email"
                                         {...register('email', {
                                             required: 'Email is required',
+                                            validate: (value) => {
+                                                return authType === 'signup'
+                                                    ? (/^[A-Za-z0-9\.\-]{1,64}@[A-Za-z0-9\.\-]{1,255}$/.test(
+                                                          value
+                                                      ) &&
+                                                          /^[A-Za-z0-9]([A-Za-z0-9]+[\.\-]*)*[A-Za-z0-9]@.*$/.test(
+                                                              value
+                                                          ) &&
+                                                          /^.*@([A-Za-z0-9]{2,63}[\.\-])+[A-Za-z]{2,}$/.test(
+                                                              value
+                                                          )) ||
+                                                          (authType === 'signup'
+                                                              ? 'Invalid email address format'
+                                                              : '')
+                                                    : true;
+                                            },
                                         })}
                                     />
                                     {errors.email && (
@@ -215,6 +236,29 @@ const Auth = () => {
                                     placeholder="Password"
                                     {...register('password', {
                                         required: 'Password is required',
+                                        pattern: {
+                                            value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]+$/,
+                                            message:
+                                                "Password must only contain letters, numbers and these special characters: $&+,:;=?@#|'<>.^*()%!-",
+                                        },
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                'Password must be at least 8 characters long',
+                                        },
+                                        validate: (value) => {
+                                            return (
+                                                (authType === 'signup' &&
+                                                    /^.*[A-Z].*$/.test(value) &&
+                                                    /^.*[0-9].*$/.test(value) &&
+                                                    /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
+                                                        value
+                                                    )) ||
+                                                (authType === 'signup'
+                                                    ? 'Password must contain at least 1 capital letter, 1 number and 1 special character'
+                                                    : true)
+                                            );
+                                        },
                                     })}
                                 />
                                 {errors.password && (
@@ -223,7 +267,40 @@ const Auth = () => {
                                     </p>
                                 )}
                             </div>
-
+                            {authType === 'signup' ? (
+                                <div className="mb-4">
+                                    <input
+                                        aria-label="Repeat password"
+                                        type="password"
+                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                        placeholder="Repeat Password"
+                                        {...register('repeatPassword', {
+                                            required: {
+                                                value: authType === 'signup',
+                                                message:
+                                                    'This field is required',
+                                            },
+                                            validate: (value) => {
+                                                return (
+                                                    value ===
+                                                        watch('password') ||
+                                                    'Passwords must match'
+                                                );
+                                            },
+                                            onChange: (e) => {
+                                                clearErrors('repeatPassword');
+                                            },
+                                        })}
+                                    />
+                                </div>
+                            ) : (
+                                ''
+                            )}
+                            {errors.repeatPassword && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.repeatPassword.message}
+                                </p>
+                            )}
                             <button
                                 type="submit"
                                 className="w-full px-4 py-3 text-white bg-[#D30043] rounded-lg hover:bg-gray-800 transition duration-300"
