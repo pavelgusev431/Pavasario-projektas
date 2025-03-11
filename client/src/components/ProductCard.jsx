@@ -1,6 +1,6 @@
 import { FaStar } from 'react-icons/fa';
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, avgRating, ratingCount }) {
     return (
         <>
             <div className="flex justify-center lg:w-1/4 md:w-1/3 sm:w-1/2 w-full flex-col ">
@@ -27,7 +27,8 @@ export default function ProductCard({ product }) {
                             <span className="self-center">
                                 <FaStar />
                             </span>
-                            <span className="self-center">(35)</span>
+                            <span>{avgRating ? avgRating.toFixed(2) : "N/A"}</span>
+                            <span className="self-center">({ratingCount})</span>
                         </div>
                     </div>
                 </div>
