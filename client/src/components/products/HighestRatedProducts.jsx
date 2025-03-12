@@ -34,7 +34,7 @@ export default function HighestRatedProducts() {
           <div className="flex flex-row justify-between">
             <h2 className="text-2xl font-bold py-2">Highest rated products</h2>
             <div>
-                        <Link to={`/home}`}>
+                        <Link to={`/products`}>
                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold  rounded py-2 px-4 ">
                                 View All Products
                             </button>

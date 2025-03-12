@@ -28,7 +28,7 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
                                 <FaStar />
                             </span>
                             <span>{avgRating ? avgRating.toFixed(2) : "N/A"}</span>
-                            <span className="self-center">({ratingCount})</span>
+                            <span className="self-center">({ratingCount ? ratingCount : 0})</span>
                         </div>
                     </div>
                 </div>

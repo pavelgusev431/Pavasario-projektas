@@ -60,7 +60,7 @@ const getHotProducts = async (req, res, next) => {
                 target_id: 2, // Produktų įvykiai
                 timestamp: { [Op.gte]: oneWeekAgo }, // Tik naujausi įrašai
             },
-            attributes: ['user_id'], // user_id atitinka produkto ID
+            attributes: ['user_id']
         });
 
         const newUserIds = newUserEvents.map(event => event.user_id);
@@ -70,7 +70,7 @@ const getHotProducts = async (req, res, next) => {
             return res.json([]);
         }
 
-        // Randame produktus pagal ID (Naudokime id, o ne user_id)
+        
         const products = await Product.findAll({
             where: {
                 user_id: newUserIds
@@ -104,7 +104,7 @@ const getHotProducts = async (req, res, next) => {
         // Filtruojame produktus, kurie turi vidutinį reitingą ≥ 4.5 ir bent vieną įvertinimą
         const filteredProducts = processedProducts
             .filter(product => product.avgRating >= 4.5 && product.ratingCount > 0)
-            .sort((a, b) => b.avgRating - a.avgRating) // Rikiuojame pagal didžiausią reitingų kiekį
+            .sort((a, b) => b.ratingCount - a.ratingCount) // Rikiuojame pagal didžiausią reitingų kiekį
             .slice(0, 4); // Paimame tik 4 geriausius
 
         if (filteredProducts.length === 0) {

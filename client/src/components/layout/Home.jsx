@@ -1,4 +1,3 @@
-import { Outlet } from 'react-router';
 import BannerCarousel from './Home/Carousel';
 import NavBar from './NavBar';
 import HighestRatedProducts from '../products/HighestRatedProducts';
@@ -15,9 +14,7 @@ const Home = () => {
                 <HotProducts />
                 <TrendingUserProducts />
                 <TopUserProducts />
-                <div className="pl-2">
-                    <Outlet />
-                </div>
+                
             </div>
         </>
     );
