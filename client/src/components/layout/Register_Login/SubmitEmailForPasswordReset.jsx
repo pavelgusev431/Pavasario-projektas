@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { sendEmail } from '../../helpers/passwordReset.js';
+import { sendEmail } from '../../../helpers/passwordReset.js';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const SubmitEmailForPasswordReset = () => {
     const {
@@ -11,7 +13,18 @@ const SubmitEmailForPasswordReset = () => {
     const send = async (data) => {
         const response = await sendEmail(data.email);
         console.log(response);
-        alert('Password reset email sent');
+        toast.success('Password reset email sent!', {
+            position: 'top-center',
+            autoClose: 10000,
+            style: {
+                background: '#161D2F',
+                color: '#FFFFFF',
+            },
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+        });
     };
 
     return (
@@ -19,7 +32,7 @@ const SubmitEmailForPasswordReset = () => {
             <form onSubmit={handleSubmit(send)}>
                 <div className="mb-4">
                     <input
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                         type="email"
                         placeholder="Email"
                         {...register('email', {
@@ -34,7 +47,7 @@ const SubmitEmailForPasswordReset = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300"
+                    className="w-full px-4 py-3 text-white bg-[#D30043] rounded-lg hover:bg-gray-800 transition duration-300"
                 >
                     Submit
                 </button>
