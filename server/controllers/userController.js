@@ -4,12 +4,15 @@ import jsonwebtoken from 'jsonwebtoken';
 import AppError from '../utilities/AppError.js';
 import sha1 from 'js-sha1';
 import sha256 from 'js-sha256';
+import { sendEmail } from '../utilities/mailer.js';
 import dotenv from 'dotenv';
 dotenv.config();
 const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASS = process.env.ADMIN_PASS;
 const ADMIN_HASH = sha256(sha1(sha256(sha1(ADMIN_PASS)) + 'salt'));
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const CLIENT_HOST = process.env.CLIENT_HOST;
+const CLIENT_PORT = process.env.CLIENT_PORT;
 
 const createAdmin = async () => {
     try {
@@ -54,90 +57,163 @@ const createUser = async (req, res) => {
     });
 };
 
-const getUserByUsername = async (req, res) => {
-    const { username } = req.params;
-    const user = await User.findOne({ where: { username: username } });
-    if (user === undefined)
-        throw new AppError(`User "${username}" not found`, 404);
-    user.password = undefined;
-    res.status(200).json({
-        status: 'success',
-        data: user,
-    });
-};
-
-const getUserById = async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findByPk(id);
-    if (user === undefined)
-        throw new AppError(`User with id ${id} not found`, 404);
-    user.password = undefined;
-    res.status(200).json({
-        status: 'success',
-        data: user,
-    });
-};
-
-const login = async (req, res) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ where: { username: username } });
-    if (!user) throw new AppError('Invalid username or password', 401);
-    const secret = await Secret.findOne({
-        where: { id: user.id },
-    });
-    const salt = secret.password.split(':')[1];
-    const hashedPassword = sha256(sha1(password + salt));
-    if (hashedPassword !== secret.password.split(':')[0]) {
-        throw new AppError('Invalid username or password', 401);
-    }
-    const token = jsonwebtoken.sign(
-        { id: user.id, role: secret.role },
-        process.env.JWT_SECRET,
-        { expiresIn: '360s' }
-    );
-    res.cookie('token', token, { httpOnly: true });
-    res.cookie('tokenJS', 1);
-    user.username = undefined;
-    user.password = undefined;
-    res.status(200).json({
-        status: 'success',
-        data: user,
-        token: token,
-    });
-};
-
-const logout = async (req, res) => {
-    const cookies = req.cookies;
-    if (!cookies?.token) return res.sendStatus(203);
-    const token = jsonwebtoken.decode(cookies.token);
-    const foundUser = await User.findByPk(token.id);
-    if (foundUser) {
-        res.clearCookie('token', { httpOnly: true });
-        res.clearCookie('tokenJS');
-        return res.sendStatus(204);
-    } else throw new AppError('User not found', 404);
-};
-
-const me = async (_req, res) => {
-    const { id } = res.locals;
-    const user = await User.findByPk(id);
-    const secret = await Secret.findByPk(id);
-    if (user) {
+const getUserByUsername = async (req, res, next) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ where: { username: username } });
+        if (user === undefined)
+            throw new AppError(`User "${username}" not found`, 404);
+        user.password = undefined;
         res.status(200).json({
             status: 'success',
-            data: { ...user.DataValues, role: secret.role },
+            data: user,
         });
-    } else throw new AppError('User not found', 404);
+    } catch (error) {
+        next(error);
+    }
 };
 
-const getAllUsers = async (req, res) => {
-    const users = await User.findAll();
+const getUserById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        if (user === undefined)
+            throw new AppError(`User with id ${id} not found`, 404);
+        user.password = undefined;
+        res.status(200).json({
+            status: 'success',
+            data: user,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const login = async (req, res, next) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ where: { username: username } });
+        if (!user) throw new AppError('Invalid username or password', 401);
+        const secret = await Secret.findOne({
+            where: { userId: user.id },
+        });
+        const salt = secret.password.split(':')[1];
+        const hashedPassword = sha256(sha1(password + salt));
+        if (hashedPassword !== secret.password.split(':')[0]) {
+            throw new AppError('Invalid username or password', 401);
+        }
+        const token = jsonwebtoken.sign(
+            { id: user.id, role: secret.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '360s' }
+        );
+        res.cookie('token', token, { httpOnly: true });
+        res.cookie('tokenJS', 1);
+        user.username = undefined;
+        user.password = undefined;
+        res.status(200).json({
+            status: 'success',
+            data: user,
+            token: token,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const logout = async (req, res, next) => {
+    try {
+        const cookies = req.cookies;
+        if (!cookies?.token) return res.sendStatus(203);
+        const token = jsonwebtoken.decode(cookies.token);
+        const foundUser = await User.findByPk(token.id);
+        if (foundUser) {
+            res.clearCookie('token', { httpOnly: true });
+            res.clearCookie('tokenJS');
+            return res.sendStatus(204);
+        } else throw new AppError('User not found', 404);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const me = async (_req, res, next) => {
+    try {
+        const { id } = res.locals;
+        const user = await User.findByPk(id);
+        const secret = await Secret.findByPk(id);
+        if (user) {
+            res.status(200).json({
+                status: 'success',
+                data: { ...user.DataValues, role: secret.role },
+            });
+        } else throw new AppError('User not found', 404);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getAllUsers = async (_req, res, next) => {
+    try {
+        const users = await User.findAll();
+        res.status(200).json({
+            status: 'success',
+            data: users,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const forgot = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ where: { email: email } });
+        if (!user)
+            return res.status(200).json({
+                status: 'success',
+                message: 'Email sent',
+            });
+        const secret = await Secret.findOne({ where: { userId: user.id } });
+        const salt = secret.password.split(':')[1];
+        const link = `http://${CLIENT_HOST}:${CLIENT_PORT}/reset/${user.id}/${salt}`;
+        await sendEmail(link, email);
+        res.status(200).json({
+            status: 'success',
+            message: 'Email sent',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const passwordReset = async (req, res, next) => {
+    try {
+        const { password, salt } = req.body;
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        const secret = await Secret.findOne({ where: { userId: user.id } });
+        if (secret.password.split(':')[1] === salt) {
+            const newSalt = sha256(sha1(Date.now().toString() + user.username));
+            const hashedPassword = sha256(sha1(password + newSalt));
+            secret.password = `${hashedPassword}:${newSalt}`;
+            await secret.save();
+            res.status(200).json({
+                status: 'success',
+                message: 'Password reset',
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+const getAllUsersCount = async (req, res) => {
+    const userCount = await User.count();
     res.status(200).json({
         status: 'success',
-        data: users,
+        data: userCount,
     });
 };
-
 export {
     createAdmin,
     createUser,
@@ -145,6 +221,9 @@ export {
     getUserById,
     login,
     logout,
+    forgot,
+    passwordReset,
     me,
     getAllUsers,
+    getAllUsersCount,
 };
