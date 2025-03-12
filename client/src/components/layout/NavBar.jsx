@@ -3,27 +3,27 @@ import { useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 const NavBar = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
-  const [isHovered, setIsHovered] = useState(false);
-  const [balance, setBalance] = useState(0);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { auth, setAuth } = useContext(AuthContext);
+    const [isHovered, setIsHovered] = useState(false);
+    const [balance, setBalance] = useState(0);
 
-  useEffect(() => {
-    // Fetch the balance from the database
-    const fetchBalance = async () => {
-      try {
-        const response = await fetch("/api/balance"); // Adjust the API endpoint as needed
-        const data = await response.json();
-        setBalance(data.balance);
-      } catch (error) {
-        console.error("Error fetching balance:", error);
-      }
-    };
+    useEffect(() => {
+        // Fetch the balance from the database
+        const fetchBalance = async () => {
+            try {
+                const response = await fetch('/api/balance'); // Adjust the API endpoint as needed
+                const data = await response.json();
+                setBalance(data.balance);
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+            }
+        };
 
-    if (auth) {
-      fetchBalance();
-    }
+        if (auth) {
+            fetchBalance();
+        }
 
     // Cleanup effect to reset isHovered state on location change
     return () => {
@@ -301,5 +301,4 @@ const styles = {
     },
   },
 };
-
 export default NavBar;

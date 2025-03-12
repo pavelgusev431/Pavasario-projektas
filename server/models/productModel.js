@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
 import User from './userModel.js';
+import Rating from './ratingModel.js';
 
 // Aprašome User modelį
 // Define User model
@@ -24,6 +25,8 @@ const Product = sq.define(
 // Nustatome ryšį tarp User ir Product
 User.hasMany(Product, { foreignKey: 'user_id' });
 Product.belongsTo(User, { foreignKey: 'user_id' });
+Product.hasMany(Rating, { foreignKey: 'product_id' });
+Rating.belongsTo(Product, { foreignKey: 'product_id' });
 
 try {
     await Product.sync({ alter: true, force: true });

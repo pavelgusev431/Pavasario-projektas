@@ -4,19 +4,20 @@
     "eslint": "^9.21.0",
     "eslint-plugin-prettier": "^5.2.3",
     "husky": "^9.1.7",
+    "prettier": "^3.5.2",
+    "supports-color": "^10.0.0",
     "lightningcss": "^1.29.2",
-    "prettier": "^3.5.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16"
   },
   "scripts": {
-    "lint": "node ./node_modules/eslint/bin/eslint.js --config ./configs/eslint.config.js .",
-    "prettify": "node ./node_modules/prettier/bin/prettier.cjs --write --config ./configs/prettier.config.js --ignore-path ./configs/.prettierignore . | grep -v 'changed' | xargs echo -e '\\e[30mPrettiered\\e[0m'",
+    "start":"npm i && printf '\\033[31mYou are now in root.\\nUse `cd server` or `cd client`\\033[0m'",
+    "lint": "npx eslint --no-cache --config ./configs/eslint.config.js . --quiet 2> ./configs/error_logs.txt",
+    "prettify": "node ./node_modules/prettier/bin/prettier.cjs --write --config ./configs/prettier.config.js --ignore-path ./configs/.prettierignore . 2>> ./configs/error_logs.txt --list-different",
     "prepare": "husky"
   }
 }
