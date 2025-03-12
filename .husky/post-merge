@@ -1,8 +1,0 @@
-#!/bin/sh
-npm install -s
-cd server && npm install -s
-rm ./.env
-node ./utilities/env.js
-cd ../client && npm install -s
-cd ..
-printf "\033[35mInstalled required node modules\033[0m"
