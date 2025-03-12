@@ -29,8 +29,7 @@ const Event = sq.define(
     },
     timestamp: {
       type: DataTypes.DATE,
-      
-      defaultValue: Date.now(),
+      defaultValue: new Date (),
     }
 
   },
