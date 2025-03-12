@@ -389,11 +389,12 @@ const getTrendingUserProducts = async (req, res, next) => {
         next(error);
     }
 };
+const getAllProductCount = async (req, res) => {
+    const userCount = await Product.count();
+    res.status(200).json({
+        status: 'success',
+        data: userCount,
+    });
+};
 
-
-
-
-
-
-
-export { getUserProducts, getAllProducts, getHotProducts,getTopRatedProducts, getTopUserProducts, getTrendingUserProducts };
+export {getAllProductCount, getUserProducts, getAllProducts, getHotProducts,getTopRatedProducts, getTopUserProducts, getTrendingUserProducts };
