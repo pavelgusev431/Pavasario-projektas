@@ -5,8 +5,7 @@ import Contact from './components/layout/Contact.jsx';
 import About from './components/layout/About.jsx';
 import NotFound from './components/layout/NotFound.jsx';
 import NavBar from './components/layout/NavBar.jsx';
-import UsersProducts from './components/UsersProducts.jsx';
-import UserProducts from './components/UserProducts.jsx';
+
 function App() {
     return (
         <Router>
