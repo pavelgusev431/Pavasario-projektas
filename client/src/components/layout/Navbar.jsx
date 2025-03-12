@@ -1,123 +1,333 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
-import { FaUserCircle } from "react-icons/fa";
-import { IoMdLogOut } from "react-icons/io";
-import { HiMenu, HiX } from "react-icons/hi";
-import axios from "axios";
+import { useContext, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 
-const Navbar = () => {
-    const { auth, setAuth } = useContext(AuthContext);
+const NavBar = () => {
+    const location = useLocation();
     const navigate = useNavigate();
-    const [menuOpen, setMenuOpen] = useState(false);
+    const { auth, setAuth } = useContext(AuthContext);
+    const [isHovered, setIsHovered] = useState(false);
+    const [balance, setBalance] = useState(0);
 
-    const handleLogout = async () => {
-        try {
-            await axios.post("http://localhost:3000/auth/logout", {}, { withCredentials: true });
-            setAuth(null);
-            navigate("/login", "/signup");
-        } catch (error) {
-            console.error("Ошибка при выходе:", error.response?.data || error.message);
+    useEffect(() => {
+        // Fetch the balance from the database
+        const fetchBalance = async () => {
+            try {
+                const response = await fetch('/api/balance'); // Adjust the API endpoint as needed
+                const data = await response.json();
+                setBalance(data.balance);
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+            }
+        };
+
+        if (auth) {
+            fetchBalance();
         }
+
+        // Cleanup effect to reset isHovered state on location change
+        return () => {
+            setIsHovered(false);
+        };
+    }, [auth, location]);
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+
+    const isActive = (path) => {
+        return location.pathname === path ? styles.activeButton : {};
+    };
+
+    const handleLogout = () => {
+        setAuth(null);
+        navigate('/home');
     };
 
     return (
-        <nav className="bg-white shadow-lg fixed top-0 left-0 w-full z-50 transition-all duration-300">
-            <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                {/* Логотип */}
-                <div className="flex items-center cursor-pointer" onClick={() => navigate("/home")}>
-                    <img src="/path/to/logo.png" alt="Logo" className="h-10" />
+        <nav style={styles.nav}>
+            <div style={styles.container}>
+                <div style={styles.logoContainer}>
+                    <img
+                        src="/path/to/logo.png"
+                        alt="Logo"
+                        style={styles.logo}
+                    />
                 </div>
-
-                {/* Десктоп-меню */}
-                <div className="hidden md:flex items-center space-x-6 text-lg font-medium">
-                    <Link to="/home" className="hover:text-blue-600 transition">Главная</Link>
-                    <Link to="/contact" className="hover:text-blue-600 transition">Контакты</Link>
-                    <Link to="/about" className="hover:text-blue-600 transition">О нас</Link>
-                    <Link to="/profile/edit" className="hover:text-blue-600 transition">Edit profile</Link>
-
-                    {/* Авторизация */}
-                    {!auth ? (
-                        <div className="flex items-center space-x-4">
-                            <Link
-                                to="/signup"
-                                className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
-                            >
-                                Регистрация
-                            </Link>
-                        </div>
-                    ) : (
-                        <div className="flex items-center space-x-4">
-                            <Link to="/profile" className="flex items-center space-x-2 hover:text-blue-600 transition">
-                                <FaUserCircle className="text-2xl" />
-                                <span>Профиль</span>
-                            </Link>
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center space-x-2 text-red-500 hover:text-red-600 transition"
-                            >
-                                <IoMdLogOut className="text-2xl" />
-                                <span>Выйти</span>
-                            </button>
-                        </div>
+                <div style={styles.menuContainer}>
+                    <button
+                        onClick={() => handleNavigation('/home')}
+                        style={{ ...styles.button, ...isActive('/home') }}
+                    >
+                        Home
+                    </button>
+                    <button
+                        onClick={() => handleNavigation('/contact')}
+                        style={{ ...styles.button, ...isActive('/contact') }}
+                    >
+                        Contact
+                    </button>
+                    <button
+                        onClick={() => handleNavigation('/about')}
+                        style={{ ...styles.button, ...isActive('/about') }}
+                    >
+                        About
+                    </button>
+                    {!auth && (
+                        <button
+                            onClick={() => handleNavigation('/signup')}
+                            style={{ ...styles.button, ...isActive('/signup') }}
+                        >
+                            Sign Up
+                        </button>
                     )}
                 </div>
-
-                {/* Мобильное меню (бургер) */}
-                <div className="md:hidden">
-                    <button onClick={() => setMenuOpen(!menuOpen)} className="text-3xl focus:outline-none">
-                        {menuOpen ? <HiX /> : <HiMenu />}
-                    </button>
-                </div>
-            </div>
-
-            {/* Мобильное выпадающее меню */}
-            {menuOpen && (
-                <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md py-6 transition-all">
-                    <div className="flex flex-col items-center space-y-4">
-                        <Link to="/home" className="text-lg font-medium hover:text-blue-600 transition" onClick={() => setMenuOpen(false)}>Главная</Link>
-                        <Link to="/contact" className="text-lg font-medium hover:text-blue-600 transition" onClick={() => setMenuOpen(false)}>Контакты</Link>
-                        <Link to="/about" className="text-lg font-medium hover:text-blue-600 transition" onClick={() => setMenuOpen(false)}>О нас</Link>
-                        <Link to="/profile/edit" className="text-lg font-medium hover:text-blue-600 transition" onClick={() => setMenuOpen(false)}>ProfileEdit</Link>
-
-
-                        {/* Авторизация */}
-                        {!auth ? (
-                            <div className="flex flex-col items-center space-y-3">
-                                <Link
-                                    to="/login"
-                                    className="px-5 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition w-40 text-center"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Войти
-                                </Link>
-                                <Link
-                                    to="/signup"
-                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition w-40 text-center"
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    Регистрация
-                                </Link>
-                            </div>
-                        ) : (
-                            <>
-                                <Link to="/profile" className="flex items-center space-x-2 hover:text-blue-600 transition" onClick={() => setMenuOpen(false)}>
-                                    <FaUserCircle className="text-2xl" />
-                                    <span>Профиль</span>
-                                </Link>
+                {auth && (
+                    <div
+                        style={styles.accountContainer}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
+                        <i
+                            className="fas fa-heart"
+                            style={styles.heartIcon}
+                            onClick={() => handleNavigation('/favorites')}
+                        ></i>
+                        <i
+                            className="fas fa-shopping-cart"
+                            style={styles.cartIcon}
+                            onClick={() => handleNavigation('/cart')}
+                        ></i>
+                        <img
+                            src="../src/public/banner_images/user.png"
+                            alt="User"
+                            style={styles.accountIcon}
+                        />
+                        {isHovered && (
+                            <div style={styles.menu}>
                                 <button
-                                    onClick={() => { handleLogout(); setMenuOpen(false); }}
-                                    className="flex items-center space-x-2 text-red-500 hover:text-red-600 transition"
+                                    onClick={() => handleNavigation('/balance')}
+                                    style={styles.menuButton}
                                 >
-                                    <IoMdLogOut className="text-2xl" />
-                                    <span>Выйти</span>
+                                    <i
+                                        className="fas fa-wallet"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    Balance: ${balance.toFixed(2)}
                                 </button>
-                            </>
+                                <button
+                                    onClick={() => handleNavigation('/account')}
+                                    style={styles.menuButton}
+                                >
+                                    <i
+                                        className="fas fa-user"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    Manage my account
+                                </button>
+                                <button
+                                    onClick={() => handleNavigation('/orders')}
+                                    style={styles.menuButton}
+                                >
+                                    <i
+                                        className="fas fa-box"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    My orders
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleNavigation('/cancellations')
+                                    }
+                                    style={styles.menuButton}
+                                >
+                                    <i
+                                        className="fas fa-times-circle"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    My cancellations
+                                </button>
+                                <button
+                                    onClick={() => handleNavigation('/reviews')}
+                                    style={styles.menuButton}
+                                >
+                                    <i
+                                        className="fas fa-star"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    My reviews
+                                </button>
+                                <button
+                                    onClick={handleLogout}
+                                    style={styles.menuButton}
+                                >
+                                    <i
+                                        className="fas fa-sign-out-alt"
+                                        style={styles.menuIcon}
+                                    ></i>
+                                    Logout
+                                </button>
+                            </div>
                         )}
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </nav>
     );
-}
-export default Navbar;
+};
+
+const styles = {
+    nav: {
+        backgroundColor: 'white',
+        padding: '30px 40px',
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        zIndex: 1000,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    },
+    container: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    logoContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        marginRight: '150px',
+    },
+    logo: {
+        height: '40px',
+    },
+    menuContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    button: {
+        marginRight: '60px',
+        color: 'black',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        padding: '20px 30px',
+        fontSize: '18px',
+        position: 'relative',
+        transition: 'color 0.3s',
+    },
+    activeButton: {
+        color: '#800020',
+    },
+    'button::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '2px',
+        backgroundColor: '#800020',
+        transform: 'scaleX(0)',
+        transformOrigin: 'bottom right',
+        transition: 'transform 0.3s ease-out',
+    },
+    'button:hover::after': {
+        transform: 'scaleX(1)',
+        transformOrigin: 'bottom left',
+    },
+    'button.active::after': {
+        transform: 'scaleX(1)',
+        transformOrigin: 'bottom left',
+    },
+    accountContainer: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        marginLeft: 'auto',
+    },
+    accountIcon: {
+        height: '40px',
+        cursor: 'pointer',
+        transition: 'transform 0.3s',
+    },
+    accountIconHover: {
+        transform: 'scale(1.1)',
+    },
+    heartIcon: {
+        fontSize: '24px',
+        color: 'black',
+        cursor: 'pointer',
+        marginRight: '30px',
+        transition: 'color 0.3s',
+    },
+    cartIcon: {
+        fontSize: '24px',
+        color: 'black',
+        cursor: 'pointer',
+        marginRight: '30px',
+        transition: 'color 0.3s',
+    },
+    menu: {
+        position: 'absolute',
+        top: '40px',
+        right: '0',
+        background: 'linear-gradient(to top, black, gray)',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        borderRadius: '8px',
+        zIndex: 1001,
+        overflow: 'hidden',
+        border: '1px solid white',
+        padding: '20px 0',
+        transition: 'all 0.3s ease',
+        width: '250px',
+        fontFamily: "'Arial', sans-serif",
+    },
+    menuButton: {
+        padding: '10px 20px',
+        color: 'white',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        width: '100%',
+        textAlign: 'left',
+        transition: 'background-color 0.3s',
+        fontFamily: "'Arial', sans-serif",
+    },
+    menuButtonHover: {
+        backgroundColor: 'rgba(128, 128, 128, 0.3)',
+    },
+    menuIcon: {
+        marginRight: '15px',
+    },
+    '@media (max-width: 768px)': {
+        nav: {
+            padding: '20px 30px',
+        },
+        logoContainer: {
+            marginRight: '50px',
+        },
+        logo: {
+            height: '30px',
+        },
+        button: {
+            marginRight: '20px',
+            fontSize: '14px',
+        },
+    },
+    '@media (max-width: 480px)': {
+        nav: {
+            padding: '10px 20px',
+        },
+        logoContainer: {
+            marginRight: '20px',
+        },
+        logo: {
+            height: '20px',
+        },
+        button: {
+            marginRight: '10px',
+            fontSize: '12px',
+        },
+    },
+};
+export default NavBar;

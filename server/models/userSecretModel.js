@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sq from "../database/sequelize.js";
 import { User } from "./userModel.js";
+import AppError from '../utilities/AppError.js';
 
 const UserSecret = sq.define(
     "user_secrets",
@@ -39,8 +40,20 @@ const UserSecret = sq.define(
     }
 );
 
-// 🔥 Устанавливаем связь с таблицей users
+// 🔥 Nustatome ryšį su lentele „users“
 User.hasOne(UserSecret, { foreignKey: "user_id", onDelete: "CASCADE" });
 UserSecret.belongsTo(User, { foreignKey: "user_id" });
 
-export default UserSecret; // Теперь экспортируется корректно
+// ✅ Funkcija sinchronizuoti modelį
+const syncUserSecretModel = async () => {
+    try {
+        await UserSecret.sync({ alter: true });
+        console.log('\x1b[35mUserSecret\x1b[34m lentelė sinchronizuota\x1b[0m');
+    } catch (error) {
+        console.error('Klaida sinchronizuojant „UserSecret“ modelį:', error);
+        throw new AppError(`Klaida kuriant „UserSecret“ modelį: ${error}`, 500);
+    }
+};
+
+export default UserSecret;
+export { syncUserSecretModel };

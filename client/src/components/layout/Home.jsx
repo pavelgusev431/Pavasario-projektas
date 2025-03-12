@@ -1,8 +1,7 @@
 import { Outlet } from 'react-router';
 import BannerCarousel from './Home/Carousel.jsx';
-import NavBar from './Navbar.jsx';
-import { User } from 'lucide-react';
-import UserProducts from '../UserProducts.jsx';
+import NavBar from './NavBar';
+import UsersProducts from '../UsersProducts.jsx';
 
 const Home = () => {
     return (
@@ -10,8 +9,10 @@ const Home = () => {
             <NavBar />
             <div>
                 <BannerCarousel />
-                <UserProducts />
-                {/* <Outlet /> */}
+                <div className="pl-2">
+                    <UsersProducts />
+                    <Outlet />
+                </div>                
             </div>
         </>
     );

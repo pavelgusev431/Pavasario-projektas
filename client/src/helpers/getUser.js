@@ -2,19 +2,23 @@ import axios from 'axios';
 import url from './getURL.js';
 
 const getUserById = async (userId) => {
-    const response = await axios
-        .get(url(`users/id/${userId}`))
-        .catch((error) => {
-            console.log(error);
-        });
-    return response;
+    try {
+        const response = await axios.get(url(`users/id/${userId}`));
+        return response;
+    } catch (error) {
+        console.error("❌ Klaida gaunant vartotoją pagal ID:", error.message);
+        throw error;
+    }
 };
 
 const getAllUsers = async () => {
-    const response = await axios.get(url('users')).catch((error) => {
-        console.log(error);
-    });
-    return response;
+    try {
+        const response = await axios.get(url('users'));
+        return response;
+    } catch (error) {
+        console.error("❌ Klaida gaunant visus vartotojus:", error.message);
+        throw error;
+    }
 };
 
 export { getUserById, getAllUsers };

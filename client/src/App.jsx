@@ -4,7 +4,7 @@ import Home from './components/layout/Home.jsx';
 import Contact from './components/layout/Contact.jsx';
 import About from './components/layout/About.jsx';
 import NotFound from './components/layout/NotFound.jsx';
-import NavBar from './components/layout/Navbar.jsx';
+import NavBar from './components/layout/NavBar.jsx';
 import UserProducts from './components/UserProducts.jsx';
 import UsersProducts from './components/UsersProducts.jsx';
 import ProtectedRoutes from './components/protected/ProtectedRoutes.jsx';
@@ -14,31 +14,22 @@ import Profile from './components/protected/Profile.jsx';
 function App() {
     return (
         <Router>
-            {/* Навигационная панель всегда отображается */}
             <NavBar />
 
-            <Routes>
-                {/* Главная страница */}
+            <Routes>               
                 <Route path="/" element={<Home />}>
                     <Route index element={<UsersProducts />} />
-                    <Route path=":id" element={<UserProducts />} />
-                </Route>
-
-                {/* Страница авторизации */}
+                    <Route path="/products/user/:id" element={<UserProducts />} />
+                </Route>          
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/signup" element={<Auth authType="signup" />} />
-
-                {/* Дополнительные страницы */}
+                <Route path="/signup" element={<Auth authType="signup" />} />               
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/about" element={<About />} />
-
-                {/* Защищённые маршруты */}
+                <Route path="/about" element={<About />} />                
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/profile/edit" element={<ProfileEdit />} />
                 </Route>
 
-                {/* Страница 404 */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

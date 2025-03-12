@@ -3,8 +3,8 @@ import React from 'react';
 const Contact = () => {
     return (
         <div>
-            <h1>Contact Page</h1>
-            <p>This is the contact page.</p>
+            <h1>Kontaktų puslapis</h1>
+            <p>Čia yra kontaktų puslapis.</p>
         </div>
     );
 };

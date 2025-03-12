@@ -43,7 +43,7 @@ const syncUserModel = async () => {
         console.log('\x1b[35mUser\x1b[34m table synced\x1b[0m');
     } catch (error) {
         console.error('Error while syncing User model:', error);
-        throw new AppError('Error while creating user model', 500);
+        throw new AppError(`Error while syncing user model: ${error}`, 500);
     }
 };
 

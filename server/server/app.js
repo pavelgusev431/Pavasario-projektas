@@ -6,28 +6,36 @@ import cookieParser from 'cookie-parser';
 import userRouter from '../routers/userRouter.js';
 import productRouter from '../routers/productRouter.js';
 import protect from '../validators/validateJWT.js';
+import morgan from 'morgan';
 
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || "localhost";
 const CLIENT_PORT = process.env.CLIENT_PORT || "5173";
 
 const app = express();
+
+app.use(
+    morgan(
+        'Received request \x1b[32m:method\x1b[35m localhost3000:url\x1b[33m :status\x1b[0m'
+    )
+);
+
 app.use(express.json());
+
 app.use(
     cors({
         origin: `http://${CLIENT_HOST}:${CLIENT_PORT}`,
         credentials: true,
     })
 );
+
 app.use(cookieParser());
 
-//==============
-// Добавляем маршруты
+// Маршруты
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 
-// Добавляем маршрут `/auth/me`
-app.get("/auth/me",protect, (req, res) => {
+app.get("/auth/me", protect, (req, res) => {
     if (!req.user) {
         return res.status(401).json({ message: "Not authenticated" });
     }
@@ -39,7 +47,6 @@ app.get("/auth/me",protect, (req, res) => {
     });
 });
 
-//==============
 // Последний middleware
 app.use(errorHandler);
 
