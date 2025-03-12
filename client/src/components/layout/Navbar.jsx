@@ -10,10 +10,9 @@ const NavBar = () => {
     const [balance, setBalance] = useState(0);
 
     useEffect(() => {
-        // Fetch the balance from the database
         const fetchBalance = async () => {
             try {
-                const response = await fetch('/api/balance'); // Adjust the API endpoint as needed
+                const response = await fetch('/api/balance');
                 const data = await response.json();
                 setBalance(data.balance);
             } catch (error) {
@@ -25,7 +24,6 @@ const NavBar = () => {
             fetchBalance();
         }
 
-        // Cleanup effect to reset isHovered state on location change
         return () => {
             setIsHovered(false);
         };

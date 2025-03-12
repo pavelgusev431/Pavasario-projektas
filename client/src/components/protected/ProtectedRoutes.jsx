@@ -13,9 +13,7 @@ const ProtectedRoutesWrapper = () => {
     return (
         <Routes>
             <Route element={<ProtectedRoutes />}>
-                {/* Профиль */}
                 <Route path="/profile" element={<Profile />} />
-                {/* Страница редактирования профиля */}
                 <Route path="/profile/edit" element={<ProfileEdit />} />
             </Route>
         </Routes>

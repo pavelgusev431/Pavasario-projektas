@@ -105,7 +105,6 @@ const Auth = () => {
                             Įveskite savo duomenis
                         </p>
 
-                        {/* Форма */}
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                             <div>
                                 <input
@@ -121,7 +120,6 @@ const Auth = () => {
                                 )}
                             </div>
 
-                            {/* Новое поле Email */}
                             {authType === "signup" && (
                                 <div>
                                     <input
