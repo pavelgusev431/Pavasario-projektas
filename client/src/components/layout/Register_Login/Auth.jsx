@@ -91,7 +91,7 @@ const Auth = () => {
                     Join over <span className="font-semibold">{userCount}</span> users in our vibrant community.
                 </p>
                 <p className="text-lg opacity-80 mt-4">
-                    Start selling your products today and showcase them to a massive audience.
+                    Start selling your products today and showcase them to a massive audience of {productCount} users.
                 </p>
             </div>
         </div>
