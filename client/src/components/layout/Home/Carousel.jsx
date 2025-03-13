@@ -10,7 +10,7 @@ const images = [
 
 const BannerCarousel = () => {
   return (
-    <div className="w-full  mx-auto">
+    <div className="w-full mx-auto">
       <Carousel
         showThumbs={false}
         infiniteLoop

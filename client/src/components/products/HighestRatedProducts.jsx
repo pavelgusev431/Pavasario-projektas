@@ -42,7 +42,7 @@ export default function HighestRatedProducts() {
                     </div>
           </div>
           
-          <div className="flex flex-wrap flex-row">
+          <div className="flex gap-2 flex-wrap lg:flex-nowrap flex-row">
               {products.map((product) => (
                   <ProductCard 
                   key={product.id} 
