@@ -1,7 +1,0 @@
-client/src/components/layout/NavBar.jsx
-client/src/components/layout/Register_Login/Auth.jsx
-client/src/components/ProductCard.jsx
-client/src/components/products/HighestRatedProducts.jsx
-client/src/components/products/HotProducts.jsx
-client/src/components/products/TopUserProducts.jsx
-client/src/components/products/TrendingUserProducts.jsx
