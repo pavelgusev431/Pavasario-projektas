@@ -36,7 +36,7 @@ const NavBar = () => {
   };
 
   const isActive = (path) => {
-    return location.pathname === path ? "text-[#800020]" : "";
+    return location.pathname === path ? "text-[#800020]" : "text-black";
   };
 
   const handleLogout = () => {
@@ -56,19 +56,19 @@ const NavBar = () => {
           <div className="flex items-center flex-wrap ml-4">
             <button
               onClick={() => handleNavigation("/home")}
-              className={`mr-4 md:mr-6 text-black bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/home")}`}
+              className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/home")}`}
             >
               Home
             </button>
             <button
               onClick={() => handleNavigation("/contact")}
-              className={`mr-4 md:mr-6 text-black bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/contact")}`}
+              className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/contact")}`}
             >
               Contact
             </button>
             <button
               onClick={() => handleNavigation("/about")}
-              className={`mr-4 md:mr-6 text-black bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/about")}`}
+              className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/about")}`}
             >
               About
             </button>
@@ -78,7 +78,7 @@ const NavBar = () => {
           {!auth && (
             <button
               onClick={() => handleNavigation("/signup")}
-              className={`mr-4 md:mr-6 text-black bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/signup")}`}
+              className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive("/signup")}`}
             >
               Sign Up
             </button>
@@ -90,7 +90,7 @@ const NavBar = () => {
               onMouseLeave={() => setIsHovered(false)}
             >
               <i
-                className="fas fa-shopping-cart text-xl md:text-2xl text-black cursor-pointer mr-4 md:mr-7 transition-colors duration-300"
+                className="fas fa-shopping-cart text-xl md:text-2xl cursor-pointer mr-4 md:mr-7 transition-colors duration-300"
                 onClick={() => handleNavigation("/cart")}
               ></i>
               <img
