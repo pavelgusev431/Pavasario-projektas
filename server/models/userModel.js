@@ -36,7 +36,6 @@ const User = sq.define(
     }
 );
 
-// ✅ Функция для синхронизации модели
 const syncUserModel = async () => {
     try {
         await User.sync({ alter: true });

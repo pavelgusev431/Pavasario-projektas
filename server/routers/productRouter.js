@@ -3,13 +3,16 @@ import {
     getUserProducts,
     getAllProducts,
     getAllProductCount,
+    getProductById,
+    getAllUsersProducts
 } from '../controllers/productController.js';
 
 const productRouter = express.Router();
 
-// ✅ Maršrutai produktų gavimui
-productRouter.get('/', getAllProducts);       // Gauti visus produktus
-productRouter.get('/count', getAllProductCount); // Gauti visų produktų skaičių
-productRouter.get('/:id', getUserProducts);     // Gauti vartotojo produktus
+productRouter.get('/', getAllProducts);
+productRouter.get('/count', getAllProductCount);
+productRouter.get('/user/:id', getUserProducts);
+productRouter.get('/users', getAllUsersProducts);
+productRouter.get('/:id', getProductById);
 
 export default productRouter;

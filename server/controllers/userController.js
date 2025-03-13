@@ -6,6 +6,7 @@ import sha1 from 'js-sha1';
 import sha256 from 'js-sha256';
 import { sendEmail } from '../utilities/mailer.js';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 
 dotenv.config();
 
@@ -19,6 +20,13 @@ const CLIENT_PORT = process.env.CLIENT_PORT;
 // Sukurti administratorių
 const createAdmin = async () => {
     try {
+        const existingAdmin = await User.findOne({ where: { username: ADMIN_USER } });
+
+        if (existingAdmin) {
+            console.log(`🔹 Administratorius "${ADMIN_USER}" jau egzistuoja.`);
+            return;
+        }
+
         const admin = await User.create({
             username: ADMIN_USER,
             email: ADMIN_EMAIL,
@@ -41,10 +49,18 @@ const createAdmin = async () => {
 // Sukurti naudotoją
 const createUser = async (req, res) => {
     const { username, password, email } = req.body;
+    console.log("📥 Register - Gauti duomenys:", { username, password, email });
+
+    if (!username || !password || !email) {
+        console.log("❌ Neužpildyti laukai");
+        return res.status(400).json({ status: "fail", message: "Visi laukai privalomi" });
+    }
+
     const role = 'user';
-    const now = new Date();
-    const salt = sha256(sha1(now.toString() + username));
-    const hashedPassword = sha256(sha1(password + salt));
+    
+    // Используем безопасный генератор соли
+    const salt = crypto.randomBytes(16).toString('hex'); 
+    const hashedPassword = sha256(sha1(password + salt)); 
 
     try {
         const user = await User.create({ username, email });
@@ -55,6 +71,8 @@ const createUser = async (req, res) => {
             role,
         });
 
+        console.log("✅ Registracija sėkminga");
+
         res.status(201).json({
             status: 'success',
             data: user,
@@ -64,6 +82,7 @@ const createUser = async (req, res) => {
         res.status(500).json({ status: "fail", message: "Serverio klaida" });
     }
 };
+
 
 // Gauti naudotoją pagal vartotojo vardą
 const getUserByUsername = async (req, res) => {
@@ -92,18 +111,39 @@ const getUserById = async (req, res) => {
 // Prisijungimas
 const login = async (req, res) => {
     const { username, password } = req.body;
+    console.log("📥 Login - Gauti duomenys:", { username, password });
+
+    if (!username || !password) {
+        console.log("❌ Neužpildyti laukai");
+        return res.status(400).json({ status: "fail", message: "Visi laukai privalomi" });
+    }
+
     const user = await User.findOne({ where: { username } });
-    if (!user) throw new AppError('Neteisingas naudotojo vardas arba slaptažodis', 401);
+    if (!user) {
+        console.log("❌ Vartotojas nerastas");
+        return res.status(401).json({ status: 'fail', message: 'Neteisingas naudotojo vardas arba slaptažodis' });
+    }
+
+    console.log("✅ Vartotojas rastas:", user);
 
     const secret = await UserSecret.findOne({
         where: { user_id: user.id },
     });
 
+    if (!secret || !secret.password) {
+        console.log("❌ Slaptažodis nerastas duomenų bazėje");
+        return res.status(401).json({ status: 'fail', message: 'Neteisingas naudotojo vardas arba slaptažodis' });
+    }
+
     const salt = secret.password.split(':')[1];
     const hashedPassword = sha256(sha1(password + salt));
 
+    console.log("🟡 Slaptažodis iš DB:", secret.password);
+    console.log("🔐 Sugeneruotas slaptažodis:", hashedPassword);
+
     if (hashedPassword !== secret.password.split(':')[0]) {
-        throw new AppError('Neteisingas naudotojo vardas arba slaptažodis', 401);
+        console.log("❌ Slaptažodis neteisingas");
+        return res.status(401).json({ status: 'fail', message: 'Neteisingas naudotojo vardas arba slaptažodis' });
     }
 
     const token = jsonwebtoken.sign(
@@ -115,12 +155,17 @@ const login = async (req, res) => {
     res.cookie('token', token, { httpOnly: true });
     res.cookie('tokenJS', 1);
 
+    console.log("✅ Prisijungimas sėkmingas");
+
     res.status(200).json({
         status: 'success',
         data: user,
         token,
     });
 };
+
+
+
 
 // Atsijungimas
 const logout = async (req, res) => {

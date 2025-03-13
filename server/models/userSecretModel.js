@@ -44,7 +44,7 @@ const UserSecret = sq.define(
 User.hasOne(UserSecret, { foreignKey: "user_id", onDelete: "CASCADE" });
 UserSecret.belongsTo(User, { foreignKey: "user_id" });
 
-// ✅ Funkcija sinchronizuoti modelį
+//  Funkcija sinchronizuoti modelį
 const syncUserSecretModel = async () => {
     try {
         await UserSecret.sync({ alter: true });

@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-    console.log("🔥 [DEBUG] Куки от клиента:", req.cookies);
+    console.log("🔥 [DEBUG] Kliento slapukai:", req.cookies);
     next();
 });
 
