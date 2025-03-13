@@ -13,7 +13,7 @@ const Home = () => {
     };
     return (
         <>
-            <NavBar />
+            {/* <NavBar /> */}
             <div>
                 <BannerCarousel />
                 <SearchBar onSearch={handleSearch} />{' '}
