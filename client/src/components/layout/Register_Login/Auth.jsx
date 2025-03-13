@@ -233,6 +233,19 @@ const Auth = () => {
                                             setError('');
                                             clearErrors('password');
                                         },
+                                        validate: (value) => {
+                                            return (
+                                                (authType === 'signup' &&
+                                                    /^.*[A-Z].*$/.test(value) &&
+                                                    /^.*\d.*$/.test(value) &&
+                                                    /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
+                                                        value
+                                                    )) ||
+                                                (authType === 'signup'
+                                                    ? 'Password must contain at least 1 capital letter, 1 number and 1 special character'
+                                                    : true)
+                                            );
+                                        },
                                     })}
                                 />
                                 <button
