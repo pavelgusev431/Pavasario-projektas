@@ -1,3 +1,4 @@
+import { FaStar } from 'react-icons/fa';
 import { FaStar, FaStarHalf } from "react-icons/fa";
 
 export default function ProductCard({ product, avgRating, ratingCount }) {
@@ -26,6 +27,6 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
                     <span className="text-gray-600 text-sm">({ratingCount || 0})</span>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

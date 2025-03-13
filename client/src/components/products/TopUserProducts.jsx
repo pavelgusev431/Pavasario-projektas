@@ -1,13 +1,13 @@
-import { getTopUserProducts } from "../../helpers/getProduct";
+import { getTopUserProducts } from '../../helpers/getProduct';
 import { getUserById } from '../../helpers/getUser.js';
 import { useState, useEffect } from 'react';
 import ProductCard from '../ProductCard';
 import { Link } from 'react-router';
 export default function TopUserProducts() {
-  const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [userName, setUserName] = useState("");
+    const [userName, setUserName] = useState('');
     const [noUser, setNoUser] = useState(false);
 
     useEffect(() => {
@@ -19,18 +19,15 @@ export default function TopUserProducts() {
                     return;
                 }
                 setProducts(response.data.data);
-                
-                
+
                 const userId = response.data.user_id;
-                
+
                 // Gauname vartotojo vardą pagal user_id
                 if (userId) {
                     const userResponse = await getUserById(userId);
-                    
+
                     setUserName(userResponse.data.data.username);
-                    
                 }
-                
             } catch (err) {
                 setError(err.message);
             } finally {

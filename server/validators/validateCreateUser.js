@@ -1,7 +1,7 @@
 import User from '../models/userModel.js';
 import { body } from 'express-validator';
 import AppError from '../utilities/AppError.js';
- 
+
 const validateCreateUser = [
     body('username')
         .isString()
@@ -14,9 +14,9 @@ const validateCreateUser = [
                 throw new AppError('Username already exists', 403);
             }
         }),
- 
+
     body('password').isString().withMessage('Password must be a string'),
- 
+
     body('email')
         .isEmail()
         .withMessage('Email must be a valid email address')
@@ -30,5 +30,5 @@ const validateCreateUser = [
         })
         .withMessage('Email already exists'),
 ];
- 
+
 export default validateCreateUser;

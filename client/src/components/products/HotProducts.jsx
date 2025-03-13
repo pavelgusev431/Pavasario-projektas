@@ -1,27 +1,27 @@
-import { getHotProducts } from "../../helpers/getProduct";
+import { getHotProducts } from '../../helpers/getProduct';
 import { useState, useEffect } from 'react';
 import ProductCard from '../ProductCard';
 import { Link } from 'react-router-dom';
 
 export default function HotProducts() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getHotProducts();
-        setProducts(response.data.data);
-      } catch (err) {
-        setError("Nepavyko įkelti produktų. Bandykite dar kartą.");
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await getHotProducts();
+                setProducts(response.data.data);
+            } catch (err) {
+                setError('Nepavyko įkelti produktų. Bandykite dar kartą.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    fetchProducts();
-  }, []);
+        fetchProducts();
+    }, []);
 
   if (loading) return <p className="text-center text-gray-500">Kraunama...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;

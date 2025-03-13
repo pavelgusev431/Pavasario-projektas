@@ -1,29 +1,29 @@
-import { getTopRatedProducts } from "../../helpers/getProduct";
+import { getTopRatedProducts } from '../../helpers/getProduct';
 import { useState, useEffect } from 'react';
 import ProductCard from '../ProductCard';
 import { Link } from 'react-router';
 export default function HighestRatedProducts() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-      const fetchProducts = async () => {
-          try {
-              const response = await getTopRatedProducts();
-              setProducts(response.data.data);
-          } catch (err) {
-              setError(err.message);
-          } finally {
-              setLoading(false);
-          }
-      };
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await getTopRatedProducts();
+                setProducts(response.data.data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-      fetchProducts();
-  }, []);
+        fetchProducts();
+    }, []);
 
-  if (loading) return <p>Kraunama...</p>;
-  if (error) return <p>Klaida: {error}</p>;
+    if (loading) return <p>Kraunama...</p>;
+    if (error) return <p>Klaida: {error}</p>;
 
   return (
       <div className="mt-10 w-full">
