@@ -30,24 +30,20 @@ export default function HighestRatedProducts() {
             <div className="flex flex-row gap-2 mt-2">
               <div className="w-2 h-6 bg-red-500"></div>
               <h2 className="text-l text-red-500 font-bold mb-2"></h2>
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <h2 className="text-2xl font-bold py-2">Top Products</h2>
-              {products.length > 0 && (
-                <Link to="/products">
-                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold rounded py-2 px-4">
-                    View All Products
-                  </button>
-                </Link>
-              )}
-            </div>
-      
-            {/* Jei nėra produktų */}
-            {products.length === 0 ? (
-              <p className="text-center text-gray-500 mt-4">Currently, no  top products. Check back later!</p>
-            ) : (
-              <div className="flex flex-wrap flex-row mt-4">
-                {products.map((product) => (
+          </div>
+          <div className="flex flex-row justify-between">
+            <h2 className="text-2xl font-bold py-2">Highest rated products</h2>
+            <div>
+                        <Link to={`/products`}>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold  rounded py-2 px-4 ">
+                                View All Products
+                            </button>
+                        </Link>
+                    </div>
+          </div>
+          
+          <div className="flex gap-2 flex-wrap lg:flex-nowrap flex-row">
+              {products.map((product) => (
                   <ProductCard 
                     key={product.id} 
                     product={product}
