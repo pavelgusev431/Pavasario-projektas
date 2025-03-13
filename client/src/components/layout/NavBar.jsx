@@ -175,7 +175,7 @@ const styles = {
     nav: {
         backgroundColor: 'white',
         padding: '30px 40px',
-        position: 'fixed',
+        position: 'sticky',
         top: 0,
         width: '100%',
         zIndex: 1000,
