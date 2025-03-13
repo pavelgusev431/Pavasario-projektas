@@ -27,7 +27,7 @@ export default function HighestRatedProducts() {
 
   return (
       <div className="w-full">
-          <div className="flex flex-row gap-2 mt-2 ">
+            <div className="flex flex-row gap-2 mt-2">
               <div className="w-2 h-6 bg-red-500"></div>
               <h2 className="text-l text-red-500 font-bold mb-2"></h2>
           </div>
@@ -45,13 +45,15 @@ export default function HighestRatedProducts() {
           <div className="flex gap-2 flex-wrap lg:flex-nowrap flex-row">
               {products.map((product) => (
                   <ProductCard 
-                  key={product.id} 
-                  product={product} 
-                  avgRating={product.avgRating} 
-                  ratingCount={product.ratingCount}
+                    key={product.id} 
+                    product={product}
+                    avgRating={product.avgRating} 
+                    ratingCount={product.ratingCount}
                   />
-              ))}
+                ))}
+              </div>
+            )}
           </div>
-      </div>
+      
   );
 }

@@ -8,11 +8,16 @@ export default function TopUserProducts() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userName, setUserName] = useState("");
+    const [noUser, setNoUser] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await getTopUserProducts();
+                if (response.data.data.length === 0) {
+                    setNoUser(true);
+                    return;
+                }
                 setProducts(response.data.data);
                 
                 
@@ -41,27 +46,36 @@ export default function TopUserProducts() {
 
     return (
         <div className="w-full">
-            <div className="flex flex-row gap-2 mt-2 ">
-                <div className="w-2 h-6 bg-red-500"></div>
-                <h2 className="text-l text-red-500 font-bold mb-2">Top User</h2>
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Explore top {userName} products</h2>
-            <div className="flex flex-wrap flex-row">
-                {products.map((product) => (
-                    <ProductCard key={product.id} 
-                    product={product} 
-                    avgRating={product.avgRating} 
-                    ratingCount={product.ratingCount}
-                    />
-                ))}
-            </div>
-            <div className="text-center">
-                        <Link to={`/home/`}>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
-                                View All Products
-                            </button>
-                        </Link>
+                    <div className="flex flex-row gap-2 mt-2">
+                        <div className="w-2 h-6 bg-red-500"></div>
+                        <h2 className="text-l text-red-500 font-bold mb-2"> Top user</h2>
                     </div>
-        </div>
+                    <h2 className="text-2xl font-bold mb-2">
+                        {noUser ? "No Top Users" : `Top ${userName} products`}
+                    </h2>
+                    {noUser ? (
+                        <p className="text-gray-500 text-center">Currently, no users are top. Check back later!</p>
+                    ) : (
+                        <>
+                            <div className="flex flex-wrap flex-row">
+                                {products.map((product) => (
+                                    <ProductCard 
+                                        key={product.id} 
+                                        product={product}
+                                        avgRating={product.avgRating} 
+                                        ratingCount={product.ratingCount} 
+                                    />
+                                ))}
+                            </div>
+                            <div className="text-center mt-4">
+                                <Link to={`/home/`}>
+                                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                        View All Products
+                                    </button>
+                                </Link>
+                            </div>
+                        </>
+                    )}
+                </div>
     );
 }
