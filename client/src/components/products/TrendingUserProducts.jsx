@@ -51,7 +51,7 @@ export default function TrendingUserProducts() {
                 </h2>
             </div>
             <h2 className="text-2xl font-bold ml-10 mb-2">
-                {noUser ? "No Trending Users" : `Trending ${userName} products`}
+                {noUser ? 'No Trending Users' : `Trending ${userName} products`}
             </h2>
             {noUser ? (
                 <p className="text-gray-500 text-center">

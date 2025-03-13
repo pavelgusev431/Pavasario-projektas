@@ -43,36 +43,41 @@ export default function TopUserProducts() {
 
     return (
         <div className="w-full mt-10">
-                    <div className="flex ml-10 flex-row gap-2 mt-2">
-                        <div className="w-2 h-6 bg-red-500"></div>
-                        <h2 className="text-l text-red-500 font-bold mb-2"> Top user</h2>
+            <div className="flex ml-10 flex-row gap-2 mt-2">
+                <div className="w-2 h-6 bg-red-500"></div>
+                <h2 className="text-l text-red-500 font-bold mb-2">
+                    {' '}
+                    Top user
+                </h2>
+            </div>
+            <h2 className="text-2xl ml-10 font-bold mb-2">
+                {noUser ? 'No Top Users' : `Top ${userName} products`}
+            </h2>
+            {noUser ? (
+                <p className="text-gray-500 text-center">
+                    Currently, no users are top. Check back later!
+                </p>
+            ) : (
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+                        {products.map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                avgRating={product.avgRating}
+                                ratingCount={product.ratingCount}
+                            />
+                        ))}
                     </div>
-                    <h2 className="text-2xl ml-10 font-bold mb-2">
-                        {noUser ? "No Top Users" : `Top ${userName} products`}
-                    </h2>
-                    {noUser ? (
-                        <p className="text-gray-500 text-center">Currently, no users are top. Check back later!</p>
-                    ) : (
-                        <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
-                                {products.map((product) => (
-                                    <ProductCard 
-                                        key={product.id} 
-                                        product={product}
-                                        avgRating={product.avgRating} 
-                                        ratingCount={product.ratingCount} 
-                                    />
-                                ))}
-                            </div>
-                            <div className="text-center mt-4">
-                                <Link to={`/home/`}>
-                                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                        View All Products
-                                    </button>
-                                </Link>
-                            </div>
-                        </>
-                    )}
-                </div>
+                    <div className="text-center mt-4">
+                        <Link to={`/home/`}>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                View All Products
+                            </button>
+                        </Link>
+                    </div>
+                </>
+            )}
+        </div>
     );
 }
