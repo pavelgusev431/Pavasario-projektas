@@ -11,7 +11,7 @@ import PasswordReset from './components/layout/Register_Login/PasswordReset.jsx'
 function App() {
     return (
         <Router>
-            {/* <NavBar /> */}
+            <NavBar />
             <Routes>
                 <Route index element={<Auth />} />
                 <Route path="home" element={<Home />} />
