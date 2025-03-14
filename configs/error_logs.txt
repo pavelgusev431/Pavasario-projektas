@@ -1,3 +1,4 @@
+client/src/App.jsx
 client/src/components/layout/NavBar.jsx
 client/src/components/layout/Register_Login/Auth.jsx
 client/src/components/layout/SearchBar.jsx
