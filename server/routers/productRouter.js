@@ -6,7 +6,7 @@ import {
     getTopRatedProducts,
     getTopUserProducts,
     getTrendingUserProducts,
-    getAllProductCount
+    getAllProductCount,
 } from '../controllers/productController.js';
 
 const productRouter = express.Router();
@@ -17,6 +17,5 @@ productRouter.route('/bestnew').get(getHotProducts);
 productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/count').get(getAllProductCount);
 productRouter.route('/:id').get(getUserProducts);
-
 
 export default productRouter;

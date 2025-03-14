@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import React, { useContext, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 const NavBar = () => {
     const location = useLocation();
@@ -25,280 +25,141 @@ const NavBar = () => {
             fetchBalance();
         }
 
-    // Cleanup effect to reset isHovered state on location change
-    return () => {
-      setIsHovered(false);
+        // Cleanup effect to reset isHovered state on location change
+        return () => {
+            setIsHovered(false);
+        };
+    }, [auth, location]);
+
+    const handleNavigation = (path) => {
+        navigate(path);
     };
-  }, [auth, location]);
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
+    const isActive = (path) => {
+        return location.pathname === path ? 'text-[#800020]' : 'text-black';
+    };
 
-  const isActive = (path) => {
-    return location.pathname === path ? styles.activeButton : {};
-  };
+    const handleLogout = () => {
+        setAuth(null);
+        navigate('/home');
+    };
 
-  const handleLogout = () => {
-    setAuth(null);
-    navigate("/home");
-  };
-
-  return (
-    <nav style={styles.nav}>
-      <div style={styles.container}>
-        <div style={styles.logoContainer}>
-          <img
-            src="../src/public/banner_images/logo.png"
-            alt="Logo"
-            style={styles.logo}
-          />
-        </div>
-        <div style={styles.menuContainer}>
-          <button
-            onClick={() => handleNavigation("/home")}
-            style={{ ...styles.button, ...isActive("/home") }}
-          >
-            Home
-          </button>
-          <button
-            onClick={() => handleNavigation("/contact")}
-            style={{ ...styles.button, ...isActive("/contact") }}
-          >
-            Contact
-          </button>
-          <button
-            onClick={() => handleNavigation("/about")}
-            style={{ ...styles.button, ...isActive("/about") }}
-          >
-            About
-          </button>
-          {!auth && (
-            <button
-              onClick={() => handleNavigation("/signup")}
-              style={{ ...styles.button, ...isActive("/signup") }}
-            >
-              Sign Up
-            </button>
-          )}
-        </div>
-        {auth && (
-          <div
-            style={styles.accountContainer}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <i
-              className="fas fa-shopping-cart"
-              style={styles.cartIcon}
-              onClick={() => handleNavigation("/cart")}
-            ></i>
-            <img
-              src="../src/public/banner_images/user.png"
-              alt="User"
-              style={styles.accountIcon}
-            />
-            {isHovered && (
-              <div style={styles.menu}>
-                <button
-                  onClick={() => handleNavigation("/balance")}
-                  style={styles.menuButton}
-                >
-                  <i className="fas fa-wallet" style={styles.menuIcon}></i>
-                  Balance: ${balance.toFixed(2)}
-                </button>
-                <button
-                  onClick={() => handleNavigation("/account")}
-                  style={styles.menuButton}
-                >
-                  <i className="fas fa-user" style={styles.menuIcon}></i>
-                  Manage my account
-                </button>
-                <button
-                  onClick={() => handleNavigation("/orders")}
-                  style={styles.menuButton}
-                >
-                  <i className="fas fa-box" style={styles.menuIcon}></i>
-                  My orders
-                </button>
-                <button
-                  onClick={() => handleNavigation("/cancellations")}
-                  style={styles.menuButton}
-                >
-                  <i
-                    className="fas fa-times-circle"
-                    style={styles.menuIcon}
-                  ></i>
-                  My cancellations
-                </button>
-                <button
-                  onClick={() => handleNavigation("/reviews")}
-                  style={styles.menuButton}
-                >
-                  <i className="fas fa-star" style={styles.menuIcon}></i>
-                  My reviews
-                </button>
-                <button onClick={handleLogout} style={styles.menuButton}>
-                  <i
-                    className="fas fa-sign-out-alt"
-                    style={styles.menuIcon}
-                  ></i>
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </nav>
-  );
+    return (
+        <nav className="bg-white p-4 sticky top-0 w-full z-50 shadow-md">
+            <div className="flex justify-between items-center flex-wrap">
+                <div className="flex items-center mr- md:mr-36">
+                    <img
+                        src="../src/public/banner_images/logo.png"
+                        alt="Logo"
+                        className="h-10 md:h-20"
+                    />
+                    <div className="flex items-center flex-wrap ml-4">
+                        <button
+                            onClick={() => handleNavigation('/home')}
+                            className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/home')}`}
+                        >
+                            Home
+                        </button>
+                        <button
+                            onClick={() => handleNavigation('/contact')}
+                            className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/contact')}`}
+                        >
+                            Contact
+                        </button>
+                        <button
+                            onClick={() => handleNavigation('/about')}
+                            className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/about')}`}
+                        >
+                            About
+                        </button>
+                    </div>
+                </div>
+                <div className="flex items-center ml-auto">
+                    {!auth && (
+                        <button
+                            onClick={() => handleNavigation('/signup')}
+                            className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/signup')}`}
+                        >
+                            Sign Up
+                        </button>
+                    )}
+                    {auth && (
+                        <div
+                            className="relative flex items-center"
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                        >
+                            <i
+                                className="fas fa-shopping-cart text-xl md:text-2xl cursor-pointer mr-4 md:mr-7 transition-colors duration-300"
+                                onClick={() => handleNavigation('/cart')}
+                            ></i>
+                            <img
+                                src="../src/public/banner_images/user.png"
+                                alt="User"
+                                className="h-8 md:h-10 cursor-pointer transition-transform duration-300"
+                            />
+                            {isHovered && (
+                                <div className="absolute top-10 right-0 bg-gradient-to-t from-black to-gray-700 shadow-lg rounded-lg z-50 overflow-hidden border border-white p-5 transition-all duration-300 w-48 md:w-64 font-sans">
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation('/balance')
+                                        }
+                                        className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
+                                    >
+                                        <i className="fas fa-wallet mr-3"></i>
+                                        Balance: ${balance.toFixed(2)}
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation('/account')
+                                        }
+                                        className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
+                                    >
+                                        <i className="fas fa-user mr-3"></i>
+                                        Manage my account
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation('/orders')
+                                        }
+                                        className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
+                                    >
+                                        <i className="fas fa-box mr-3"></i>
+                                        My orders
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation('/cancellations')
+                                        }
+                                        className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
+                                    >
+                                        <i className="fas fa-times-circle mr-3"></i>
+                                        My cancellations
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation('/reviews')
+                                        }
+                                        className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
+                                    >
+                                        <i className="fas fa-star mr-3"></i>
+                                        My reviews
+                                    </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
+                                    >
+                                        <i className="fas fa-sign-out-alt mr-3"></i>
+                                        Logout
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </nav>
+    );
 };
 
-const styles = {
-  nav: {
-    backgroundColor: "white",
-    padding: "30px 40px",
-    position: "fixed",
-    top: 0,
-    width: "100%",
-    zIndex: 1000,
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-  },
-  container: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  logoContainer: {
-    display: "flex",
-    alignItems: "center",
-    marginRight: "150px",
-  },
-  logo: {
-    height: "80px", // Increased height for the logo
-  },
-  menuContainer: {
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  button: {
-    marginRight: "60px",
-    color: "black",
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    padding: "20px 30px",
-    fontSize: "18px",
-    position: "relative",
-    transition: "color 0.3s",
-  },
-  activeButton: {
-    color: "#800020",
-  },
-  "button::after": {
-    content: '""',
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    height: "2px",
-    backgroundColor: "#800020",
-    transform: "scaleX(0)",
-    transformOrigin: "bottom right",
-    transition: "transform 0.3s ease-out",
-  },
-  "button:hover::after": {
-    transform: "scaleX(1)",
-    transformOrigin: "bottom left",
-  },
-  "button.active::after": {
-    transform: "scaleX(1)",
-    transformOrigin: "bottom left",
-  },
-  accountContainer: {
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    marginLeft: "auto",
-  },
-  accountIcon: {
-    height: "40px",
-    cursor: "pointer",
-    transition: "transform 0.3s",
-  },
-  accountIconHover: {
-    transform: "scale(1.1)",
-  },
-  cartIcon: {
-    fontSize: "24px",
-    color: "black",
-    cursor: "pointer",
-    marginRight: "30px",
-    transition: "color 0.3s",
-  },
-  menu: {
-    position: "absolute",
-    top: "40px",
-    right: "0",
-    background: "linear-gradient(to top, black, gray)",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    borderRadius: "8px",
-    zIndex: 1001,
-    overflow: "hidden",
-    border: "1px solid white",
-    padding: "20px 0",
-    transition: "all 0.3s ease",
-    width: "250px",
-    fontFamily: "'Arial', sans-serif",
-  },
-  menuButton: {
-    padding: "10px 20px",
-    color: "white",
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    width: "100%",
-    textAlign: "left",
-    transition: "background-color 0.3s",
-    fontFamily: "'Arial', sans-serif",
-  },
-  menuButtonHover: {
-    backgroundColor: "rgba(128, 128, 128, 0.3)",
-  },
-  menuIcon: {
-    marginRight: "15px",
-  },
-  "@media (max-width: 768px)": {
-    nav: {
-      padding: "20px 30px",
-    },
-    logoContainer: {
-      marginRight: "50px",
-    },
-    logo: {
-      height: "40px",
-    },
-    button: {
-      marginRight: "20px",
-      fontSize: "14px",
-    },
-  },
-  "@media (max-width: 480px)": {
-    nav: {
-      padding: "10px 20px",
-    },
-    logoContainer: {
-      marginRight: "20px",
-    },
-    logo: {
-      height: "30px",
-    },
-    button: {
-      marginRight: "10px",
-      fontSize: "12px",
-    },
-  },
-};
 export default NavBar;
