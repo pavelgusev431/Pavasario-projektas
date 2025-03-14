@@ -282,13 +282,12 @@ const Auth = () => {
                                                 value === watch('password') ||
                                                 'Passwords must match',
                                         })}
-                                        
                                     />
-                                                                            {errors.repeatPassword && (
-                                            <p className="text-red-500 text-sm mt-1">
-                                                {errors.repeatPassword.message}
-                                            </p>
-                                        )}
+                                    {errors.repeatPassword && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.repeatPassword.message}
+                                        </p>
+                                    )}
                                 </div>
                             )}
 
