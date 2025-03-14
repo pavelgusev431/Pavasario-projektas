@@ -33,7 +33,7 @@ export default function HighestRatedProducts() {
             </div>
             <div className="flex flex-row justify-between">
                 <h2 className="text-2xl font-bold py-2 ml-10">
-                    Highest rated products
+                    Most popular products
                 </h2>
                 <div>
                     <Link to={`/products`}>
