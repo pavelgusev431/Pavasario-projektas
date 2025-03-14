@@ -5,7 +5,7 @@ import Contact from './components/layout/Contact.jsx';
 import About from './components/layout/About.jsx';
 import NotFound from './components/layout/NotFound.jsx';
 import NavBar from './components/layout/NavBar.jsx';
-
+import UserProducts from './components/UserProducts.jsx';
 function App() {
     return (
         <Router>
@@ -13,7 +13,7 @@ function App() {
             <Routes>
                 <Route index element={<Auth />} />
                 <Route path="home" element={<Home />}/>
-                    
+                <Route path="products/:id" element={<UserProducts />} />   
                
                 <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />
