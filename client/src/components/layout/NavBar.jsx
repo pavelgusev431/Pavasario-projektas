@@ -46,21 +46,60 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-white p-4 md:p-8 sticky top-0 w-full z-50 shadow-md">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto">
-        <div className="flex items-center">
+    <nav className="bg-white p-2 md:p-4 sticky top-0 w-full z-50 shadow-md">
+      <div className="flex flex-wrap items-center justify-between mx-auto px-2 md:px-4">
+        <div className="flex items-center justify-start w-full md:w-auto">
           <img
             src="../src/public/banner_images/logo.png"
             alt="Logo"
             className="h-10 md:h-20"
           />
+          <div className="hidden md:flex items-center ml-2">
+            <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white">
+              <li>
+                <button
+                  onClick={() => handleNavigation("/home")}
+                  className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive("/home")}`}
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/contact")}
+                  className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive("/contact")}`}
+                >
+                  Contact
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/about")}
+                  className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive("/about")}`}
+                >
+                  About
+                </button>
+              </li>
+              {!auth && (
+                <li>
+                  <button
+                    onClick={() => handleNavigation("/signup")}
+                    className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive("/signup")}`}
+                  >
+                    Sign Up
+                  </button>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
-        <div className="flex items-center ml-auto">
+        <div className="flex items-center justify-end w-full md:w-auto">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
             aria-controls="navbar-default"
             aria-expanded={isMenuOpen}
+            style={{ marginTop: 'auto' }}
           >
             <span className="sr-only">Open main menu</span>
             <svg
@@ -85,41 +124,7 @@ const NavBar = () => {
             } w-full md:block md:w-auto`}
             id="navbar-default"
           >
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
-              <li>
-                <button
-                  onClick={() => handleNavigation("/home")}
-                  className={`block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ${isActive("/home")}`}
-                >
-                  Home
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleNavigation("/contact")}
-                  className={`block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ${isActive("/contact")}`}
-                >
-                  Contact
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleNavigation("/about")}
-                  className={`block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ${isActive("/about")}`}
-                >
-                  About
-                </button>
-              </li>
-              {!auth && (
-                <li>
-                  <button
-                    onClick={() => handleNavigation("/signup")}
-                    className={`block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 ${isActive("/signup")}`}
-                  >
-                    Sign Up
-                  </button>
-                </li>
-              )}
+            <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white">
               {auth && (
                 <li>
                   <div
@@ -128,7 +133,7 @@ const NavBar = () => {
                     onMouseLeave={() => setIsHovered(false)}
                   >
                     <i
-                      className="fas fa-shopping-cart text-xl md:text-2xl cursor-pointer mr-4 md:mr-7 transition-colors duration-300"
+                      className="fas fa-shopping-cart text-xl md:text-2xl cursor-pointer mr-2 md:mr-4 transition-colors duration-300"
                       onClick={() => handleNavigation("/cart")}
                     ></i>
                     <img
