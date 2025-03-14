@@ -37,7 +37,12 @@ export default function UserProducts() {
             <h2 className="text-2xl font-bold mb-2">{userName}</h2>
             <div className="flex flex-row  mt-2 flex-wrap">
                 {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    avgRating={product.avgRating}
+                    ratingCount={product.ratingCount}
+                    />
                 ))}
             </div>
         </div>
