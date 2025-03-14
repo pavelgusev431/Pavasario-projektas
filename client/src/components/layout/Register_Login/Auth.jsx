@@ -250,7 +250,7 @@ const Auth = () => {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-1/2 text-gray-600"
+                                    className="absolute right-3 top-5 text-gray-600"
                                     onClick={() =>
                                         setShowPassword((prev) => !prev)
                                     }
@@ -282,20 +282,13 @@ const Auth = () => {
                                                 value === watch('password') ||
                                                 'Passwords must match',
                                         })}
+                                        
                                     />
-                                    <button
-                                        type="button"
-                                        className="absolute right-3 top-1/2 text-gray-600"
-                                        onClick={() =>
-                                            setShowPassword((prev) => !prev)
-                                        }
-                                    >
-                                        {showPassword ? (
-                                            <FaEyeSlash />
-                                        ) : (
-                                            <FaEye />
+                                                                            {errors.repeatPassword && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.repeatPassword.message}
+                                            </p>
                                         )}
-                                    </button>
                                 </div>
                             )}
 
