@@ -6,3 +6,7 @@
     -webkit-user-drag: none;
     -webkit-touch-callout: none;
 }
+body {
+    min-width: 425px;
+    width: 100%;
+}

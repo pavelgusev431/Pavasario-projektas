@@ -8,13 +8,14 @@ import UserCount from '../../../helpers/getAllUserCount.js';
 import ProductCount from '../../../helpers/getAllProductCount.js';
 import { ToastContainer, toast } from 'react-toastify';
 import SubmitEmailForPasswordReset from './SubmitEmailForPasswordReset.jsx';
- 
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 const Auth = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || '/home';
     if (from === '/logout') from = '/home';
- 
+
     const {
         register,
         watch,
@@ -24,15 +25,16 @@ const Auth = () => {
         clearErrors,
     } = useForm();
     const { setAuth } = useContext(AuthContext);
- 
+
     const userCount = UserCount();
     const productCount = ProductCount();
     const [authType, setAuthType] = useState('signup');
     const [error, setError] = useState('');
     const [showReset, setShowReset] = useState(false);
- 
+    const [showPassword, setShowPassword] = useState(false);
+
     const handleResetShow = () => setShowReset(!showReset);
- 
+
     const onSubmit = async (data) => {
         try {
             if (authType === 'signup') {
@@ -74,12 +76,12 @@ const Auth = () => {
             setError(err.message);
         }
     };
- 
+
     return (
         <div className="relative flex min-h-screen w-full bg-gray-700 overflow-hidden">
             <ToastContainer />
             <div
-                className={`flex w-[200%] md:duration-500 md:animate-ease-in
+                className={`flex w-[200%] md:duration-500 md:animate-ease-in 
     ${authType === 'signup' ? 'sm:translate-x-0 max-sm:translate-x-0' : 'sm:-translate-x-1/2 max-sm:translate-x-0'}`}
             >
                 {/* Left Section (Signup) - Hidden on Mobile */}
@@ -110,7 +112,7 @@ const Auth = () => {
                         </p>
                     </div>
                 </div>
- 
+
                 {/* Right Section (Form) */}
                 <div className="w-1/2 max-sm:w-full flex items-center justify-center p-6 bg-white">
                     <div className="max-w-md w-full bg-white p-8 rounded-lg">
@@ -119,7 +121,7 @@ const Auth = () => {
                                 ? 'Login'
                                 : 'Create an Account'}
                         </h2>
- 
+
                         {/* Toggle Buttons */}
                         <div className="flex justify-center mt-4">
                             <button
@@ -143,7 +145,7 @@ const Auth = () => {
                                 Login
                             </button>
                         </div>
- 
+
                         {/* Form */}
                         <form
                             onSubmit={handleSubmit(onSubmit)}
@@ -174,7 +176,7 @@ const Auth = () => {
                                     </p>
                                 )}
                             </div>
- 
+
                             {authType === 'signup' && (
                                 <div className="mb-4">
                                     <input
@@ -210,11 +212,11 @@ const Auth = () => {
                                     )}
                                 </div>
                             )}
- 
-                            <div className="mb-4">
+
+                            <div className="mb-4 relative">
                                 <input
                                     className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder="Password"
                                     {...register('password', {
                                         required: 'Password is required',
@@ -223,7 +225,7 @@ const Auth = () => {
                                             message: 'Password is too short',
                                         },
                                         pattern: {
-                                            value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]+$/,
+                                            value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]{7,}$/,
                                             message:
                                                 "Password must only contain letters, numbers and these special characters: $&+,:;=?@#|'<>.^*()%!-",
                                         },
@@ -231,19 +233,43 @@ const Auth = () => {
                                             setError('');
                                             clearErrors('password');
                                         },
+                                        validate: (value) => {
+                                            return (
+                                                (authType === 'signup' &&
+                                                    /^.*[A-Z].*$/.test(value) &&
+                                                    /^.*\d.*$/.test(value) &&
+                                                    /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
+                                                        value
+                                                    )) ||
+                                                (authType === 'signup'
+                                                    ? 'Password must contain at least 1 capital letter, 1 number and 1 special character'
+                                                    : true)
+                                            );
+                                        },
                                     })}
                                 />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-1/2 text-gray-600"
+                                    onClick={() =>
+                                        setShowPassword((prev) => !prev)
+                                    }
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
                                 {errors.password && (
                                     <p className="text-red-500 text-sm mt-1">
                                         {errors.password.message}
                                     </p>
                                 )}
                             </div>
- 
+
                             {authType === 'signup' && (
-                                <div className="mb-4">
+                                <div className="mb-4 relative">
                                     <input
-                                        type="password"
+                                        type={
+                                            showPassword ? 'text' : 'password'
+                                        }
                                         className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         placeholder="Repeat Password"
                                         {...register('repeatPassword', {
@@ -257,23 +283,60 @@ const Auth = () => {
                                                 'Passwords must match',
                                         })}
                                     />
+                                    <button
+                                        type="button"
+                                        className="absolute right-3 top-1/2 text-gray-600"
+                                        onClick={() =>
+                                            setShowPassword((prev) => !prev)
+                                        }
+                                    >
+                                        {showPassword ? (
+                                            <FaEyeSlash />
+                                        ) : (
+                                            <FaEye />
+                                        )}
+                                    </button>
                                 </div>
                             )}
- 
+
                             <button
                                 type="submit"
                                 className="w-full px-4 py-3 text-white bg-[#D30043] rounded-lg hover:bg-gray-800 transition duration-300"
                             >
                                 {authType === 'login' ? 'Login' : 'Sign Up'}
                             </button>
- 
+
                             {error && (
                                 <p className="text-red-500 text-sm mt-2 text-center">
                                     {error}
                                 </p>
                             )}
+
+                            {authType === 'signup' && (
+                                <p className="mt-2">
+                                    Already have an account?{' '}
+                                    <span
+                                        className="text-blue-400 hover:cursor-pointer"
+                                        onClick={() => setAuthType('login')}
+                                    >
+                                        Login
+                                    </span>
+                                </p>
+                            )}
+
+                            {authType === 'login' && (
+                                <p className="mt-2">
+                                    Don't have an account?{' '}
+                                    <span
+                                        className="text-blue-400 hover:cursor-pointer"
+                                        onClick={() => setAuthType('signup')}
+                                    >
+                                        Sign Up
+                                    </span>
+                                </p>
+                            )}
                         </form>
- 
+
                         {/* Forgot Password */}
                         {authType === 'login' && (
                             <>
@@ -289,10 +352,10 @@ const Auth = () => {
                     </div>
                 </div>
             </div>
- 
+
             {/* Right Section (Login Info) - Hidden on Mobile */}
             <div
-                className={`absolute top-0 max-sm:hidden right-0 w-1/2 h-full bg-gradient-to-br from-gray-900 to-gray-700
+                className={`absolute top-0 max-sm:hidden right-0 w-1/2 h-full bg-gradient-to-br from-gray-900 to-gray-700 
     flex items-center justify-center text-white p-10 md:duration-500 md:animate-ease-in
     ${authType === 'login' ? 'opacity-100 translate-x-0 z-10' : 'opacity-0 translate-x-full -z-10'}`}
             >
@@ -312,5 +375,5 @@ const Auth = () => {
         </div>
     );
 };
- 
+
 export default Auth;

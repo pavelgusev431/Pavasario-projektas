@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { sendEmail } from '../../../helpers/passwordReset.js';
 import { ToastContainer, toast } from 'react-toastify';
 
-
 const SubmitEmailForPasswordReset = () => {
     const {
         register,
