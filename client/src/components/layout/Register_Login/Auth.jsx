@@ -8,6 +8,7 @@ import UserCount from '../../../helpers/getAllUserCount.js';
 import ProductCount from '../../../helpers/getAllProductCount.js';
 import { ToastContainer, toast } from 'react-toastify';
 import SubmitEmailForPasswordReset from './SubmitEmailForPasswordReset.jsx';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const Auth = () => {
     const [authType, setAuthType] = useState('signup');
     const [error, setError] = useState('');
     const [showReset, setShowReset] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleResetShow = () => setShowReset(!showReset);
 
@@ -211,10 +213,10 @@ const Auth = () => {
                                 </div>
                             )}
 
-                            <div className="mb-4">
+                            <div className="mb-4 relative">
                                 <input
                                     className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder="Password"
                                     {...register('password', {
                                         required: 'Password is required',
@@ -223,7 +225,7 @@ const Auth = () => {
                                             message: 'Password is too short',
                                         },
                                         pattern: {
-                                            value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]+$/,
+                                            value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]{7,}$/,
                                             message:
                                                 "Password must only contain letters, numbers and these special characters: $&+,:;=?@#|'<>.^*()%!-",
                                         },
@@ -246,6 +248,15 @@ const Auth = () => {
                                         },
                                     })}
                                 />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-1/2 text-gray-600"
+                                    onClick={() =>
+                                        setShowPassword((prev) => !prev)
+                                    }
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
                                 {errors.password && (
                                     <p className="text-red-500 text-sm mt-1">
                                         {errors.password.message}
@@ -254,9 +265,11 @@ const Auth = () => {
                             </div>
 
                             {authType === 'signup' && (
-                                <div className="mb-4">
+                                <div className="mb-4 relative">
                                     <input
-                                        type="password"
+                                        type={
+                                            showPassword ? 'text' : 'password'
+                                        }
                                         className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         placeholder="Repeat Password"
                                         {...register('repeatPassword', {
@@ -270,6 +283,19 @@ const Auth = () => {
                                                 'Passwords must match',
                                         })}
                                     />
+                                    <button
+                                        type="button"
+                                        className="absolute right-3 top-1/2 text-gray-600"
+                                        onClick={() =>
+                                            setShowPassword((prev) => !prev)
+                                        }
+                                    >
+                                        {showPassword ? (
+                                            <FaEyeSlash />
+                                        ) : (
+                                            <FaEye />
+                                        )}
+                                    </button>
                                 </div>
                             )}
 
@@ -283,6 +309,30 @@ const Auth = () => {
                             {error && (
                                 <p className="text-red-500 text-sm mt-2 text-center">
                                     {error}
+                                </p>
+                            )}
+
+                            {authType === 'signup' && (
+                                <p className="mt-2">
+                                    Already have an account?{' '}
+                                    <span
+                                        className="text-blue-400 hover:cursor-pointer"
+                                        onClick={() => setAuthType('login')}
+                                    >
+                                        Login
+                                    </span>
+                                </p>
+                            )}
+
+                            {authType === 'login' && (
+                                <p className="mt-2">
+                                    Don't have an account?{' '}
+                                    <span
+                                        className="text-blue-400 hover:cursor-pointer"
+                                        onClick={() => setAuthType('signup')}
+                                    >
+                                        Sign Up
+                                    </span>
                                 </p>
                             )}
                         </form>
