@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
+import React, { useContext, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 const NavBar = () => {
     const location = useLocation();
@@ -22,7 +25,21 @@ const NavBar = () => {
                 console.error('Error fetching balance:', error);
             }
         };
+    useEffect(() => {
+        // Fetch the balance from the database
+        const fetchBalance = async () => {
+            try {
+                const response = await fetch('/api/balance'); // Adjust the API endpoint as needed
+                const data = await response.json();
+                setBalance(data.balance);
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+            }
+        };
 
+        if (auth) {
+            fetchBalance();
+        }
         if (auth) {
             fetchBalance();
         }
@@ -37,7 +54,13 @@ const NavBar = () => {
     const handleNavigation = (path) => {
         navigate(path);
     };
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
 
+    const isActive = (path) => {
+        return location.pathname === path ? 'text-[#800020]' : 'text-black';
+    };
     const isActive = (path) => {
         return location.pathname === path ? 'text-[#800020]' : 'text-black';
     };

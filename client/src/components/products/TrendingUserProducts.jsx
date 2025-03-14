@@ -8,7 +8,8 @@ export default function TrendingUserProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useState("");
+    const [userId, setUserId] = useState(null);
     const [noUser, setNoUser] = useState(false);
 
     useEffect(() => {
@@ -23,11 +24,18 @@ export default function TrendingUserProducts() {
 
                 setProducts(response.data.data);
 
+                
+                
                 const userId = response.data.user_id;
 
                 if (userId) {
+                    setUserId(userId);
+                }
+                
+                if (userId) {
                     const userResponse = await getUserById(userId);
                     setUserName(userResponse.data.data.username);
+                    
                 }
             } catch (err) {
                 setError(err.message);
@@ -43,14 +51,14 @@ export default function TrendingUserProducts() {
     if (error) return <p className="text-red-500 font-bold">Klaida: {error}</p>;
 
     return (
-        <div className="w-full">
-            <div className="flex flex-row gap-2 mt-2">
+        <div className="mt-10 w-full">
+            <div className="flex ml-10 flex-row gap-2 mt-2">
                 <div className="w-2 h-6 bg-red-500"></div>
                 <h2 className="text-l text-red-500 font-bold mb-2">
                     Trending user
                 </h2>
             </div>
-            <h2 className="text-2xl font-bold mb-2">
+            <h2 className="text-2xl font-bold ml-10 mb-2">
                 {noUser ? 'No Trending Users' : `Trending ${userName} products`}
             </h2>
             {noUser ? (
@@ -59,7 +67,7 @@ export default function TrendingUserProducts() {
                 </p>
             ) : (
                 <>
-                    <div className="flex flex-wrap flex-row">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
                         {products.map((product) => (
                             <ProductCard
                                 key={product.id}
@@ -70,7 +78,7 @@ export default function TrendingUserProducts() {
                         ))}
                     </div>
                     <div className="text-center mt-4">
-                        <Link to={`/home/`}>
+                        <Link to={`/products/${userId}`}>
                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                 View All Products
                             </button>

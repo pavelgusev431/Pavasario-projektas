@@ -28,18 +28,18 @@ export default function HotProducts() {
     if (error) return <p className="text-center text-red-500">{error}</p>;
 
     return (
-        <div className="w-full">
-            <div className="flex flex-row gap-2 mt-2">
+        <div className="mt-10 w-full">
+            <div className="flex ml-10 flex-row gap-2 mt-2">
                 <div className="w-2 h-6 bg-red-500"></div>
                 <h2 className="text-l text-red-500 font-bold mb-2">
                     This Week
                 </h2>
             </div>
             <div className="flex flex-row justify-between items-center">
-                <h2 className="text-2xl font-bold py-2">Hot Products</h2>
+                <h2 className="text-2xl ml-10 font-bold py-2">Hot Products</h2>
                 {products.length > 0 && (
                     <Link to="/products">
-                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold rounded py-2 px-4">
+                        <button className="bg-red-500 mr-10 hover:bg-red-700 text-white font-bold rounded py-2 px-4">
                             View All Products
                         </button>
                     </Link>
@@ -52,7 +52,7 @@ export default function HotProducts() {
                     Currently, no hot products. Check back later!
                 </p>
             ) : (
-                <div className="flex flex-wrap flex-row mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
                     {products.map((product) => (
                         <ProductCard
                             key={product.id}

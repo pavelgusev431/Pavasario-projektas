@@ -1,1 +1,1 @@
-client/src/components/layout/NavBar.jsx
+client/src/components/layout/SearchBar.jsx
