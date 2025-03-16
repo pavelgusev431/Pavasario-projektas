@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import ProductCard from './ProductCard.jsx';
-import { Link } from 'react-router-dom';
-
+import { Link } from 'react-router';
+import { getProductById } from '../helpers/getProduct.js';
+import { getAllUsers } from '../helpers/getUser.js';
 export default function UsersProducts() {
     const [usersWithProducts, setUsersWithProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,33 +11,29 @@ export default function UsersProducts() {
     useEffect(() => {
         const fetchUsersAndProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/products/users');
-                console.log("🛒 Ответ от API с товарами:", response);
+                // Gauti visus vartotojus
+                const usersResponse = await getAllUsers();
+                const users = usersResponse.data.data;
 
-                // Преобразование данных в формат [ {user, products} ]
-                const groupedData = response.data.data.reduce((acc, product) => {
-                    const userId = product.User.id;
-                    const existingUser = acc.find(user => user.id === userId);
+                // Gauti visų vartotojų produktus
+                const usersWithProductsPromises = users.map(async (user) => {
+                    const productsResponse = await getProductById(user.id);
+                    return { ...user, products: productsResponse.data.data };
+                });
 
-                    if (existingUser) {
-                        existingUser.products.push(product);
-                    } else {
-                        acc.push({
-                            id: product.User.id,
-                            username: product.User.username,
-                            products: [product]
-                        });
-                    }
+                // Palaukti, kol visi vartotojų produktai bus gauti
+                const usersWithProductsData = await Promise.all(
+                    usersWithProductsPromises
+                );
 
-                    return acc;
-                }, []);
-
-                console.log("✅ Преобразованные данные для отображения:", groupedData);
-
-                setUsersWithProducts(groupedData);
+                // Filtruojame tik tuos vartotojus, kurie turi bent vieną produktą
+                setUsersWithProducts(
+                    usersWithProductsData.filter(
+                        (user) => user.products.length > 0
+                    )
+                );
             } catch (err) {
-                console.error("❌ Klaida gaunant duomenis:", err.response || err);
-                setError(err.message || 'Nepavyko įkelti duomenų');
+                setError(err.message);
             } finally {
                 setLoading(false);
             }
@@ -46,37 +42,36 @@ export default function UsersProducts() {
         fetchUsersAndProducts();
     }, []);
 
-    if (loading) return <p>🔄 Kraunama...</p>;
-    if (error) return <p className="text-red-500">❌ Klaida: {error}</p>;
+    if (loading) return <p>Kraunama...</p>;
+    if (error) return <p>Klaida: {error}</p>;
 
     return (
         <div className="w-full">
-        {usersWithProducts.map((user) => (
-            <div key={user.id} className="mb-4">
-                <div className="flex flex-row gap-2 mt-2 ">
-                    <div className="w-2 h-6 bg-red-500"></div>
-                    <h2 className="text-l text-red-500 font-bold mb-2">
-                        Spotlight
+            {usersWithProducts.map((user) => (
+                <div key={user.id} className="mb-4">
+                    <div className="flex flex-row gap-2 mt-2 ">
+                        <div className="w-2 h-6 bg-red-500"></div>
+                        <h2 className="text-l text-red-500 font-bold mb-2">
+                            Spotlight
+                        </h2>
+                    </div>
+                    <h2 className="text-2xl font-bold mb-2">
+                        Explore {user.username} products
                     </h2>
+                    <div className="flex flex-wrap flex-row  ">
+                        {user.products.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                    <div className="text-center">
+                        <Link to={`/home/${user.id}`}>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
+                                View All Products
+                            </button>
+                        </Link>
+                    </div>
                 </div>
-                <h2 className="text-2xl font-bold mb-2">
-                    Explore {user.username} products
-                </h2>
-                <div className="flex flex-wrap flex-row  ">
-                    {user.products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
-                <div className="text-center">
-                    <Link to={`/home/${user.id}`}>
-                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
-                            View All Products
-                        </button>
-                    </Link>
-                </div>
-            </div>
-        ))}
-    </div>
-
+            ))}
+        </div>
     );
 }

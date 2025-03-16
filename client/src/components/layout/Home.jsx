@@ -1,10 +1,10 @@
 import BannerCarousel from './Home/Carousel';
 import NavBar from './NavBar';
-import HighestRatedProducts from '../products/HighestRatedProducts';
-import HotProducts from '../products/HotProducts';
-import TrendingUserProducts from '../products/TrendingUserProducts';
-import TopUserProducts from '../products/TopUserProducts';
-import SearchBar from "./SearchBar"; // Import the SearchBar component
+import HighestRatedProducts from '../products/HighestRatedProducts.jsx';
+import HotProducts from '../products/HotProducts.jsx';
+import TrendingUserProducts from '../products/TrendingUserProducts.jsx';
+import TopUserProducts from '../products/TopUserProducts.jsx';
+import SearchBar from "./SearchBar.jsx";
 
 const Home = () => {
   const handleSearch = (query, category) => {
@@ -15,9 +15,8 @@ const Home = () => {
         <>
             <NavBar />
             <div>
-                <BannerCarousel />
-                
-                <SearchBar onSearch={handleSearch} /> {/* Add the SearchBar component */}
+                <BannerCarousel />                
+                <SearchBar onSearch={handleSearch} />
                 <HighestRatedProducts />
                 <HotProducts />
                 <TrendingUserProducts />

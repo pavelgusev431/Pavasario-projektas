@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import Profile from './Profile.jsx';
+import Profile from '../protected/Profile.jsx';
 import ProfileEdit from '../protected/ProfileEdit.jsx';
-import Protected from './Protected.jsx';
+import Protected from '../protected/Protected.jsx';
 
 const ProtectedRoutes = () => {
     const isAuthenticated = true;

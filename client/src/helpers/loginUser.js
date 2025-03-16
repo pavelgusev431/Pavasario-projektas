@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 
 const loginUser = async (user) => {
     try {
-        // 🔹 Получаем соль для пользователя
         const saltResponse = await axios.get(`http://localhost:3000/users/getSalt/${user.username}`, {
             withCredentials: true,
         });
@@ -17,32 +16,29 @@ const loginUser = async (user) => {
             return null;
         }
 
-        // 🔹 Хешируем пароль с солью
         const hashedPassword = sha256(sha1(user.password + salt));
 
-        // 🔹 Отправляем запрос на логин
         const loginResponse = await axios.post(
             "http://localhost:3000/users/login",
             { username: user.username, password: hashedPassword },
             { withCredentials: true }
         );
 
-        // ✅ Сохраняем токен в куки
         const token = loginResponse.data.token;
         if (token) {
             Cookies.set("authToken", token, {
                 expires: 1, // Токен живёт 1 день
-                secure: false, // ❗ В продакшене менять на `true`
+                secure: false,
                 sameSite: "strict",
             });
-            console.log("✅ Токен успешно сохранён в куки:", token);
+            console.log("✅ Ženklas sėkmingai išsaugotas slapuke: ", token);
         } else {
-            console.error("❌ Ошибка: токен не получен!");
+            console.error("❌ Klaida: simbolis negautas!");
         }
 
         return loginResponse.data.data;
     } catch (error) {
-        console.error("Ошибка входа:", error.response?.data || error.message);
+        console.error("❌ Prisijungimo klaida:", error.response?.data || error.message);
         return null;
     }
 };

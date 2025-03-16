@@ -1,19 +1,18 @@
 import axios from 'axios';
-import url from './getURL.js';
+import getURL from './getURL.js';
 
 const loginUser = async (user) => {
     try {
-        const response = await axios.post("http://localhost:3000/users/login", user, {
-            withCredentials: true, // ✅ Обязательно включаем куки
+        const response = await axios.post(getURL('users', 'login'), user, {
+            withCredentials: true,
         });
 
-        localStorage.setItem("authToken", response.data.token); // ✅ Сохраняем токен
+        localStorage.setItem("authToken", response.data.token);
         return response.data.data;
     } catch (error) {
         console.error("Ошибка входа:", error.response?.data || error.message);
         return null;
     }
 };
-
 
 export default loginUser;

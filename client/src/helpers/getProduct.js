@@ -30,5 +30,44 @@ const getAllUsersProducts = async () => {
     }
 };
 
+const getHotProducts = async () => {
+    try {
+        const response = await axios.get(url('products', 'bestnew'));
+        return response;
+    } catch (error) {
+        console.error('❌ Ошибка получения популярных товаров:', error);
+        return null;
+    }
+};
 
-export { getProductById, getProductsByUserId, getAllUsersProducts };
+const getTopRatedProducts = async () => {
+    try {
+        const response = await axios.get(url('products', 'top'));
+        return response;
+    } catch (error) {
+        console.error('❌ Ошибка получения товаров с высоким рейтингом:', error);
+        return null;
+    }
+};
+
+const getTopUserProducts = async () => {
+    try {
+        const response = await axios.get(url('products', 'alltopuserproducts'));
+        return response;
+    } catch (error) {
+        console.error('❌ Ошибка получения топовых товаров пользователя:', error);
+        return null;
+    }
+};
+
+const getTrendingUserProducts = async () => {
+    try {
+        const response = await axios.get(url('products', 'trending'));
+        return response;
+    } catch (error) {
+        console.error('❌ Ошибка получения трендовых товаров:', error);
+        return null;
+    }
+};
+
+export { getProductById, getProductsByUserId, getAllUsersProducts, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts };
