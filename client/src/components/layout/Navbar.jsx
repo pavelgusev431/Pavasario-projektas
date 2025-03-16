@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
-import ProfileEdit from "../protected/ProfileEdit.jsx";
 
 const NavBar = () => {
     const location = useLocation();

@@ -18,30 +18,28 @@ import Profile from './components/protected/Profile.jsx';
 function App() {
     return (
         <>
-            {/* ✅ NavBar должен быть ВНЕ Routes, но внутри Router */}
             <NavBar />
             
             <Routes>
-                {/* Главная страница */}
                 <Route path="/home" element={<Home />} />
                 <Route path="/products/user/:id" element={<UserProducts />} />
 
-                {/* Аутентификация */}
+                
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/signup" element={<Auth authType="signup" />} />
                 <Route path="/reset/:userid/:salt" element={<PasswordReset />} />
 
-                {/* Статические страницы */}
+                
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/about" element={<About />} />
 
-                {/* Защищённые маршруты */}
+                
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/profile/edit" element={<ProfileEdit />} />
                 </Route>
 
-                {/* Страница "Не найдено" */}
+                
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </>

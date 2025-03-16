@@ -40,49 +40,40 @@ const Auth = () => {
                     ...data,
                     repeatPassword: undefined,
                 });
-    
                 if (response?.status === 201) {
                     setValue('username', '');
                     setValue('email', '');
                     setValue('password', '');
                     setValue('repeatPassword', '');
                     setError('');
-    
-                    toast.success('Your account is created successfully! Switching to login...', {
+                    toast.success('Your account is created successfully!', {
                         position: 'top-center',
-                        autoClose: 3000,
+                        autoClose: 10000,
                         style: { background: '#161D2F', color: '#FFFFFF' },
                         hideProgressBar: true,
                     });
-    
-                    // Переключаем на вкладку "Login"
-                    setTimeout(() => {
-                        setAuthType('login');  // ❗ ПРАВИЛЬНЫЙ СПОСОБ ПЕРЕКЛЮЧЕНИЯ ВАШЕГО UI
-                    }, 500);
-    
+                    setTimeout(() => navigate('/home'), 3000);
                 } else {
-                    throw new Error(response?.data?.message || 'Failed to create user');
+                    throw new Error(
+                        response?.data?.message || 'Failed to create user'
+                    );
                 }
             } else {
                 const user = await loginUser(data);
                 if (!user) throw new Error('Invalid login credentials');
                 setAuth(user);
-    
                 toast.success('Logged in successfully!', {
                     position: 'top-center',
-                    autoClose: 3000,
+                    autoClose: 10000,
                     style: { background: '#161D2F', color: '#FFFFFF' },
                     hideProgressBar: true,
                 });
-    
                 setTimeout(() => navigate(from, { replace: true }), 3000);
             }
         } catch (err) {
             setError(err.message);
         }
     };
-    
-
 
     return (
         <div className="relative flex min-h-screen w-full bg-gray-700 overflow-hidden">
