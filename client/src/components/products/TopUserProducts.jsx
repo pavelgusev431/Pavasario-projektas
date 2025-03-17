@@ -7,7 +7,7 @@ export default function TopUserProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [userName, setUserName] = useState("");
+    const [userName, setUserName] = useState('');
     const [userId, setUserId] = useState(null);
     const [noUser, setNoUser] = useState(false);
 
@@ -26,8 +26,7 @@ export default function TopUserProducts() {
                 if (fetchedUserId) {
                     setUserId(fetchedUserId);
                 }
-                
-                
+
                 const userId = response.data.user_id;
 
                 // Gauname vartotojo vardą pagal user_id
