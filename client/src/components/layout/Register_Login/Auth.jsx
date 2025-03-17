@@ -54,7 +54,7 @@ const Auth = () => {
                         style: { background: '#161D2F', color: '#FFFFFF' },
                         hideProgressBar: true,
                     });
-                    setTimeout(() => navigate('/home'), 3000);
+                    setTimeout(() => setAuthType('login'), 3000);
                 } else {
                     throw new Error(
                         response?.data?.message || 'Failed to create user'

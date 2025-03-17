@@ -89,10 +89,10 @@ const NavBar = () => {
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)}
                         >
-                            <i
+                            {/* <i
                                 className="fas fa-shopping-cart text-xl md:text-2xl cursor-pointer mr-4 md:mr-7 transition-colors duration-300"
                                 onClick={() => handleNavigation('/cart')}
-                            ></i>
+                            ></i> */}
                             <img
                                 src="../src/public/banner_images/user.png"
                                 alt="User"
