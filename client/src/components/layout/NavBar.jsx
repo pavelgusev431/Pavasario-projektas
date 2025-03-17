@@ -46,14 +46,14 @@ const NavBar = () => {
 
     return (
         <nav className="bg-white p-4 sticky top-0 w-full z-50 shadow-md">
-            <div className="flex justify-between items-center flex-wrap">
+            <div className="flex justify-between items-center">
                 <div className="flex items-center mr- md:mr-36">
                     <img
                         src="../src/public/banner_images/logo.png"
                         alt="Logo"
                         className="h-10 md:h-20"
                     />
-                    <div className="flex items-center flex-wrap ml-4">
+                    <div className="flex items-center ml-4">
                         <button
                             onClick={() => handleNavigation('/home')}
                             className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/home')}`}
@@ -68,7 +68,7 @@ const NavBar = () => {
                         </button>
                         <button
                             onClick={() => handleNavigation('/about')}
-                            className={`mr-4 md:mr-6 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/about')}`}
+                            className={`mr-4 md:mr-4 bg-none border-none cursor-pointer p-2 md:p-5 text-sm md:text-lg relative transition-colors duration-300 ${isActive('/about')}`}
                         >
                             About
                         </button>
