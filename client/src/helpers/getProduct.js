@@ -22,10 +22,10 @@ const getAllUsersProducts = async () => {
     try {
         const response = await axios.get("http://localhost:3000/products/users");
         console.log("📨 Sending GET request to: http://localhost:3000/products/users");  // <-- Проверяем URL
-        console.log("✅ Response received:", response);  // <-- Проверяем ответ
+        console.log("✅ Response received:", response);
         return response;
     } catch (error) {
-        console.error("❌ Klaida užklausoje:", error);  // <-- Проверяем ошибку
+        console.error("❌ Klaida užklausoje:", error);
         return { data: [] };
     }
 };
@@ -45,7 +45,7 @@ const getTopRatedProducts = async () => {
         const response = await axios.get(url('products', 'top'));
         return response;
     } catch (error) {
-        console.error('❌ Ошибка получения товаров с высоким рейтингом:', error);
+        console.error('❌ Klaida gaunant prekes su aukštu reitingu:', error);
         return null;
     }
 };
@@ -55,7 +55,7 @@ const getTopUserProducts = async () => {
         const response = await axios.get(url('products', 'alltopuserproducts'));
         return response;
     } catch (error) {
-        console.error('❌ Ошибка получения топовых товаров пользователя:', error);
+        console.error('❌ Klaida gaunant naudotojo svarbiausius elementus:', error);
         return null;
     }
 };
@@ -65,7 +65,7 @@ const getTrendingUserProducts = async () => {
         const response = await axios.get(url('products', 'trending'));
         return response;
     } catch (error) {
-        console.error('❌ Ошибка получения трендовых товаров:', error);
+        console.error('❌ Klaida gaunant tendencingus elementus:', error);
         return null;
     }
 };

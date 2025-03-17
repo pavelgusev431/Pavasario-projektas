@@ -12,6 +12,8 @@ dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || "localhost";
 const CLIENT_PORT = process.env.CLIENT_PORT || "5173";
 
+console.log("📋 [SERVER] .env загружен: JWT_SECRET =", process.env.JWT_SECRET);
+
 const app = express();
 
 app.use(
@@ -24,14 +26,15 @@ app.use(express.json());
 
 app.use(
     cors({
-        origin: `http://${CLIENT_HOST}:${CLIENT_PORT}`,
+        origin: `http://localhost:5173`,
         credentials: true,
     })
 );
 
+
 app.use(cookieParser());
 
-// Маршруты
+// Maršrutai.
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 
@@ -47,7 +50,7 @@ app.get("/auth/me", protect, (req, res) => {
     });
 });
 
-// Последний middleware
+// Naujausia tarpinė programinė įranga
 app.use(errorHandler);
 
 export default app;

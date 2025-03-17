@@ -34,19 +34,28 @@ const Auth = () => {
     const handleResetShow = () => setShowReset(!showReset);
 
     const onSubmit = async (data) => {
+        console.log("📤 Išsiuntimo informacija:", data);
         try {
+            if (authType === 'signup' && data.password !== data.repeatPassword) {
+                setError("❌ Slaptažodžiai nesutampa!");
+                return;
+            }
+    
             if (authType === 'signup') {
                 const response = await createUser({
-                    ...data,
-                    repeatPassword: undefined,
+                    username: data.username,
+                    email: data.email,
+                    password: data.password,
+                    repeatPassword: data.repeatPassword,
                 });
+    
                 if (response?.status === 201) {
                     setValue('username', '');
                     setValue('email', '');
                     setValue('password', '');
                     setValue('repeatPassword', '');
                     setError('');
-                    toast.success('Your account is created successfully!', {
+                    toast.success('✅ Jūsų paskyra sėkmingai sukurta!', {
                         position: 'top-center',
                         autoClose: 10000,
                         style: { background: '#161D2F', color: '#FFFFFF' },
@@ -55,14 +64,17 @@ const Auth = () => {
                     setTimeout(() => navigate('/home'), 3000);
                 } else {
                     throw new Error(
-                        response?.data?.message || 'Failed to create user'
+                        response?.data?.message || '❌ Nepavyko sukurti naudotojo'
                     );
                 }
             } else {
-                const user = await loginUser(data);
-                if (!user) throw new Error('Invalid login credentials');
+                const { repeatPassword, email, ...loginData } = data;
+                console.log("✅ Įrašo informacija:", loginData);
+
+                const user = await loginUser(loginData);
+                if (!user) throw new Error('❌ Neteisingi prisijungimo duomenys!');
                 setAuth(user);
-                toast.success('Logged in successfully!', {
+                toast.success('✅ Sėkmingas prisijungimas prie paskyros!', {
                     position: 'top-center',
                     autoClose: 10000,
                     style: { background: '#161D2F', color: '#FFFFFF' },
@@ -74,6 +86,7 @@ const Auth = () => {
             setError(err.message);
         }
     };
+    
 
     return (
         <div className="relative flex min-h-screen w-full bg-gray-700 overflow-hidden">
@@ -257,6 +270,7 @@ const Auth = () => {
                                 <div className="mb-4">
                                     <input
                                         type="password"
+                                        name="repeatPassword"
                                         className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         placeholder="Repeat Password"
                                         {...register('repeatPassword', {

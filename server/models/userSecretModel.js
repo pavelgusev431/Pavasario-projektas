@@ -40,18 +40,20 @@ const UserSecret = sq.define(
     }
 );
 
-// 🔥 Nustatome ryšį su lentele „users“
+// 🔹 Teisingų nuorodų nustatymas
 User.hasOne(UserSecret, { foreignKey: "user_id", onDelete: "CASCADE" });
 UserSecret.belongsTo(User, { foreignKey: "user_id" });
 
-//  Funkcija sinchronizuoti modelį
+// 🔹 Saugi sinchronizacija
 const syncUserSecretModel = async () => {
     try {
         await UserSecret.sync({ alter: true });
+        const isDev = process.env.NODE_ENV === 'development';
+        await UserSecret.sync({ alter: true, force: isDev });
         console.log('\x1b[35mUserSecret\x1b[34m lentelė sinchronizuota\x1b[0m');
     } catch (error) {
-        console.error('Klaida sinchronizuojant „UserSecret“ modelį:', error);
-        throw new AppError(`Klaida kuriant „UserSecret“ modelį: ${error}`, 500);
+        console.error('❌ Klaida sinchronizuojant „UserSecret“ modelį:', error);
+        throw new AppError(`❌ Klaida kuriant „UserSecret“ modelį: ${error}`, 500);
     }
 };
 

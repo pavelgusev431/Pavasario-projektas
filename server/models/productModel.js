@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
 import { User } from './userModel.js';
+import Rating from './ratingModel.js';
 
 // Product model definition
 const Product = sq.define(
@@ -22,8 +23,12 @@ const Product = sq.define(
 User.hasMany(Product, { foreignKey: 'user_id' });
 Product.belongsTo(User, { foreignKey: 'user_id' });
 
+// Relationship with Rating model
+Product.hasMany(Rating, { foreignKey: 'product_id' });
+Rating.belongsTo(Product, { foreignKey: 'product_id' });
+
 try {
-    await Product.sync()
+    await Product.sync();  // ❗️ Иnaudoti { alter: true } tik kuriant modelį
     console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
 } catch (error) {
     throw new AppError(`Error while creating Product model: ${error}`, 500);

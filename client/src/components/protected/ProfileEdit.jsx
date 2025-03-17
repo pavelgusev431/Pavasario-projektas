@@ -10,27 +10,32 @@ function ProfileEdit() {
   const fileInputRef = useRef(null);
   const [editableField, setEditableField] = useState(null);
 
-  // Įkeliami naudotojo duomenys, kai komponentas užsikrauna
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("📤 [FRONTEND] JWT Token:", token);
+
     const fetchUserData = async () => {
-      console.log("🔹 Siunčiamas užklausa į: http://localhost:3000/auth/me");
+      console.log("🔹 Siųsti užklausą adresu: http://localhost:3000/auth/me");
 
       try {
         const response = await axios.get("http://localhost:3000/auth/me", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
 
         console.log("🟢 Gauti profilio duomenys:", response.data);
+
+        const userData = response.data.data || response.data;
+
         setProfile({
-          vardas: response.data.username,
-          el_pastas: response.data.email,
-          aprasymas: response.data.description || "",
-          kontaktai: response.data.contacts || "",
+          vardas: userData.username,
+          el_pastas: userData.email,
+          aprasymas: userData.description || "",
+          kontaktai: userData.contacts || "",
         });
 
-        if (response.data.image_url) {
-          setAvatarPreview(response.data.image_url);
+        if (userData.image_url) {
+          setAvatarPreview(userData.image_url);
         }
       } catch (error) {
         console.error("❌ Klaida gaunant naudotojo duomenis:", error);
@@ -47,111 +52,143 @@ function ProfileEdit() {
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setPassword((prev) => ({ ...prev, [name]: value }));
-  };
+
+   
+    const translatedNames = {
+        dabartinis: "currentPassword",
+        naujas: "newPassword",
+        patvirtinimas: "confirmPassword"
+    };
+
+    setPassword((prev) => ({
+        ...prev,
+        [translatedNames[name] || name]: value
+    }));
+};
+
+
 
   const handleSaveProfile = async () => {
+    console.log("📩 [FRONTEND] Siunčiami duomenys:", profile);
     try {
-        const response = await axios.put("http://localhost:3000/users/profile/edit", profile, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            withCredentials: true,
-        });
-
-        if (response.data && response.data.data) {
-            setProfile(response.data.data);
-            alert("✅ Duomenys sėkmingai atnaujinti!");
-        } else {
-            alert("⚠️ Nepavyko gauti atnaujintų duomenų!");
+      const response = await axios.patch(
+        "http://localhost:3000/users/profile/edit",
+        {
+          username: profile.vardas,
+          email: profile.el_pastas,
+          description: profile.aprasymas,
+          contacts: profile.kontaktai
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
         }
+      );
+
+      if (response.data && response.data.data) {
+        const updatedProfile = response.data.data;
+        console.log("🟢 [FRONTEND] Profilis sėkmingai atnaujintas:", updatedProfile);
+
+        setProfile({
+          vardas: updatedProfile.username,
+          el_pastas: updatedProfile.email,
+          aprasymas: updatedProfile.description || "",
+          kontaktai: updatedProfile.contacts || "",
+        });
 
         setEditableField(null);
-    } catch (error) {
-        console.error("❌ Klaida atnaujinant profilį:", error);
+        alert("✅ Duomenys sėkmingai atnaujinti!");
+      } else {
+        alert("⚠️ Nepavyko gauti atnaujintų duomenų!");
+      }
 
-        if (error.response) {
-            console.error("📌 Serverio atsakymas:", error.response.data);
-            alert(`❌ Klaida: ${error.response.data.message || "Nežinoma klaida"}`);
-        } else if (error.request) {
-            console.error("📌 Serveris neatsakė:", error.request);
-            alert("❌ Klaida: Serveris neatsako");
-        } else {
-            console.error("📌 Klaida siunčiant užklausą:", error.message);
-            alert(`❌ Klaida: ${error.message}`);
-        }
+    } catch (error) {
+      console.error("❌ Klaida atnaujinant profilį:", error);
+
+      if (error.response) {
+        console.error("📌 Serverio atsakymas:", error.response.data);
+        alert(`❌ Klaida: ${error.response.data.message || "Nežinoma klaida"}`);
+      } else if (error.request) {
+        console.error("📌 Serveris neatsakė:", error.request);
+        alert("❌ Klaida: serveris neatsako");
+      } else {
+        console.error("📌 Klaida siunčiant užklausą:", error.message);
+        alert(`❌ Klaida: ${error.message}`);
+      }
     }
-};
+  };
 
   const handleSavePassword = async () => {
-    console.log("📤 Siunčiami duomenys slaptažodžio keitimui:", password);
+    const { currentPassword, newPassword, confirmPassword } = password;
 
-    if (password.naujas !== password.patvirtinimas) {
-        alert("❌ Naujas slaptažodis ir patvirtinimas nesutampa!");
-        return;
+    console.log("📤 Sending password change data:", { currentPassword, newPassword });
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      alert("❌ Please fill in all fields!");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      alert("❌ The new password must be at least 6 characters long!");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert("❌ New password and confirmation do not match!");
+      return;
     }
 
     try {
-        const response = await axios.put("http://localhost:3000/users/profile/password", password, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json"
-            },
-            withCredentials: true,
-        });
-
-        console.log("✅ Serverio atsakymas:", response.data);
-        alert("✅ Slaptažodis sėkmingai pakeistas!");
-        setPassword({ dabartinis: "", naujas: "", patvirtinimas: "" });
-    } catch (error) {
-        console.error("❌ Klaida keičiant slaptažodį:", error);
-
-        if (error.response) {
-            console.error("📌 Serverio atsakymas:", error.response.data);
-            alert(`❌ Klaida: ${error.response.data.message || "Nežinoma klaida"}`);
-        } else if (error.request) {
-            console.error("📌 Serveris neatsakė:", error.request);
-            alert("❌ Klaida: Serveris neatsako");
-        } else {
-            console.error("📌 Klaida siunčiant užklausą:", error.message);
-            alert(`❌ Klaida: ${error.message}`);
+      const response = await axios.put(
+        "http://localhost:3000/users/profile/password",
+        { currentPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json"
+          },
+          withCredentials: true,
         }
+      );
+
+      console.log("✅ Server response:", response.data);
+      alert("✅ Password changed successfully!");
+      setPassword({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (error) {
+      console.error("❌ Error changing password:", error);
+      if (error.response) {
+        alert(`❌ Error: ${error.response.data.message || "Unknown error"}`);
+      } else {
+        alert("❌ Error: Server is not responding");
+      }
     }
 };
+
 
   const togglePasswordSection = () => {
     setShowPasswordSection((prev) => !prev);
   };
 
-  if (!profile.vardas) {
-    return <p className="text-center text-gray-500">Įkeliama...</p>;
+  if (!profile) {
+    return <p className="text-center text-gray-500">Загрузка...</p>;
   }
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-[4cm]">
       <h1 className="text-center text-2xl font-semibold text-red-500 mb-6">
-        Redaguoti profilį
+      Edit profile
       </h1>
 
       <form>
-        {/* Nuotraukos atnaujinimas */}
-        <div className="flex flex-col items-center space-y-4 mb-6">
-          <div
-            className="relative w-24 h-24 cursor-pointer border-2 border-dashed border-gray-300 hover:border-red-400 rounded-full flex items-center justify-center"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <img src={avatarPreview} alt="Profilio nuotrauka" className="w-full h-full rounded-full object-cover" />
-          </div>
-          <input type="file" ref={fileInputRef} accept="image/*" className="hidden" />
-        </div>
-
         {/* Profilio informacija */}
         <div className="space-y-4">
           {["vardas", "el_pastas", "aprasymas", "kontaktai"].map((field) => (
             <div key={field} className="relative">
               <label className="block text-gray-700 font-medium">
-                {field === "vardas" ? "Vartotojo vardas" :
-                 field === "el_pastas" ? "El. paštas" :
-                 field === "aprasymas" ? "Aprašymas" :
-                 "Kontaktai"}
+                {field === "vardas" ? "User Name" :
+                 field === "el_pastas" ? "E-mail" :
+                 field === "aprasymas" ? "Description" :
+                 "Contacts"}
               </label>
               <div className="relative flex items-center">
                 <input
@@ -176,17 +213,73 @@ function ProfileEdit() {
           ))}
         </div>
 
-        {/* Slaptažodžio keitimas */}
-        <div className="border-t pt-4 mt-6">
-          <h2 className="text-xl font-semibold">Keisti slaptažodį</h2>
+        {/* Button to toggle the password change section */}
+        <div className="text-center mt-6">
           <button
             type="button"
             onClick={togglePasswordSection}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 rounded-md"
+            className="text-blue-500 hover:underline"
           >
-            {showPasswordSection ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+            {showPasswordSection ? "Paslėpti slaptažodžio keitimą" : "Rodyti slaptažodžio pakeitimą"}
           </button>
         </div>
+
+        {showPasswordSection && (
+  <div className="border-t pt-4 mt-6">
+    <h2 className="text-xl font-semibold mb-4">Change Password</h2>
+
+    <div className="space-y-4">
+      {/* Current Password */}
+      <div>
+    <label className="block text-gray-700 font-medium">Current Password</label>
+    <input
+      type="password"
+      name="currentPassword"
+      value={password.currentPassword}
+      onChange={handlePasswordChange}
+      className="w-full px-4 py-2 border rounded-md"
+      placeholder="Enter current password"
+    />
+</div>
+
+<div>
+    <label className="block text-gray-700 font-medium">New Password</label>
+    <input
+      type="password"
+      name="newPassword"
+      value={password.newPassword}
+      onChange={handlePasswordChange}
+      className="w-full px-4 py-2 border rounded-md"
+      placeholder="Enter new password"
+    />
+</div>
+
+      
+<div>
+    <label className="block text-gray-700 font-medium">Confirm New Password</label>
+    <input
+      type="password"
+      name="confirmPassword"
+      value={password.confirmPassword}
+      onChange={handlePasswordChange}
+      className="w-full px-4 py-2 border rounded-md"
+      placeholder="Confirm new password"
+    />
+</div>
+
+      {/* Save Button */}
+      <div className="text-center mt-4">
+        <button
+          type="button"
+          onClick={handleSavePassword}
+          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+        >
+          Save Password
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       </form>
     </div>
   );

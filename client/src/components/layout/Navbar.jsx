@@ -13,7 +13,7 @@ const NavBar = () => {
         // Fetch the balance from the database
         const fetchBalance = async () => {
             try {
-                const response = await fetch('/api/balance'); // Adjust the API endpoint as needed
+                const response = await fetch('/api/balance');
                 const data = await response.json();
                 setBalance(data.balance);
             } catch (error) {
@@ -72,6 +72,12 @@ const NavBar = () => {
             style={{ ...styles.button, ...isActive("/about") }}
           >
             About
+          </button>
+          <button
+            onClick={() => handleNavigation("/profile/edit")}
+            style={{ ...styles.button, ...isActive("/profile/edit") }}
+          >
+            EditProfile
           </button>
           {!auth && (
             <button

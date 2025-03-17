@@ -10,7 +10,7 @@ const loginUser = async (user) => {
         localStorage.setItem("authToken", response.data.token);
         return response.data.data;
     } catch (error) {
-        console.error("Ошибка входа:", error.response?.data || error.message);
+        console.error("Prisijungimo klaida:", error.response?.data || error.message);
         return null;
     }
 };
