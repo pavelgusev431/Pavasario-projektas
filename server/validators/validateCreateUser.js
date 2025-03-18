@@ -4,10 +4,16 @@ import AppError from '../utilities/AppError.js';
 
 const validateCreateUser = [
     body('username')
+        .isEmpty()
+        .withMessage('Username field is required')
         .isString()
         .withMessage('Username must be a string')
-        .isLength({ min: 2, max: 32 })
-        .withMessage('Username must be between 2 and 32 characters')
+        .isLength({ min: 4, max: 32 })
+        .withMessage('Username must be between 4 and 32 characters')
+        .matches(/^[A-Za-z0-9]*$/)
+        .withMessage('Username must only contain letters or numbers')
+        .matches(/^[A-Za-z].*$/)
+        .withMessage('Username must start with a letter')
         .custom(async (username) => {
             const user = await User.findOne({ where: { username: username } });
             if (user) {
@@ -15,7 +21,30 @@ const validateCreateUser = [
             }
         }),
 
-    body('password').isString().withMessage('Password must be a string'),
+    body('password')
+        .isEmpty()
+        .withMessage('Password field is required')
+        .isString()
+        .withMessage('Password must be a string')
+        .matches(/^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]+$/)
+        .withMessage(
+            "Password must only contain letters, numbers and these symbols: $&+,:;=?@#|'<>.^*()%!-"
+        )
+        .matches(/^.*[A-Z].*$/)
+        .withMessage('Password must contain at least 1 capital letter')
+        .matches(/^.*\d.*$/)
+        .withMessage('Password must contain at least 1 number')
+        .matches(/^[$&+,:;=?@#|'<>.^*()%!-]$/)
+        .withMessage('Password must contain at least 1 special character')
+        .isLength({ min: 7 })
+        .withMessage('Password must be at least 7 characters long')
+        .custom((value, { req }) => {
+            if (value === req.body.username) {
+                throw new Error("Password can't be too simple");
+            } else {
+                return value;
+            }
+        }),
 
     body('email')
         .isEmail()

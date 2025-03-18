@@ -18,6 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const nodemailerTest = () => {
+    console.log('\x1b[33mStarting email connection test...\x1b[0m');
     transporter.verify((error) => {
         if (error) {
             console.log(

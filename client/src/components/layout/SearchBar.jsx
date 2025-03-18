@@ -43,7 +43,9 @@ const SearchBar = ({ onSearch }) => {
                     <button
                         className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                         onClick={() =>
-                            handleCategoryChange({ target: { value: 'phones' } })
+                            handleCategoryChange({
+                                target: { value: 'phones' },
+                            })
                         }
                     >
                         Phones
@@ -51,7 +53,9 @@ const SearchBar = ({ onSearch }) => {
                     <button
                         className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                         onClick={() =>
-                            handleCategoryChange({ target: { value: 'laptops' } })
+                            handleCategoryChange({
+                                target: { value: 'laptops' },
+                            })
                         }
                     >
                         Laptops
@@ -59,7 +63,9 @@ const SearchBar = ({ onSearch }) => {
                     <button
                         className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                         onClick={() =>
-                            handleCategoryChange({ target: { value: 'accessories' } })
+                            handleCategoryChange({
+                                target: { value: 'accessories' },
+                            })
                         }
                     >
                         Accessories
