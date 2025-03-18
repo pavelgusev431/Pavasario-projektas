@@ -8,6 +8,13 @@ const getProductById = async (id) => {
     return response;
 };
 
+const getAllProducts = async () => {
+    const response = await axios.get(url(`products`)).catch((error) => {
+        console.log(error);
+    });
+    return response;
+};
+
 const getHotProducts = async () => {
     const response = await axios.get(url(`products/bestnew`)).catch((error) => {
         console.log(error);
@@ -36,4 +43,4 @@ const getTrendingUserProducts = async () => {
     return response;
 };
 
-export { getProductById, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts };
+export { getProductById, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts, getAllProducts };
