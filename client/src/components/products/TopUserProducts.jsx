@@ -8,6 +8,7 @@ export default function TopUserProducts() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState(null);
     const [noUser, setNoUser] = useState(false);
 
     useEffect(() => {
@@ -19,6 +20,12 @@ export default function TopUserProducts() {
                     return;
                 }
                 setProducts(response.data.data);
+
+                const fetchedUserId = response.data.user_id;
+
+                if (fetchedUserId) {
+                    setUserId(fetchedUserId);
+                }
 
                 const userId = response.data.user_id;
 
@@ -70,7 +77,7 @@ export default function TopUserProducts() {
                         ))}
                     </div>
                     <div className="text-center mt-4">
-                        <Link to={`/home/`}>
+                        <Link to={`/products/${userId}`}>
                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                 View All Products
                             </button>

@@ -54,7 +54,7 @@ const Auth = () => {
                         style: { background: '#161D2F', color: '#FFFFFF' },
                         hideProgressBar: true,
                     });
-                    setTimeout(() => navigate('/home'), 3000);
+                    setTimeout(() => setAuthType('login'), 3000);
                 } else {
                     throw new Error(
                         response?.data?.message || 'Failed to create user'
@@ -250,7 +250,7 @@ const Auth = () => {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-1/2 text-gray-600"
+                                    className="absolute right-3 top-5 text-gray-600"
                                     onClick={() =>
                                         setShowPassword((prev) => !prev)
                                     }
@@ -283,19 +283,11 @@ const Auth = () => {
                                                 'Passwords must match',
                                         })}
                                     />
-                                    <button
-                                        type="button"
-                                        className="absolute right-3 top-1/2 text-gray-600"
-                                        onClick={() =>
-                                            setShowPassword((prev) => !prev)
-                                        }
-                                    >
-                                        {showPassword ? (
-                                            <FaEyeSlash />
-                                        ) : (
-                                            <FaEye />
-                                        )}
-                                    </button>
+                                    {errors.repeatPassword && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.repeatPassword.message}
+                                        </p>
+                                    )}
                                 </div>
                             )}
 
