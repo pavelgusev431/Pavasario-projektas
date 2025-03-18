@@ -38,7 +38,7 @@ function ProfileEdit() {
           setAvatarPreview(userData.image_url);
         }
       } catch (error) {
-        console.error("❌ Klaida gaunant naudotojo duomenis:", error);
+        console.error("❌ [FRONTEND] Error fetching user data:", error);
       }
     };
 
@@ -47,13 +47,15 @@ function ProfileEdit() {
 
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
+    console.log(`📝 [FRONTEND] Profile field changed: ${name} → ${value}`);
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
 
-   
+
+    console.log(`📝 [FRONTEND] Password field changed: ${name} → ${value}`);
     const translatedNames = {
         dabartinis: "currentPassword",
         naujas: "newPassword",
@@ -103,16 +105,16 @@ function ProfileEdit() {
       }
 
     } catch (error) {
-      console.error("❌ Klaida atnaujinant profilį:", error);
+      console.error("❌ [FRONTEND] Error updating profile::", error);
 
       if (error.response) {
-        console.error("📌 Serverio atsakymas:", error.response.data);
+        console.error("📌 [FRONTEND] Server response error:", error.response.data);
         alert(`❌ Klaida: ${error.response.data.message || "Nežinoma klaida"}`);
       } else if (error.request) {
-        console.error("📌 Serveris neatsakė:", error.request);
+        console.error("📌 [FRONTEND] Server did not respond:", error.request);
         alert("❌ Klaida: serveris neatsako");
       } else {
-        console.error("📌 Klaida siunčiant užklausą:", error.message);
+        console.error("📌 [FRONTEND] Request error:", error.message);
         alert(`❌ Klaida: ${error.message}`);
       }
     }
@@ -121,24 +123,45 @@ function ProfileEdit() {
   const handleSavePassword = async () => {
     const { currentPassword, newPassword, confirmPassword } = password;
 
-    console.log("📤 Sending password change data:", { currentPassword, newPassword });
+    console.log("📤 [FRONTEND] Sending password change data:", { currentPassword, newPassword });
 
     if (!currentPassword || !newPassword || !confirmPassword) {
+      console.error("❌ [FRONTEND] Missing password fields");
       alert("❌ Please fill in all fields!");
       return;
     }
 
     if (newPassword.length < 6) {
+      console.error("❌ [FRONTEND] New password is too short");
       alert("❌ The new password must be at least 6 characters long!");
       return;
     }
 
     if (newPassword !== confirmPassword) {
+      console.error("❌ [FRONTEND] New password and confirmation do not match");
       alert("❌ New password and confirmation do not match!");
       return;
     }
 
+    console.log("🔍 [FRONTEND] Input Current Password (перед отправкой):", `"${currentPassword}"`);
+    console.log("🔎 [FRONTEND] typeof currentPassword:", typeof currentPassword);
+    console.log("🔎 [FRONTEND] Trimmed currentPassword (без пробелов):", currentPassword.trim());
+
+    // Лог токена для проверки корректности передачи
+    const token = localStorage.getItem("token");
+    console.log("📤 [FRONTEND] Token отправляется:", token);
+
+    if (!token) {
+      console.error("❌ [FRONTEND] Токен отсутствует.");
+      alert("❌ Error: Token is missing. Please log in again.");
+      return;
+  }
+
     try {
+      console.log("🚀 [FRONTEND] Final request body:", JSON.stringify({ currentPassword, newPassword }));
+      console.log("📤 [FRONTEND] Token отправляется:", localStorage.getItem("token"));
+
+      console.log("🔍 [FRONTEND] Input Current Password (перед отправкой):", `"${currentPassword}"`);
       const response = await axios.put(
         "http://localhost:3000/users/profile/password",
         { currentPassword, newPassword },
@@ -150,15 +173,18 @@ function ProfileEdit() {
           withCredentials: true,
         }
       );
+      console.log("🛠️ URL:", "http://localhost:3000/users/profile/password");
 
-      console.log("✅ Server response:", response.data);
+      console.log("✅ [FRONTEND] Server response:", response.data);
       alert("✅ Password changed successfully!");
       setPassword({ currentPassword: "", newPassword: "", confirmPassword: "" });
     } catch (error) {
-      console.error("❌ Error changing password:", error);
+      console.error("❌ [FRONTEND] Error changing password:", error);
       if (error.response) {
+        console.error("❌ [FRONTEND] Server error details:", error.response.data);
         alert(`❌ Error: ${error.response.data.message || "Unknown error"}`);
       } else {
+        console.error("❌ [FRONTEND] Error: Server is not responding");
         alert("❌ Error: Server is not responding");
       }
     }
@@ -166,10 +192,12 @@ function ProfileEdit() {
 
 
   const togglePasswordSection = () => {
+    console.log(`🔀 [FRONTEND] Toggle password section: ${!showPasswordSection}`);
     setShowPasswordSection((prev) => !prev);
   };
 
   if (!profile) {
+    console.warn("⚠️ [FRONTEND] Profile data is empty. Showing loading message.");
     return <p className="text-center text-gray-500">Загрузка...</p>;
   }
 

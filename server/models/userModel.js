@@ -18,11 +18,10 @@ const User = sq.define(
     }
 );
 
-// 🔹 Saugi sinchronizacija (alternatyva pavojingai `force: true`)
 const syncUserModel = async () => {
     try {
         const isDev = process.env.NODE_ENV === 'development';
-        await User.sync({ alter: true, force: isDev }); 
+        await User.sync({ alter: true, force: isDev });
         console.log('\x1b[35mUser\x1b[34m table synced successfully\x1b[0m');
     } catch (error) {
         console.error('\x1b[31m❌ Error while syncing User model:\x1b[0m', error);
@@ -30,25 +29,5 @@ const syncUserModel = async () => {
     }
 };
 
-// 🔹 Automatiškai pridėti administratorių kuriant modelį
-const createAdminUser = async () => {
-    try {
-        const existingAdmin = await User.findOne({ where: { username: 'admin' } });
-
-        if (!existingAdmin) {
-            await User.create({
-                username: 'admin',
-                email: 'admin@example.com',
-                description: 'System Administrator',
-            });
-            console.log('\x1b[35mAdmin\x1b[34m user created successfully\x1b[0m');
-        } else {
-            console.log('\x1b[36mAdmin user already exists\x1b[0m');
-        }
-    } catch (error) {
-        console.error('\x1b[31m❌ Error creating Admin user:\x1b[0m', error);
-    }
-};
-
-export { User, syncUserModel, createAdminUser };
+export { User, syncUserModel };
 export default User;

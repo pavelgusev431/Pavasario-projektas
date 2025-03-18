@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sq from "../database/sequelize.js";
-import { User } from "./userModel.js";
+import User from "./userModel.js";
 import AppError from '../utilities/AppError.js';
 
 const UserSecret = sq.define(
@@ -16,7 +16,7 @@ const UserSecret = sq.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: User,
+                model: "users",  // ✅ Используем строку вместо `User`
                 key: 'id',
             },
             onDelete: "CASCADE",
@@ -40,22 +40,21 @@ const UserSecret = sq.define(
     }
 );
 
-// 🔹 Teisingų nuorodų nustatymas
+// 🔹 Ассоциации добавляем ПОСЛЕ объявления обеих моделей
 User.hasOne(UserSecret, { foreignKey: "user_id", onDelete: "CASCADE" });
 UserSecret.belongsTo(User, { foreignKey: "user_id" });
 
-// 🔹 Saugi sinchronizacija
 const syncUserSecretModel = async () => {
     try {
-        await UserSecret.sync({ alter: true });
         const isDev = process.env.NODE_ENV === 'development';
         await UserSecret.sync({ alter: true, force: isDev });
-        console.log('\x1b[35mUserSecret\x1b[34m lentelė sinchronizuota\x1b[0m');
+        console.log('\x1b[35mUserSecret\x1b[34m table synced successfully\x1b[0m');
     } catch (error) {
-        console.error('❌ Klaida sinchronizuojant „UserSecret“ modelį:', error);
-        throw new AppError(`❌ Klaida kuriant „UserSecret“ modelį: ${error}`, 500);
+        console.error('❌ Error syncing „UserSecret“ model:', error);
+        throw new AppError(`❌ Error creating „UserSecret“ model: ${error}`, 500);
     }
 };
 
 export default UserSecret;
 export { syncUserSecretModel };
+export { UserSecret };

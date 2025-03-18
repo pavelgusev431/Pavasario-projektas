@@ -7,6 +7,7 @@ import sha256 from 'js-sha256';
 import { sendEmail } from '../utilities/mailer.js';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
+import { Op } from 'sequelize';
 
 dotenv.config();
 
@@ -398,42 +399,103 @@ const updateUserProfile = async (req, res) => {
 
 // Atnaujinti naudotojo slaptažodį
 const updateUserPassword = async (req, res) => {
+    console.log("📥 [SERVER] Incoming password change data:", req.body);
     const { currentPassword, newPassword } = req.body;
 
     if (!req.user || !req.user.id) {
+        console.error("❌ [SERVER] User not found in req.");
         return res.status(404).json({ status: 'fail', message: 'User not found' });
     }
 
+    console.log("✅ [SERVER] Verified req.user:", req.user);
+
     const userId = req.user.id;
 
+    if (!currentPassword || !newPassword) {
+        console.error("❌ [SERVER] Missing password fields.");
+        return res.status(400).json({ status: 'fail', message: 'Please provide current and new password' });
+    }
+
+    // 🔎 Лог Unicode символов для выявления невидимых символов или пробелов
+    console.log(`📋 [SERVER] Пароль в формате Unicode: ${[...currentPassword].map(char => char.charCodeAt(0)).join(' ')}`);
+    console.log(`🔎 [SERVER] Введённый пароль до хэширования: "${currentPassword}"`);
+
     try {
-        const userSecret = await UserSecret.findOne({ where: { user_id: userId } });
+        const userSecret = await UserSecret.findOne({
+            where: { user_id: userId },
+            order: [['id', 'DESC']]  // Выбор последнего хэша
+        });
+
         if (!userSecret) {
+            console.error("❌ [SERVER] User data not found in database.");
             return res.status(404).json({ status: 'fail', message: 'User data not found' });
         }
 
-        const [hashedPassword, salt] = userSecret.password.split(':');
-        const currentPasswordHash = sha256(sha1(currentPassword + salt));
+        const [storedPassword, salt] = userSecret.password.split(':');
 
-        if (hashedPassword !== currentPasswordHash) {
+        if (!storedPassword || !salt) {
+            console.error("❌ [SERVER] Stored password or salt is missing.");
+            return res.status(400).json({ status: 'fail', message: 'Incorrect password format' });
+        }
+
+        console.log(`🧂 [SERVER] Соль из базы: "${salt}"`);
+        console.log(`🔐 [SERVER] Хэш из базы: "${storedPassword}"`);
+
+        // Используем правильную последовательность хэширования
+        const currentPasswordHash = sha256(sha1(Buffer.from(currentPassword, 'utf8').toString() + salt)).toString();
+
+        console.log(`🔎 [SERVER] Хэш текущего пароля после хэширования: "${currentPasswordHash}"`);
+
+        if (storedPassword !== currentPasswordHash) {
+            console.error("❌ [SERVER] Incorrect current password.");
+            console.log(`❗ [SERVER] Expected: ${storedPassword}`);
+            console.log(`❗ [SERVER] Received: ${currentPasswordHash}`);
             return res.status(400).json({ status: 'fail', message: 'Incorrect current password' });
         }
 
-        const newSalt = sha256(sha1(Date.now().toString() + req.user.username));
-        const newHashedPassword = sha256(sha1(newPassword + newSalt));
+        await UserSecret.destroy({
+            where: { user_id: userId, id: { [Op.ne]: userSecret.id } }
+        });
+
+        // ✅ Генерация нового пароля
+        const newSalt = crypto.randomBytes(16).toString('hex');
+        const newHashedPassword = sha256(sha1(newPassword + newSalt)).toString();
+
+        console.log(`🆕 [SERVER] Новый хэш пароля: "${newHashedPassword}"`);
+        console.log(`🆕 [SERVER] Новая соль: "${newSalt}"`);
 
         await userSecret.update({ password: `${newHashedPassword}:${newSalt}` });
 
+        // ✅ Создаём новый токен
+        const newToken = jwt.sign(
+            { id: req.user.id, role: req.user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h', algorithm: 'HS256' }
+        );
+
+        res.clearCookie('authToken', { httpOnly: true });
+        res.clearCookie('tokenJS');
+
+        res.cookie('authToken', newToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 3600000 // 1 час
+        });
+        res.cookie('tokenJS', 1);
+
         res.status(200).json({
             status: 'success',
-            message: 'Password updated successfully'
+            message: 'Password updated successfully',
+            token: newToken
         });
 
     } catch (error) {
-        console.error("❌ Error updating password:", error);
+        console.error("❌ Error updating password:", error.response?.data || error.message);
         res.status(500).json({ status: "fail", message: "Server error" });
     }
 };
+
 
 
 
