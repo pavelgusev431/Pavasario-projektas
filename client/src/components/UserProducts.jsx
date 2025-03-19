@@ -34,10 +34,21 @@ export default function UserProducts() {
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-2">{userName}</h2>
-            <div className="flex flex-row  mt-2 flex-wrap">
+            <div className="flex flex-row gap-2 mt-5 ml-10">
+                <div className="w-2 h-6 bg-red-500"></div>
+                <h2 className="text-l text-red-500 font-bold mb-2"></h2>
+            </div>
+            <h2 className="text-2xl font-bold ml-10 mt-2 mb-2">
+                {userName} Products
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
                 {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    avgRating={product.avgRating}
+                    ratingCount={product.ratingCount}
+                    />
                 ))}
             </div>
         </div>

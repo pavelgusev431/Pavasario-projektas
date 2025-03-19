@@ -54,7 +54,7 @@ const Auth = () => {
                         style: { background: '#161D2F', color: '#FFFFFF' },
                         hideProgressBar: true,
                     });
-                    setTimeout(() => navigate('/home'), 3000);
+                    setTimeout(() => setAuthType('login'), 3000);
                 } else {
                     throw new Error(
                         response?.data?.message || 'Failed to create user'
@@ -164,9 +164,9 @@ const Auth = () => {
                                                 'Username must be at least 4 symbols long',
                                         },
                                         pattern: {
-                                            value: /^[A-Za-z]+$/,
+                                            value: /^[A-Za-z][A-Za-z0-9]+$/,
                                             message:
-                                                'Username must contain only letters',
+                                                'Username must contain only letters and/or numbers and start with a letter',
                                         },
                                     })}
                                 />
@@ -221,7 +221,7 @@ const Auth = () => {
                                     {...register('password', {
                                         required: 'Password is required',
                                         minLength: {
-                                            value: 3,
+                                            value: 7,
                                             message: 'Password is too short',
                                         },
                                         pattern: {
@@ -250,7 +250,7 @@ const Auth = () => {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-1/2 text-gray-600"
+                                    className="absolute right-3 top-5 text-gray-600"
                                     onClick={() =>
                                         setShowPassword((prev) => !prev)
                                     }
@@ -283,19 +283,11 @@ const Auth = () => {
                                                 'Passwords must match',
                                         })}
                                     />
-                                    <button
-                                        type="button"
-                                        className="absolute right-3 top-1/2 text-gray-600"
-                                        onClick={() =>
-                                            setShowPassword((prev) => !prev)
-                                        }
-                                    >
-                                        {showPassword ? (
-                                            <FaEyeSlash />
-                                        ) : (
-                                            <FaEye />
-                                        )}
-                                    </button>
+                                    {errors.repeatPassword && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.repeatPassword.message}
+                                        </p>
+                                    )}
                                 </div>
                             )}
 
@@ -315,24 +307,24 @@ const Auth = () => {
                             {authType === 'signup' && (
                                 <p className="mt-2">
                                     Already have an account?{' '}
-                                    <span
+                                    <button
                                         className="text-blue-400 hover:cursor-pointer"
                                         onClick={() => setAuthType('login')}
                                     >
                                         Login
-                                    </span>
+                                    </button>
                                 </p>
                             )}
 
                             {authType === 'login' && (
                                 <p className="mt-2">
-                                    Don't have an account?{' '}
-                                    <span
+                                    Don&apos;t have an account?{' '}
+                                    <button
                                         className="text-blue-400 hover:cursor-pointer"
                                         onClick={() => setAuthType('signup')}
                                     >
                                         Sign Up
-                                    </span>
+                                    </button>
                                 </p>
                             )}
                         </form>
