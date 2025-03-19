@@ -4,7 +4,7 @@ import AppError from '../utilities/AppError.js';
 
 const validateCreateUser = [
     body('username')
-        .isEmpty()
+        .notEmpty()
         .withMessage('Username field is required')
         .isString()
         .withMessage('Username must be a string')
@@ -22,7 +22,7 @@ const validateCreateUser = [
         }),
 
     body('password')
-        .isEmpty()
+        .notEmpty()
         .withMessage('Password field is required')
         .isString()
         .withMessage('Password must be a string')
@@ -39,7 +39,7 @@ const validateCreateUser = [
         .isLength({ min: 7 })
         .withMessage('Password must be at least 7 characters long')
         .custom((value, { req }) => {
-            if (value === req.body.username) {
+            if (value.includes(req.body.username) || value.includes(req.body.email.split("@")[0])) {
                 throw new Error("Password can't be too simple");
             } else {
                 return value;
