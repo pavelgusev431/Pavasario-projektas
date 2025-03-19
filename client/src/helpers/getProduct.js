@@ -30,17 +30,21 @@ const getTopRatedProducts = async () => {
 };
 
 const getTopUserProducts = async () => {
-    const response = await axios.get(url(`products/alltopuserproducts`)).catch((error) => {
-        console.log(error);
-    });
+    const response = await axios
+        .get(url(`products/alltopuserproducts`))
+        .catch((error) => {
+            console.log(error);
+        });
     return response;
 };
 
 const getTrendingUserProducts = async () => {
-    const response = await axios.get(url(`products/trending`)).catch((error) => {
-        console.log(error);
-    });
+    const response = await axios
+        .get(url(`products/trending`))
+        .catch((error) => {
+            console.log(error);
+        });
     return response;
 };
 
-export { getProductById, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts, getAllProducts };
+export { getProductById, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts, getAllProducts }

@@ -1,0 +1,5 @@
+client/src/App.jsx
+client/src/components/layout/Register_Login/Auth.jsx
+client/src/components/products/TopUserProducts.jsx
+client/src/components/products/TrendingUserProducts.jsx
+client/src/components/UserProducts.jsx
