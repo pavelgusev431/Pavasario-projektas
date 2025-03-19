@@ -41,10 +41,10 @@ const getUserProducts = async (req, res) => {
             where: { id: { [Op.in]: userIds } },
         });
 
-        // Sukuriame žemėlapį { user_id: username }
+        // Sukuriame žemėlapį { user_id: vartotojo informacija }
         const userMap = {};
         users.forEach((user) => {
-            userMap[user.id] = user.username;
+            userMap[user.id] = user; // Įtraukiame visą vartotojo informaciją
         });
 
         // **Apskaičiuojame UserRating ir avgUserRating**
@@ -62,29 +62,36 @@ const getUserProducts = async (req, res) => {
             totalRatings += ratingCount;
             totalStars += productRatings.reduce((sum, rating) => sum + rating.stars, 0);
 
-            // Surenkame visus vartotojų komentarus
+            // Surenkame visus vartotojų komentarus, tačiau vartotojo informacija bus rodoma produkto sekcijoje
             const comments = productRatings.map((rating) => ({
-                username: userMap[rating.user_id] || 'Nežinomas',
+                username: userMap[rating.user_id]?.username || 'Nežinomas',
                 comment: rating.comment,
                 stars: rating.stars
             })).filter(comment => comment.comment); // Filtruojame tuščius komentarus
 
-            return { ...product.dataValues, ratingCount, avgRating, comments, username: userMap[product.user_id] };
+            // Sukuriame vartotojo duomenų skyrių (userData)
+            const userData = userMap[product.user_id] || {};
+
+            return { 
+                ...product.dataValues, 
+                ratingCount, 
+                avgRating, 
+                comments,
+                userData  
+            };
         });
 
         // Apskaičiuojame bendrą vartotojo įvertinimą (UserRating)
         const avgUserRating = totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : "0.00";
         
-        
-
-        
-        return res.json({ avgUserRating, totalRatings, data: processedProducts });
+        return res.json({ avgUserRating, totalRatings,data: processedProducts });
        
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
     }
 };
+
 
 
 const getAllProducts = async (req, res) => {
