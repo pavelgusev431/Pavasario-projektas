@@ -10,13 +10,14 @@ const ProductList = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [pageSize, setPageSize] = useState(12); 
+    const [pageSize, setPageSize] = useState(12);
 
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-
-            const response = await fetch(`http://localhost:3000/products?page=${page}&limit=${pageSize}`);
+            const response = await fetch(
+                `http://localhost:3000/products?page=${page}&limit=${pageSize}`
+            );
             const data = await response.json();
 
             if (response.status === 200) {
@@ -37,17 +38,17 @@ const ProductList = () => {
     };
 
     useEffect(() => {
-        fetchProducts(); 
-    }, [pageSize]); 
+        fetchProducts();
+    }, [pageSize]);
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
-            fetchProducts(newPage); 
+            fetchProducts(newPage);
         }
     };
 
     const handlePageSizeChange = (event) => {
-        setPageSize(parseInt(event.target.value)); 
+        setPageSize(parseInt(event.target.value));
     };
 
     return (
@@ -57,7 +58,9 @@ const ProductList = () => {
             {loading && <p>Loading products...</p>}
             {error && <p className="text-red-500">{error}</p>}
             <div className="mb-4">
-                <label htmlFor="pageSize" className="mr-2">Products per page:</label>
+                <label htmlFor="pageSize" className="mr-2">
+                    Products per page:
+                </label>
                 <select
                     id="pageSize"
                     value={pageSize}
@@ -86,29 +89,40 @@ const ProductList = () => {
                     </div>
                     {pagination.totalProducts > pageSize && (
                         <div className="mt-6 flex justify-center items-center space-x-2">
-
                             <button
                                 className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                onClick={() => handlePageChange(pagination.currentPage - 1)}
+                                onClick={() =>
+                                    handlePageChange(pagination.currentPage - 1)
+                                }
                                 disabled={pagination.currentPage <= 1}
                             >
                                 Previous
                             </button>
 
-                            {Array.from({ length: pagination.totalPages }, (_, index) => (
-                                <button
-                                    key={index + 1}
-                                    className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} hover:bg-blue-400`}
-                                    onClick={() => handlePageChange(index + 1)}
-                                >
-                                    {index + 1}
-                                </button>
-                            ))}
+                            {Array.from(
+                                { length: pagination.totalPages },
+                                (_, index) => (
+                                    <button
+                                        key={index + 1}
+                                        className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} hover:bg-blue-400`}
+                                        onClick={() =>
+                                            handlePageChange(index + 1)
+                                        }
+                                    >
+                                        {index + 1}
+                                    </button>
+                                )
+                            )}
 
                             <button
                                 className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage >= pagination.totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                onClick={() => handlePageChange(pagination.currentPage + 1)}
-                                disabled={pagination.currentPage >= pagination.totalPages}
+                                onClick={() =>
+                                    handlePageChange(pagination.currentPage + 1)
+                                }
+                                disabled={
+                                    pagination.currentPage >=
+                                    pagination.totalPages
+                                }
                             >
                                 Next
                             </button>
