@@ -45,14 +45,16 @@ const NavBar = () => {
     return (
         <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md">
             <div className="flex items-center justify-between mx-auto px-2 md:px-4">
-                <div className="flex items-center">
+                <button
+                    className="flex items-center"
+                    onClick={() => handleNavigation('/home')}
+                >
                     <img
                         src="../src/public/banner_images/logo.png"
                         alt="Logo"
                         className="h-20 md:h-20 cursor-pointer object-contain"
-                        onClick={() => handleNavigation('/home')}
                     />
-                </div>
+                </button>
 
                 <div className="hidden md:flex items-center ml-2">
                     <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white">
@@ -109,20 +111,18 @@ const NavBar = () => {
 
                     {auth && (
                         <button
-                            className="relative flex items-center"
-                        <div
                             className="relative"
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)}
                         >
-                            <i
+                            <button
                                 className={`fas fa-user-circle text-4xl cursor-pointer transition-transform duration-300 ${
                                     isHovered || isClicked
                                         ? 'text-red-500'
                                         : 'text-gray-500'
                                 }`}
                                 onClick={() => setIsClicked(!isClicked)}
-                            ></i>
+                            ></button>
                             {(isHovered || isClicked) && (
                                 <div className="absolute top-9 right-0 bg-gradient-to-t from-black to-gray-700 shadow-lg rounded-lg z-50 border border-white p-5 transition-all duration-300 w-48 md:w-64">
                                     <button
@@ -132,7 +132,9 @@ const NavBar = () => {
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
                                         <i className="fas fa-wallet mr-3"></i>{' '}
-                                        Balance: ${balance.toFixed(2)}
+                                        <span>
+                                            Balance: ${balance.toFixed(2)}
+                                        </span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -142,8 +144,6 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-user mr-3"></i>
                                         <span>Manage my account</span>
-                                        <i className="fas fa-user mr-3"></i>{' '}
-                                        Manage my account
                                     </button>
                                     <button
                                         onClick={() =>
@@ -153,8 +153,6 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-box mr-3"></i>
                                         <span>My orders</span>
-                                        <i className="fas fa-box mr-3"></i> My
-                                        orders
                                     </button>
                                     <button
                                         onClick={() =>
@@ -164,8 +162,6 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-times-circle mr-3"></i>
                                         <span>My cancellations</span>
-                                        <i className="fas fa-times-circle mr-3"></i>{' '}
-                                        My cancellations
                                     </button>
                                     <button
                                         onClick={() =>
@@ -175,8 +171,6 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-star mr-3"></i>
                                         <span>My reviews</span>
-                                        <i className="fas fa-star mr-3"></i> My
-                                        reviews
                                     </button>
                                     <button
                                         onClick={handleLogout}
@@ -184,8 +178,6 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-sign-out-alt mr-3"></i>
                                         <span>Logout</span>
-                                        <i className="fas fa-sign-out-alt mr-3"></i>{' '}
-                                        Logout
                                     </button>
                                 </div>
                             )}
