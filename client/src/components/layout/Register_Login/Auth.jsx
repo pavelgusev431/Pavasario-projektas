@@ -164,9 +164,9 @@ const Auth = () => {
                                                 'Username must be at least 4 symbols long',
                                         },
                                         pattern: {
-                                            value: /^[A-Za-z0-9]+$/,
+                                            value: /^[A-Za-z][A-Za-z0-9]+$/,
                                             message:
-                                                'Username must contain only letters',
+                                                'Username must contain only letters and/or numbers and start with a letter',
                                         },
                                     })}
                                 />
@@ -221,7 +221,7 @@ const Auth = () => {
                                     {...register('password', {
                                         required: 'Password is required',
                                         minLength: {
-                                            value: 3,
+                                            value: 7,
                                             message: 'Password is too short',
                                         },
                                         pattern: {
@@ -307,24 +307,24 @@ const Auth = () => {
                             {authType === 'signup' && (
                                 <p className="mt-2">
                                     Already have an account?{' '}
-                                    <span
+                                    <button
                                         className="text-blue-400 hover:cursor-pointer"
                                         onClick={() => setAuthType('login')}
                                     >
                                         Login
-                                    </span>
+                                    </button>
                                 </p>
                             )}
 
                             {authType === 'login' && (
                                 <p className="mt-2">
-                                    Don't have an account?{' '}
-                                    <span
+                                    Don&apos;t have an account?{' '}
+                                    <button
                                         className="text-blue-400 hover:cursor-pointer"
                                         onClick={() => setAuthType('signup')}
                                     >
                                         Sign Up
-                                    </span>
+                                    </button>
                                 </p>
                             )}
                         </form>
