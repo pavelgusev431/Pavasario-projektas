@@ -1,23 +1,25 @@
-import express from 'express';
+import express from "express";
 import {
-    getUserProducts,
-    getHotProducts,
-    getTopRatedProducts,
-    getTopUserProducts,
-    getTrendingUserProducts,
-    getAllProductCount,
-} from '../controllers/productController.js';
+  getUserProducts,
+  getHotProducts,
+  getTopRatedProducts,
+  getTopUserProducts,
+  getTrendingUserProducts,
+  getAllProductCount,
+  getProductById, // Import the new controller function
+} from "../controllers/productController.js";
 
-import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
+import { getPaginatedProducts } from "../controllers/paginatedProductController.js";
 
 const productRouter = express.Router();
 
-productRouter.route('/').get(getPaginatedProducts);
-productRouter.route('/alltopuserproducts').get(getTopUserProducts);
-productRouter.route('/trending').get(getTrendingUserProducts);
-productRouter.route('/bestnew').get(getHotProducts);
-productRouter.route('/top').get(getTopRatedProducts);
-productRouter.route('/count').get(getAllProductCount);
-productRouter.route('/:id').get(getUserProducts);
+productRouter.route("/").get(getPaginatedProducts);
+productRouter.route("/alltopuserproducts").get(getTopUserProducts);
+productRouter.route("/trending").get(getTrendingUserProducts);
+productRouter.route("/bestnew").get(getHotProducts);
+productRouter.route("/top").get(getTopRatedProducts);
+productRouter.route("/count").get(getAllProductCount);
+productRouter.route("/:id").get(getUserProducts);
+productRouter.route("/selected/:id").get(getProductById); // Add the new route
 
 export default productRouter;
