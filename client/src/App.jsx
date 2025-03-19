@@ -6,6 +6,8 @@ import About from './components/layout/About.jsx';
 import NotFound from './components/layout/NotFound.jsx';
 import PasswordReset from './components/layout/Register_Login/PasswordReset.jsx';
 import ProductList from './components/ProductList.jsx';
+import NavBar from './components/layout/NavBar.jsx';
+import UserProducts from './components/UserProducts.jsx';
 function App() {
     return (
         <Router>
