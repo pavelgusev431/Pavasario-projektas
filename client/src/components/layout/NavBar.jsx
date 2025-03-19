@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 
@@ -84,7 +84,7 @@ const NavBar = () => {
                         </button>
                     )}
                     {auth && (
-                        <div
+                        <button
                             className="relative flex items-center"
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)}
@@ -107,16 +107,18 @@ const NavBar = () => {
                                         className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
                                     >
                                         <i className="fas fa-wallet mr-3"></i>
-                                        Balance: ${balance.toFixed(2)}
+                                        <span>
+                                            Balance: ${balance.toFixed(2)}
+                                        </span>
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleNavigation('/account')
+                                            handleNavigation('/profile')
                                         }
                                         className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
                                     >
                                         <i className="fas fa-user mr-3"></i>
-                                        Manage my account
+                                        <span>Manage my account</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -125,7 +127,7 @@ const NavBar = () => {
                                         className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
                                     >
                                         <i className="fas fa-box mr-3"></i>
-                                        My orders
+                                        <span>My orders</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -134,7 +136,7 @@ const NavBar = () => {
                                         className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
                                     >
                                         <i className="fas fa-times-circle mr-3"></i>
-                                        My cancellations
+                                        <span>My cancellations</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -143,18 +145,18 @@ const NavBar = () => {
                                         className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
                                     >
                                         <i className="fas fa-star mr-3"></i>
-                                        My reviews
+                                        <span>My reviews</span>
                                     </button>
                                     <button
                                         onClick={handleLogout}
                                         className="p-2 text-white bg-none border-none cursor-pointer w-full text-left transition-colors duration-300 font-sans"
                                     >
                                         <i className="fas fa-sign-out-alt mr-3"></i>
-                                        Logout
+                                        <span>Logout</span>
                                     </button>
                                 </div>
                             )}
-                        </div>
+                        </button>
                     )}
                 </div>
             </div>

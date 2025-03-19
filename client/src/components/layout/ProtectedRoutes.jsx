@@ -4,11 +4,9 @@ import Protected from '../protected/Protected.jsx';
 
 const ProtectedRoutes = () => {
     return (
-        <>
-            <Route element={<Protected />}>
-                <Route path="profile" element={<Profile />}></Route>
-            </Route>
-        </>
+        <Route element={<Protected />}>
+            <Route path="profile" element={<Profile />}></Route>
+        </Route>
     );
 };
 

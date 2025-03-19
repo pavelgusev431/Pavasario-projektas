@@ -1,7 +1,8 @@
 const Profile = () => {
     return (
         <>
-            <div>Profile page</div>
+            <div></div>
+            <span>Some text</span>
         </>
     );
 };

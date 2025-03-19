@@ -1,4 +1,3 @@
-
 import express from 'express';
 import {
     getUserProducts,
@@ -13,8 +12,7 @@ import { getPaginatedProducts } from '../controllers/paginatedProductController.
 
 const productRouter = express.Router();
 
-
-productRouter.route('/').get(getPaginatedProducts); 
+productRouter.route('/').get(getPaginatedProducts);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
 productRouter.route('/trending').get(getTrendingUserProducts);
 productRouter.route('/bestnew').get(getHotProducts);

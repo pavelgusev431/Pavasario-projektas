@@ -8,6 +8,7 @@ import PasswordReset from './components/layout/Register_Login/PasswordReset.jsx'
 import ProductList from './components/ProductList.jsx';
 import NavBar from './components/layout/NavBar.jsx';
 import UserProducts from './components/UserProducts.jsx';
+import ProtectedRoutes from './components/layout/ProtectedRoutes.jsx';
 function App() {
     return (
         <Router>
@@ -16,12 +17,15 @@ function App() {
                 <Route index element={<Auth />} />
                 <Route path="home" element={<Home />} />
                 <Route path="products/:id" element={<UserProducts />} />
+                <Route path="products" element={<ProductList />} />
 
                 <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />
                 <Route path="signup" element={<Auth authType="signup" />} />
+
                 <Route path="reset/:userid/:salt" element={<PasswordReset />} />
-                <Route path="products" element={<ProductList />} />
+                {ProtectedRoutes()}
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

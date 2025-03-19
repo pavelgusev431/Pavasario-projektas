@@ -7,7 +7,6 @@ import userRouter from '../routers/userRouter.js';
 import productRouter from '../routers/productRouter.js';
 import morgan from 'morgan';
 
-
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST;
 const CLIENT_PORT = process.env.CLIENT_PORT;
