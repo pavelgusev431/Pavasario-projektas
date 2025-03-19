@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
 
@@ -45,14 +45,16 @@ const NavBar = () => {
     return (
         <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md">
             <div className="flex items-center justify-between mx-auto px-2 md:px-4">
-                <div className="flex items-center">
+                <button
+                    className="flex items-center"
+                    onClick={() => handleNavigation('/home')}
+                >
                     <img
                         src="../src/public/banner_images/logo.png"
                         alt="Logo"
                         className="h-20 md:h-20 cursor-pointer object-contain"
-                        onClick={() => handleNavigation('/home')}
                     />
-                </div>
+                </button>
 
                 <div className="hidden md:flex items-center ml-2">
                     <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white">
@@ -108,19 +110,19 @@ const NavBar = () => {
                     </button>
 
                     {auth && (
-                        <div
+                        <button
                             className="relative"
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)}
                         >
-                            <i
+                            <button
                                 className={`fas fa-user-circle text-4xl cursor-pointer transition-transform duration-300 ${
                                     isHovered || isClicked
                                         ? 'text-red-500'
                                         : 'text-gray-500'
                                 }`}
                                 onClick={() => setIsClicked(!isClicked)}
-                            ></i>
+                            ></button>
                             {(isHovered || isClicked) && (
                                 <div className="absolute top-9 right-0 bg-gradient-to-t from-black to-gray-700 shadow-lg rounded-lg z-50 border border-white p-5 transition-all duration-300 w-48 md:w-64">
                                     <button
@@ -130,16 +132,18 @@ const NavBar = () => {
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
                                         <i className="fas fa-wallet mr-3"></i>{' '}
-                                        Balance: ${balance.toFixed(2)}
+                                        <span>
+                                            Balance: ${balance.toFixed(2)}
+                                        </span>
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleNavigation('/account')
+                                            handleNavigation('/profile')
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-user mr-3"></i>{' '}
-                                        Manage my account
+                                        <i className="fas fa-user mr-3"></i>
+                                        <span>Manage my account</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -147,8 +151,8 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-box mr-3"></i> My
-                                        orders
+                                        <i className="fas fa-box mr-3"></i>
+                                        <span>My orders</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -156,8 +160,8 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-times-circle mr-3"></i>{' '}
-                                        My cancellations
+                                        <i className="fas fa-times-circle mr-3"></i>
+                                        <span>My cancellations</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -165,19 +169,19 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-star mr-3"></i> My
-                                        reviews
+                                        <i className="fas fa-star mr-3"></i>
+                                        <span>My reviews</span>
                                     </button>
                                     <button
                                         onClick={handleLogout}
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-sign-out-alt mr-3"></i>{' '}
-                                        Logout
+                                        <i className="fas fa-sign-out-alt mr-3"></i>
+                                        <span>Logout</span>
                                     </button>
                                 </div>
                             )}
-                        </div>
+                        </button>
                     )}
                 </div>
 

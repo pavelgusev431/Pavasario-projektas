@@ -26,28 +26,10 @@ const validateCreateUser = [
         .withMessage('Password field is required')
         .isString()
         .withMessage('Password must be a string')
-        .matches(/^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]+$/)
-        .withMessage(
-            "Password must only contain letters, numbers and these symbols: $&+,:;=?@#|'<>.^*()%!-"
-        )
-        .matches(/^.*[A-Z].*$/)
-        .withMessage('Password must contain at least 1 capital letter')
-        .matches(/^.*\d.*$/)
-        .withMessage('Password must contain at least 1 number')
-        .matches(/^[$&+,:;=?@#|'<>.^*()%!-]$/)
-        .withMessage('Password must contain at least 1 special character')
-        .isLength({ min: 7 })
-        .withMessage('Password must be at least 7 characters long')
-        .custom((value, { req }) => {
-            if (
-                value.includes(req.body.username) ||
-                value.includes(req.body.email.split('@')[0])
-            ) {
-                throw new Error("Password can't be too simple");
-            } else {
-                return value;
-            }
-        }),
+        .matches(/^[a-z\d]{64}$/)
+        .withMessage('Password hash must be a valid hash')
+        .isLength({ min: 64, max: 64 })
+        .withMessage('Password hash must be 64 characters long'),
 
     body('email')
         .isEmail()
