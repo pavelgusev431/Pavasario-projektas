@@ -47,4 +47,11 @@ const getTrendingUserProducts = async () => {
     return response;
 };
 
-export { getProductById, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts, getAllProducts }
+export {
+    getProductById,
+    getHotProducts,
+    getTopRatedProducts,
+    getTopUserProducts,
+    getTrendingUserProducts,
+    getAllProducts,
+};

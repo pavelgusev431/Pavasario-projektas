@@ -1,8 +1,10 @@
-client/src/components/layout/NavBar.jsx
-server/utilities/mailer.js
-server/validators/validateCreateUser.js
-client/src/App.jsx
-client/src/components/layout/Register_Login/Auth.jsx
-client/src/components/products/TopUserProducts.jsx
-client/src/components/products/TrendingUserProducts.jsx
+client/index.html
+client/src/components/ProductList.jsx
 client/src/components/UserProducts.jsx
+client/src/helpers/getProduct.js
+server/controllers/paginatedProductController.js
+server/controllers/productController.js
+server/routers/productRouter.js
+server/server/app.js
+server/validators/validateCreateUser.js
+server/validators/validateLoginUser.js

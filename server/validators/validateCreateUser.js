@@ -39,7 +39,10 @@ const validateCreateUser = [
         .isLength({ min: 7 })
         .withMessage('Password must be at least 7 characters long')
         .custom((value, { req }) => {
-            if (value.includes(req.body.username) || value.includes(req.body.email.split("@")[0])) {
+            if (
+                value.includes(req.body.username) ||
+                value.includes(req.body.email.split('@')[0])
+            ) {
                 throw new Error("Password can't be too simple");
             } else {
                 return value;

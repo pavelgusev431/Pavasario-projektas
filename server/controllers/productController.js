@@ -21,32 +21,40 @@ const getUserProducts = async (req, res) => {
             return res.status(404).json({ message: 'Vartotojas nerastas' });
         }
 
-         // Gauname vartotojo produktus
-         const products = await Product.findAll({ where: { user_id: userId } });
+        // Gauname vartotojo produktus
+        const products = await Product.findAll({ where: { user_id: userId } });
 
-         if (products.length === 0) {
-             return res.status(200).json({ message: 'Produktų nerasta', data: [] });
-         }
- 
-         // Gauname visus produktų reitingus
-         const ratings = await Rating.findAll({
-             where: {
-                 product_id: { [Op.in]: products.map((product) => product.id) },
-             },
-         });
- 
-         // Apdorojame produktus su jų reitingais
-         const processedProducts = products.map((product) => {
-             const productRatings = ratings.filter((rating) => rating.product_id === product.id);
-             const ratingCount = productRatings.length;
-             const avgRating = ratingCount > 0
-                 ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
-                 : 0;
- 
-             return { ...product.dataValues, ratingCount, avgRating };
-         });
- 
-         return res.json({ data: processedProducts }); // Grąžiname apdorotus produktus
+        if (products.length === 0) {
+            return res
+                .status(200)
+                .json({ message: 'Produktų nerasta', data: [] });
+        }
+
+        // Gauname visus produktų reitingus
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: { [Op.in]: products.map((product) => product.id) },
+            },
+        });
+
+        // Apdorojame produktus su jų reitingais
+        const processedProducts = products.map((product) => {
+            const productRatings = ratings.filter(
+                (rating) => rating.product_id === product.id
+            );
+            const ratingCount = productRatings.length;
+            const avgRating =
+                ratingCount > 0
+                    ? productRatings.reduce(
+                          (sum, rating) => sum + rating.stars,
+                          0
+                      ) / ratingCount
+                    : 0;
+
+            return { ...product.dataValues, ratingCount, avgRating };
+        });
+
+        return res.json({ data: processedProducts }); // Grąžiname apdorotus produktus
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
