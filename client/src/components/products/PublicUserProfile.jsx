@@ -3,12 +3,9 @@ import { useParams } from 'react-router';
 import { getUserByUsername } from '../../helpers/getUser.js';
 import { getUserProductsByUserName } from '../../helpers/getProduct.js';
 
-
 export default function PublicUserProfile() {
+    const { username } = useParams();
 
-  const { username } = useParams();
-    
-    
     const [userName, setUserName] = useState('');
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -23,12 +20,10 @@ export default function PublicUserProfile() {
                 const response = await getUserProductsByUserName(username);
                 setProducts(response.data.data);
                 setAvgUserRating(response.data.avgUserRating);
-                
-                
 
-                const userResponse = await getUserByUsername(username); 
+                const userResponse = await getUserByUsername(username);
                 console.log(userResponse);
-                
+
                 setUserName(userResponse.data.data.username);
                 setProfilePicture(userResponse.data.data.image_url);
                 setEmail(userResponse.data.data.email);
@@ -50,13 +45,12 @@ export default function PublicUserProfile() {
     return (
         <div>
             <h1>{userName}</h1>
-            <div><img src={profilePicture} alt="profile picture" /></div>
+            <div>
+                <img src={profilePicture} alt="profile picture" />
+            </div>
             <p>Average User Rating: {avgUserRating}</p>
             <p>email : {email}</p>
             <p>description : {description}</p>
-           
         </div>
     );
-
-  
 }

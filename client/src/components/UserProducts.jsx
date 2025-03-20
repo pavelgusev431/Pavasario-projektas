@@ -6,8 +6,7 @@ import { getUserProductsByUserName } from '../helpers/getProduct.js';
 
 export default function UserProducts() {
     const { username } = useParams();
-    
-    
+
     const [userName, setUserName] = useState('');
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -19,7 +18,7 @@ export default function UserProducts() {
                 const response = await getUserProductsByUserName(username);
                 setProducts(response.data.data);
 
-                const userResponse = await getUserByUsername(username); 
+                const userResponse = await getUserByUsername(username);
                 setUserName(userResponse.data.data.username);
             } catch (err) {
                 setError(err.message);
@@ -46,9 +45,9 @@ export default function UserProducts() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
                 {products.map((product) => (
-                    <ProductCard 
-                        key={product.id} 
-                        product={product} 
+                    <ProductCard
+                        key={product.id}
+                        product={product}
                         avgRating={product.avgRating}
                         ratingCount={product.ratingCount}
                     />

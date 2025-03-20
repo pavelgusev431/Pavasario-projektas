@@ -2,9 +2,11 @@ import axios from 'axios';
 import url from './getURL.js';
 
 const getUserProductsByUserName = async (username) => {
-    const response = await axios.get(url(`products/u/${username}`)).catch((error) => {
-        console.log(error);
-    });
+    const response = await axios
+        .get(url(`products/u/${username}`))
+        .catch((error) => {
+            console.log(error);
+        });
     return response;
 };
 
@@ -54,4 +56,12 @@ const getTrendingUserProducts = async () => {
     return response;
 };
 
-export { getProductById, getHotProducts, getTopRatedProducts, getTopUserProducts, getTrendingUserProducts, getAllProducts, getUserProductsByUserName };
+export {
+    getProductById,
+    getHotProducts,
+    getTopRatedProducts,
+    getTopUserProducts,
+    getTrendingUserProducts,
+    getAllProducts,
+    getUserProductsByUserName,
+};

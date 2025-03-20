@@ -18,7 +18,8 @@ function App() {
                 <Route index element={<Auth />} />
                 <Route path="home" element={<Home />} />
                 <Route path="products/u/:username" element={<UserProducts />} />
-                <Route path="users/:username" element={<PublicUserProfile/>} />                <Route path="products" element={<ProductList />} />
+                <Route path="users/:username" element={<PublicUserProfile />} />
+                <Route path="products" element={<ProductList />} />
 
                 <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />

@@ -17,10 +17,11 @@ const getAllUsers = async () => {
     return response;
 };
 const getUserByUsername = async (username) => {
-    
-    const response = await axios.get(url(`users/${username}`)).catch((error) => {
-        console.log(error);
-    });
+    const response = await axios
+        .get(url(`users/${username}`))
+        .catch((error) => {
+            console.log(error);
+        });
     return response;
 };
 

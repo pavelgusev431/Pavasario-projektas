@@ -31,5 +31,4 @@ userRouter.route('/reset/:id').post(passwordReset);
 userRouter.use(protect);
 userRouter.route('/me').get(me);
 
-
 export default userRouter;
