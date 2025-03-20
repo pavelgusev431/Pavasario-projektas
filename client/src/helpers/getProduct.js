@@ -1,6 +1,15 @@
 import axios from 'axios';
 import url from './getURL.js';
 
+const getUserProductsByUserName = async (username) => {
+    const response = await axios
+        .get(url(`products/u/${username}`))
+        .catch((error) => {
+            console.log(error);
+        });
+    return response;
+};
+
 const getProductById = async (id) => {
     const response = await axios.get(url(`products/${id}`)).catch((error) => {
         console.log(error);
@@ -54,4 +63,5 @@ export {
     getTopUserProducts,
     getTrendingUserProducts,
     getAllProducts,
+    getUserProductsByUserName,
 };
