@@ -75,7 +75,7 @@ export default function TrendingUserProducts() {
                         ))}
                     </div>
                     <div className="text-center mt-4">
-                        <Link to={`/products/${userId}`}>
+                        <Link to={`/products/u/${userName}`}>
                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                 View All Products
                             </button>

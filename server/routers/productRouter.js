@@ -1,7 +1,7 @@
 
 import express from 'express';
 import {
-    getUserProducts,
+    getUserProductsByUserName,
     getHotProducts,
     getTopRatedProducts,
     getTopUserProducts,
@@ -20,6 +20,6 @@ productRouter.route('/trending').get(getTrendingUserProducts);
 productRouter.route('/bestnew').get(getHotProducts);
 productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/count').get(getAllProductCount);
-productRouter.route('/:id').get(getUserProducts);
+productRouter.route('/u/:username').get(getUserProductsByUserName);
 
 export default productRouter;

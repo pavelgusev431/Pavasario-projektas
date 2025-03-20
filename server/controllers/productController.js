@@ -3,21 +3,25 @@ import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
 import { Op } from 'sequelize';
-const getUserProducts = async (req, res) => {
-    const userId = parseInt(req.params.id);
 
-    if (isNaN(userId)) {
+const getUserProductsByUserName = async (req, res) => {
+    const username = req.params.username;  // Gauname username iš parametro
+
+    if (!username) {
         return res
             .status(400)
-            .json({ message: 'Netinkamas vartotojo ID formatas' });
+            .json({ message: 'Netinkamas vartotojo vardas' });
     }
 
     try {
-        const user = await User.findOne({ where: { id: userId } });
+        // Surandame vartotoją pagal username
+        const user = await User.findOne({ where: { username } });
 
         if (!user) {
             return res.status(404).json({ message: 'Vartotojas nerastas' });
         }
+
+        const userId = user.id; // Gaukime vartotojo ID
 
         // Gauname vartotojo produktus
         const products = await Product.findAll({ where: { user_id: userId } });
@@ -84,7 +88,7 @@ const getUserProducts = async (req, res) => {
         // Apskaičiuojame bendrą vartotojo įvertinimą (UserRating)
         const avgUserRating = totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : "0.00";
         
-        return res.json({ avgUserRating, totalRatings,data: processedProducts });
+        return res.json({ avgUserRating, totalRatings, data: processedProducts });
        
     } catch (err) {
         console.error(err);
@@ -514,7 +518,7 @@ const getAllProductCount = async (req, res) => {
 
 export {
     getAllProductCount,
-    getUserProducts,
+    getUserProductsByUserName,
     getAllProducts,
     getHotProducts,
     getTopRatedProducts,
