@@ -16,5 +16,12 @@ const getAllUsers = async () => {
     });
     return response;
 };
+const getUserByUsername = async (username) => {
+    
+    const response = await axios.get(url(`users/${username}`)).catch((error) => {
+        console.log(error);
+    });
+    return response;
+};
 
-export { getUserById, getAllUsers };
+export { getUserById, getAllUsers, getUserByUsername };

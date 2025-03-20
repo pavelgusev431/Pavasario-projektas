@@ -73,6 +73,7 @@ const getUserByUsername = async (req, res, next) => {
     }
 };
 
+
 const getUserById = async (req, res, next) => {
     try {
         const { id } = req.params;

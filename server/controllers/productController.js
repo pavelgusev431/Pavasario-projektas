@@ -3,31 +3,31 @@ import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
 import { Op } from 'sequelize';
-const getUserProducts = async (req, res) => {
-    const userId = parseInt(req.params.id);
 
-    if (isNaN(userId)) {
+const getUserProductsByUserName = async (req, res) => {
+    const username = req.params.username;  // Gauname username iš parametro
+
+    if (!username) {
         return res
             .status(400)
-            .json({ message: 'Netinkamas vartotojo ID formatas' });
+            .json({ message: 'Netinkamas vartotojo vardas' });
     }
 
     try {
-        const user = await User.findOne({
-            where: { id: userId },
-        });
+        // Surandame vartotoją pagal username
+        const user = await User.findOne({ where: { username } });
 
         if (!user) {
             return res.status(404).json({ message: 'Vartotojas nerastas' });
         }
 
+        const userId = user.id; // Gaukime vartotojo ID
+
         // Gauname vartotojo produktus
         const products = await Product.findAll({ where: { user_id: userId } });
 
         if (products.length === 0) {
-            return res
-                .status(200)
-                .json({ message: 'Produktų nerasta', data: [] });
+            return res.status(200).json({ message: 'Produktų nerasta', data: [], avgUserRating: 0 });
         }
 
         // Gauname visus produktų reitingus
@@ -37,29 +37,66 @@ const getUserProducts = async (req, res) => {
             },
         });
 
-        // Apdorojame produktus su jų reitingais
-        const processedProducts = products.map((product) => {
-            const productRatings = ratings.filter(
-                (rating) => rating.product_id === product.id
-            );
-            const ratingCount = productRatings.length;
-            const avgRating =
-                ratingCount > 0
-                    ? productRatings.reduce(
-                          (sum, rating) => sum + rating.stars,
-                          0
-                      ) / ratingCount
-                    : 0;
+        // Surenkame visus unikalius vartotojų ID, kurie paliko reitingus
+        const userIds = [...new Set(ratings.map((rating) => rating.user_id))];
 
-            return { ...product.dataValues, ratingCount, avgRating };
+        // Gauname visų vartotojų duomenis
+        const users = await User.findAll({
+            where: { id: { [Op.in]: userIds } },
         });
 
-        return res.json({ data: processedProducts }); // Grąžiname apdorotus produktus
+        // Sukuriame žemėlapį { user_id: vartotojo informacija }
+        const userMap = {};
+        users.forEach((user) => {
+            userMap[user.id] = user; // Įtraukiame visą vartotojo informaciją
+        });
+
+        // **Apskaičiuojame UserRating ir avgUserRating**
+        let totalRatings = 0;
+        let totalStars = 0;
+
+        const processedProducts = products.map((product) => {
+            const productRatings = ratings.filter((rating) => rating.product_id === product.id);
+            const ratingCount = productRatings.length;
+            const avgRating = ratingCount > 0
+                ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                : 0;
+
+            // Atnaujiname bendrą UserRating statistiką
+            totalRatings += ratingCount;
+            totalStars += productRatings.reduce((sum, rating) => sum + rating.stars, 0);
+
+            // Surenkame visus vartotojų komentarus, tačiau vartotojo informacija bus rodoma produkto sekcijoje
+            const comments = productRatings.map((rating) => ({
+                username: userMap[rating.user_id]?.username || 'Nežinomas',
+                comment: rating.comment,
+                stars: rating.stars
+            })).filter(comment => comment.comment); // Filtruojame tuščius komentarus
+
+            // Sukuriame vartotojo duomenų skyrių (userData)
+            const userData = userMap[product.user_id] || {};
+
+            return { 
+                ...product.dataValues, 
+                ratingCount, 
+                avgRating, 
+                comments,
+                userData  
+            };
+        });
+
+        // Apskaičiuojame bendrą vartotojo įvertinimą (UserRating)
+        const avgUserRating = totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : "0.00";
+        
+        return res.json({ avgUserRating, totalRatings, data: processedProducts });
+       
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
     }
 };
+
+
 
 const getAllProducts = async (req, res) => {
     try {
@@ -481,7 +518,7 @@ const getAllProductCount = async (req, res) => {
 
 export {
     getAllProductCount,
-    getUserProducts,
+    getUserProductsByUserName,
     getAllProducts,
     getHotProducts,
     getTopRatedProducts,
