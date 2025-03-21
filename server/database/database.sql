@@ -56,6 +56,15 @@ VALUES
 (2, 1, 6,  'Pirko Samsung Galaxy S24'),
 (3, 1, 6,  'Pirko Samsung Galaxy S24'),
 (4, 1, 6,  'ikele Samsung Galaxy S24'),
+
+(2, 1, 6,  'Pirko iPhone 15 Pro už 1299'),
+(2, 1, 6,  'Pirko iPhone 15 Pro už 999'),
+(2, 1, 6,  'testas'),
+(2, 1, 6,  'testas2'),
+(2, 1, 6,  'Pirko Samsung Galaxy S24 už 1111'),
+(2, 1, 6,  'Pirko Samsung Galaxy S24'),
+(2, 1, 6,  'Pirko Samsung Galaxy S24'),
+(2, 1, 6,  'ikele Samsung Galaxy S24'),
  
 (1, 1, 2,  'ikele iPhone 15 Pro už 1299'),
 (1, 1, 2,  'ikele iPhone 15 Pro už 999'),

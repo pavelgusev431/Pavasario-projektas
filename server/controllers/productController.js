@@ -2,7 +2,7 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 
 const getUserProductsByUserName = async (req, res) => {
     const username = req.params.username; // Gauname username iš parametro
@@ -533,6 +533,67 @@ const getAllProductCount = async (req, res) => {
     });
 };
 
+const getRatedProductsByUserName = async (req, res, ) => {
+    try {
+        const username = req.params.username;
+        if (!username) {
+            return res.status(400).json({
+                message: 'Username is required',
+            })
+        }
+
+        const user = await User.findOne({ where: { username: username } });
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            })
+        }
+        const ratings = await Rating.findAll({ where: { user_id: user.id } });
+
+        if (ratings.length === 0) {
+            return res
+                .status(200)
+                .json({
+                    message: 'No ratings found for the user',
+                    data: [],
+                });
+        };
+        const productIds = ratings.map((rating) => rating.product_id);
+
+        const products = await Product.findAll({
+            where: {
+                id: {
+                    [Op.in]: productIds
+                }
+            }
+        })
+        const events = await Event.findAll({
+            type_id: 1, 
+            target_id: 6,
+            user_id: user.id
+        })
+
+        const processedProducts = ratings.map((rating, index) => {
+            const product = products.find((p) => p.id === rating.product_id);
+
+            return {
+                ...product?.dataValues, 
+                userRating: rating.stars, 
+                userComment: rating.comment,
+                timestamp: events[index].timestamp
+            };
+        });
+
+        return res.json({
+            status: 'success',
+            data: processedProducts,
+        });
+    } catch (error) {
+        console.error('error getting products', error);
+        return res.status(500).json({ message: 'server error' });
+    }
+}
+
 export {
     getAllProductCount,
     getUserProductsByUserName,
@@ -541,4 +602,5 @@ export {
     getTopRatedProducts,
     getTopUserProducts,
     getTrendingUserProducts,
+    getRatedProductsByUserName,
 };

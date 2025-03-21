@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { FaStar, FaStarHalf } from "react-icons/fa";
 import { getUserByUsername } from "../../helpers/getUser.js";
 import { getUserProductsByUserName } from "../../helpers/getProduct.js";
-
+import RatedProductsByUserName from "./RatedProductsByUserName.jsx";
 export default function PublicUserProfile() {
   const { username } = useParams();
 
@@ -100,7 +100,7 @@ export default function PublicUserProfile() {
               .filter((product) => product.comments.length > 0)
               .map((product) => (
                 <div
-                  key={product.id}
+                  key={`+${product.id}`}
                   className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <div className="overflow-hidden rounded-t-lg">
@@ -164,6 +164,7 @@ export default function PublicUserProfile() {
           </p>
         )}
       </section>
+      <RatedProductsByUserName />
     </>
   );
 }
