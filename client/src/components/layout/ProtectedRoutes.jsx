@@ -1,5 +1,5 @@
 import { Route } from 'react-router';
-import Profile from '../protected/Profile.jsx';
+import Profile from '../protected/Private_User_Profile/ProfileInfo.jsx';
 import Protected from '../protected/Protected.jsx';
 
 const ProtectedRoutes = () => {

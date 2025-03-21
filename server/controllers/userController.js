@@ -14,6 +14,19 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const CLIENT_HOST = process.env.CLIENT_HOST;
 const CLIENT_PORT = process.env.CLIENT_PORT;
 
+// some code
+// const userProducts = [];
+// const createRecipes = async () => {
+//   let recipes = [];
+//   let recipe = "";
+//   for(let i in a[10]){
+//     console.log(i);
+//     recipe = await OpenAI("Generate a recipe with ${userProducts}");
+//     recipes.push(recipe);
+//   }
+//   return recipes;
+// }
+
 const createAdmin = async () => {
     try {
         const admin = await User.create({
@@ -79,7 +92,6 @@ const getUserById = async (req, res, next) => {
         const user = await User.findByPk(id);
         if (user === undefined)
             throw new AppError(`User with id ${id} not found`, 404);
-        user.password = undefined;
         res.status(200).json({
             status: 'success',
             data: user,
@@ -214,6 +226,28 @@ const getAllUsersCount = async (req, res) => {
         data: userCount,
     });
 };
+
+const changeUserInfo = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const {
+            data: { email, username, description, contacts },
+        } = req.body;
+        const updatedUser = await User.findByPk(id);
+        updatedUser.email = email || updatedUser.email;
+        updatedUser.username = username || updatedUser.username;
+        updatedUser.description = description || updatedUser.description;
+        updatedUser.contacts = contacts || updatedUser.contacts;
+        updatedUser.save();
+        res.status(200).json({
+            status: 'success',
+            data: updatedUser,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export {
     createAdmin,
     createUser,
@@ -226,4 +260,5 @@ export {
     me,
     getAllUsers,
     getAllUsersCount,
+    changeUserInfo,
 };

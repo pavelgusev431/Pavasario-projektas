@@ -4,9 +4,9 @@
     "eslint": "^9.21.0",
     "eslint-plugin-prettier": "^5.2.3",
     "husky": "^9.1.7",
+    "lightningcss": "^1.29.2",
     "prettier": "^3.5.2",
-    "supports-color": "^10.0.0",
-    "lightningcss": "^1.29.2"
+    "supports-color": "^10.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
@@ -15,7 +15,7 @@
     "eslint-plugin-react-refresh": "^0.4.16"
   },
   "scripts": {
-    "start":"npm i > ./configs/error_logs.txt 2>> ./configs/error_logs.txt && node ./configs/root_message.js",
+    "start": "npm i > ./configs/error_logs.txt 2>> ./configs/error_logs.txt && node ./configs/root_message.js",
     "lint": "npx eslint --no-cache --config ./configs/eslint.config.js . --quiet 2> ./configs/error_logs.txt && node ./configs/lint_message.js",
     "prettify": "node ./node_modules/prettier/bin/prettier.cjs --write --config ./configs/prettier.config.js --ignore-path ./configs/.prettierignore . >> ./configs/error_logs.txt --list-different && node ./configs/prettier_message.js",
     "prepare": "husky"
