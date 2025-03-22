@@ -91,8 +91,8 @@ export default function PublicUserProfile() {
       </section>
 
       <section className="py-8 px-4">
-        <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">
-          My Rated Products
+        <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800 border-b pb-4">
+        Products Rated by Others for Me
         </h2>
         {products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

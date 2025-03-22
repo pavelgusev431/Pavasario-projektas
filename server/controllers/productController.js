@@ -5,13 +5,14 @@ import Event from '../models/eventModel.js';
 import { Op, where } from 'sequelize';
 
 const getUserProductsByUserName = async (req, res) => {
+    try {
     const username = req.params.username; // Gauname username iš parametro
 
     if (!username) {
         return res.status(400).json({ message: 'Netinkamas vartotojo vardas' });
     }
 
-    try {
+   
         // Surandame vartotoją pagal username
         const user = await User.findOne({ where: { username } });
 
