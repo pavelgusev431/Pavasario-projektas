@@ -569,19 +569,20 @@ const getRatedProductsByUserName = async (req, res, ) => {
             }
         })
         const events = await Event.findAll({
-            type_id: 1, 
+           where:{ type_id: 1, 
             target_id: 6,
-            user_id: user.id
+            user_id: user.id}
         })
 
-        const processedProducts = ratings.map((rating, index) => {
-            const product = products.find((p) => p.id === rating.product_id);
+        const processedProducts = ratings.map((rating) => {
+            const product = products.find((p) => p.id === rating.product_id) || {};
+            const event = events.find((e) => e.user_id === user.id && e.target_id === 6);
 
             return {
-                ...product?.dataValues, 
-                userRating: rating.stars, 
+                ...product.dataValues,
+                userRating: rating.stars,
                 userComment: rating.comment,
-                timestamp: events[index].timestamp
+                timestamp: event ? event.timestamp : null
             };
         });
 

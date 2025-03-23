@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { FaStar, FaStarHalf } from "react-icons/fa";
 import { getUserByUsername } from "../../helpers/getUser.js";
 import { getUserProductsByUserName } from "../../helpers/getProduct.js";
@@ -103,12 +103,14 @@ export default function PublicUserProfile() {
                   key={`+${product.id}`}
                   className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="overflow-hidden rounded-t-lg">
+                  <div className="overflow-hidden rounded-t-lg flex justify-center">
+                    <Link to={`/products/${product.id}`}>
                     <img
                       src={product.image_url}
                       alt={product.name}
-                      className="w-full h-56 object-cover"
+                      className="w-auto h-56 object-cover"
                     />
+                    </Link>
                   </div>
                   <div className="p-4">
                     <h3 className="text-xl font-semibold text-gray-800">
