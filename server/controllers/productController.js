@@ -50,6 +50,13 @@ const getUserProductsByUserName = async (req, res) => {
             where: { id: { [Op.in]: userIds } },
         });
 
+        const events = await Event.findAll({
+            where:{ type_id: 1, 
+             target_id: 6,
+             user_id: user.id}
+         })
+         const event = events.find((e) => e.user_id === user.id && e.target_id === 6);
+
         // Sukuriame žemėlapį { user_id: vartotojo informacija }
         const userMap = {};
         users.forEach((user) => {
@@ -86,6 +93,7 @@ const getUserProductsByUserName = async (req, res) => {
                     username: userMap[rating.user_id]?.username || 'Nežinomas',
                     comment: rating.comment,
                     stars: rating.stars,
+                    timestamp: event ? event.timestamp : null
                 }))
                 .filter((comment) => comment.comment); // Filtruojame tuščius komentarus
 
@@ -188,7 +196,7 @@ const getHotProducts = async (req, res, next) => {
                           0
                       ) / ratingCount
                     : 0;
-
+                    const event = events.find((e) => e.user_id === user.id && e.target_id === 6);
             return { ...product.dataValues, ratingCount, avgRating };
         });
 

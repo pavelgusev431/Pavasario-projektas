@@ -4,6 +4,7 @@ import { FaStar, FaStarHalf } from "react-icons/fa";
 import { getUserByUsername } from "../../helpers/getUser.js";
 import { getUserProductsByUserName } from "../../helpers/getProduct.js";
 import RatedProductsByUserName from "./RatedProductsByUserName.jsx";
+import moment from "moment";
 export default function PublicUserProfile() {
   const { username } = useParams();
 
@@ -142,6 +143,9 @@ export default function PublicUserProfile() {
                     <div className="space-y-4 mt-2">
                       {product.comments.map((comment, index) => (
                         <div key={index} className="border-t pt-4">
+                          <p className="text-gray-500 text-xs mt-1">
+                            {moment(comment.timestamp).format("lll")}
+                          </p>
                           <p className="text-sm font-medium text-gray-800">
                             <span className="font-semibold">
                               {comment.username}
