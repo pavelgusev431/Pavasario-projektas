@@ -6,6 +6,7 @@ import {
     getTopUserProducts,
     getTrendingUserProducts,
     getAllProductCount,
+    getRatedProductsByUserName,
 } from '../controllers/productController.js';
 
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
@@ -19,5 +20,6 @@ productRouter.route('/bestnew').get(getHotProducts);
 productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/count').get(getAllProductCount);
 productRouter.route('/u/:username').get(getUserProductsByUserName);
+productRouter.route('/rated/:username').get(getRatedProductsByUserName);
 
 export default productRouter;
