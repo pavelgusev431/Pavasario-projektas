@@ -2,17 +2,18 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
-import { Op, where } from 'sequelize';
+import { Op } from 'sequelize';
 
 const getUserProductsByUserName = async (req, res) => {
     try {
-    const username = req.params.username; // Gauname username iš parametro
+        const username = req.params.username; // Gauname username iš parametro
 
-    if (!username) {
-        return res.status(400).json({ message: 'Netinkamas vartotojo vardas' });
-    }
+        if (!username) {
+            return res
+                .status(400)
+                .json({ message: 'Netinkamas vartotojo vardas' });
+        }
 
-   
         // Surandame vartotoją pagal username
         const user = await User.findOne({ where: { username } });
 
@@ -26,13 +27,11 @@ const getUserProductsByUserName = async (req, res) => {
         const products = await Product.findAll({ where: { user_id: userId } });
 
         if (products.length === 0) {
-            return res
-                .status(200)
-                .json({
-                    message: 'Produktų nerasta',
-                    data: [],
-                    avgUserRating: 0,
-                });
+            return res.status(200).json({
+                message: 'Produktų nerasta',
+                data: [],
+                avgUserRating: 0,
+            });
         }
 
         // Gauname visus produktų reitingus
@@ -51,11 +50,11 @@ const getUserProductsByUserName = async (req, res) => {
         });
 
         const events = await Event.findAll({
-            where:{ type_id: 1, 
-             target_id: 6,
-             user_id: user.id}
-         })
-         const event = events.find((e) => e.user_id === user.id && e.target_id === 6);
+            where: { type_id: 1, target_id: 6, user_id: user.id },
+        });
+        const event = events.find(
+            (e) => e.user_id === user.id && e.target_id === 6
+        );
 
         // Sukuriame žemėlapį { user_id: vartotojo informacija }
         const userMap = {};
@@ -93,7 +92,7 @@ const getUserProductsByUserName = async (req, res) => {
                     username: userMap[rating.user_id]?.username || 'Nežinomas',
                     comment: rating.comment,
                     stars: rating.stars,
-                    timestamp: event ? event.timestamp : null
+                    timestamp: event ? event.timestamp : null,
                 }))
                 .filter((comment) => comment.comment); // Filtruojame tuščius komentarus
 
@@ -196,7 +195,7 @@ const getHotProducts = async (req, res, next) => {
                           0
                       ) / ratingCount
                     : 0;
-                    const event = events.find((e) => e.user_id === user.id && e.target_id === 6);
+
             return { ...product.dataValues, ratingCount, avgRating };
         });
 
@@ -542,55 +541,54 @@ const getAllProductCount = async (req, res) => {
     });
 };
 
-const getRatedProductsByUserName = async (req, res, ) => {
+const getRatedProductsByUserName = async (req, res) => {
     try {
         const username = req.params.username;
         if (!username) {
             return res.status(400).json({
                 message: 'Username is required',
-            })
+            });
         }
 
         const user = await User.findOne({ where: { username: username } });
         if (!user) {
             return res.status(404).json({
                 message: 'User not found',
-            })
+            });
         }
         const ratings = await Rating.findAll({ where: { user_id: user.id } });
 
         if (ratings.length === 0) {
-            return res
-                .status(200)
-                .json({
-                    message: 'No ratings found for the user',
-                    data: [],
-                });
-        };
+            return res.status(200).json({
+                message: 'No ratings found for the user',
+                data: [],
+            });
+        }
         const productIds = ratings.map((rating) => rating.product_id);
 
         const products = await Product.findAll({
             where: {
                 id: {
-                    [Op.in]: productIds
-                }
-            }
-        })
+                    [Op.in]: productIds,
+                },
+            },
+        });
         const events = await Event.findAll({
-           where:{ type_id: 1, 
-            target_id: 6,
-            user_id: user.id}
-        })
+            where: { type_id: 1, target_id: 6, user_id: user.id },
+        });
 
         const processedProducts = ratings.map((rating) => {
-            const product = products.find((p) => p.id === rating.product_id) || {};
-            const event = events.find((e) => e.user_id === user.id && e.target_id === 6);
+            const product =
+                products.find((p) => p.id === rating.product_id) || {};
+            const event = events.find(
+                (e) => e.user_id === user.id && e.target_id === 6
+            );
 
             return {
                 ...product.dataValues,
                 userRating: rating.stars,
                 userComment: rating.comment,
-                timestamp: event ? event.timestamp : null
+                timestamp: event ? event.timestamp : null,
             };
         });
 
@@ -602,7 +600,7 @@ const getRatedProductsByUserName = async (req, res, ) => {
         console.error('error getting products', error);
         return res.status(500).json({ message: 'server error' });
     }
-}
+};
 
 export {
     getAllProductCount,
