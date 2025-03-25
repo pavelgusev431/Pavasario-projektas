@@ -14,18 +14,6 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const CLIENT_HOST = process.env.CLIENT_HOST;
 const CLIENT_PORT = process.env.CLIENT_PORT;
 
-// some code
-// const userProducts = [];
-// const createRecipes = async () => {
-//   let recipes = [];
-//   let recipe = "";
-//   for(let i in a[10]){
-//     console.log(i);
-//     recipe = await OpenAI("Generate a recipe with ${userProducts}");
-//     recipes.push(recipe);
-//   }
-//   return recipes;
-// }
 
 const createAdmin = async () => {
     try {
