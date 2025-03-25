@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
-import { getUserById } from '../../../../../server/controllers/userController';
+import { useContext, useEffect, useState } from 'react';
+import { getUserById } from '../../../helpers/getUser.js';
 import ModalEmail from './ModalEmail.jsx';
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
 
 const ProfileInfo = () => {
+    const { auth } = useContext(AuthContext);
+
     const [user, setUser] = useState(null);
     const [editModalEmail, setEditModalEmail] = useState(false);
     const [editModalUsername, setEditModalUsername] = useState(false);
@@ -13,7 +16,7 @@ const ProfileInfo = () => {
 
     useEffect(() => {
         const getUser = async () => {
-            const user = await getUserById();
+            const user = await getUserById(auth.id);
             setUser(user.dataValues);
         };
         getUser();
@@ -36,9 +39,9 @@ const ProfileInfo = () => {
                     <b>Email:</b>
                     <span>{user?.email}</span>
                     <i>
-                        <a href="_" onClick={handleChangeEmail}>
+                        <button onClick={handleChangeEmail}>
                             Change email
-                        </a>
+                        </button>
                     </i>
                 </p>
             </section>

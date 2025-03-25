@@ -14,7 +14,6 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const CLIENT_HOST = process.env.CLIENT_HOST;
 const CLIENT_PORT = process.env.CLIENT_PORT;
 
-
 const createAdmin = async () => {
     try {
         const admin = await User.create({
