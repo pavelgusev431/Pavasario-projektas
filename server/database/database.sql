@@ -8,39 +8,42 @@ INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
  
  
  
-INSERT INTO products (user_id, subcategory_id, name, price, description, image_url, amount_in_stock)
+INSERT INTO products (
+    user_id, subcategory_id, name, price, description, image_url, amount_in_stock, "createdAt", "updatedAt"
+)
 VALUES
 -- Pavel Gusev
-(1, 1, 'iPhone 15 Pro', 129900, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(1, 2, 'MacBook Air M2', 239900, 'testas', 'https://techcrunch.com/wp-content/uploads/2022/07/CMC_1580.jpg', 30),
-(1, 3, 'AirPods Pro', 79900, 'Aukštos kokybės Apple ausinės', 'https://istore.lt/media/catalog/product/cache/1/image/800x/602f0fa2c1f0d1ba5e241f914e856ff9/a/i/airpods_4_pdp_image_position_2__wwen.jpg', 40),
-(1, 4, 'Apple Watch Series 8', 109900, 'Išmanusis laikrodis su naujomis funkcijomis', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfEI1ZxzdYj2i4XKe7nExt_GipGBGq31mvSw&s', 25),
-(1, 5, 'iPad Pro 12.9"', 159900, 'Naujausias Apple planšetinis kompiuteris', 'https://istore.lt/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/p/ipad-pro-12.9-wifi-space-gray_9_3.png', 20),
-(1, 6, 'Apple TV 4K', 179900, 'Streamingo įrenginys su 4K vaizdo kokybe', 'https://www.cnet.com/a/img/resize/1c366d0a88fbfbd39e98f89d27962601ba70de95/hub/2022/11/01/de745101-c753-4a3b-b9ae-b28ebfdcf9af/apple-tv-4k-streaming-box-5084.jpg?auto=webp&width=1200', 15),
-(1, 7, 'Beats Studio3 Wireless', 89900, 'Beats ausinės su triukšmo slopinimu', 'https://istore.lt/media/catalog/product/cache/1/image/800x/602f0fa2c1f0d1ba5e241f914e856ff9/m/q/mq562-beats-studio3-over-ear-headphones-black-2.jpg', 50),
-(1, 8, 'Apple Magic Mouse', 69900, 'Ergonomiška Apple pelė', 'https://picfit.topocentras.lt/xcdn-cgi/image/fit=contain,format=auto,quality=85/media/catalog/product/m/m/mmmq3_464582_1647337558.jpg', 30),
-(1, 9, 'Apple Keyboard', 99900, 'Elegantiška Apple klaviatūra', 'https://www.novastar.lt/UserFiles/Products/Images/401424-604924-medium.png', 40),
-(1, 10, 'iPhone 14 Pro', 119900, 'Ankstesnis modelis, vis dar puikus', 'https://istore.lt/media/catalog/product/a/p/apple-iphone-14-pro-deep-purple_1_1_1_1.jpg', 60),
- 
+(1, 1, 'iPhone 15 Pro', 129900, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 2, 'MacBook Air M2', 239900, 'testas', 'https://techcrunch.com/wp-content/uploads/2022/07/CMC_1580.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 3, 'AirPods Pro', 79900, 'Aukštos kokybės Apple ausinės', 'https://istore.lt/media/catalog/product/cache/1/image/800x/602f0fa2c1f0d1ba5e241f914e856ff9/a/i/airpods_4_pdp_image_position_2__wwen.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 4, 'Apple Watch Series 8', 109900, 'Išmanusis laikrodis su naujomis funkcijomis', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfEI1ZxzdYj2i4XKe7nExt_GipGBGq31mvSw&s', 25, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 5, 'iPad Pro 12.9"', 159900, 'Naujausias Apple planšetinis kompiuteris', 'https://istore.lt/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/p/ipad-pro-12.9-wifi-space-gray_9_3.png', 20, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 6, 'Apple TV 4K', 179900, 'Streamingo įrenginys su 4K vaizdo kokybe', 'https://www.cnet.com/a/img/resize/1c366d0a88fbfbd39e98f89d27962601ba70de95/hub/2022/11/01/de745101-c753-4a3b-b9ae-b28ebfdcf9af/apple-tv-4k-streaming-box-5084.jpg?auto=webp&width=1200', 15, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 7, 'Beats Studio3 Wireless', 89900, 'Beats ausinės su triukšmo slopinimu', 'https://istore.lt/media/catalog/product/cache/1/image/800x/602f0fa2c1f0d1ba5e241f914e856ff9/m/q/mq562-beats-studio3-over-ear-headphones-black-2.jpg', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 8, 'Apple Magic Mouse', 69900, 'Ergonomiška Apple pelė', 'https://picfit.topocentras.lt/xcdn-cgi/image/fit=contain,format=auto,quality=85/media/catalog/product/m/m/mmmq3_464582_1647337558.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 9, 'Apple Keyboard', 99900, 'Elegantiška Apple klaviatūra', 'https://www.novastar.lt/UserFiles/Products/Images/401424-604924-medium.png', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 10, 'iPhone 14 Pro', 119900, 'Ankstesnis modelis, vis dar puikus', 'https://istore.lt/media/catalog/product/a/p/apple-iphone-14-pro-deep-purple_1_1_1_1.jpg', 60, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+
 -- Vardenis Vardenis
-(2, 1, 'Samsung Galaxy S24', 99900, 'Galingas Samsung flagmanas', 'https://kainos-img.dgn.lt/photos2_25_268648490/img.jpg', 30),
-(2, 2, 'Samsung Galaxy Tab S8', 84900, 'Samsung planšetinis kompiuteris', 'https://www.mobilusmiestas.lt/out/pictures/z1/71kxnf5yskl._ac_sl1500__z1.jpg', 50),
-(2, 3, 'Samsung Galaxy Buds2', 39900, 'Komfortiškos ausinės su aktyviu triukšmo slopinimu', 'https://cdn.pixabay.com/photo/2019/07/09/06/24/headphones-4321242_640.jpg', 40),
-(2, 4, 'Samsung SmartWatch', 79900, 'Išmanusis laikrodis su nuotolinio valdymo funkcija', 'https://cdn.pixabay.com/photo/2018/11/14/18/47/smartwatch-3818844_640.jpg', 35),
-(2, 5, 'Samsung QLED TV', 149900, 'Aukštos kokybės televizorius su QLED technologija', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 45),
-(2, 6, 'Samsung Notebook', 109900, 'Galingas nešiojamas kompiuteris', 'https://cdn.pixabay.com/photo/2018/03/21/09/52/samsung-3246582_640.jpg', 40),
-(2, 7, 'Samsung Soundbar', 79900, 'Garsinė juosta su aukšta garso kokybe', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 60),
-(2, 8, 'Samsung Monitor', 59900, 'Didelis ekranas su 4K raiška', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6Xk9-82MPIO_iMgGBjAmk09WWWFXeqZxFqQ&s', 50),
-(2, 9, 'Samsung Powerbank', 24900, 'Nešiojamas įkroviklis', 'https://www.varle.lt/static/uploads/products/496/sam/samsung-eb-u3300xjegeu-nesiojamasis-ikroviklis_UgzXRJC.jpg', 70),
-(2, 10, 'Samsung External SSD', 45900, 'Greitas išorinis SSD diskas', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU7DWLxqQhqoAicUNO0RWMdCuOSvP2OVrplA&s', 30),
-(3, 2, 'MacBook Air M2', 239900, 'testas', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 30),
---testas
-(4, 5, 'betkas', 15, 'testuoju', 'https://cdn.pixabay.com/photo/2019/04/25/21/42/ipad-4166255_640.jpg', 20),
- 
-(4, 1, 'Testo telefonas', 39999, 'Tai tik testinis telefonas', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 10),
-(4, 2, 'Testo kompiuteris', 49999, 'Testo kompiuteris su labai gera kaina', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 5),
-(4, 3, 'Testo ausinės', 19999, 'Testinės ausinės', 'https://cdn.pixabay.com/photo/2019/07/09/06/24/headphones-4321242_640.jpg', 15),
-(4, 4, 'Testo laikrodis', 24999, 'Testinis laikrodis su visomis funkcijomis', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 8);
+(2, 1, 'Samsung Galaxy S24', 99900, 'Galingas Samsung flagmanas', 'https://kainos-img.dgn.lt/photos2_25_268648490/img.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 2, 'Samsung Galaxy Tab S8', 84900, 'Samsung planšetinis kompiuteris', 'https://www.mobilusmiestas.lt/out/pictures/z1/71kxnf5yskl._ac_sl1500__z1.jpg', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 3, 'Samsung Galaxy Buds2', 39900, 'Komfortiškos ausinės su aktyviu triukšmo slopinimu', 'https://cdn.pixabay.com/photo/2019/07/09/06/24/headphones-4321242_640.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 4, 'Samsung SmartWatch', 79900, 'Išmanusis laikrodis su nuotolinio valdymo funkcija', 'https://cdn.pixabay.com/photo/2018/11/14/18/47/smartwatch-3818844_640.jpg', 35, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 5, 'Samsung QLED TV', 149900, 'Aukštos kokybės televizorius su QLED technologija', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 45, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 6, 'Samsung Notebook', 109900, 'Galingas nešiojamas kompiuteris', 'https://cdn.pixabay.com/photo/2018/03/21/09/52/samsung-3246582_640.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 7, 'Samsung Soundbar', 79900, 'Garsinė juosta su aukšta garso kokybe', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 60, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 8, 'Samsung Monitor', 59900, 'Didelis ekranas su 4K raiška', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6Xk9-82MPIO_iMgGBjAmk09WWWFXeqZxFqQ&s', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 9, 'Samsung Powerbank', 24900, 'Nešiojamas įkroviklis', 'https://www.varle.lt/static/uploads/products/496/sam/samsung-eb-u3300xjegeu-nesiojamasis-ikroviklis_UgzXRJC.jpg', 70, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 10, 'Samsung External SSD', 45900, 'Greitas išorinis SSD diskas', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU7DWLxqQhqoAicUNO0RWMdCuOSvP2OVrplA&s', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(3, 2, 'MacBook Air M2', 239900, 'testas', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+
+-- testas
+(4, 5, 'betkas', 15, 'testuoju', 'https://cdn.pixabay.com/photo/2019/04/25/21/42/ipad-4166255_640.jpg', 20, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 1, 'Testo telefonas', 39999, 'Tai tik testinis telefonas', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 10, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 2, 'Testo kompiuteris', 49999, 'Testo kompiuteris su labai gera kaina', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 5, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 3, 'Testo ausinės', 19999, 'Testinės ausinės', 'https://cdn.pixabay.com/photo/2019/07/09/06/24/headphones-4321242_640.jpg', 15, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 4, 'Testo laikrodis', 24999, 'Testinis laikrodis su visomis funkcijomis', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 8, '2025-03-01 10:00:00', '2025-03-01 10:00:00');
+
  
  
  
