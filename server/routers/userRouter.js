@@ -9,13 +9,15 @@ import {
     me,
     getAllUsers,
     getAllUsersCount,
+    changeUserInfo,
+    changePassword,
 } from '../controllers/userController.js';
 import express from 'express';
 import protect from '../validators/validateJWT.js';
 import validateCreateUser from '../validators/validateCreateUser.js';
-import validateUpdateInfo from '../validators/validateUpdateInfo.js';
+//some import
+// import validateUpdateInfo from '../validators/validateUpdateInfo.js';
 import validate from '../middlewares/validate.js';
-import { updateUserInfo } from '../../client/src/helpers/updateUserInfo.js';
 
 const userRouter = express.Router();
 
@@ -32,7 +34,8 @@ userRouter.route('/:username').get(getUserByUsername);
 userRouter.route('/reset/:id').post(passwordReset);
 userRouter.use(protect);
 userRouter.route('/me').get(me);
+userRouter.route('/password/:id').patch(changePassword);
 userRouter.route('/:username').get(getUserByUsername);
-userRouter.route('/update/:id').patch(validateUpdateInfo, updateUserInfo);
+userRouter.route('/update/:id').patch(changeUserInfo);
 
 export default userRouter;
