@@ -29,6 +29,20 @@ const ProductDetails = () => {
   // Check if the product data is correctly fetched
   console.log("Product data:", product);
 
+  // Determine stock status
+  let stockStatus;
+  let stockClass;
+  if (product.amount_in_stock > 5) {
+    stockStatus = "In Stock";
+    stockClass = "text-green-500";
+  } else if (product.amount_in_stock > 0) {
+    stockStatus = "Low in stock";
+    stockClass = "text-yellow-500";
+  } else {
+    stockStatus = "Out of stock";
+    stockClass = "text-red-500";
+  }
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row">
@@ -44,6 +58,9 @@ const ProductDetails = () => {
           <p className="text-lg mb-4">{product.description}</p>
           <p className="text-2xl font-bold text-red-500 mb-4">
             ${Number(product.price).toFixed(2)}
+          </p>
+          <p className={`text-lg font-bold mb-4 ${stockClass}`}>
+            {stockStatus}
           </p>
         </div>
       </div>
