@@ -37,7 +37,7 @@ export default function HighestRatedProducts() {
                 </h2>
                 <div>
                     <Link to={`/products`}>
-                        <button className="bg-red-500 mr-10 hover:bg-red-700 text-white font-bold  rounded py-2 px-4 ">
+                        <button className="bg-red-500 dark:bg-red-700 mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
                             View All Products
                         </button>
                     </Link>
