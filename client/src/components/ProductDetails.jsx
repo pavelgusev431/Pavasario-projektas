@@ -30,8 +30,19 @@ const ProductDetails = () => {
   console.log("Product data:", product);
 
   return (
-    <div>
-      <h1>{product.name}</h1>
+    <div className="container mx-auto p-4">
+      <div className="flex flex-col md:flex-row">
+        <div className="md:w-1/2">
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="w-full h-auto object-cover rounded-md"
+          />
+        </div>
+        <div className="md:w-1/2 md:pl-8">
+          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+        </div>
+      </div>
     </div>
   );
 };
