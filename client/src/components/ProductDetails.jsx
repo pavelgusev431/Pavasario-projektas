@@ -41,6 +41,7 @@ const ProductDetails = () => {
         </div>
         <div className="md:w-1/2 md:pl-8">
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+          <p className="text-lg mb-4">{product.description}</p>
         </div>
       </div>
     </div>
