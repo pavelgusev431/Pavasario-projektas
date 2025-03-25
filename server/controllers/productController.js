@@ -463,13 +463,16 @@ const getAllProductCount = async (req, res) => {
 
 export const getProductById = async (req, res) => {
   try {
+    console.log("Request params:", req.params); // Debugging: Log the request params
     const product = await Product.findByPk(req.params.id);
     if (product) {
+      console.log("Product found:", product); // Debugging: Log the product data
       res.json(product);
     } else {
       res.status(404).json({ message: "Product not found" });
     }
   } catch (error) {
+    console.error("Server error:", error); // Debugging: Log the error
     res.status(500).json({ message: "Server error" });
   }
 };

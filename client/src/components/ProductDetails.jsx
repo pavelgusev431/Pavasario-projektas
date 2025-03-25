@@ -9,7 +9,10 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`/products/selected/${id}`);
+        const response = await axios.get(
+          `http://localhost:3000/products/selected/${id}`
+        );
+        console.log("Fetched product data:", response.data); // Debugging: Log the product data
         setProduct(response.data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -23,12 +26,12 @@ const ProductDetails = () => {
     return <div>Loading...</div>;
   }
 
+  // Check if the product data is correctly fetched
+  console.log("Product data:", product);
+
   return (
     <div>
       <h1>{product.name}</h1>
-      <p>{product.description}</p>
-      <p>Price: ${product.price}</p>
-      <img src={product.image_url} alt={product.name} />
     </div>
   );
 };
