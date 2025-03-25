@@ -604,7 +604,6 @@ const getRatedProductsByUserName = async (req, res) => {
 
 const getAllProductsSorted = async (req, res) => {
     try {
-        // ✅ Проверяем допустимые поля для сортировки
         const allowedSortFields = ['id', 'createdAt', 'price', 'name'];
         const sortField = allowedSortFields.includes(req.query.sort)
             ? req.query.sort
@@ -612,7 +611,6 @@ const getAllProductsSorted = async (req, res) => {
 
         const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
 
-        // ✅ Обрабатываем даты
         const from = req.query.from?.trim() || null;
         const to = req.query.to?.trim() || null;
 
@@ -632,7 +630,6 @@ const getAllProductsSorted = async (req, res) => {
             };
         }
 
-        // ✅ Создаём опции запроса
         const options = {
             where,
             order: [[sortField, order]],
@@ -679,7 +676,7 @@ const getAllProductsSorted = async (req, res) => {
             },
         });
     } catch (err) {
-        console.error('Klaida serveryje:', err); // ✅ Покажет настоящую ошибку
+        console.error('Klaida serveryje:', err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
     }
 };
