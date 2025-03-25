@@ -77,7 +77,7 @@ export default function TopUserProducts() {
                     </div>
                     <div className="text-center mt-4">
                         <Link to={`/products/u/${userName}`}>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            <button className="bg-red-500 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
                                 View All Products
                             </button>
                         </Link>
