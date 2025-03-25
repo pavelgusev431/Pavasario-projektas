@@ -56,6 +56,15 @@ const getTrendingUserProducts = async () => {
     return response;
 };
 
+const getRatedProductsByUserName = async (username) => {
+    const response = await axios
+        .get(url(`products/rated/${username}`))
+        .catch((error) => {
+            console.log(error);
+        });
+    return response;
+};
+
 export {
     getProductById,
     getHotProducts,
@@ -64,4 +73,5 @@ export {
     getTrendingUserProducts,
     getAllProducts,
     getUserProductsByUserName,
+    getRatedProductsByUserName,
 };
