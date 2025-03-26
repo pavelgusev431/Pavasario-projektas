@@ -62,6 +62,8 @@ const ProductDetails = () => {
           <p className={`text-lg font-bold mb-4 ${stockClass}`}>
             {stockStatus}
           </p>
+          <p className="text-lg mb-4">Seller: {product.User.username}</p>
+          <p className="text-lg mb-4">Contact: {product.User.contacts}</p>
           <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
             Buy Now
           </button>
