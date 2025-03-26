@@ -62,32 +62,40 @@ const ProductDetails = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/2">
+        <div className="w-full md:w-1/2">
           <div className="relative overflow-hidden">
             <img
               src={product.image_url}
               alt={product.name}
-              className="w-full max-w-md h-auto object-cover rounded-md mx-auto"
+              className="w-full h-auto object-cover rounded-md mx-auto"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
             />
           </div>
         </div>
-        <div className="md:w-1/2 md:pl-8">
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          <p className="text-lg mb-4">{product.description}</p>
-          <p className="text-2xl font-bold text-red-500 mb-4">
+        <div className="w-full md:w-1/2 md:pl-8 mt-4 md:mt-0">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4">
+            {product.name}
+          </h1>
+          <p className="text-base md:text-lg mb-4">{product.description}</p>
+          <p className="text-xl md:text-2xl font-bold text-red-500 mb-4">
             ${Number(product.price).toFixed(2)}
           </p>
-          <p className={`text-lg font-bold mb-4 ${stockClass}`}>
+          <p className={`text-base md:text-lg font-bold mb-4 ${stockClass}`}>
             {stockStatus}
           </p>
-          <p className="text-lg mb-4">Seller: {product.User.username}</p>
-          <p className="text-lg mb-4">Contact: {product.User.contacts}</p>
-          <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
-            Buy Now
-          </button>
+          <p className="text-base md:text-lg mb-4">
+            Seller: {product.User.username}
+          </p>
+          <p className="text-base md:text-lg mb-4">
+            Contact: {product.User.contacts}
+          </p>
+          {product.amount_in_stock > 0 && (
+            <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+              Buy Now
+            </button>
+          )}
         </div>
       </div>
     </div>
