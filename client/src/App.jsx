@@ -23,7 +23,10 @@ function App() {
                 <Route path="users/:username" element={<PublicUserProfile />} />
                 <Route path="products" element={<ProductList />} />
                 <Route path="/" element={<ProductsDropdown />} />
-                <Route path="/products/:subcategoryId" element={<ProductsPage />} />
+                <Route
+                    path="/products/:subcategoryId"
+                    element={<ProductsPage />}
+                />
 
                 <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />

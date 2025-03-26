@@ -3,7 +3,10 @@ import Subcategory from './subcategoryModel.js';
 import AppError from '../utilities/AppError.js';
 import sq from '../database/sequelize.js';
 import Product from './productModel.js';
-Category.hasMany(Subcategory, { foreignKey: 'categoryId', as: 'subcategories' });
+Category.hasMany(Subcategory, {
+    foreignKey: 'categoryId',
+    as: 'subcategories',
+});
 Subcategory.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 
 export { Category, Subcategory };
@@ -11,11 +14,11 @@ export { Category, Subcategory };
 const syncModels = async () => {
     try {
         await sq.query('DROP TABLE IF EXISTS "subcategories" CASCADE');
-        await Subcategory.drop(); 
+        await Subcategory.drop();
         await Category.drop();
         await Category.sync({ alter: true });
         console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
-        
+
         // Create categories
         const categories = await Category.bulkCreate([
             { name: 'Electronics' },
@@ -36,21 +39,44 @@ const syncModels = async () => {
         console.log('\x1b[35mSubcategory\x1b[34m table created\x1b[0m');
 
         // Get the created categories
-        const electronicsCategory = await Category.findOne({ where: { name: 'Electronics' } });
-        const fashionCategory = await Category.findOne({ where: { name: 'Fashion & Apparel' } });
-        const homeCategory = await Category.findOne({ where: { name: 'Home & Furniture' } });
-        const healthCategory = await Category.findOne({ where: { name: 'Health & Beauty' } });
-        const sportsCategory = await Category.findOne({ where: { name: 'Sports & Outdoors' } });
-        const toysCategory = await Category.findOne({ where: { name: 'Toys & Games' } });
-        const automotiveCategory = await Category.findOne({ where: { name: 'Automotive' } });
-        const booksCategory = await Category.findOne({ where: { name: 'Books & Media' } });
-        const groceriesCategory = await Category.findOne({ where: { name: 'Groceries & Food' } });
-        const officeCategory = await Category.findOne({ where: { name: 'Office & School Supplies' } });
+        const electronicsCategory = await Category.findOne({
+            where: { name: 'Electronics' },
+        });
+        const fashionCategory = await Category.findOne({
+            where: { name: 'Fashion & Apparel' },
+        });
+        const homeCategory = await Category.findOne({
+            where: { name: 'Home & Furniture' },
+        });
+        const healthCategory = await Category.findOne({
+            where: { name: 'Health & Beauty' },
+        });
+        const sportsCategory = await Category.findOne({
+            where: { name: 'Sports & Outdoors' },
+        });
+        const toysCategory = await Category.findOne({
+            where: { name: 'Toys & Games' },
+        });
+        const automotiveCategory = await Category.findOne({
+            where: { name: 'Automotive' },
+        });
+        const booksCategory = await Category.findOne({
+            where: { name: 'Books & Media' },
+        });
+        const groceriesCategory = await Category.findOne({
+            where: { name: 'Groceries & Food' },
+        });
+        const officeCategory = await Category.findOne({
+            where: { name: 'Office & School Supplies' },
+        });
         await Product.sync({ alter: true, force: true });
         console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
         // Create subcategories
         await Subcategory.bulkCreate([
-            { categoryId: electronicsCategory.id, name: 'Smartphones & Accessories' },
+            {
+                categoryId: electronicsCategory.id,
+                name: 'Smartphones & Accessories',
+            },
             { categoryId: electronicsCategory.id, name: 'Computers & Laptops' },
             { categoryId: electronicsCategory.id, name: 'Audio & Headphones' },
             { categoryId: electronicsCategory.id, name: 'Wearable Tech' },

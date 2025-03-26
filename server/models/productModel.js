@@ -28,7 +28,10 @@ User.hasMany(Product, { foreignKey: 'user_id' });
 Product.belongsTo(User, { foreignKey: 'user_id' });
 Product.hasMany(Rating, { foreignKey: 'product_id' });
 Rating.belongsTo(Product, { foreignKey: 'product_id' });
-Product.belongsTo(Subcategory, { foreignKey: 'subcategory_id', as: 'subcategory' });
+Product.belongsTo(Subcategory, {
+    foreignKey: 'subcategory_id',
+    as: 'subcategory',
+});
 Subcategory.hasMany(Product, { foreignKey: 'subcategory_id', as: 'products' });
 
 try {

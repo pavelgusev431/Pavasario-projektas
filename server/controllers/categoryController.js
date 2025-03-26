@@ -1,7 +1,6 @@
 import { Category, Subcategory } from '../models/categorySyncModel.js';
 import AppError from '../utilities/AppError.js';
-import Product  from '../models/productModel.js';
-
+import Product from '../models/productModel.js';
 
 export const getAllCategoriesWithSubcategories = async (req, res, next) => {
     try {
@@ -9,17 +8,17 @@ export const getAllCategoriesWithSubcategories = async (req, res, next) => {
             include: [
                 {
                     model: Subcategory,
-                    as: 'subcategories'
-                }
-            ]
+                    as: 'subcategories',
+                },
+            ],
         });
-        
+
         res.status(200).json({
             status: 'success',
             results: categories.length,
             data: {
-                categories
-            }
+                categories,
+            },
         });
     } catch (error) {
         next(new AppError(`Error fetching categories: ${error.message}`, 500));
@@ -30,25 +29,25 @@ export const getAllCategoriesWithSubcategories = async (req, res, next) => {
 export const getCategoryWithSubcategories = async (req, res, next) => {
     try {
         const { id } = req.params;
-        
+
         const category = await Category.findByPk(id, {
             include: [
                 {
                     model: Subcategory,
-                    as: 'subcategories'
-                }
-            ]
+                    as: 'subcategories',
+                },
+            ],
         });
-        
+
         if (!category) {
             return next(new AppError(`No category found with id: ${id}`, 404));
         }
-        
+
         res.status(200).json({
             status: 'success',
             data: {
-                category
-            }
+                category,
+            },
         });
     } catch (error) {
         next(new AppError(`Error fetching category: ${error.message}`, 500));
@@ -63,7 +62,9 @@ export const getProductsBySubcategory = async (req, res) => {
 
         // Ensure that subcategoryId is valid
         if (!subcategoryId || isNaN(subcategoryId)) {
-            return res.status(400).json({ message: 'Invalid or missing subcategory ID' });
+            return res
+                .status(400)
+                .json({ message: 'Invalid or missing subcategory ID' });
         }
 
         // Fetch products for the given subcategoryId, using the correct column name `subcategory_id`
@@ -78,7 +79,9 @@ export const getProductsBySubcategory = async (req, res) => {
         });
 
         if (!products || products.length === 0) {
-            return res.status(404).json({ message: 'No products found for this subcategory' });
+            return res
+                .status(404)
+                .json({ message: 'No products found for this subcategory' });
         }
 
         res.status(200).json({

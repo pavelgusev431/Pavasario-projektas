@@ -25,13 +25,11 @@ const getUserProductsByUserName = async (req, res) => {
         const products = await Product.findAll({ where: { user_id: userId } });
 
         if (products.length === 0) {
-            return res
-                .status(200)
-                .json({
-                    message: 'Produktų nerasta',
-                    data: [],
-                    avgUserRating: 0,
-                });
+            return res.status(200).json({
+                message: 'Produktų nerasta',
+                data: [],
+                avgUserRating: 0,
+            });
         }
 
         // Gauname visus produktų reitingus

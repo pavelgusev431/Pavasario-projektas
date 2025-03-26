@@ -30,7 +30,7 @@ app.use(cookieParser());
 //routes go here
 app.use('/users', userRouter);
 app.use('/products', productRouter);
-app.use('/categories',categoryRouter)
+app.use('/categories', categoryRouter);
 
 //==============
 //last

@@ -62,10 +62,12 @@ const NavBar = () => {
 
                 <div className="hidden md:flex items-center ml-2">
                     <ul className=" flex flex-col p-2 md:p-0 mt-2 rounded-lg md:flex-row md:space-x-4 md:mt-0">
-                        <li><ProductsDropdown /></li>
                         <li>
-                            <button 
-                                onClick={() => handleNavigation('/contact')} 
+                            <ProductsDropdown />
+                        </li>
+                        <li>
+                            <button
+                                onClick={() => handleNavigation('/contact')}
                                 className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive('/contact')}`}
                             >
                                 Contact
@@ -206,14 +208,16 @@ const NavBar = () => {
                                 onClick={() => handleNavigation('/about')}
                                 className="p-2 text-black w-full text-left hover:bg-gray-100"
                             >
-                                <i className="fas fa-info-circle mr-3"></i> About
+                                <i className="fas fa-info-circle mr-3"></i>{' '}
+                                About
                             </button>
                             {!auth && (
                                 <button
                                     onClick={() => handleNavigation('/signup')}
                                     className="p-2 text-black w-full text-left hover:bg-gray-100"
                                 >
-                                    <i className="fas fa-user-plus mr-3"></i> Sign Up
+                                    <i className="fas fa-user-plus mr-3"></i>{' '}
+                                    Sign Up
                                 </button>
                             )}
                         </div>

@@ -1,5 +1,8 @@
 import express from 'express';
-import {getAllCategoriesWithSubcategories, getProductsBySubcategory} from '../controllers/categoryController.js';
+import {
+    getAllCategoriesWithSubcategories,
+    getProductsBySubcategory,
+} from '../controllers/categoryController.js';
 
 const categoryRouter = express.Router();
 

@@ -1,31 +1,34 @@
 import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
 
-const Subcategory = sq.define('Subcategory', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    categoryId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'categories', // Ensure this matches the table name exactly
-            key: 'id',
+const Subcategory = sq.define(
+    'Subcategory',
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        categoryId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'categories', // Ensure this matches the table name exactly
+                key: 'id',
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-}, {
-    timestamps: false,
-    tableName: 'subcategories',
-});
-
+    {
+        timestamps: false,
+        tableName: 'subcategories',
+    }
+);
 
 export default Subcategory;
