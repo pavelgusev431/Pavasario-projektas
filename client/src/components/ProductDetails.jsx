@@ -61,38 +61,38 @@ const ProductDetails = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2">
-          <div className="relative overflow-hidden">
+      <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="w-full md:w-1/2 flex justify-center items-center p-4">
+          <div className="relative overflow-hidden w-96 h-96 md:w-128 md:h-128">
             <img
               src={product.image_url}
               alt={product.name}
-              className="w-full h-auto object-cover rounded-md mx-auto"
+              className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
             />
           </div>
         </div>
-        <div className="w-full md:w-1/2 md:pl-8 mt-4 md:mt-0">
-          <h1 className="text-2xl md:text-3xl font-bold mb-4">
+        <div className="w-full md:w-1/2 p-6 md:p-8">
+          <h1 className="text-3xl font-bold mb-4 text-gray-800">
             {product.name}
           </h1>
-          <p className="text-base md:text-lg mb-4">{product.description}</p>
-          <p className="text-xl md:text-2xl font-bold text-red-500 mb-4">
+          <p className="text-lg mb-4 text-gray-600">{product.description}</p>
+          <p className="text-2xl font-bold text-red-500 mb-4">
             ${Number(product.price).toFixed(2)}
           </p>
-          <p className={`text-base md:text-lg font-bold mb-4 ${stockClass}`}>
+          <p className={`text-lg font-bold mb-4 ${stockClass}`}>
             {stockStatus}
           </p>
-          <p className="text-base md:text-lg mb-4">
+          <p className="text-lg mb-4 text-gray-700">
             Seller: {product.User.username}
           </p>
-          <p className="text-base md:text-lg mb-4">
+          <p className="text-lg mb-4 text-gray-700">
             Contact: {product.User.contacts}
           </p>
           {product.amount_in_stock > 0 && (
-            <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+            <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300">
               Buy Now
             </button>
           )}
