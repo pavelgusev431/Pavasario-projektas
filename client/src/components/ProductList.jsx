@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
+import Sort from './buttons/Sort';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -41,6 +42,16 @@ const ProductList = () => {
         fetchProducts();
     }, [pageSize]);
 
+    useEffect(() => {
+        const handleSortedProducts = (event) => {
+            setProducts(event.detail);
+        };
+    
+        window.addEventListener('sortedProducts', handleSortedProducts);
+        return () => window.removeEventListener('sortedProducts', handleSortedProducts);
+    }, []);
+    
+
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
             fetchProducts(newPage);
@@ -50,7 +61,7 @@ const ProductList = () => {
     const handlePageSizeChange = (event) => {
         setPageSize(parseInt(event.target.value));
     };
-
+    
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">Product List</h1>
@@ -65,7 +76,7 @@ const ProductList = () => {
                     id="pageSize"
                     value={pageSize}
                     onChange={handlePageSizeChange}
-                    className="p-2 border rounded-md"
+                    className="p-2 border border-gray-300 rounded-md bg-white text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
                 >
                     <option value={6}>6</option>
                     <option value={12}>12</option>
@@ -73,6 +84,7 @@ const ProductList = () => {
                     <option value={24}>24</option>
                     <option value={30}>30</option>
                 </select>
+                <Sort />
             </div>
 
             {products.length > 0 ? (

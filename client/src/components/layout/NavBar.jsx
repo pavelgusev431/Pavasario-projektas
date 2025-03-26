@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext.jsx';
+import ThemeToggleButton from '../buttons/ThemeToggleButton.jsx';
 
 const NavBar = () => {
     const location = useLocation();
@@ -75,6 +76,7 @@ const NavBar = () => {
                             </button>
                         </li>
                     </ul>
+                    <ThemeToggleButton />
                 </div>
 
                 <div className="flex items-center space-x-4 md:space-x-6 ml-auto">

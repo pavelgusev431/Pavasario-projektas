@@ -14,7 +14,7 @@ INSERT INTO products (
 VALUES
 -- Pavel Gusev
 (1, 1, 'iPhone 15 Pro', 129900, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(1, 2, 'MacBook Air M2', 239900, 'testas', 'https://techcrunch.com/wp-content/uploads/2022/07/CMC_1580.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(1, 2, 'MacBook Air M2', 239900, 'testas', 'https://gfx3.senetic.com/akeneo-catalog/c/f/9/b/cf9b0859214018e431426ec6837ea2c3e9f14492_1678313_Z160000DB_image2.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (1, 3, 'AirPods Pro', 79900, 'Aukštos kokybės Apple ausinės', 'https://istore.lt/media/catalog/product/cache/1/image/800x/602f0fa2c1f0d1ba5e241f914e856ff9/a/i/airpods_4_pdp_image_position_2__wwen.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (1, 4, 'Apple Watch Series 8', 109900, 'Išmanusis laikrodis su naujomis funkcijomis', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfEI1ZxzdYj2i4XKe7nExt_GipGBGq31mvSw&s', 25, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (1, 5, 'iPad Pro 12.9"', 159900, 'Naujausias Apple planšetinis kompiuteris', 'https://istore.lt/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/p/ipad-pro-12.9-wifi-space-gray_9_3.png', 20, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
@@ -27,22 +27,21 @@ VALUES
 -- Vardenis Vardenis
 (2, 1, 'Samsung Galaxy S24', 99900, 'Galingas Samsung flagmanas', 'https://kainos-img.dgn.lt/photos2_25_268648490/img.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (2, 2, 'Samsung Galaxy Tab S8', 84900, 'Samsung planšetinis kompiuteris', 'https://www.mobilusmiestas.lt/out/pictures/z1/71kxnf5yskl._ac_sl1500__z1.jpg', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(2, 3, 'Samsung Galaxy Buds2', 39900, 'Komfortiškos ausinės su aktyviu triukšmo slopinimu', 'https://cdn.pixabay.com/photo/2019/07/09/06/24/headphones-4321242_640.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(2, 4, 'Samsung SmartWatch', 79900, 'Išmanusis laikrodis su nuotolinio valdymo funkcija', 'https://cdn.pixabay.com/photo/2018/11/14/18/47/smartwatch-3818844_640.jpg', 35, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(2, 5, 'Samsung QLED TV', 149900, 'Aukštos kokybės televizorius su QLED technologija', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 45, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(2, 6, 'Samsung Notebook', 109900, 'Galingas nešiojamas kompiuteris', 'https://cdn.pixabay.com/photo/2018/03/21/09/52/samsung-3246582_640.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(2, 7, 'Samsung Soundbar', 79900, 'Garsinė juosta su aukšta garso kokybe', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 60, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 3, 'Samsung Galaxy Buds2', 39900, 'Komfortiškos ausinės su aktyviu triukšmo slopinimu', 'https://kainos-img.dgn.lt/photos2_25_121515870/img.jpg', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 4, 'Samsung SmartWatch', 79900, 'Išmanusis laikrodis su nuotolinio valdymo funkcija', 'https://kainos-img.dgn.lt/photos2_25_274851094/smartwatch-galaxy-watch-fe-40mm-black-sm-r861-samsung.jpg', 35, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 5, 'Samsung QLED TV', 149900, 'Aukštos kokybės televizorius su QLED technologija', 'https://images.samsung.com/is/image/samsung/p6pim/kz_ru/qe65q70dauxce/gallery/kz-ru-qled-q70d-qe65q70dauxce-541256581?$684_547_PNG$', 45, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 6, 'Samsung Notebook', 109900, 'Galingas nešiojamas kompiuteris', 'https://images.samsung.com/is/image/samsung/assets/us/galaxybooks/01182025/GB-PCD-Discover-FT12-FeatureColumnCarousel-GB5Pro360-M-V3.jpg?$720_N_JPG$', 40, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(2, 7, 'Samsung Soundbar', 79900, 'Garsinė juosta su aukšta garso kokybe', 'https://image-us.samsung.com/SamsungUS/home/television-home-theater/home-theater/soundbars/02152024/HW-Q990D_002_Set-R_Perspective_Graphite_Black_1600x1200.jpg?$product-details-jpg$', 60, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (2, 8, 'Samsung Monitor', 59900, 'Didelis ekranas su 4K raiška', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6Xk9-82MPIO_iMgGBjAmk09WWWFXeqZxFqQ&s', 50, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (2, 9, 'Samsung Powerbank', 24900, 'Nešiojamas įkroviklis', 'https://www.varle.lt/static/uploads/products/496/sam/samsung-eb-u3300xjegeu-nesiojamasis-ikroviklis_UgzXRJC.jpg', 70, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 (2, 10, 'Samsung External SSD', 45900, 'Greitas išorinis SSD diskas', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU7DWLxqQhqoAicUNO0RWMdCuOSvP2OVrplA&s', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(3, 2, 'MacBook Air M2', 239900, 'testas', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 30, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
 
 -- testas
-(4, 5, 'betkas', 15, 'testuoju', 'https://cdn.pixabay.com/photo/2019/04/25/21/42/ipad-4166255_640.jpg', 20, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(4, 1, 'Testo telefonas', 39999, 'Tai tik testinis telefonas', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 10, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(4, 2, 'Testo kompiuteris', 49999, 'Testo kompiuteris su labai gera kaina', 'https://cdn.pixabay.com/photo/2015/09/18/19/03/black-946146_640.jpg', 5, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(4, 3, 'Testo ausinės', 19999, 'Testinės ausinės', 'https://cdn.pixabay.com/photo/2019/07/09/06/24/headphones-4321242_640.jpg', 15, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
-(4, 4, 'Testo laikrodis', 24999, 'Testinis laikrodis su visomis funkcijomis', 'https://cdn.pixabay.com/photo/2017/09/11/18/14/earphones-2733452_640.jpg', 8, '2025-03-01 10:00:00', '2025-03-01 10:00:00');
+(4, 5, 'betkas', 15, 'testuoju', 'https://i.etsystatic.com/28810262/r/il/2fc5e0/5785166966/il_570xN.5785166966_nvy4.jpg', 20, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 1, 'Testo telefonas', 39999, 'Tai tik testinis telefonas', 'https://media.bite.lt/@bite-lt/sites/default/files/2024-07/koks_telefonas_jums_tinkamiausia.jpg', 10, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 2, 'Testo kompiuteris', 49999, 'Testo kompiuteris su labai gera kaina', 'https://tests.lt/wp-content/uploads/2014/09/desktop-pc.jpg', 5, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 3, 'Testo ausinės', 19999, 'Testinės ausinės', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgglw-mzOqAEBTGcRD1jR5EPeSzLLEHjaEI9u1pPPT91tmJtmCnZgP5CyjrPWOmzTvneY&usqp=CAU', 15, '2025-03-01 10:00:00', '2025-03-01 10:00:00'),
+(4, 4, 'Testo laikrodis', 24999, 'Testinis laikrodis su visomis funkcijomis', 'https://media.bite.lt/@bite-lt/sites/default/files/2024-07/koks_ismanusis_laikrodis_jums_ti.jpg', 8, '2025-03-01 10:00:00', '2025-03-01 10:00:00');
 
  
  
