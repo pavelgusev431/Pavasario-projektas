@@ -61,8 +61,8 @@ const NavBar = () => {
                 </button>
 
                 <div className="hidden md:flex items-center ml-2">
-                <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700  dark:bg-gray-800  dark:md:bg-gray-900">
-                <li>
+                    <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700  dark:bg-gray-800  dark:md:bg-gray-900">
+                        <li>
                             <ProductsDropdown />
                         </li>
                         <li>
