@@ -5,6 +5,8 @@ import HotProducts from '../products/HotProducts';
 import TrendingUserProducts from '../products/TrendingUserProducts';
 import TopUserProducts from '../products/TopUserProducts';
 import SearchBar from './SearchBar'; // Import the SearchBar component
+import BackToTopButton from '../buttons/BackToTopButton';
+import ThemeToggleButton from '../buttons/ThemeToggleButton';
 
 const Home = () => {
     const handleSearch = (query, category) => {
@@ -22,6 +24,8 @@ const Home = () => {
                 <HotProducts />
                 <TrendingUserProducts />
                 <TopUserProducts />
+                <ThemeToggleButton />
+                <BackToTopButton />
             </div>
         </>
     );

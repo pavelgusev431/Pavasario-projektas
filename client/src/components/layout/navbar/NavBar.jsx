@@ -47,7 +47,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md">
+        <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900 ">
             <div className="flex items-center justify-between mx-auto px-2 md:px-4">
                 <button
                     className="flex items-center"
@@ -61,14 +61,14 @@ const NavBar = () => {
                 </button>
 
                 <div className="hidden md:flex items-center ml-2">
-                    <ul className=" flex flex-col p-2 md:p-0 mt-2 rounded-lg md:flex-row md:space-x-4 md:mt-0">
-                        <li>
+                <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700  dark:bg-gray-800  dark:md:bg-gray-900">
+                <li>
                             <ProductsDropdown />
                         </li>
                         <li>
                             <button
                                 onClick={() => handleNavigation('/contact')}
-                                className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive('/contact')}`}
+                                className={`block py-2 px-2 text-gray-900 cursor-pointer dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 ${isActive('/contact')}`}
                             >
                                 Contact
                             </button>
@@ -76,7 +76,7 @@ const NavBar = () => {
                         <li>
                             <button
                                 onClick={() => handleNavigation('/about')}
-                                className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive('/about')}`}
+                                className={`block py-2 px-2 text-gray-900 cursor-pointer dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 ${isActive('/about')}`}
                             >
                                 About
                             </button>
@@ -88,14 +88,14 @@ const NavBar = () => {
                     {!auth && (
                         <button
                             onClick={() => handleNavigation('/signup')}
-                            className="block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 font-medium"
+                            className="block py-2 px-2 text-gray-900 dark:text-white rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md: md:p-0 font-medium"
                         >
                             Sign Up
                         </button>
                     )}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="p-2 w-12 h-12 flex items-center justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        className="p-2 w-12 h-12 flex items-center justify-center text-sm text-gray-500 dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
                         aria-controls="navbar-default"
                         aria-expanded={isMenuOpen}
                     >
@@ -193,20 +193,20 @@ const NavBar = () => {
                 </div>
 
                 {isMenuOpen && (
-                    <div className="absolute top-18 right-2 bg-white shadow-lg rounded-lg z-50 border border-gray-200 p-5 transition-all duration-300 w-48 md:w-64">
+                    <div className="absolute top-18 right-2 bg-white dark:bg-gray-900 shadow-lg rounded-lg z-50 border border-gray-200 dark:border-gray-700 p-5 transition-all duration-300 w-48 md:w-64">
                         <div className="flex flex-col space-y-2">
                             <div className="w-full">
                                 <ProductsDropdown />
                             </div>
                             <button
                                 onClick={() => handleNavigation('/contact')}
-                                className="p-2 text-black w-full text-left hover:bg-gray-100"
+                                className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <i className="fas fa-envelope mr-3"></i> Contact
                             </button>
                             <button
                                 onClick={() => handleNavigation('/about')}
-                                className="p-2 text-black w-full text-left hover:bg-gray-100"
+                                className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <i className="fas fa-info-circle mr-3"></i>{' '}
                                 About
@@ -214,7 +214,7 @@ const NavBar = () => {
                             {!auth && (
                                 <button
                                     onClick={() => handleNavigation('/signup')}
-                                    className="p-2 text-black w-full text-left hover:bg-gray-100"
+                                    className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
                                     <i className="fas fa-user-plus mr-3"></i>{' '}
                                     Sign Up

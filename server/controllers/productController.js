@@ -5,13 +5,15 @@ import Event from '../models/eventModel.js';
 import { Op } from 'sequelize';
 
 const getUserProductsByUserName = async (req, res) => {
-    const username = req.params.username; // Gauname username iš parametro
-
-    if (!username) {
-        return res.status(400).json({ message: 'Netinkamas vartotojo vardas' });
-    }
-
     try {
+        const username = req.params.username; // Gauname username iš parametro
+
+        if (!username) {
+            return res
+                .status(400)
+                .json({ message: 'Netinkamas vartotojo vardas' });
+        }
+
         // Surandame vartotoją pagal username
         const user = await User.findOne({ where: { username } });
 
@@ -46,6 +48,13 @@ const getUserProductsByUserName = async (req, res) => {
         const users = await User.findAll({
             where: { id: { [Op.in]: userIds } },
         });
+
+        const events = await Event.findAll({
+            where: { type_id: 1, target_id: 6, user_id: user.id },
+        });
+        const event = events.find(
+            (e) => e.user_id === user.id && e.target_id === 6
+        );
 
         // Sukuriame žemėlapį { user_id: vartotojo informacija }
         const userMap = {};
@@ -83,6 +92,7 @@ const getUserProductsByUserName = async (req, res) => {
                     username: userMap[rating.user_id]?.username || 'Nežinomas',
                     comment: rating.comment,
                     stars: rating.stars,
+                    timestamp: event ? event.timestamp : null,
                 }))
                 .filter((comment) => comment.comment); // Filtruojame tuščius komentarus
 
@@ -531,6 +541,67 @@ const getAllProductCount = async (req, res) => {
     });
 };
 
+const getRatedProductsByUserName = async (req, res) => {
+    try {
+        const username = req.params.username;
+        if (!username) {
+            return res.status(400).json({
+                message: 'Username is required',
+            });
+        }
+
+        const user = await User.findOne({ where: { username: username } });
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+        const ratings = await Rating.findAll({ where: { user_id: user.id } });
+
+        if (ratings.length === 0) {
+            return res.status(200).json({
+                message: 'No ratings found for the user',
+                data: [],
+            });
+        }
+        const productIds = ratings.map((rating) => rating.product_id);
+
+        const products = await Product.findAll({
+            where: {
+                id: {
+                    [Op.in]: productIds,
+                },
+            },
+        });
+        const events = await Event.findAll({
+            where: { type_id: 1, target_id: 6, user_id: user.id },
+        });
+
+        const processedProducts = ratings.map((rating) => {
+            const product =
+                products.find((p) => p.id === rating.product_id) || {};
+            const event = events.find(
+                (e) => e.user_id === user.id && e.target_id === 6
+            );
+
+            return {
+                ...product.dataValues,
+                userRating: rating.stars,
+                userComment: rating.comment,
+                timestamp: event ? event.timestamp : null,
+            };
+        });
+
+        return res.json({
+            status: 'success',
+            data: processedProducts,
+        });
+    } catch (error) {
+        console.error('error getting products', error);
+        return res.status(500).json({ message: 'server error' });
+    }
+};
+
 export {
     getAllProductCount,
     getUserProductsByUserName,
@@ -539,4 +610,5 @@ export {
     getTopRatedProducts,
     getTopUserProducts,
     getTrendingUserProducts,
+    getRatedProductsByUserName,
 };

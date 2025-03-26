@@ -2,7 +2,7 @@ import { FaStar, FaStarHalf } from 'react-icons/fa';
 
 export default function ProductCard({ product, avgRating, ratingCount }) {
     return (
-        <div className="bg-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 hover:animate-ease-in hover:animate-duration-300 transition-shadow p-4 flex flex-col items-center">
+        <div className="bg-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 hover:animate-ease-in hover:animate-duration-300 transition-shadow p-4 flex flex-col items-center dark:bg-transparent">
             <div className="w-full h-48 overflow-hidden">
                 <img
                     src={product.image_url}
