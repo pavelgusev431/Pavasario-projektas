@@ -50,13 +50,11 @@ const ProductsDropdown = () => {
                 const windowHeight = window.innerHeight;
                 const windowWidth = window.innerWidth;
 
-                // Adjust vertical positioning for small screens
                 if (rect.bottom > windowHeight) {
                     subcategoryRef.current.style.top = 'auto';
                     subcategoryRef.current.style.bottom = '0';
                 }
 
-                // Adjust horizontal positioning for both small and large screens
                 if (rect.right > windowWidth) {
                     subcategoryRef.current.style.left = 'auto';
                     subcategoryRef.current.style.right = '100%';

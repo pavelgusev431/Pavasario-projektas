@@ -25,7 +25,6 @@ export const getAllCategoriesWithSubcategories = async (req, res, next) => {
     }
 };
 
-// Get a specific category with its subcategories
 export const getCategoryWithSubcategories = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -54,23 +53,21 @@ export const getCategoryWithSubcategories = async (req, res, next) => {
     }
 };
 
-// Get all products for a specific subcategory
+
 export const getProductsBySubcategory = async (req, res) => {
     try {
-        const subcategoryId = req.params.subcategoryId; // Get the subcategoryId from the URL parameter
-        console.log('Received subcategoryId:', subcategoryId); // For debugging
+        const subcategoryId = req.params.subcategoryId; 
+        console.log('Received subcategoryId:', subcategoryId); 
 
-        // Ensure that subcategoryId is valid
         if (!subcategoryId || isNaN(subcategoryId)) {
             return res
                 .status(400)
                 .json({ message: 'Invalid or missing subcategory ID' });
         }
 
-        // Fetch products for the given subcategoryId, using the correct column name `subcategory_id`
         const products = await Product.findAll({
             where: {
-                subcategory_id: subcategoryId, // Ensure this matches the column name in the database
+                subcategory_id: subcategoryId, 
             },
             include: {
                 model: Subcategory,

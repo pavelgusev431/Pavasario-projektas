@@ -19,7 +19,6 @@ const syncModels = async () => {
         await Category.sync({ alter: true });
         console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
 
-        // Create categories
         const categories = await Category.bulkCreate([
             { name: 'Electronics' },
             { name: 'Fashion & Apparel' },
@@ -34,11 +33,9 @@ const syncModels = async () => {
         ]);
         console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
 
-        // Create subcategories
         await Subcategory.sync({ alter: true, force: true });
         console.log('\x1b[35mSubcategory\x1b[34m table created\x1b[0m');
 
-        // Get the created categories
         const electronicsCategory = await Category.findOne({
             where: { name: 'Electronics' },
         });
@@ -71,7 +68,6 @@ const syncModels = async () => {
         });
         await Product.sync({ alter: true, force: true });
         console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
-        // Create subcategories
         await Subcategory.bulkCreate([
             {
                 categoryId: electronicsCategory.id,
