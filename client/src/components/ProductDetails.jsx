@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
+import Modal from "react-modal";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -59,6 +61,14 @@ const ProductDetails = () => {
     e.target.style.transformOrigin = `${x}% ${y}%`;
   };
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
@@ -67,10 +77,11 @@ const ProductDetails = () => {
             <img
               src={product.image_url}
               alt={product.name}
-              className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out"
+              className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
+              onClick={openModal}
             />
           </div>
         </div>
@@ -78,10 +89,10 @@ const ProductDetails = () => {
           <h1 className="text-3xl font-bold mb-4 text-gray-800">
             {product.name}
           </h1>
-          <p className="text-lg mb-4 text-gray-600">{product.description}</p>
           <p className="text-2xl font-bold text-red-500 mb-4">
             ${Number(product.price).toFixed(2)}
           </p>
+          <p className="text-lg mb-4 text-gray-600">{product.description}</p>
           <p className={`text-lg font-bold mb-4 ${stockClass}`}>
             {stockStatus}
           </p>
@@ -98,6 +109,31 @@ const ProductDetails = () => {
           )}
         </div>
       </div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Product Images"
+        className="fixed inset-0 flex items-center justify-center"
+        overlayClassName="fixed inset-0 bg-white bg-opacity-50 backdrop-blur"
+      >
+        <div className="bg-white p-4 rounded-lg max-w-4xl mx-auto relative">
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-4 text-black text-2xl"
+          >
+            &times;
+          </button>
+          <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+            {product.name}
+          </h2>
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="w-full h-auto max-h-screen object-contain rounded-md"
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
