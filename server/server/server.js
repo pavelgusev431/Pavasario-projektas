@@ -5,15 +5,28 @@ import populate from '../database/populate.js';
 import { createAdmin } from '../controllers/userController.js';
 import Category from '../models/categoryModel.js';
 import Subcategory from '../models/subcategoryModel.js';
+import {syncModels} from '../models/categorySyncModel.js';
 
 dotenv.config();
 const port = process.env.PORT;
 const setup = async () => {
     try {
-        await Category.findOne();
-        await Subcategory.findOne();
+        
+        await Category.sync();
+        await Subcategory.sync();
+        await syncModels();
+        
+        const categoryExists = await Category.findOne();
+        const subcategoryExists = await Subcategory.findOne();
+
+        if (!categoryExists) {
+            console.warn(' No categories found!');
+        }
+        if (!subcategoryExists) {
+            console.warn('No subcategories found!');
+        }
     } catch (error) {
-        console.log(error);
+        console.error('Database setup error:', error);
     }
 };
 

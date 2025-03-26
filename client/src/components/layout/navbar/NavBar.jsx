@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { AuthContext } from '../../contexts/AuthContext.jsx';
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import ProductsDropdown from './ProductsDropdown';
 
 const NavBar = () => {
     const location = useLocation();
@@ -32,7 +33,10 @@ const NavBar = () => {
         };
     }, [auth, location]);
 
-    const handleNavigation = (path) => navigate(path);
+    const handleNavigation = (path) => {
+        navigate(path);
+        setIsMenuOpen(false);
+    };
 
     const isActive = (path) =>
         location.pathname === path ? 'text-[#800020]' : 'text-black';
@@ -57,10 +61,11 @@ const NavBar = () => {
                 </button>
 
                 <div className="hidden md:flex items-center ml-2">
-                    <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white">
+                    <ul className=" flex flex-col p-2 md:p-0 mt-2 rounded-lg md:flex-row md:space-x-4 md:mt-0">
+                        <li><ProductsDropdown /></li>
                         <li>
-                            <button
-                                onClick={() => handleNavigation('/contact')}
+                            <button 
+                                onClick={() => handleNavigation('/contact')} 
                                 className={`block py-2 px-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#800020] md:p-0 ${isActive('/contact')}`}
                             >
                                 Contact
@@ -187,27 +192,31 @@ const NavBar = () => {
 
                 {isMenuOpen && (
                     <div className="absolute top-18 right-2 bg-white shadow-lg rounded-lg z-50 border border-gray-200 p-5 transition-all duration-300 w-48 md:w-64">
-                        <button
-                            onClick={() => handleNavigation('/contact')}
-                            className="p-2 text-black w-full text-left hover:bg-gray-100"
-                        >
-                            <i className="fas fa-envelope mr-3"></i> Contact
-                        </button>
-                        <button
-                            onClick={() => handleNavigation('/about')}
-                            className="p-2 text-black w-full text-left hover:bg-gray-100"
-                        >
-                            <i className="fas fa-info-circle mr-3"></i> About
-                        </button>
-                        {!auth && (
+                        <div className="flex flex-col space-y-2">
+                            <div className="w-full">
+                                <ProductsDropdown />
+                            </div>
                             <button
-                                onClick={() => handleNavigation('/signup')}
+                                onClick={() => handleNavigation('/contact')}
                                 className="p-2 text-black w-full text-left hover:bg-gray-100"
                             >
-                                <i className="fas fa-user-plus mr-3"></i> Sign
-                                Up
+                                <i className="fas fa-envelope mr-3"></i> Contact
                             </button>
-                        )}
+                            <button
+                                onClick={() => handleNavigation('/about')}
+                                className="p-2 text-black w-full text-left hover:bg-gray-100"
+                            >
+                                <i className="fas fa-info-circle mr-3"></i> About
+                            </button>
+                            {!auth && (
+                                <button
+                                    onClick={() => handleNavigation('/signup')}
+                                    className="p-2 text-black w-full text-left hover:bg-gray-100"
+                                >
+                                    <i className="fas fa-user-plus mr-3"></i> Sign Up
+                                </button>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
