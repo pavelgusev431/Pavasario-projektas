@@ -43,15 +43,36 @@ const ProductDetails = () => {
     stockClass = "text-red-500";
   }
 
+  const handleMouseEnter = (e) => {
+    e.target.style.transform = "scale(1.5)";
+    e.target.style.transition = "transform 0.3s ease";
+  };
+
+  const handleMouseLeave = (e) => {
+    e.target.style.transform = "scale(1)";
+  };
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.target.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    e.target.style.transformOrigin = `${x}% ${y}%`;
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row">
         <div className="md:w-1/2">
-          <img
-            src={product.image_url}
-            alt={product.name}
-            className="w-full h-auto object-cover rounded-md"
-          />
+          <div className="relative overflow-hidden">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-full max-w-md h-auto object-cover rounded-md mx-auto"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+            />
+          </div>
         </div>
         <div className="md:w-1/2 md:pl-8">
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
