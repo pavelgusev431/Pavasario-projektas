@@ -89,6 +89,27 @@ const ProductDetails = () => {
           <h1 className="text-3xl font-bold mb-4 text-gray-800">
             {product.name}
           </h1>
+          <div className="flex items-center mb-4">
+            <div className="flex items-center">
+              {[...Array(5)].map((star, index) => (
+                <svg
+                  key={index}
+                  className={`w-6 h-6 ${
+                    index < Math.round(product.avgRating)
+                      ? "text-yellow-500"
+                      : "text-gray-300"
+                  }`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 .587l3.668 7.568L24 9.423l-6 5.847 1.42 8.293L12 18.897l-7.42 4.666L6 15.27 0 9.423l8.332-1.268z" />
+                </svg>
+              ))}
+            </div>
+            <span className="ml-2 text-gray-600">
+              {product.avgRating} ({product.ratingCount} reviews)
+            </span>
+          </div>
           <p className="text-2xl font-bold text-red-500 mb-4">
             ${Number(product.price).toFixed(2)}
           </p>
