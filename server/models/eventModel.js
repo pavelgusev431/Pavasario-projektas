@@ -13,6 +13,10 @@ const Event = sq.define(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        product_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
         type_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -28,7 +32,7 @@ const Event = sq.define(
         },
         timestamp: {
             type: DataTypes.DATE,
-            defaultValue: new Date(),
+           
         },
     },
     { timestamps: false, tableName: 'events' }
