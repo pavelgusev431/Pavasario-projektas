@@ -324,25 +324,39 @@ const getTopUserProducts = async (req, res, next) => {
             if (!userStats[product.user_id]) {
                 userStats[product.user_id] = {
                     products: [],
-                    totalRatings: 0,
-                    totalStars: 0,
+                    totalRatings: 0, // Skaičiuos unikalius produktus su reitingais
+                    totalStars: 0,   // Sumuos produktų vidutinius reitingus
                 };
             }
             userStats[product.user_id].products.push(product);
         });
 
+        // Skaičiuojame kiekvieno produkto vidutinį reitingą
+        const productRatingsMap = {};
         ratings.forEach((rating) => {
-            const product = products.find((p) => p.id === rating.product_id);
-            if (product && userStats[product.user_id]) {
-                userStats[product.user_id].totalRatings++;
-                userStats[product.user_id].totalStars += rating.stars;
+            if (!productRatingsMap[rating.product_id]) {
+                productRatingsMap[rating.product_id] = { stars: 0, count: 0 };
             }
+            productRatingsMap[rating.product_id].stars += rating.stars;
+            productRatingsMap[rating.product_id].count += 1;
         });
 
-        // Find the user with most ratings, at least 4 products, and avg rating >= 4.5
+        // Atnaujiname userStats su unikaliais produktų reitingais
+        Object.keys(userStats).forEach((userId) => {
+            userStats[userId].products.forEach((product) => {
+                const productRating = productRatingsMap[product.id];
+                if (productRating) {
+                    const avgProductRating = productRating.stars / productRating.count;
+                    userStats[userId].totalStars += avgProductRating;
+                    userStats[userId].totalRatings += 1; // Skaičiuojame tik unikalius produktus
+                }
+            });
+        });
+
+        // Ieškome vartotojo su daugiausia reitingų, bent 4 produktais ir vidurkiu >= 4.5
         let topUserId = null;
         let maxRatings = 0;
-        let topUserRating = 0; // Store the user's overall rating
+        let topUserRating = 0;
 
         Object.entries(userStats).forEach(([userId, stats]) => {
             const avgUserRating =
@@ -357,7 +371,7 @@ const getTopUserProducts = async (req, res, next) => {
             ) {
                 maxRatings = stats.totalRatings;
                 topUserId = userId;
-                topUserRating = avgUserRating; // Store the best user's rating
+                topUserRating = avgUserRating;
             }
         });
 
@@ -367,30 +381,22 @@ const getTopUserProducts = async (req, res, next) => {
                 .json({ message: 'No suitable user found', data: [] });
         }
 
-        // Get only the user's products that have at least 1 rating
+        // Atrenkame tik vartotojo produktus su bent 1 reitingu
         const topUserProducts = userStats[topUserId].products
             .map((product) => {
-                const productRatings = ratings.filter(
-                    (rating) => rating.product_id === product.id
-                );
-                const ratingCount = productRatings.length;
-                const avgRating =
-                    ratingCount > 0
-                        ? productRatings.reduce(
-                              (sum, rating) => sum + rating.stars,
-                              0
-                          ) / ratingCount
-                        : 0;
-
-                return ratingCount > 0
-                    ? { ...product.dataValues, ratingCount, avgRating }
-                    : null;
+                const productRating = productRatingsMap[product.id];
+                if (productRating) {
+                    const ratingCount = productRating.count;
+                    const avgRating = productRating.stars / ratingCount;
+                    return { ...product.dataValues, ratingCount, avgRating };
+                }
+                return null;
             })
-            .filter((product) => product !== null) // Remove products without ratings
-            .sort((a, b) => b.avgRating - a.avgRating) // Sort by highest ratings
-            .slice(0, 4); // Get only the top 4 products
+            .filter((product) => product !== null) // Pašaliname produktus be reitingų
+            .sort((a, b) => b.avgRating - a.avgRating) // Rūšiuojame pagal didžiausią reitingą
+            .slice(0, 4); // Imame tik 4 geriausius produktus
 
-        // If the user has less than 4 rated products, do not display
+        // Jei vartotojas turi mažiau nei 4 įvertintus produktus, nieko nerodome
         if (topUserProducts.length < 4) {
             return res
                 .status(200)
@@ -399,9 +405,9 @@ const getTopUserProducts = async (req, res, next) => {
 
         res.json({
             status: 'success',
-            user_id: topUserId, // Best user's ID
-            userRating: topUserRating.toFixed(2), // Overall user's average rating
-            totalRatings: maxRatings, // Total ratings count for the user
+            user_id: topUserId,
+            userRating: topUserRating.toFixed(2),
+            totalRatings: maxRatings,
             data: topUserProducts,
         });
     } catch (error) {
