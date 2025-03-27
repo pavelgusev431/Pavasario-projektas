@@ -143,23 +143,25 @@ const getHotProducts = async (req, res, next) => {
                 target_id: 2, // Produktų įvykiai
                 timestamp: { [Op.gte]: oneWeekAgo },
             },
-            attributes: ['user_id'],
+            attributes: ['user_id', 'product_id', 'timestamp'],
         });
 
         if (newUserEvents.length === 0) {
             return res
                 .status(200)
-                .json({ message: 'No recent product events found', data: [] });
+                .json({ message: 'Nerasta naujausių produktų įvykių', data: [] });
         }
 
-        const newUserIds = newUserEvents.map((event) => event.user_id);
+        // Ištraukiame produktų ID
+        const newProductIds = newUserEvents.map((event) => event.product_id);
+
         const products = await Product.findAll({
-            where: { user_id: newUserIds },
+            where: { id: { [Op.in]: newProductIds } }, // Filtruojame pagal produktų ID
         });
 
         if (products.length === 0) {
             return res.status(200).json({
-                message: 'No products found for the recent users',
+                message: 'Nerasta produktų pagal naujausius įvykius',
                 data: [],
             });
         }
@@ -171,7 +173,15 @@ const getHotProducts = async (req, res, next) => {
             },
         });
 
-        // Apdorojame produktus su jų reitingais
+        // Sukuriame objektą produktų kūrimo laikams saugoti
+        const productCreationObject = {};
+        newUserEvents.forEach((event) => {
+            if (event.product_id) {
+                productCreationObject[event.product_id] = event.timestamp;
+            }
+        });
+
+        // Apdorojame produktus su jų reitingais ir kūrimo data
         const processedProducts = products.map((product) => {
             const productRatings = ratings.filter(
                 (rating) => rating.product_id === product.id
@@ -185,7 +195,10 @@ const getHotProducts = async (req, res, next) => {
                       ) / ratingCount
                     : 0;
 
-            return { ...product.dataValues, ratingCount, avgRating };
+            // Pridedame produkto kūrimo datą
+            const createdAt = productCreationObject[product.id];
+
+            return { ...product.dataValues, ratingCount, avgRating, createdAt };
         });
 
         // Filtruojame produktus, kurie turi vidutinį reitingą ≥ 4.5 ir bent vieną įvertinimą
@@ -199,7 +212,7 @@ const getHotProducts = async (req, res, next) => {
         if (filteredProducts.length === 0) {
             return res
                 .status(200)
-                .json({ message: 'No hot products found', data: [] });
+                .json({ message: 'Nerasta populiarių produktų', data: [] });
         }
 
         res.json({ status: 'success', data: filteredProducts });
@@ -402,13 +415,14 @@ const getTrendingUserProducts = async (req, res, next) => {
         oneWeekAgo.setHours(0, 0, 0, 0);
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        // Randame vartotojus, kurie buvo sukurti PRIEŠ 7 dienas ar anksčiau
+        // Randame vartotojus, kurie buvo sukurti per pastarąją savaitę
         const newUserEvents = await Event.findAll({
             where: {
                 type_id: 1, // 'created' event type
+                target_id: 1, // Vartotojų įvykiai
                 timestamp: { [Op.gte]: oneWeekAgo },
             },
-            attributes: ['user_id'],
+            attributes: ['user_id', 'timestamp'],
         });
 
         const newUserIds = newUserEvents.map((event) => event.user_id);
@@ -416,8 +430,16 @@ const getTrendingUserProducts = async (req, res, next) => {
         if (newUserIds.length === 0) {
             return res
                 .status(200)
-                .json({ message: 'No new users found', data: [] });
+                .json({ message: 'users not found', data: [] });
         }
+
+        // Sukuriame objektą vartotojų kūrimo laikams saugoti
+        const userCreationObject = {};
+        newUserEvents.forEach((event) => {
+            if (event.user_id) {
+                userCreationObject[event.user_id] = event.timestamp;
+            }
+        });
 
         // Randame šių vartotojų produktus
         const products = await Product.findAll({
@@ -427,7 +449,7 @@ const getTrendingUserProducts = async (req, res, next) => {
         if (products.length === 0) {
             return res
                 .status(200)
-                .json({ message: 'No products found for new users', data: [] });
+                .json({ message: 'Nerasta produktų', data: [] });
         }
 
         // Randame visus produktų reitingus
@@ -446,17 +468,32 @@ const getTrendingUserProducts = async (req, res, next) => {
                     products: [],
                     totalRatings: 0,
                     totalStars: 0,
+                    createdAt: userCreationObject[product.user_id],
                 };
             }
             userStats[product.user_id].products.push(product);
         });
 
+        // Skaičiuojame kiekvieno produkto vidutinį reitingą ir priskiriame vartotojui
+        const productRatingsMap = {};
         ratings.forEach((rating) => {
-            const product = products.find((p) => p.id === rating.product_id);
-            if (product && userStats[product.user_id]) {
-                userStats[product.user_id].totalRatings++;
-                userStats[product.user_id].totalStars += rating.stars;
+            if (!productRatingsMap[rating.product_id]) {
+                productRatingsMap[rating.product_id] = { stars: 0, count: 0 };
             }
+            productRatingsMap[rating.product_id].stars += rating.stars;
+            productRatingsMap[rating.product_id].count += 1;
+        });
+
+        // Atnaujiname userStats su unikaliais produktų reitingais
+        Object.keys(userStats).forEach((userId) => {
+            userStats[userId].products.forEach((product) => {
+                const productRating = productRatingsMap[product.id];
+                if (productRating) {
+                    const avgProductRating = productRating.stars / productRating.count;
+                    userStats[userId].totalStars += avgProductRating;
+                    userStats[userId].totalRatings += 1; // Skaičiuojame tik unikalius produktus
+                }
+            });
         });
 
         // Ieškome vartotojo su bent 4 įvertintais produktais ir vidutiniu reitingu ≥ 4
@@ -469,7 +506,7 @@ const getTrendingUserProducts = async (req, res, next) => {
                     ? stats.totalStars / stats.totalRatings
                     : 0;
 
-            if (stats.products.length >= 4 && avgUserRating >= 4) {
+            if (stats.totalRatings >= 4 && avgUserRating >= 4) { 
                 if (avgUserRating > highestAvgRating) {
                     trendingUserId = userId;
                     highestAvgRating = avgUserRating;
@@ -480,27 +517,19 @@ const getTrendingUserProducts = async (req, res, next) => {
         if (!trendingUserId) {
             return res
                 .status(200)
-                .json({ message: 'No trending user found', data: [] });
+                .json({ message: 'Nerasta populiaraus vartotojo', data: [] });
         }
 
         // Atrenkame tik to vartotojo produktus su reitingais
         const trendingUserProducts = userStats[trendingUserId].products
             .map((product) => {
-                const productRatings = ratings.filter(
-                    (rating) => rating.product_id === product.id
-                );
-                const ratingCount = productRatings.length;
-                const avgRating =
-                    ratingCount > 0
-                        ? productRatings.reduce(
-                              (sum, rating) => sum + rating.stars,
-                              0
-                          ) / ratingCount
-                        : 0;
-
-                return ratingCount > 0
-                    ? { ...product.dataValues, ratingCount, avgRating }
-                    : null;
+                const productRating = productRatingsMap[product.id];
+                if (productRating) {
+                    const ratingCount = productRating.count;
+                    const avgRating = productRating.stars / ratingCount;
+                    return { ...product.dataValues, ratingCount, avgRating };
+                }
+                return null;
             })
             .filter((product) => product !== null)
             .sort((a, b) => b.avgRating - a.avgRating)
@@ -509,13 +538,14 @@ const getTrendingUserProducts = async (req, res, next) => {
         if (trendingUserProducts.length < 4) {
             return res
                 .status(200)
-                .json({ message: 'No suitable trending user found', data: [] });
+                .json({ message: 'Nerasta tinkamo populiaraus vartotojo', data: [] });
         }
 
         res.json({
             status: 'success',
             user_id: trendingUserId,
             userRating: highestAvgRating.toFixed(2),
+            userCreatedAt: userStats[trendingUserId].createdAt,
             data: trendingUserProducts,
         });
     } catch (error) {
