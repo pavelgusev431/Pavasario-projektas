@@ -4,6 +4,7 @@ import ModalUsername from './ModalUsername.jsx';
 import ModalContacts from './ModalContacts.jsx';
 import ModalDescription from './ModalDescription.jsx';
 import ModalPassword from './ModalPassword.jsx';
+import ModalPicture from './ModalPicture.jsx';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 
 const ProfileInfo = () => {
@@ -201,11 +202,11 @@ const ProfileInfo = () => {
                 )}
             </div>
             <div>
-                {editModalPassword ? (
-                    <ModalPassword
+                {editModalPicture ? (
+                    <ModalPicture
                         user={auth}
-                        showModal={editModalPassword}
-                        setShowModal={setEditModalPassword}
+                        showModal={editModalPicture}
+                        setShowModal={setEditModalPicture}
                     />
                 ) : (
                     <></>
