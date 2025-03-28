@@ -1,3 +1,4 @@
+import React from 'react'
 import { FaStar, FaStarHalf } from "react-icons/fa";
 
 export default function ProductCard({ product, avgRating, ratingCount }) {
