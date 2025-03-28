@@ -83,7 +83,7 @@ const NavBar = () => {
                     {!auth && (
                         <button
                             onClick={() => handleNavigation('/signup')}
-                            className="block py-2 px-2 text-gray-900 dark:text-white rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md: md:p-0 font-medium"
+                            className="block py-2 px-2 text-gray-900 dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 font-medium cursor-pointer"
                         >
                             Sign Up
                         </button>
