@@ -9,7 +9,9 @@ const getUserProductsByUserName = async (req, res) => {
         const username = req.params.username;
 
         if (!username) {
-            return res.status(400).json({ message: 'Netinkamas vartotojo vardas' });
+            return res
+                .status(400)
+                .json({ message: 'Netinkamas vartotojo vardas' });
         }
 
         const user = await User.findOne({ where: { username } });
@@ -18,9 +20,7 @@ const getUserProductsByUserName = async (req, res) => {
             return res.status(404).json({ message: 'Vartotojas nerastas' });
         }
 
-        const userId = user.id;
-
-        const products = await Product.findAll({ where: { user_id: userId } });
+        const products = await Product.findAll({ where: { user_id: user.id } });
 
         if (products.length === 0) {
             return res.status(200).json({
@@ -31,7 +31,9 @@ const getUserProductsByUserName = async (req, res) => {
         }
 
         const ratings = await Rating.findAll({
-            where: { product_id: { [Op.in]: products.map((product) => product.id) } },
+            where: {
+                product_id: { [Op.in]: products.map((product) => product.id) },
+            },
         });
 
         // Pakeičiame Set į paprastą masyvą su unikalių userIds kaupimu
@@ -42,7 +44,9 @@ const getUserProductsByUserName = async (req, res) => {
             }
         });
 
-        const users = await User.findAll({ where: { id: { [Op.in]: userIds } } });
+        const users = await User.findAll({
+            where: { id: { [Op.in]: userIds } },
+        });
 
         const ratingEvents = await Event.findAll({
             where: {
@@ -75,7 +79,7 @@ const getUserProductsByUserName = async (req, res) => {
 
         // Skaičiuojame vartotojo statistiką pagal produktų vidurkius
         let totalRatings = 0; // Unikalių produktų su reitingais skaičius
-        let totalStars = 0;   // Produktų vidutinių reitingų suma
+        let totalStars = 0; // Produktų vidutinių reitingų suma
 
         const processedProducts = products.map((product) => {
             const productRating = productRatingsMap[product.id];
@@ -89,12 +93,16 @@ const getUserProductsByUserName = async (req, res) => {
                 totalRatings += 1; // Skaičiuojame tik produktus su reitingais
             }
 
-            const productRatings = ratings.filter((rating) => rating.product_id === product.id);
+            const productRatings = ratings.filter(
+                (rating) => rating.product_id === product.id
+            );
             const comments = productRatings
                 .map((rating) => {
-                    const event = eventMap[`${rating.user_id}-${rating.product_id}`];
+                    const event =
+                        eventMap[`${rating.user_id}-${rating.product_id}`];
                     return {
-                        username: userMap[rating.user_id]?.username || 'Nežinomas',
+                        username:
+                            userMap[rating.user_id]?.username || 'Nežinomas',
                         comment: rating.comment,
                         stars: rating.stars,
                         timestamp: event ? event.timestamp : null,
@@ -124,6 +132,32 @@ const getUserProductsByUserName = async (req, res) => {
     } catch (err) {
         console.error('Klaida gaunant duomenis:', err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
+    }
+};
+
+const getUserProducts = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Invalid user ID' });
+        }
+
+        // Fetch products by user ID
+        const products = await Product.findAll({
+            where: { user_id: userId },
+        });
+
+        if (products.length === 0) {
+            return res
+                .status(404)
+                .json({ message: 'No products found for this user' });
+        }
+
+        return res.json({ data: products });
+    } catch (error) {
+        console.error('Error fetching user products:', error);
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
@@ -162,9 +196,10 @@ const getHotProducts = async (req, res, next) => {
         });
 
         if (newUserEvents.length === 0) {
-            return res
-                .status(200)
-                .json({ message: 'Nerasta naujausių produktų įvykių', data: [] });
+            return res.status(200).json({
+                message: 'Nerasta naujausių produktų įvykių',
+                data: [],
+            });
         }
 
         // Ištraukiame produktų ID
@@ -340,7 +375,7 @@ const getTopUserProducts = async (req, res, next) => {
                 userStats[product.user_id] = {
                     products: [],
                     totalRatings: 0, // Skaičiuos unikalius produktus su reitingais
-                    totalStars: 0,   // Sumuos produktų vidutinius reitingus
+                    totalStars: 0, // Sumuos produktų vidutinius reitingus
                 };
             }
             userStats[product.user_id].products.push(product);
@@ -361,7 +396,8 @@ const getTopUserProducts = async (req, res, next) => {
             userStats[userId].products.forEach((product) => {
                 const productRating = productRatingsMap[product.id];
                 if (productRating) {
-                    const avgProductRating = productRating.stars / productRating.count;
+                    const avgProductRating =
+                        productRating.stars / productRating.count;
                     userStats[userId].totalStars += avgProductRating;
                     userStats[userId].totalRatings += 1; // Skaičiuojame tik unikalius produktus
                 }
@@ -510,7 +546,8 @@ const getTrendingUserProducts = async (req, res, next) => {
             userStats[userId].products.forEach((product) => {
                 const productRating = productRatingsMap[product.id];
                 if (productRating) {
-                    const avgProductRating = productRating.stars / productRating.count;
+                    const avgProductRating =
+                        productRating.stars / productRating.count;
                     userStats[userId].totalStars += avgProductRating;
                     userStats[userId].totalRatings += 1; // Skaičiuojame tik unikalius produktus
                 }
@@ -527,7 +564,7 @@ const getTrendingUserProducts = async (req, res, next) => {
                     ? stats.totalStars / stats.totalRatings
                     : 0;
 
-            if (stats.totalRatings >= 4 && avgUserRating >= 4) { 
+            if (stats.totalRatings >= 4 && avgUserRating >= 4) {
                 if (avgUserRating > highestAvgRating) {
                     trendingUserId = userId;
                     highestAvgRating = avgUserRating;
@@ -557,9 +594,10 @@ const getTrendingUserProducts = async (req, res, next) => {
             .slice(0, 4);
 
         if (trendingUserProducts.length < 4) {
-            return res
-                .status(200)
-                .json({ message: 'Nerasta tinkamo populiaraus vartotojo', data: [] });
+            return res.status(200).json({
+                message: 'Nerasta tinkamo populiaraus vartotojo',
+                data: [],
+            });
         }
 
         res.json({
@@ -573,6 +611,7 @@ const getTrendingUserProducts = async (req, res, next) => {
         next(error);
     }
 };
+
 const getAllProductCount = async (req, res) => {
     const userCount = await Product.count();
     res.status(200).json({
@@ -600,7 +639,6 @@ const getRatedProductsByUserName = async (req, res) => {
         // Gauname visus vartotojo paliktus reitingus su tvarka pagal sukūrimo laiką
         const userRatings = await Rating.findAll({
             where: { user_id: user.id },
-            
         });
 
         if (userRatings.length === 0) {
@@ -611,7 +649,9 @@ const getRatedProductsByUserName = async (req, res) => {
         }
 
         // Gauname produktų ID, kuriuos vartotojas įvertino
-        const productIds = [...new Set(userRatings.map((rating) => rating.product_id))];
+        const productIds = [
+            ...new Set(userRatings.map((rating) => rating.product_id)),
+        ];
 
         // Gauname produktus
         const products = await Product.findAll({
@@ -628,9 +668,7 @@ const getRatedProductsByUserName = async (req, res) => {
                 target_id: 6, // "rating"
                 product_id: { [Op.in]: productIds },
             },
-           
         });
-       
 
         // Sukuriame produktų žemėlapį pagal ID
         const productMap = {};
@@ -653,7 +691,9 @@ const getRatedProductsByUserName = async (req, res) => {
             const productEvents = eventMap[rating.product_id] || [];
 
             // Randame įvykį pagal product_id ir artimiausią timestamp (arba indeksą)
-            const event = productEvents.find((e) => e.product_id === rating.product_id) || null;
+            const event =
+                productEvents.find((e) => e.product_id === rating.product_id) ||
+                null;
 
             return {
                 ...product,
@@ -673,6 +713,47 @@ const getRatedProductsByUserName = async (req, res) => {
     }
 };
 
+export const getProductById = async (req, res) => {
+    try {
+        console.log('Request params:', req.params); // Debugging: Log the request params
+        const product = await Product.findByPk(req.params.id, {
+            include: [
+                {
+                    model: User,
+                    attributes: ['username', 'contacts'], // Use the correct column name
+                },
+                {
+                    model: Rating,
+                    attributes: ['stars'],
+                },
+            ],
+        });
+        if (product) {
+            console.log('Product found:', product); // Debugging: Log the product data
+
+            // Calculate the average rating
+            const ratings = product.Ratings;
+            const ratingCount = ratings.length;
+            const avgRating =
+                ratingCount > 0
+                    ? ratings.reduce((sum, rating) => sum + rating.stars, 0) /
+                      ratingCount
+                    : 0;
+
+            res.json({
+                ...product.dataValues,
+                avgRating: avgRating.toFixed(2),
+                ratingCount,
+            });
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Server error:', error); // Debugging: Log the error
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 export {
     getAllProductCount,
     getUserProductsByUserName,
@@ -682,4 +763,5 @@ export {
     getTopUserProducts,
     getTrendingUserProducts,
     getRatedProductsByUserName,
+    getUserProducts,
 };
