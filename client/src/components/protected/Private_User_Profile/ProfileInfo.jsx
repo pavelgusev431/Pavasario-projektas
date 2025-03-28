@@ -16,49 +16,43 @@ const ProfileInfo = () => {
     const [editModalContacts, setEditModalContacts] = useState(false);
     const [editModalPicture, setEditModalPicture] = useState(false);
 
-    const handleChangeEmail = () => {
+    const re = () => {
         setEditModalUsername(false);
         setEditModalContacts(false);
         setEditModalDesc(false);
         setEditModalPassword(false);
         setEditModalPicture(false);
+        setEditModalEmail(false);
+    };
+
+    const handleChangeEmail = () => {
+        re();
         setEditModalEmail(true);
     };
 
     const handleChangeUsername = () => {
+        re();
         setEditModalUsername(true);
-        setEditModalContacts(false);
-        setEditModalDesc(false);
-        setEditModalPassword(false);
-        setEditModalPicture(false);
-        setEditModalEmail(false);
     };
 
     const handleChangeDescription = () => {
-        setEditModalUsername(false);
-        setEditModalContacts(false);
+        re();
         setEditModalDesc(true);
-        setEditModalPassword(false);
-        setEditModalPicture(false);
-        setEditModalEmail(false);
     };
 
     const handleChangeContacts = () => {
-        setEditModalUsername(false);
+        re();
         setEditModalContacts(true);
-        setEditModalDesc(false);
-        setEditModalPassword(false);
-        setEditModalPicture(false);
-        setEditModalEmail(false);
     };
 
     const handleChangePassword = () => {
-        setEditModalUsername(false);
-        setEditModalContacts(false);
-        setEditModalDesc(false);
+        re();
         setEditModalPassword(true);
-        setEditModalPicture(false);
-        setEditModalEmail(false);
+    };
+
+    const handleChangePicture = () => {
+        re();
+        setEditModalPicture(true);
     };
 
     return (
@@ -123,10 +117,27 @@ const ProfileInfo = () => {
             <section>
                 <p>
                     <b>Contacts:</b>
-                    <span>{auth?.contacts || 'Nothing gere :('}</span>
+                    <span>{auth?.contacts || 'Nothing here :('}</span>
                     <i>
                         <button
                             onClick={handleChangeContacts}
+                            className="hover:cursor-pointer"
+                        >
+                            🖉
+                        </button>
+                    </i>
+                </p>
+            </section>
+            <section>
+                <p className="flex flex-col justify-center items-center">
+                    <b>Avatar:</b>
+                    <img
+                        src={auth.image_url}
+                        alt="Your avatar will be shown here"
+                    />
+                    <i>
+                        <button
+                            onClick={handleChangePicture}
                             className="hover:cursor-pointer"
                         >
                             🖉
@@ -173,6 +184,17 @@ const ProfileInfo = () => {
                         user={auth}
                         showModal={editModalContacts}
                         setShowModal={setEditModalContacts}
+                    />
+                ) : (
+                    <></>
+                )}
+            </div>
+            <div>
+                {editModalPassword ? (
+                    <ModalPassword
+                        user={auth}
+                        showModal={editModalPassword}
+                        setShowModal={setEditModalPassword}
                     />
                 ) : (
                     <></>

@@ -15,4 +15,18 @@ const updatePassword = async (id, data) => {
     return response;
 };
 
-export { updateUserInfo, updatePassword };
+const updateUserAvatar = async (id, data) => {
+    const response1 = await axios
+        .patch(url(`users/avatarFile/${id}`), data)
+        .catch((error) => {
+            console.log(error);
+        });
+    const response2 = await axios
+        .patch(url(`users/avatar/${id}`))
+        .catch((error) => {
+            console.log(error);
+        });
+    return { response1, response2 };
+};
+
+export { updateUserInfo, updatePassword, updateUserAvatar };

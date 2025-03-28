@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { updatePassword } from '../../../helpers/updateUserInfo.js';
+import { sha1 } from 'js-sha1';
+import { sha256 } from 'js-sha256';
 
 const ModalPassword = ({ user, showModal, setShowModal }) => {
     const { id } = user;
@@ -18,7 +20,9 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
 
     const submitHandler = async (data) => {
         try {
-            await updatePassword(id, { ...data, repeatPassword: undefined });
+            const oldPassword = sha256(sha1(data.oldPassword));
+            const newPassword = sha256(sha1(data.newPassword));
+            await updatePassword(id, { oldPassword, newPassword });
             setError('');
             setValue('oldPassword', '');
             setValue('newPassword', '');

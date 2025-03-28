@@ -236,8 +236,23 @@ const changePassword = async (req, res, next) => {
         const { id } = req.params;
         const { oldPassword, newPassword } = req.body;
         const foundUser = await User.findByPk(id);
+        if (!foundUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Unknown user',
+            });
+        }
         const foundSecret = await Secret.findOne({ where: { userId: id } });
-        if (foundSecret.password[0] === oldPassword) {
+        if (!foundSecret) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Internal server error',
+            });
+        }
+        const hashedOldPassword = sha256(
+            sha1(oldPassword + foundSecret.password.split(':')[1])
+        );
+        if (foundSecret.password.split(':')[0] === hashedOldPassword) {
             const now = new Date();
             const salt = sha256(sha1(now.toString() + foundUser.username));
             const hashedPassword = sha256(sha1(newPassword + salt));
@@ -247,6 +262,34 @@ const changePassword = async (req, res, next) => {
                 status: 'success',
                 message: 'Changed user password',
             });
+        } else {
+            res.status(403).json({
+                status: 'fail',
+                message: 'Incorrect old password',
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+const changeImageURL = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const foundUser = await User.findByPk(id);
+        if (!foundUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Unknown user',
+            });
+        } else {
+            const imageURL = req.cookies?.filepath;
+            foundUser.image_url = imageURL;
+            await foundUser.save();
+            res.status(203).json({
+                status: 'success',
+                message: 'Image url changed'
+            })
         }
     } catch (error) {
         next(error);
@@ -267,4 +310,5 @@ export {
     getAllUsersCount,
     changeUserInfo,
     changePassword,
+    changeImageURL,
 };

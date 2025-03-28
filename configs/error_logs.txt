@@ -1,2 +1,6 @@
-server/controllers/categoryController.js
-server/models/subcategoryModel.js
+client/src/components/protected/Private_User_Profile/ModalPassword.jsx
+client/src/components/protected/Private_User_Profile/ProfileInfo.jsx
+client/src/helpers/updateUserInfo.js
+server/controllers/uploadController.js
+server/controllers/userController.js
+server/routers/userRouter.js
