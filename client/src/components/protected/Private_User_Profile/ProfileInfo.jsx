@@ -3,7 +3,7 @@ import ModalEmail from './ModalEmail.jsx';
 import ModalUsername from './ModalUsername.jsx';
 import ModalContacts from './ModalContacts.jsx';
 import ModalDescription from './ModalDescription.jsx';
-import ModalPassword from "./ModalPassword.jsx";
+import ModalPassword from './ModalPassword.jsx';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 
 const ProfileInfo = () => {

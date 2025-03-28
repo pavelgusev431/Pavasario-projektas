@@ -1,10 +1,2 @@
-client/src/components/protected/Private_User_Profile/ModalContacts.jsx
-client/src/components/protected/Private_User_Profile/ModalDescription.jsx
-client/src/components/protected/Private_User_Profile/ModalEmail.jsx
-client/src/components/protected/Private_User_Profile/ModalUsername.jsx
 client/src/components/protected/Private_User_Profile/ProfileInfo.jsx
-client/src/contexts/AuthContext.jsx
-client/src/helpers/updateUserInfo.js
-server/controllers/userController.js
-server/routers/userRouter.js
-client/src/components/protected/Private_User_Profile/ModalPassword.jsx
+client/src/helpers/loginMe.js
