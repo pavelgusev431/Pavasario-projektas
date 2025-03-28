@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import Sort from "./buttons/Sort";
 import BackToTopButton from "./buttons/BackToTopButton";
+
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);

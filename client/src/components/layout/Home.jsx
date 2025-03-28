@@ -1,11 +1,12 @@
-import BannerCarousel from "./Home/Carousel";
-import NavBar from "../layout/navbar/NavBar";
-import HighestRatedProducts from "../products/HighestRatedProducts";
-import HotProducts from "../products/HotProducts";
-import TrendingUserProducts from "../products/TrendingUserProducts";
-import TopUserProducts from "../products/TopUserProducts";
-import SearchBar from "./SearchBar"; // Import the SearchBar component
-import BackToTopButton from "../buttons/BackToTopButton";
+import BannerCarousel from './Home/Carousel';
+import NavBar from './navbar/NavBar';
+import HighestRatedProducts from '../products/HighestRatedProducts';
+import HotProducts from '../products/HotProducts';
+import TrendingUserProducts from '../products/TrendingUserProducts';
+import TopUserProducts from '../products/TopUserProducts';
+import SearchBar from './SearchBar'; // Import the SearchBar component
+import BackToTopButton from '../buttons/BackToTopButton';
+
 
 const Home = () => {
   const handleSearch = (query, category) => {

@@ -1,5 +1,6 @@
-import React from 'react'
-import { FaStar, FaStarHalf } from "react-icons/fa";
+import React from 'react';
+import { Link } from 'react-router';
+import { FaStar, FaStarHalf } from 'react-icons/fa';
 
 export default function ProductCard({ product, avgRating, ratingCount }) {
   return (
