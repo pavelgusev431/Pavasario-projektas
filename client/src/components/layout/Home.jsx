@@ -1,5 +1,5 @@
 import BannerCarousel from "./Home/Carousel";
-import NavBar from "./NavBar";
+import NavBar from "../layout/navbar/NavBar";
 import HighestRatedProducts from "../products/HighestRatedProducts";
 import HotProducts from "../products/HotProducts";
 import TrendingUserProducts from "../products/TrendingUserProducts";
@@ -15,6 +15,7 @@ const Home = () => {
   return (
     <>
       {/* <NavBar /> */}
+      <NavBar/>
       <div>
         <BannerCarousel />
         <SearchBar onSearch={handleSearch} />{" "}

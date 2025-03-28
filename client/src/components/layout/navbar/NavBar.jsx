@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { AuthContext } from '../../contexts/AuthContext.jsx';
-import ThemeToggleButton from '../buttons/ThemeToggleButton.jsx';
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 
 const NavBar = () => {
     const location = useLocation();

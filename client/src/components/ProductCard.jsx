@@ -34,7 +34,9 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
                                 />
                             );
                         } else {
-                            return <FaStar key={i} className="text-gray-300" />;
+                            return( 
+                            <FaStar key={i} className="text-gray-300" />
+                        );
                         }
                     })}
                     <span className="text-gray-600 text-sm">
