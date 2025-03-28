@@ -604,7 +604,7 @@ const getRatedProductsByUserName = async (req, res) => {
 
 const getAllProductsSorted = async (req, res) => {
     try {
-        const allowedSortFields = ['id', 'createdAt', 'price', 'name'];
+        const allowedSortFields = ['id', 'createdAt', 'price', 'name', 'avgRating'];
         const sortField = allowedSortFields.includes(req.query.sort)
             ? req.query.sort
             : 'id';
@@ -630,10 +630,12 @@ const getAllProductsSorted = async (req, res) => {
             };
         }
 
-        const options = {
-            where,
-            order: [[sortField, order]],
-        };
+        const options = { where };
+
+        if (sortField !== 'avgRating') {
+        options.order = [[sortField, order]];
+        }
+
 
         const products = await Product.findAll(options);
 
@@ -667,6 +669,14 @@ const getAllProductsSorted = async (req, res) => {
             };
         });
 
+        if (sortField === 'avgRating') {
+            processed.sort((a, b) => {
+                return order === 'DESC'
+                    ? b.avgRating - a.avgRating
+                    : a.avgRating - b.avgRating;
+            });
+        }
+        
         return res.json({
             products: processed,
             pagination: {
