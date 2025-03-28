@@ -1,1 +1,3 @@
 client/src/components/ProductDetails.jsx
+server/controllers/productController.js
+server/routers/productRouter.js
