@@ -288,8 +288,8 @@ const changeImageURL = async (req, res, next) => {
             await foundUser.save();
             res.status(203).json({
                 status: 'success',
-                message: 'Image url changed'
-            })
+                message: 'Image url changed',
+            });
         }
     } catch (error) {
         next(error);

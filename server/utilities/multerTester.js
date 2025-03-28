@@ -1,3 +1,3 @@
-import { checkMulter } from "../controllers/uploadController.js";
+import { checkMulter } from '../controllers/uploadController.js';
 
 checkMulter();
