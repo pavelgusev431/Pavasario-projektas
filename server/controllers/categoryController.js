@@ -53,11 +53,10 @@ export const getCategoryWithSubcategories = async (req, res, next) => {
     }
 };
 
-
 export const getProductsBySubcategory = async (req, res) => {
     try {
-        const subcategoryId = req.params.subcategoryId; 
-        console.log('Received subcategoryId:', subcategoryId); 
+        const subcategoryId = req.params.subcategoryId;
+        console.log('Received subcategoryId:', subcategoryId);
 
         if (!subcategoryId || isNaN(subcategoryId)) {
             return res
@@ -67,7 +66,7 @@ export const getProductsBySubcategory = async (req, res) => {
 
         const products = await Product.findAll({
             where: {
-                subcategory_id: subcategoryId, 
+                subcategory_id: subcategoryId,
             },
             include: {
                 model: Subcategory,

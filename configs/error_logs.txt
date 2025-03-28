@@ -1,2 +1,2 @@
-client/src/components/protected/Private_User_Profile/ProfileInfo.jsx
-client/src/helpers/loginMe.js
+server/controllers/categoryController.js
+server/models/subcategoryModel.js
