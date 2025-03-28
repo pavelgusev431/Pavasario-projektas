@@ -19,7 +19,6 @@ const getUserProductsByUserName = async (req, res) => {
         }
 
         const userId = user.id;
-        
 
         const products = await Product.findAll({ where: { user_id: userId } });
 
@@ -35,48 +34,64 @@ const getUserProductsByUserName = async (req, res) => {
             where: { product_id: { [Op.in]: products.map((product) => product.id) } },
         });
 
-        const userIds = [...new Set(ratings.map((rating) => rating.user_id))];
+        // Pakeičiame Set į paprastą masyvą su unikalių userIds kaupimu
+        const userIds = [];
+        ratings.forEach((rating) => {
+            if (!userIds.includes(rating.user_id)) {
+                userIds.push(rating.user_id);
+            }
+        });
+
         const users = await User.findAll({ where: { id: { [Op.in]: userIds } } });
 
-        // Gauname įvykius visiems vartotojams, kurie paliko reitingus, su target_id = 6 (rating)
         const ratingEvents = await Event.findAll({
             where: {
-                user_id: { [Op.in]: userIds }, // Visi reitingų autoriai
+                user_id: { [Op.in]: userIds },
                 type_id: 1, // "created"
                 target_id: 6, // "rating"
-                product_id: { [Op.in]: products.map((p) => p.id) }, // Tik šių produktų įvykiai
+                product_id: { [Op.in]: products.map((p) => p.id) },
             },
         });
-        
 
         const userMap = {};
         users.forEach((user) => {
             userMap[user.id] = user;
         });
 
-        // Sukuriame įvykių žemėlapį pagal user_id ir product_id
         const eventMap = {};
         ratingEvents.forEach((event) => {
             eventMap[`${event.user_id}-${event.product_id}`] = event;
         });
 
-        let totalRatings = 0;
-        let totalStars = 0;
+        // Skaičiuojame kiekvieno produkto vidutinį reitingą
+        const productRatingsMap = {};
+        ratings.forEach((rating) => {
+            if (!productRatingsMap[rating.product_id]) {
+                productRatingsMap[rating.product_id] = { stars: 0, count: 0 };
+            }
+            productRatingsMap[rating.product_id].stars += rating.stars;
+            productRatingsMap[rating.product_id].count += 1;
+        });
+
+        // Skaičiuojame vartotojo statistiką pagal produktų vidurkius
+        let totalRatings = 0; // Unikalių produktų su reitingais skaičius
+        let totalStars = 0;   // Produktų vidutinių reitingų suma
 
         const processedProducts = products.map((product) => {
+            const productRating = productRatingsMap[product.id];
+            let avgRating = 0;
+            let ratingCount = 0;
+
+            if (productRating) {
+                ratingCount = productRating.count;
+                avgRating = productRating.stars / ratingCount;
+                totalStars += avgRating;
+                totalRatings += 1; // Skaičiuojame tik produktus su reitingais
+            }
+
             const productRatings = ratings.filter((rating) => rating.product_id === product.id);
-            const ratingCount = productRatings.length;
-            const avgRating =
-                ratingCount > 0
-                    ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
-                    : 0;
-
-            totalRatings += ratingCount;
-            totalStars += productRatings.reduce((sum, rating) => sum + rating.stars, 0);
-
             const comments = productRatings
                 .map((rating) => {
-                    // Randame įvykį pagal reitingo autorių ir produktą
                     const event = eventMap[`${rating.user_id}-${rating.product_id}`];
                     return {
                         username: userMap[rating.user_id]?.username || 'Nežinomas',
@@ -99,7 +114,7 @@ const getUserProductsByUserName = async (req, res) => {
         });
 
         const avgUserRating =
-            totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : '0.00';
+            totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : 0;
 
         return res.json({
             avgUserRating,
