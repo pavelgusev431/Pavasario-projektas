@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
+
 
 const NavBar = () => {
     const location = useLocation();
@@ -82,13 +84,14 @@ const NavBar = () => {
                             </button>
                         </li>
                     </ul>
+                    <ThemeToggleButton />
                 </div>
 
                 <div className="flex items-center space-x-4 md:space-x-6 ml-auto">
                     {!auth && (
                         <button
                             onClick={() => handleNavigation('/signup')}
-                            className="block py-2 px-2 text-gray-900 dark:text-white rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md: md:p-0 font-medium"
+                            className="block py-2 px-2 text-gray-900 dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 font-medium cursor-pointer"
                         >
                             Sign Up
                         </button>
