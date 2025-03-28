@@ -13,7 +13,7 @@ const Subcategory = sq.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'categories', 
+                model: 'categories',
                 key: 'id',
             },
             onUpdate: 'CASCADE',

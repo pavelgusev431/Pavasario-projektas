@@ -43,7 +43,10 @@ export default function PublicUserProfile() {
                 <div className="max-w-4xl  flex items-center space-x-6">
                     <div className="flex-shrink-0">
                         <img
-                            src={user.image_url || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}
+                            src={
+                                user.image_url ||
+                                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                            }
                             alt={user.username}
                             className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 flex items-center justify-center"
                         />

@@ -35,14 +35,11 @@ function App() {
                     path="/products/:subcategoryId"
                     element={<ProductsPage />}
                 />
-
                 <Route path="contact" element={<Contact />} />
                 <Route path="about" element={<About />} />
                 <Route path="signup" element={<Auth authType="signup" />} />
-
                 <Route path="reset/:userid/:salt" element={<PasswordReset />} />
                 {ProtectedRoutes()}
-
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
