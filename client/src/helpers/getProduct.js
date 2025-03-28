@@ -1,6 +1,15 @@
 import axios from 'axios';
 import url from './getURL.js';
 
+const getUserProductsByUserName = async (username) => {
+    const response = await axios
+        .get(url(`products/u/${username}`))
+        .catch((error) => {
+            console.log(error);
+        });
+    return response;
+};
+
 const getProductById = async (id) => {
     const response = await axios.get(url(`products/${id}`)).catch((error) => {
         console.log(error);
@@ -47,6 +56,15 @@ const getTrendingUserProducts = async () => {
     return response;
 };
 
+const getRatedProductsByUserName = async (username) => {
+    const response = await axios
+        .get(url(`products/rated/${username}`))
+        .catch((error) => {
+            console.log(error);
+        });
+    return response;
+};
+
 export {
     getProductById,
     getHotProducts,
@@ -54,4 +72,6 @@ export {
     getTopUserProducts,
     getTrendingUserProducts,
     getAllProducts,
+    getUserProductsByUserName,
+    getRatedProductsByUserName,
 };

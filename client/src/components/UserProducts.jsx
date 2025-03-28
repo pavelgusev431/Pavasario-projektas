@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import ProductCard from './ProductCard';
-import { getUserById } from '../helpers/getUser.js';
-import { getProductById } from '../helpers/getProduct.js';
+import { getUserByUsername } from '../helpers/getUser.js';
+import { getUserProductsByUserName } from '../helpers/getProduct.js';
 
 export default function UserProducts() {
-    const { id } = useParams();
+    const { username } = useParams();
+
     const [userName, setUserName] = useState('');
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,9 +15,10 @@ export default function UserProducts() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await getProductById(id);
+                const response = await getUserProductsByUserName(username);
                 setProducts(response.data.data);
-                const userResponse = await getUserById(id);
+
+                const userResponse = await getUserByUsername(username);
                 setUserName(userResponse.data.data.username);
             } catch (err) {
                 setError(err.message);
@@ -26,7 +28,7 @@ export default function UserProducts() {
         };
 
         fetchProducts();
-    }, [id]);
+    }, [username]);
 
     if (loading) return <p>Kraunama...</p>;
     if (error) return <p>Klaida: {error}</p>;

@@ -10,3 +10,8 @@ body {
     min-width: 425px;
     width: 100%;
 }
+
+.dark body {
+    background-color: #0f141b;
+    color: #ffffff;
+}

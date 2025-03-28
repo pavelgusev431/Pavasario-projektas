@@ -3,6 +3,7 @@ import { getUserById } from '../../helpers/getUser.js';
 import { useState, useEffect } from 'react';
 import ProductCard from '../ProductCard';
 import { Link } from 'react-router';
+
 export default function TopUserProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -15,24 +16,22 @@ export default function TopUserProducts() {
         const fetchProducts = async () => {
             try {
                 const response = await getTopUserProducts();
+
                 if (response.data.data.length === 0) {
                     setNoUser(true);
                     return;
                 }
+
                 setProducts(response.data.data);
-
-                const fetchedUserId = response.data.user_id;
-
-                if (fetchedUserId) {
-                    setUserId(fetchedUserId);
-                }
 
                 const userId = response.data.user_id;
 
-                // Gauname vartotojo vardą pagal user_id
+                if (userId) {
+                    setUserId(userId);
+                }
+
                 if (userId) {
                     const userResponse = await getUserById(userId);
-
                     setUserName(userResponse.data.data.username);
                 }
             } catch (err) {
@@ -46,7 +45,7 @@ export default function TopUserProducts() {
     }, []);
 
     if (loading) return <p>Kraunama...</p>;
-    if (error) return <p>Klaida: {error}</p>;
+    if (error) return <p className="text-red-500 font-bold">Klaida: {error}</p>;
 
     return (
         <div className="w-full mt-10">
@@ -77,8 +76,8 @@ export default function TopUserProducts() {
                         ))}
                     </div>
                     <div className="text-center mt-4">
-                        <Link to={`/products/${userId}`}>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        <Link to={`/products/u/${userName}`}>
+                            <button className="bg-red-500 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
                                 View All Products
                             </button>
                         </Link>

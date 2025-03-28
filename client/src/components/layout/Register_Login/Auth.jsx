@@ -9,6 +9,7 @@ import ProductCount from '../../../helpers/getAllProductCount.js';
 import { ToastContainer, toast } from 'react-toastify';
 import SubmitEmailForPasswordReset from './SubmitEmailForPasswordReset.jsx';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -78,7 +79,7 @@ const Auth = () => {
     };
 
     return (
-        <div className="relative flex min-h-screen w-full bg-gray-700 overflow-hidden">
+        <div className="relative flex min-h-screen w-full bg-gray-700 dark:bg-gray-900 overflow-hidden">
             <ToastContainer />
             <div
                 className={`flex w-[200%] md:duration-500 md:animate-ease-in 
@@ -114,9 +115,9 @@ const Auth = () => {
                 </div>
 
                 {/* Right Section (Form) */}
-                <div className="w-1/2 max-sm:w-full flex items-center justify-center p-6 bg-white">
-                    <div className="max-w-md w-full bg-white p-8 rounded-lg">
-                        <h2 className="text-3xl font-bold text-center text-gray-800">
+                <div className="w-1/2 max-sm:w-full flex items-center justify-center p-6 bg-white dark:bg-gray-800">
+                    <div className="max-w-md w-full bg-white dark:bg-gray-800 p-8 rounded-lg ">
+                        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
                             {authType === 'login'
                                 ? 'Login'
                                 : 'Create an Account'}
@@ -128,8 +129,8 @@ const Auth = () => {
                                 onClick={() => setAuthType('signup')}
                                 className={`px-4 py-2 w-1/2 text-sm font-medium rounded-l-lg transition ${
                                     authType === 'signup'
-                                        ? 'bg-[#D30043] text-white'
-                                        : 'bg-gray-200 hover:bg-gray-300'
+                                        ? 'bg-[#ff0051] text-white dark:bg-[#a30034]'
+                                        : 'dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500'
                                 }`}
                             >
                                 Sign Up
@@ -138,8 +139,8 @@ const Auth = () => {
                                 onClick={() => setAuthType('login')}
                                 className={`px-4 py-2 w-1/2 text-sm font-medium rounded-r-lg transition ${
                                     authType === 'login'
-                                        ? 'bg-[#D30043] text-white'
-                                        : 'bg-gray-200 hover:bg-gray-300'
+                                        ? 'bg-[#ff0051] text-white dark:bg-[#a30034]'
+                                        : 'bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500'
                                 }`}
                             >
                                 Login
@@ -153,7 +154,7 @@ const Auth = () => {
                         >
                             <div className="mb-4">
                                 <input
-                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                     type="text"
                                     placeholder="Username"
                                     {...register('username', {
@@ -171,7 +172,7 @@ const Auth = () => {
                                     })}
                                 />
                                 {errors.username && (
-                                    <p className="text-red-500 text-sm mt-1">
+                                    <p className="text-red-500 text-sm mt-1 dark:text-red-600">
                                         {errors.username.message}
                                     </p>
                                 )}
@@ -180,7 +181,7 @@ const Auth = () => {
                             {authType === 'signup' && (
                                 <div className="mb-4">
                                     <input
-                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         type="email"
                                         placeholder="Email"
                                         {...register('email', {
@@ -206,7 +207,7 @@ const Auth = () => {
                                         })}
                                     />
                                     {errors.email && (
-                                        <p className="text-red-500 text-sm mt-1">
+                                        <p className="text-red-500 text-sm mt-1 dark:text-red-600">
                                             {errors.email.message}
                                         </p>
                                     )}
@@ -215,7 +216,7 @@ const Auth = () => {
 
                             <div className="mb-4 relative">
                                 <input
-                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Password"
                                     {...register('password', {
@@ -258,7 +259,7 @@ const Auth = () => {
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                                 {errors.password && (
-                                    <p className="text-red-500 text-sm mt-1">
+                                    <p className="text-red-500 text-sm mt-1 dark:text-red-600">
                                         {errors.password.message}
                                     </p>
                                 )}
@@ -270,7 +271,7 @@ const Auth = () => {
                                         type={
                                             showPassword ? 'text' : 'password'
                                         }
-                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         placeholder="Repeat Password"
                                         {...register('repeatPassword', {
                                             required: {
@@ -284,7 +285,7 @@ const Auth = () => {
                                         })}
                                     />
                                     {errors.repeatPassword && (
-                                        <p className="text-red-500 text-sm mt-1">
+                                        <p className="text-red-500 text-sm mt-1 dark:text-red-600">
                                             {errors.repeatPassword.message}
                                         </p>
                                     )}
@@ -293,13 +294,13 @@ const Auth = () => {
 
                             <button
                                 type="submit"
-                                className="w-full px-4 py-3 text-white bg-[#D30043] rounded-lg hover:bg-gray-800 transition duration-300"
+                                className="w-full px-4 py-3 text-white bg-[#D30043] dark:bg-[#A00032] rounded-lg hover:bg-gray-800 dark:hover:bg-gray-700 transition duration-300"
                             >
                                 {authType === 'login' ? 'Login' : 'Sign Up'}
                             </button>
 
                             {error && (
-                                <p className="text-red-500 text-sm mt-2 text-center">
+                                <p className="text-red-500 text-sm mt-2 text-center dark:text-red-600">
                                     {error}
                                 </p>
                             )}
@@ -364,6 +365,7 @@ const Auth = () => {
                     </p>
                 </div>
             </div>
+            <ThemeToggleButton />
         </div>
     );
 };
