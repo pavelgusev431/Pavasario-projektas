@@ -32,7 +32,7 @@ const Event = sq.define(
         },
         timestamp: {
             type: DataTypes.DATE,
-            
+            defaultValue: DataTypes.NOW,
         },
     },
     { timestamps: false, tableName: 'events' }

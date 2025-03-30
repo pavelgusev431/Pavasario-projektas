@@ -7,6 +7,8 @@ import {
     getTrendingUserProducts,
     getAllProductCount,
     getRatedProductsByUserName,
+    getProductById,
+    getUserProducts,
 } from '../controllers/productController.js';
 
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
@@ -21,5 +23,8 @@ productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/count').get(getAllProductCount);
 productRouter.route('/u/:username').get(getUserProductsByUserName);
 productRouter.route('/rated/:username').get(getRatedProductsByUserName);
+productRouter.route('/:id').get(getUserProducts);
+productRouter.route('/selected/:id').get(getProductById);
+productRouter.route('/user/:id').get(getUserProducts);
 
 export default productRouter;
