@@ -16,7 +16,7 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
             className="mx-auto h-full object-cover rounded-md"
           />
         </div>
-        <h2 className="font-semibold text-lg mt-3 text-center">
+        <h2 className="font-semibold text-lg mt-3 text-center dark:text-white">
           {product.name}
         </h2>
         <div className="flex items-center gap-2 mt-2">

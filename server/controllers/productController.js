@@ -817,7 +817,6 @@ const getAllProductsSorted = async (req, res) => {
         };
       });
   
-      // ❗ Сортировка делается только после обработки
       if (sortField === "avgRating") {
         processed.sort((a, b) =>
           order === "DESC" ? b.avgRating - a.avgRating : a.avgRating - b.avgRating

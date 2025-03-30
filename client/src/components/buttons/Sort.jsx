@@ -11,17 +11,16 @@ const Sort = () => {
       const data = await response.json();
 
       if (!Array.isArray(data.products)) {
-        throw new Error("Нет массива продуктов в ответе сервера");
+        throw new Error("Serverio atsakyme nėra produktų masyvo");
       }
 
-      // Отправляем отсортированные продукты в главный компонент
       window.dispatchEvent(
         new CustomEvent("sortedProducts", {
           detail: data.products,
         })
       );
     } catch (err) {
-      console.error("Ошибка сортировки:", err.message);
+      console.error("Rūšiavimo klaida:", err.message);
     }
   };
 
