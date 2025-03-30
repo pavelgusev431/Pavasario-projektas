@@ -10,6 +10,7 @@ import NavBar from './components/layout/NavBar.jsx';
 import UserProducts from './components/UserProducts.jsx';
 import PublicUserProfile from './components/products/PublicUserProfile.jsx';
 import ProtectedRoutes from './components/layout/ProtectedRoutes.jsx';
+
 function App() {
     return (
         <Router>

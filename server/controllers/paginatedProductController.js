@@ -15,6 +15,7 @@ export const getPaginatedProducts = async (req, res) => {
     limit = Math.max(Number(limit), 1);
     const offset = (page - 1) * limit;
 
+    // Gauname visus produktus
     let products = await Product.findAll();
 
     const events = await Event.findAll({
@@ -24,64 +25,68 @@ export const getPaginatedProducts = async (req, res) => {
       },
     });
 
-    const productsWithTimestamps = products.map((product) => {
+    let productsWithTimestamps = products.map((product) => {
       const productEvents = events.filter(
         (event) =>
           event.user_id === product.user_id && event.product_id === product.id
       );
-
       const latestEvent = productEvents.length
         ? productEvents.sort(
             (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
           )[0]
         : null;
-
-      if (!latestEvent) {
-      }
-
       return {
         ...product.toJSON(),
         timestamp: latestEvent ? latestEvent.timestamp : null,
       };
     });
 
+    // Filtruojame visus produktus be puslapiavimo, kad gautume bendrą skaičių
+    let allFilteredProducts = productsWithTimestamps;
+
     if (minPrice || maxPrice) {
-      products = await filterItemsByRange(
+      allFilteredProducts = await filterItemsByRange(
         minPrice,
         maxPrice,
-        productsWithTimestamps,
-        limit,
-        offset,
+        allFilteredProducts,
+        null, // Be limit
+        null, // Be offset
         "price"
       );
     }
 
     if (minDate || maxDate) {
-      products = await filterItemsByRange(
+      allFilteredProducts = await filterItemsByRange(
         minDate,
         maxDate,
-        productsWithTimestamps,
-        limit,
-        offset,
+        allFilteredProducts,
+        null, // Be limit
+        null, // Be offset
         "date"
       );
     }
 
-    if (!minPrice && !maxPrice && !minDate && !maxDate) {
-      products = await Product.findAll({
+    // Apskaičiuojame bendrą filtruotų produktų skaičių ir puslapių skaičių
+    const totalProducts = allFilteredProducts.length;
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    // Taikome puslapiavimą tik po filtravimo
+    let paginatedProducts = allFilteredProducts;
+    if (minPrice || maxPrice || minDate || maxDate) {
+      paginatedProducts = allFilteredProducts.slice(offset, offset + limit);
+    } else {
+      paginatedProducts = await Product.findAll({
         limit: Number(limit),
         offset: Number(offset),
       });
     }
 
-    const totalProducts = await Product.count();
-
     res.json({
-      products,
+      products: paginatedProducts,
       pagination: {
         currentPage: Number(page),
-        totalPages: Math.ceil(totalProducts / limit),
-        totalProducts,
+        totalPages: totalPages,
+        totalProducts: totalProducts,
       },
     });
   } catch (error) {
@@ -98,32 +103,19 @@ export const filterItemsByRange = async (
   offset,
   value = "price"
 ) => {
-  if (!minValue || !maxValue) return items.slice(offset, offset + limit);
-
   const filteredItems = items.filter((item) => {
-    let itemValue;
-
-    if (value === "date") {
-      itemValue = new Date(item.timestamp).getTime();
-    } else {
-      itemValue = parseFloat(item[value]);
-    }
-
+    let itemValue =
+      value === "date"
+        ? new Date(item.timestamp).getTime()
+        : parseFloat(item[value]);
     const inRange =
-      itemValue >=
-        (value === "date"
-          ? new Date(minValue).getTime()
-          : parseFloat(minValue)) &&
-      itemValue <=
-        (value === "date"
-          ? new Date(maxValue).getTime()
-          : parseFloat(maxValue));
-
-    if (!inRange) {
-    }
-
+      (!minValue || itemValue >= (value === "date" ? new Date(minValue).getTime() : parseFloat(minValue))) &&
+      (!maxValue || itemValue <= (value === "date" ? new Date(maxValue).getTime() : parseFloat(maxValue)));
     return inRange;
   });
 
-  return filteredItems.slice(offset, offset + limit);
+  if (limit !== null && offset !== null) {
+    return filteredItems.slice(offset, offset + limit);
+  }
+  return filteredItems;
 };

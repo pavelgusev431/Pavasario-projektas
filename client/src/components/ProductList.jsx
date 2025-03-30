@@ -1,5 +1,8 @@
+// ProductList.js
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
+import FilterRange from './FilterRange'; 
+import getFilteredProducts from '../helpers/getFilteredProducts';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -11,25 +14,51 @@ const ProductList = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(12);
+    const [priceRange, setPriceRange] = useState([0, 1000000]);
+    const [dateRange, setDateRange] = useState([
+        new Date('2023-01-01').getTime(),
+        (() => {
+            const today = new Date();
+            today.setDate(today.getDate() + 1);
+            return today.getTime();
+        })(),
+    ]);
+
+    // Nustatome minimalią ir maksimalią datas
+    const minDate = new Date('2023-01-01').getTime();
+    const maxDate = (() => {
+        const today = new Date();
+        today.setDate(today.getDate() + 1);
+        return today.getTime();
+    })();
+
+    useEffect(() => {
+        const maxDateCheck = new Date();
+        maxDateCheck.setDate(maxDateCheck.getDate() + 1);
+        console.log('Max Date (Today + 1):', maxDateCheck.toLocaleDateString());
+        console.log('Initial dateRange:', [
+            new Date(dateRange[0]).toLocaleDateString(),
+            new Date(dateRange[1]).toLocaleDateString(),
+        ]);
+    }, []);
 
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-            const response = await fetch(
-                `http://localhost:3000/products?page=${page}&limit=${pageSize}`
-            );
-            const data = await response.json();
-
-            if (response.status === 200) {
-                setProducts(data.products);
-                setPagination({
-                    currentPage: data.pagination.currentPage,
-                    totalPages: data.pagination.totalPages,
-                    totalProducts: data.pagination.totalProducts,
-                });
-            } else {
-                throw new Error(data.message || 'Error fetching products');
-            }
+            const data = await getFilteredProducts({
+                page,
+                limit: pageSize,
+                minPrice: priceRange[0],
+                maxPrice: priceRange[1],
+                minDate: new Date(dateRange[0]).toISOString().split('T')[0],
+                maxDate: new Date(dateRange[1]).toISOString().split('T')[0],
+            });
+            setProducts(data.products);
+            setPagination({
+                currentPage: data.pagination.currentPage,
+                totalPages: data.pagination.totalPages,
+                totalProducts: data.pagination.totalProducts,
+            });
         } catch (err) {
             setError('Error fetching products: ' + err.message);
         } finally {
@@ -38,25 +67,35 @@ const ProductList = () => {
     };
 
     useEffect(() => {
-        fetchProducts();
-    }, [pageSize]);
+        fetchProducts(pagination.currentPage);
+    }, [pageSize, priceRange, dateRange, pagination.currentPage]);
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
-            fetchProducts(newPage);
+            setPagination({ ...pagination, currentPage: newPage });
         }
     };
 
     const handlePageSizeChange = (event) => {
         setPageSize(parseInt(event.target.value));
+        setPagination({ ...pagination, currentPage: 1 });
     };
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">Product List</h1>
 
-            {loading && <p>Loading products...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+            {/* Filtravimo komponentas */}
+            <FilterRange
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                dateRange={dateRange}
+                setDateRange={setDateRange}
+                minDate={minDate}
+                maxDate={maxDate}
+            />
+
+            {/* Puslapio dydžio pasirinkimas */}
             <div className="mb-4">
                 <label htmlFor="pageSize" className="mr-2">
                     Products per page:
@@ -75,6 +114,9 @@ const ProductList = () => {
                 </select>
             </div>
 
+            {/* Produktų rodymas */}
+            {loading && <p>Loading products...</p>}
+            {error && <p className="text-red-500">{error}</p>}
             {products.length > 0 ? (
                 <div>
                     <div className="flex flex-wrap mt-4">
@@ -90,7 +132,11 @@ const ProductList = () => {
                     {pagination.totalProducts > pageSize && (
                         <div className="mt-6 flex justify-center items-center space-x-2">
                             <button
-                                className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
+                                    pagination.currentPage <= 1
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
+                                }`}
                                 onClick={() =>
                                     handlePageChange(pagination.currentPage - 1)
                                 }
@@ -104,7 +150,11 @@ const ProductList = () => {
                                 (_, index) => (
                                     <button
                                         key={index + 1}
-                                        className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} hover:bg-blue-400`}
+                                        className={`px-4 py-2 text-sm rounded-md ${
+                                            pagination.currentPage === index + 1
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-gray-200'
+                                        } hover:bg-blue-400`}
                                         onClick={() =>
                                             handlePageChange(index + 1)
                                         }
@@ -115,7 +165,12 @@ const ProductList = () => {
                             )}
 
                             <button
-                                className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage >= pagination.totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
+                                    pagination.currentPage >=
+                                    pagination.totalPages
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
+                                }`}
                                 onClick={() =>
                                     handlePageChange(pagination.currentPage + 1)
                                 }
