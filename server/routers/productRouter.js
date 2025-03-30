@@ -7,12 +7,9 @@ import {
     getTrendingUserProducts,
     getAllProductCount,
     getRatedProductsByUserName,
-<<<<<<< HEAD
     getAllProductsSorted,
-=======
     getProductById,
     getUserProducts,
->>>>>>> main
 } from '../controllers/productController.js';
 
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
@@ -26,6 +23,7 @@ productRouter.route('/bestnew').get(getHotProducts);
 productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/count').get(getAllProductCount);
 productRouter.route('/products/sorted').get(getAllProductsSorted);
+productRouter.route('/sorted').get(getAllProductsSorted);
 productRouter.route('/u/:username').get(getUserProductsByUserName);
 productRouter.route('/rated/:username').get(getRatedProductsByUserName);
 productRouter.route('/:id').get(getUserProducts);

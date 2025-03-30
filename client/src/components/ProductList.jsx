@@ -3,7 +3,6 @@ import ProductCard from "./ProductCard";
 import Sort from "./buttons/Sort";
 import BackToTopButton from "./buttons/BackToTopButton";
 
-
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({
@@ -14,8 +13,11 @@ const ProductList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [pageSize, setPageSize] = useState(12);
+  const [isSorted, setIsSorted] = useState(false);
 
   const fetchProducts = async (page = 1) => {
+    if (isSorted) return;
+
     setLoading(true);
     try {
       const response = await fetch(
@@ -46,23 +48,42 @@ const ProductList = () => {
 
   useEffect(() => {
     const handleSortedProducts = (event) => {
-      setProducts(event.detail);
+      const sortedProducts = event.detail;
+      setProducts(sortedProducts);
+      setIsSorted(true); // Важно!
+      setPagination({
+        currentPage: 1,
+        totalPages: Math.ceil(sortedProducts.length / pageSize),
+        totalProducts: sortedProducts.length,
+      });
     };
 
     window.addEventListener("sortedProducts", handleSortedProducts);
-    return () =>
+    return () => {
       window.removeEventListener("sortedProducts", handleSortedProducts);
-  }, []);
+    };
+  }, [pageSize]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= pagination.totalPages) {
-      fetchProducts(newPage);
+      if (isSorted) {
+        setPagination((prev) => ({ ...prev, currentPage: newPage }));
+      } else {
+        fetchProducts(newPage);
+      }
     }
   };
 
   const handlePageSizeChange = (event) => {
     setPageSize(parseInt(event.target.value));
   };
+
+  const paginatedProducts = isSorted
+    ? products.slice(
+        (pagination.currentPage - 1) * pageSize,
+        pagination.currentPage * pageSize
+      )
+    : products;
 
   return (
     <div className="container mx-auto p-4">
@@ -92,7 +113,7 @@ const ProductList = () => {
       {products.length > 0 ? (
         <div>
           <div className="flex flex-wrap mt-4">
-            {products.map((product) => (
+            {paginatedProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -104,8 +125,11 @@ const ProductList = () => {
           {pagination.totalProducts > pageSize && (
             <div className="mt-6 flex justify-center items-center space-x-2">
               <button
-                className={`px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 ${pagination.currentPage <= 1 ? "opacity-50 cursor-not-allowed" : ""}`}
-
+                className={`px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 ${
+                  pagination.currentPage <= 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
                 onClick={() => handlePageChange(pagination.currentPage - 1)}
                 disabled={pagination.currentPage <= 1}
               >
@@ -115,7 +139,11 @@ const ProductList = () => {
               {Array.from({ length: pagination.totalPages }, (_, index) => (
                 <button
                   key={index + 1}
-                  className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? "bg-blue-600 text-white" : "bg-gray-200"} hover:bg-blue-400 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600`}
+                  className={`px-4 py-2 text-sm rounded-md ${
+                    pagination.currentPage === index + 1
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200"
+                  } hover:bg-blue-400 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600`}
                   onClick={() => handlePageChange(index + 1)}
                 >
                   {index + 1}
@@ -123,7 +151,11 @@ const ProductList = () => {
               ))}
 
               <button
-                className={`px-4 py-2 bg-blue-500 text-white rounded-md dark:bg-blue-800 dark:text-white ${pagination.currentPage >= pagination.totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`px-4 py-2 bg-blue-500 text-white rounded-md dark:bg-blue-800 dark:text-white ${
+                  pagination.currentPage >= pagination.totalPages
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
                 onClick={() => handlePageChange(pagination.currentPage + 1)}
                 disabled={pagination.currentPage >= pagination.totalPages}
               >
@@ -131,7 +163,7 @@ const ProductList = () => {
               </button>
             </div>
           )}
-        <BackToTopButton/>
+          <BackToTopButton />
         </div>
       ) : (
         <p>No products available.</p>

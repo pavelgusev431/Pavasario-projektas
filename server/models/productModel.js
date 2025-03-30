@@ -11,18 +11,6 @@ import Subcategory from './subcategoryModel.js';
 const Product = sq.define(
     'Product',
     {
-<<<<<<< HEAD
-      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-      user_id: { type: DataTypes.INTEGER, allowNull: false },
-      subcategory_id: { type: DataTypes.INTEGER, allowNull: false },
-      name: { type: DataTypes.STRING(255), allowNull: false },
-      price: { type: DataTypes.BIGINT, allowNull: false },
-      description: { type: DataTypes.TEXT, allowNull: false },
-      image_url: { type: DataTypes.TEXT, allowNull: false },
-      amount_in_stock: { type: DataTypes.BIGINT, allowNull: false },
-      createdAt: { type: DataTypes.DATE, allowNull: false, defaultValue: sq.literal('CURRENT_TIMESTAMP') },
-      updatedAt: { type: DataTypes.DATE, allowNull: false, defaultValue: sq.literal('CURRENT_TIMESTAMP') },
-=======
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         user_id: { type: DataTypes.INTEGER, allowNull: false },
         subcategory_id: { type: DataTypes.INTEGER, allowNull: false },
@@ -31,9 +19,10 @@ const Product = sq.define(
         description: { type: DataTypes.TEXT, allowNull: false },
         image_url: { type: DataTypes.TEXT, allowNull: false },
         amount_in_stock: { type: DataTypes.BIGINT, allowNull: false },
->>>>>>> main
     },
-    { tableName: 'products' }
+    { tableName: 'products',
+        timestamps: true,
+     }
   );
 
 // Nustatome ryšį tarp User ir Product
