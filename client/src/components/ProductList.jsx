@@ -14,7 +14,7 @@ const ProductList = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(12);
-    const [priceRange, setPriceRange] = useState([0, 1000000]);
+    const [priceRange, setPriceRange] = useState([0, 5000]);
     const [dateRange, setDateRange] = useState([
         new Date('2023-01-01').getTime(),
         (() => {

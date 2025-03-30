@@ -20,7 +20,7 @@ export default function FilterRange({
                 thumbClassName="h-6 w-6 bg-blue-500 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300 translate-y-[-25%]"
                 trackClassName="h-2 bg-gray-300 rounded"
                 min={0}
-                max={1000000}
+                max={5000}
                 value={priceRange}
                 onChange={(newValue) => setPriceRange(newValue)}
                 pearling
