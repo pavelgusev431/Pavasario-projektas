@@ -4,7 +4,6 @@ import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
 
-
 const NavBar = () => {
     const location = useLocation();
     const navigate = useNavigate();

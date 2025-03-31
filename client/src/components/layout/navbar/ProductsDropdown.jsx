@@ -167,6 +167,4 @@ const ProductsDropdown = () => {
     );
 };
 
-
 export default ProductsDropdown;
-

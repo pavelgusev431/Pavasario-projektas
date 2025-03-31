@@ -8,6 +8,4 @@ const getProductsBySubcategory = async (subcategoryId) => {
     return response.data;
 };
 
-
 export default getProductsBySubcategory;
-
