@@ -757,10 +757,12 @@ export const getProductById = async (req, res) => {
 const getAllProductsSorted = async (req, res) => {
     try {
       const allowedSortFields = ["id", "createdAt", "price", "name", "avgRating"];
+
+
       const sortField = allowedSortFields.includes(req.query.sort)
         ? req.query.sort
         : "id";
-  
+
       const order = req.query.order === "desc" ? "DESC" : "ASC";
   
       const from = req.query.from?.trim() || null;
@@ -783,11 +785,12 @@ const getAllProductsSorted = async (req, res) => {
       }
   
       const options = { where };
-
+  
+      // ✅Сортировка по дате 
       if (["id", "createdAt", "name"].includes(sortField)) {
         options.order = [[sortField, order]];
       }
-      
+  
       const products = await Product.findAll(options);
   
       if (products.length === 0) {
@@ -810,8 +813,7 @@ const getAllProductsSorted = async (req, res) => {
         const ratingCount = productRatings.length;
         const avgRating =
           ratingCount > 0
-            ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
-              ratingCount
+            ? productRatings.reduce((sum, r) => sum + r.stars, 0) / ratingCount
             : 0;
   
         return {
@@ -821,11 +823,15 @@ const getAllProductsSorted = async (req, res) => {
         };
       });
   
+      // ✅ Сортировка по рейтингу
       if (sortField === "avgRating") {
         processed.sort((a, b) =>
           order === "DESC" ? b.avgRating - a.avgRating : a.avgRating - b.avgRating
         );
-      } else if (sortField === "price") {
+      }
+  
+      // ✅ Сортировка по цене
+      else if (sortField === "price") {
         processed.sort((a, b) => {
           const priceA = Number(a.price);
           const priceB = Number(b.price);
@@ -845,7 +851,8 @@ const getAllProductsSorted = async (req, res) => {
       console.error("Klaida serveryje:", err);
       return res.status(500).json({ message: "Klaida gaunant duomenis" });
     }
-};
+  };
+  
   
 
 export {
