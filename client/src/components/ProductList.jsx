@@ -32,15 +32,7 @@ const ProductList = () => {
         return today.getTime();
     })();
 
-    useEffect(() => {
-        const maxDateCheck = new Date();
-        maxDateCheck.setDate(maxDateCheck.getDate() + 1);
-        console.log('Max Date (Today + 1):', maxDateCheck.toLocaleDateString());
-        console.log('Initial dateRange:', [
-            new Date(dateRange[0]).toLocaleDateString(),
-            new Date(dateRange[1]).toLocaleDateString(),
-        ]);
-    }, []);
+    
 
     const fetchProducts = async (page = 1) => {
         setLoading(true);
