@@ -783,6 +783,11 @@ const getAllProductsSorted = async (req, res) => {
       }
   
       const options = { where };
+
+      if (["id", "createdAt", "name"].includes(sortField)) {
+        options.order = [[sortField, order]];
+      }
+      
       const products = await Product.findAll(options);
   
       if (products.length === 0) {
