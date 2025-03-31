@@ -85,7 +85,7 @@ const ProductsDropdown = () => {
     };
 
     const handleSubcategoryClick = (subcategoryId) => {
-        navigate(`/products/${subcategoryId}`);
+        navigate(`/products/s/${subcategoryId}`);
     };
 
     return (

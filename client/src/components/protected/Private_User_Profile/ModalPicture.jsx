@@ -6,12 +6,7 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
     const { id } = user;
 
     const availableTypes = [
-        'image/png',
-        'image/jpg',
-        'image/jpeg',
-        'image/gif',
-        'image/webp',
-        'image/svg',
+        'image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg'
     ];
 
     const [error, setError] = useState('');
@@ -26,7 +21,6 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
 
     const submitHandler = async (data) => {
         const file = data.picture[0];
-        console.log(file.type);
         if (!availableTypes.includes(file.type)) {
             setError('Invalid file type');
             return;
@@ -36,7 +30,7 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
             setError('');
             setValue('picture', '');
         } catch (error) {
-            setError(error);
+            setError(error.message);
         }
     };
 
@@ -44,30 +38,21 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
         setShowModal(false);
     };
 
+    if (!showModal) return null;
+
     return (
-        <div
-            className="fixed w-dvw h-dvh z-40 flex flex-col place-items-center left-0 top-25"
-            style={{ backgroundColor: 'rgba(127, 127, 127, 0.25)' }}
-        >
-            <dialog
-                open={showModal}
-                className="bg-none rounded p-2 my-15 w-75 justify-self-center"
-            >
-                <div className="flex flex-row justify-between">
-                    <h3 className="bg-none rounded p-2 my-0 w-50 justify-self-center">
-                        Edit Picture
-                    </h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white shadow-lg rounded-xl p-6 max-w-md w-full">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">Edit Picture</h3>
                     <button
                         onClick={handleClose}
-                        className="bg-none rounded p-2 my-0 w-10"
+                        className="text-gray-500 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-all"
                     >
-                        X
+                        ✕
                     </button>
                 </div>
-                <form
-                    onSubmit={handleSubmit(submitHandler)}
-                    className="flex flex-col"
-                >
+                <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col">
                     <div>
                         <input
                             type="file"
@@ -78,22 +63,21 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
                                     clearErrors('picture');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="block w-full border border-gray-300 rounded-lg p-2 cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-white file:bg-purple-500 hover:file:bg-purple-600"
                         />
                         {errors.picture && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.picture.message}
-                            </p>
+                            <p className="text-red-500 text-sm mt-1">{errors.picture.message}</p>
                         )}
                     </div>
-                    <span>{error}</span>
-                    <input
+                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                    <button
                         type="submit"
-                        value={'Submit new picture'}
-                        className="bg-purple-500 mt-2 rounded text-center text-white"
-                    />
+                        className="bg-red-500 hover:bg-red-600 text-white rounded py-2 px-4 mt-4 transition-all"
+                    >
+                        Submit New Picture
+                    </button>
                 </form>
-            </dialog>
+            </div>
         </div>
     );
 };
