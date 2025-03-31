@@ -275,7 +275,6 @@ const changePassword = async (req, res, next) => {
 
 const changeImageURL = async (req, res, next) => {
     const { id } = req.params;
-    try {
         const foundUser = await User.findByPk(id);
         if (!foundUser) {
             return res.status(404).json({
@@ -291,9 +290,6 @@ const changeImageURL = async (req, res, next) => {
                 message: 'Image url changed',
             });
         }
-    } catch (error) {
-        next(error);
-    }
 };
 
 export {
