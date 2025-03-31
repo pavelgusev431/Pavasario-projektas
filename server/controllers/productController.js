@@ -851,7 +851,7 @@ const getAllProductsSorted = async (req, res) => {
       console.error("Klaida serveryje:", err);
       return res.status(500).json({ message: "Klaida gaunant duomenis" });
     }
-  };
+};
   
   
 

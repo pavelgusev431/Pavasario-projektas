@@ -21,7 +21,7 @@ const ProductList = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/products?page=${page}&limit=${pageSize}`
+        `http://localhost:3000/products?page=${page}&limit=${pageSize}&sort=createdAt&order=desc`
       );
       const data = await response.json();
 
