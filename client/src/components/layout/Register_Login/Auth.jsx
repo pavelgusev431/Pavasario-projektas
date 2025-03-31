@@ -165,7 +165,7 @@ const Auth = () => {
                                                 'Username must be at least 4 symbols long',
                                         },
                                         pattern: {
-                                            value: /^[A-Za-z][A-Za-z0-9]+$/,
+                                            value: /^[A-Za-z]\w+$/,
                                             message:
                                                 'Username must contain only letters and/or numbers and start with a letter',
                                         },
