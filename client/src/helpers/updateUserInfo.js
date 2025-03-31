@@ -17,12 +17,12 @@ const updatePassword = async (id, data) => {
 
 const updateUserAvatar = async (id, data) => {
     const response1 = await axios
-        .patch(url(`users/avatarFile/${id}`), data)
+        .patch(url(`users/avatarFile`), data, { withCredentials: true })
         .catch((error) => {
             console.log(error);
         });
     const response2 = await axios
-        .patch(url(`users/avatar/${id}`))
+        .get(url(`users/avatar/${id}`), { withCredentials: true })
         .catch((error) => {
             console.log(error);
         });
