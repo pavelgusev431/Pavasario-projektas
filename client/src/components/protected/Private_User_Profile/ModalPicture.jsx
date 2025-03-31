@@ -6,7 +6,12 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
     const { id } = user;
 
     const availableTypes = [
-        'image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg'
+        'image/png',
+        'image/jpg',
+        'image/jpeg',
+        'image/gif',
+        'image/webp',
+        'image/svg',
     ];
 
     const [error, setError] = useState('');
@@ -52,7 +57,10 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
                         ✕
                     </button>
                 </div>
-                <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col">
+                <form
+                    onSubmit={handleSubmit(submitHandler)}
+                    className="flex flex-col"
+                >
                     <div>
                         <input
                             type="file"
@@ -66,10 +74,14 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
                             className="block w-full border border-gray-300 rounded-lg p-2 cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-white file:bg-purple-500 hover:file:bg-purple-600"
                         />
                         {errors.picture && (
-                            <p className="text-red-500 text-sm mt-1">{errors.picture.message}</p>
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.picture.message}
+                            </p>
                         )}
                     </div>
-                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                    {error && (
+                        <p className="text-red-500 text-sm mt-2">{error}</p>
+                    )}
                     <button
                         type="submit"
                         className="bg-red-500 hover:bg-red-600 text-white rounded py-2 px-4 mt-4 transition-all"

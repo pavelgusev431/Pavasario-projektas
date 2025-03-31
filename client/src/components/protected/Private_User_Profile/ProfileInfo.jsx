@@ -61,13 +61,17 @@ const ProfileInfo = () => {
             <div className="w-full max-w-2xl p-8 bg-white rounded-lg shadow-lg">
                 <div className="flex items-center mb-6">
                     <div className="w-2 h-8 bg-red-500 mr-3"></div>
-                    <h2 className="text-3xl font-bold text-gray-800">Profile Information</h2>
+                    <h2 className="text-3xl font-bold text-gray-800">
+                        Profile Information
+                    </h2>
                 </div>
-                
+
                 <div className="space-y-6">
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-gray-500">Email</span>
+                            <span className="text-sm font-semibold text-gray-500">
+                                Email
+                            </span>
                             <span className="text-lg">{auth?.email}</span>
                         </div>
                         <button
@@ -80,7 +84,9 @@ const ProfileInfo = () => {
 
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-gray-500">Username</span>
+                            <span className="text-sm font-semibold text-gray-500">
+                                Username
+                            </span>
                             <span className="text-lg">{auth?.username}</span>
                         </div>
                         <button
@@ -93,7 +99,9 @@ const ProfileInfo = () => {
 
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-gray-500">Password</span>
+                            <span className="text-sm font-semibold text-gray-500">
+                                Password
+                            </span>
                             <span className="text-lg">••••••••</span>
                         </div>
                         <button
@@ -106,8 +114,12 @@ const ProfileInfo = () => {
 
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div className="flex flex-col flex-1">
-                            <span className="text-sm font-semibold text-gray-500">Description</span>
-                            <span className="text-lg">{auth?.description || 'Nothing here :('}</span>
+                            <span className="text-sm font-semibold text-gray-500">
+                                Description
+                            </span>
+                            <span className="text-lg">
+                                {auth?.description || 'Nothing here :('}
+                            </span>
                         </div>
                         <button
                             onClick={handleChangeDescription}
@@ -119,8 +131,12 @@ const ProfileInfo = () => {
 
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                         <div className="flex flex-col flex-1">
-                            <span className="text-sm font-semibold text-gray-500">Contacts</span>
-                            <span className="text-lg">{auth?.contacts || 'Nothing here :('}</span>
+                            <span className="text-sm font-semibold text-gray-500">
+                                Contacts
+                            </span>
+                            <span className="text-lg">
+                                {auth?.contacts || 'Nothing here :('}
+                            </span>
                         </div>
                         <button
                             onClick={handleChangeContacts}
@@ -131,7 +147,9 @@ const ProfileInfo = () => {
                     </div>
 
                     <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg">
-                        <span className="text-sm font-semibold text-gray-500 mb-3">Avatar</span>
+                        <span className="text-sm font-semibold text-gray-500 mb-3">
+                            Avatar
+                        </span>
                         <div className="relative mb-4">
                             <img
                                 src={auth.image_url}
@@ -142,7 +160,9 @@ const ProfileInfo = () => {
                                 onClick={handleChangePicture}
                                 className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition duration-200"
                             >
-                                <span className="text-gray-600 hover:text-red-500">🖉</span>
+                                <span className="text-gray-600 hover:text-red-500">
+                                    🖉
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -155,7 +175,7 @@ const ProfileInfo = () => {
                         setShowModal={setEditModalEmail}
                     />
                 )}
-                
+
                 {editModalUsername && (
                     <ModalUsername
                         user={auth}
@@ -163,7 +183,7 @@ const ProfileInfo = () => {
                         setShowModal={setEditModalUsername}
                     />
                 )}
-                
+
                 {editModalDesc && (
                     <ModalDescription
                         user={auth}
@@ -171,7 +191,7 @@ const ProfileInfo = () => {
                         setShowModal={setEditModalDesc}
                     />
                 )}
-                
+
                 {editModalContacts && (
                     <ModalContacts
                         user={auth}
@@ -179,7 +199,7 @@ const ProfileInfo = () => {
                         setShowModal={setEditModalContacts}
                     />
                 )}
-                
+
                 {editModalPassword && (
                     <ModalPassword
                         user={auth}
@@ -187,7 +207,7 @@ const ProfileInfo = () => {
                         setShowModal={setEditModalPassword}
                     />
                 )}
-                
+
                 {editModalPicture && (
                     <ModalPicture
                         user={auth}
