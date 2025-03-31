@@ -7,6 +7,7 @@ import {
     getTrendingUserProducts,
     getAllProductCount,
     getRatedProductsByUserName,
+    getAllProductsSorted,
     getProductById,
     getUserProducts,
 } from '../controllers/productController.js';
@@ -21,6 +22,8 @@ productRouter.route('/trending').get(getTrendingUserProducts);
 productRouter.route('/bestnew').get(getHotProducts);
 productRouter.route('/top').get(getTopRatedProducts);
 productRouter.route('/count').get(getAllProductCount);
+productRouter.route('/products/sorted').get(getAllProductsSorted);
+productRouter.route('/sorted').get(getAllProductsSorted);
 productRouter.route('/u/:username').get(getUserProductsByUserName);
 productRouter.route('/rated/:username').get(getRatedProductsByUserName);
 productRouter.route('/:id').get(getUserProducts);

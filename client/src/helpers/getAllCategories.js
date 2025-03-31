@@ -11,4 +11,6 @@ const getAllCategories = async () => {
     }
 };
 
+
+
 export default getAllCategories;
