@@ -11,7 +11,7 @@ const Sort = () => {
       const data = await response.json();
 
       if (!Array.isArray(data.products)) {
-        throw new Error("Serverio atsakyme nėra produktų masyvo");
+        throw new Error("❌ Serverio atsakyme nėra produktų masyvo");
       }
 
       window.dispatchEvent(
@@ -20,7 +20,7 @@ const Sort = () => {
         })
       );
     } catch (err) {
-      console.error("Rūšiavimo klaida:", err.message);
+      console.error("❌ Rūšiavimo klaida:", err.message);
     }
   };
 
@@ -42,13 +42,13 @@ const Sort = () => {
       </button>
 
       {showTools && (
-        <div className="mt-3 border border-gray-800 bg-[#181C25] rounded p-4 text-white w-[7cm]">
-          <div className="flex items-center justify-between gap-4">
+        <div className="mt-3 border border-gray-800 bg-[#181C25] rounded p-4 text-white w-[8cm]">
+          <div className="flex items-center justify-between gap-4 max-w-0">
             <p className="text-sm font-semibold">Rūšiuoti:</p>
             <select
               value={sortValue}
               onChange={handleChange}
-              className="bg-[#1f2937] text-white border border-gray-600 rounded px-3 py-2 w-[4cm]"
+              className="bg-[#1f2937] text-white border border-gray-600 rounded px-3 py-2 w-[5cm]"
             >
               <option value="" disabled>Pasirinkite rūšiavimą</option>
               <option value="price-asc">Kaina ↑</option>
