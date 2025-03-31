@@ -79,7 +79,6 @@ const getUserById = async (req, res, next) => {
         const user = await User.findByPk(id);
         if (user === undefined)
             throw new AppError(`User with id ${id} not found`, 404);
-        user.password = undefined;
         res.status(200).json({
             status: 'success',
             data: user,
@@ -109,8 +108,6 @@ const login = async (req, res, next) => {
         );
         res.cookie('token', token, { httpOnly: true });
         res.cookie('tokenJS', 1);
-        user.username = undefined;
-        user.password = undefined;
         res.status(200).json({
             status: 'success',
             data: user,
@@ -142,7 +139,7 @@ const me = async (_req, res, next) => {
         const { id } = res.locals;
         const user = await User.findByPk(id);
         const secret = await Secret.findByPk(id);
-        if (user) {
+        if (user && secret) {
             res.status(200).json({
                 status: 'success',
                 data: { ...user.DataValues, role: secret.role },
@@ -214,6 +211,91 @@ const getAllUsersCount = async (req, res) => {
         data: userCount,
     });
 };
+
+const changeUserInfo = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { email, username, description, contacts } = req.body;
+        const updatedUser = await User.findByPk(id);
+        updatedUser.email = email || updatedUser.email;
+        updatedUser.username = username || updatedUser.username;
+        updatedUser.description = description || updatedUser.description;
+        updatedUser.contacts = contacts || updatedUser.contacts;
+        await updatedUser.save();
+        res.status(200).json({
+            status: 'success',
+            data: updatedUser,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const changePassword = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { oldPassword, newPassword } = req.body;
+        const foundUser = await User.findByPk(id);
+        if (!foundUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Unknown user',
+            });
+        }
+        const foundSecret = await Secret.findOne({ where: { userId: id } });
+        if (!foundSecret) {
+            return res.status(500).json({
+                status: 'error',
+                message: 'Internal server error',
+            });
+        }
+        const hashedOldPassword = sha256(
+            sha1(oldPassword + foundSecret.password.split(':')[1])
+        );
+        if (foundSecret.password.split(':')[0] === hashedOldPassword) {
+            const now = new Date();
+            const salt = sha256(sha1(now.toString() + foundUser.username));
+            const hashedPassword = sha256(sha1(newPassword + salt));
+            foundSecret.password = `${hashedPassword}:${salt}`;
+            await foundSecret.save();
+            res.status(203).json({
+                status: 'success',
+                message: 'Changed user password',
+            });
+        } else {
+            res.status(403).json({
+                status: 'fail',
+                message: 'Incorrect old password',
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+const changeImageURL = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const foundUser = await User.findByPk(id);
+        if (!foundUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Unknown user',
+            });
+        } else {
+            const imageURL = req.cookies?.filepath;
+            foundUser.image_url = imageURL;
+            await foundUser.save();
+            res.status(203).json({
+                status: 'success',
+                message: 'Image url changed',
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
 export {
     createAdmin,
     createUser,
@@ -226,4 +308,7 @@ export {
     me,
     getAllUsers,
     getAllUsersCount,
+    changeUserInfo,
+    changePassword,
+    changeImageURL,
 };

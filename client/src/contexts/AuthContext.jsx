@@ -1,9 +1,9 @@
-import { createContext } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 
 const AuthContext = createContext(null);
 
 import loginMe from '../helpers/loginMe.js';
-import { useEffect, useState } from 'react';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -30,8 +30,13 @@ const AuthContextProvider = ({ children }) => {
         };
         fetchMe();
     }, []);
+
+    const providedObject = useMemo(() => {
+        return { auth, setAuth, loading };
+    }, [auth, loading]);
+
     return (
-        <AuthContext.Provider value={{ auth, setAuth, loading }}>
+        <AuthContext.Provider value={providedObject}>
             {children}
         </AuthContext.Provider>
     );

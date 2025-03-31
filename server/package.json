@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "renew": "node ./utilities/env.js && node ./utilities/envBackup.js && node ./utilities/database.js && node ./utilities/createNewJWTSecret.js && node ./utilities/mailerTester.js",
+    "renew": "node ./utilities/env.js && node ./utilities/envBackup.js && node ./utilities/database.js && node ./utilities/createNewJWTSecret.js && node ./utilities/mailerTester.js && node ./utilities/multerTester.js",
     "start": "npm i && npm run renew -s && nodemon --quiet server/server.js"
   },
   "keywords": [],
@@ -22,7 +22,7 @@
     "js-sha256": "^0.11.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^1.4.5-lts.2",
     "nanoid": "^5.1.2",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
