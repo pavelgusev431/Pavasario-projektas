@@ -32,7 +32,7 @@ const ProductsPage = () => {
         const fetchSubcategory = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/categories/categories/${subcategoryId}`
+                    `http://localhost:3000/categories/products/${subcategoryId}`
                 );
                 setSubcategory(response.data);
             } catch (err) {

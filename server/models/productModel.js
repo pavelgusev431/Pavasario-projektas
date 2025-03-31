@@ -22,7 +22,7 @@ const Product = sq.define(
         amount_in_stock: { type: DataTypes.BIGINT, allowNull: false },
     },
     { tableName: 'products',
-        timestamps: true,
+        timestamps: false,
      }
   );
 
