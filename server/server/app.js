@@ -9,7 +9,6 @@ import morgan from 'morgan';
 import { getAllProductsSorted } from '../controllers/productController.js';
 import categoryRouter from '../routers/categoryRouter.js';
 
-
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
 const CLIENT_PORT = process.env.CLIENT_PORT || '3000';
