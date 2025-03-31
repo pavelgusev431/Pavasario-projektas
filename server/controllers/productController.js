@@ -756,7 +756,6 @@ export const getProductById = async (req, res) => {
 
 const getAllProductsSorted = async (req, res) => {
     try {
-      console.log("✅ Сортировка работает:", req.query);
       const allowedSortFields = ["id", "createdAt", "price", "name", "avgRating"];
       const sortField = allowedSortFields.includes(req.query.sort)
         ? req.query.sort
@@ -841,7 +840,7 @@ const getAllProductsSorted = async (req, res) => {
       console.error("Klaida serveryje:", err);
       return res.status(500).json({ message: "Klaida gaunant duomenis" });
     }
-  };
+};
   
 
 export {
