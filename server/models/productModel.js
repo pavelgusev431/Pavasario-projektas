@@ -13,6 +13,7 @@ const Product = sq.define(
     {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         user_id: { type: DataTypes.INTEGER, allowNull: false },
+        category_id: { type: DataTypes.INTEGER, allowNull: false },
         subcategory_id: { type: DataTypes.INTEGER, allowNull: false },
         name: { type: DataTypes.STRING(255), allowNull: false },
         price: { type: DataTypes.FLOAT, allowNull: false },
@@ -21,7 +22,7 @@ const Product = sq.define(
         amount_in_stock: { type: DataTypes.BIGINT, allowNull: false },
     },
     { tableName: 'products',
-        timestamps: true,
+        timestamps: false,
      }
   );
 
