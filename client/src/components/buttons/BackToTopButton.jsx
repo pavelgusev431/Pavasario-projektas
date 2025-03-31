@@ -27,18 +27,17 @@ const BackToTopButton = () => {
       }
     }, 4);
   };
-
-  return (
-    isVisible && (
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-4 right-4 bg-[#ff2c2c] text-white px-4 py-2 rounded-full shadow-lg hover:bg-[#9b0000] dark:bg-red-700 dark:hover:bg-red-900 transition duration-300 text-[0.4cm] w-[1cm]"
-
-      >
-        ↑
-      </button>
-    )
-  );
+  
+    return (
+        isVisible && (
+            <button
+                onClick={scrollToTop}
+                className="fixed bottom-4 right-4 bg-[#ff2c2c] text-white px-4 py-2 rounded-full shadow-lg hover:bg-[#9b0000] transition duration-300 text-[0.4cm] w-[1cm] flex justify-center items-center"
+            >
+                ↑
+            </button>
+        )
+    );
 };
 
 export default BackToTopButton;
