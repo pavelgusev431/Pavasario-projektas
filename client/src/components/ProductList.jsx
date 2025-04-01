@@ -21,7 +21,7 @@ const ProductList = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/products?page=${page}&limit=${pageSize}` //&sort=createdAt&order=desc
+        `http://localhost:3000/products?page=${page}&limit=${pageSize}`
       );
       const data = await response.json();
 
@@ -50,7 +50,7 @@ const ProductList = () => {
     const handleSortedProducts = (event) => {
       const sortedProducts = event.detail;
       setProducts(sortedProducts);
-      setIsSorted(true); // Важно!
+      setIsSorted(true);
       setPagination({
         currentPage: 1,
         totalPages: Math.ceil(sortedProducts.length / pageSize),
