@@ -1,10 +1,9 @@
-// ProductList.js
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import Tools from './Tools'; 
 import getFilteredProducts from '../helpers/getFilteredProducts';
 
-const ProductList = () => {
+export default function ProductList() {
     const [products, setProducts] = useState([]);
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -23,7 +22,7 @@ const ProductList = () => {
             return today.getTime();
         })(),
     ]);
-    const [sortValue, setSortValue] = useState('createdAt-asc'); // Numatytasis rūšiavimas
+    const [sortValue, setSortValue] = useState('createdAt-asc'); 
 
     const minDate = new Date('2023-01-01').getTime();
     const maxDate = (() => {
@@ -118,7 +117,7 @@ const ProductList = () => {
             {error && <p className="text-red-500">{error}</p>}
             {products.length > 0 ? (
                 <div>
-                    <div className="flex flex-wrap mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
                         {products.map((product) => (
                             <ProductCard
                                 key={product.id}
@@ -186,6 +185,4 @@ const ProductList = () => {
             )}
         </div>
     );
-};
-
-export default ProductList;
+}

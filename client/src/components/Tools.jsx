@@ -1,9 +1,8 @@
-// Tools.jsx
 import { useState } from 'react';
 import FilterRange from './FilterRange';
 import Sort from './Sort';
 
-const Tools = ({
+export default function Tools({
     priceRange,
     setPriceRange,
     dateRange,
@@ -11,11 +10,11 @@ const Tools = ({
     minDate,
     maxDate,
     onSortChange,
-}) => {
-    const [isToolsVisible, setIsToolsVisible] = useState(false); 
+}) {
+    const [isToolsVisible, setIsToolsVisible] = useState(false);
 
     const toggleToolsVisibility = () => {
-        setIsToolsVisible((prev) => !prev); 
+        setIsToolsVisible((prev) => !prev);
     };
 
     return (
@@ -28,7 +27,7 @@ const Tools = ({
             </button>
 
             {isToolsVisible && (
-                <div className="mt-4 flex flex-col sm:flex-row gap-4">
+                <div className="">
                     <FilterRange
                         priceRange={priceRange}
                         setPriceRange={setPriceRange}
@@ -42,6 +41,4 @@ const Tools = ({
             )}
         </div>
     );
-};
-
-export default Tools;
+}

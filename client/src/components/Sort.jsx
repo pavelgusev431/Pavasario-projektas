@@ -1,21 +1,20 @@
-// Sort.jsx
-import { useState} from 'react';
+import { useState } from 'react';
 
-const Sort = ({ onSortChange }) => {
-    const [sortValue, setSortValue] = useState('createdAt-asc'); 
+export default function Sort({ onSortChange }) {
+    const [sortValue, setSortValue] = useState('createdAt-asc');
 
     const handleSortChange = (event) => {
         const newSortValue = event.target.value;
         setSortValue(newSortValue);
-        onSortChange(newSortValue); 
+        onSortChange(newSortValue);
     };
 
     return (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex justify-center">
             <select
                 value={sortValue}
                 onChange={handleSortChange}
-                className="dark:bg-[#1f2937] dark:text-white border border-gray-600 rounded px-3 py-2 w-[4cm]"
+                className="border border-gray-300 rounded-md px-4 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
                 <option value="" disabled>
                     Select sorting
@@ -31,6 +30,4 @@ const Sort = ({ onSortChange }) => {
             </select>
         </div>
     );
-};
-
-export default Sort;
+}
