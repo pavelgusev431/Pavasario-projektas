@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const ProductCreateModal = ({showModal, setShowModal}) => {
+const ProductCreateModal = ({ showModal, setShowModal }) => {
     const [error, setError] = useState('');
 
     const {
@@ -76,8 +76,8 @@ const ProductCreateModal = ({showModal, setShowModal}) => {
                             {...register('price', {
                                 required: 'This field is required',
                                 min: 0,
-                                validate: (value)=>{
-                                    return value != 0 || "Price cannot be 0";
+                                validate: (value) => {
+                                    return value != 0 || 'Price cannot be 0';
                                 },
                                 onChange: () => {
                                     setError('');

@@ -1,7 +1,5 @@
 const ProductEditModal = () => {
-    return (
-        <div></div>
-    )
-}
+    return <div></div>;
+};
 
 export default ProductEditModal;

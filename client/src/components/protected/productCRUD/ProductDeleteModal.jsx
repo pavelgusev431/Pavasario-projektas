@@ -1,7 +1,5 @@
 const ProductDeleteModal = () => {
-    return (
-        <div></div>
-    )
-}
+    return <div></div>;
+};
 
 export default ProductDeleteModal;
