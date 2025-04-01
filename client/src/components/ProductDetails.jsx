@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import axios from 'axios';
 import Modal from 'react-modal';
 
@@ -120,7 +120,7 @@ const ProductDetails = () => {
                         {stockStatus}
                     </p>
                     <p className="text-lg mb-4 text-gray-700">
-                        Seller: {product.User.username}
+                        Seller: <Link to={`/users/${product.User.username}`}>{product.User.username}</Link>
                     </p>
                     <p className="text-lg mb-4 text-gray-700">
                         Contact: {product.User.contacts}

@@ -44,13 +44,13 @@ const Sort = () => {
             </button>
 
             {showTools && (
-                <div className="mt-3 border border-gray-800 bg-[#181C25] rounded p-4 text-white w-[7cm]">
+                <div className="mt-3 border dark:border-gray-800 dark:bg-[#181C25] rounded p-4 dark:text-white w-[7cm]">
                     <div className="flex items-center justify-between gap-4">
                         <p className="text-sm font-semibold">Rūšiuoti:</p>
                         <select
                             value={sortValue}
                             onChange={handleChange}
-                            className="bg-[#1f2937] text-white border border-gray-600 rounded px-3 py-2 w-[4cm]"
+                            className="dark:bg-[#1f2937] dark:text-white border border-gray-600 rounded px-3 py-2 w-[4cm]"
                         >
                             <option value="" disabled>
                                 Pasirinkite rūšiavimą
