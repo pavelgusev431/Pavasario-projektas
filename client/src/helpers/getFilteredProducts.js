@@ -1,7 +1,6 @@
+
 import axios from 'axios';
 import url from './getURL.js';
-
-
 
 const getFilteredProducts = async ({
   page = 1,
@@ -10,6 +9,8 @@ const getFilteredProducts = async ({
   maxPrice,
   minDate,
   maxDate,
+  sort = 'createdAt', 
+  order = 'ASC', 
 } = {}) => {
   try {
     const response = await axios.get(url("products"), {
@@ -20,6 +21,8 @@ const getFilteredProducts = async ({
         maxPrice,
         minDate,
         maxDate,
+        sort,
+        order,
       },
     });
     return response.data;
@@ -30,4 +33,3 @@ const getFilteredProducts = async ({
 };
 
 export default getFilteredProducts;
-

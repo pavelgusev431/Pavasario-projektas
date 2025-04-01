@@ -1,7 +1,7 @@
 // ProductList.js
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-import FilterRange from './FilterRange'; 
+import Tools from './Tools'; 
 import getFilteredProducts from '../helpers/getFilteredProducts';
 
 const ProductList = () => {
@@ -23,8 +23,8 @@ const ProductList = () => {
             return today.getTime();
         })(),
     ]);
+    const [sortValue, setSortValue] = useState('createdAt-asc'); // Numatytasis rūšiavimas
 
-    // Nustatome minimalią ir maksimalią datas
     const minDate = new Date('2023-01-01').getTime();
     const maxDate = (() => {
         const today = new Date();
@@ -32,11 +32,10 @@ const ProductList = () => {
         return today.getTime();
     })();
 
-    
-
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
+            const [sort, order] = sortValue.split('-');
             const data = await getFilteredProducts({
                 page,
                 limit: pageSize,
@@ -44,6 +43,8 @@ const ProductList = () => {
                 maxPrice: priceRange[1],
                 minDate: new Date(dateRange[0]).toISOString().split('T')[0],
                 maxDate: new Date(dateRange[1]).toISOString().split('T')[0],
+                sort,
+                order: order.toUpperCase(),
             });
             setProducts(data.products);
             setPagination({
@@ -60,7 +61,7 @@ const ProductList = () => {
 
     useEffect(() => {
         fetchProducts(pagination.currentPage);
-    }, [pageSize, priceRange, dateRange, pagination.currentPage]);
+    }, [pageSize, priceRange, dateRange, sortValue, pagination.currentPage]);
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
@@ -73,18 +74,24 @@ const ProductList = () => {
         setPagination({ ...pagination, currentPage: 1 });
     };
 
+    const handleSortChange = (newSortValue) => {
+        setSortValue(newSortValue);
+        setPagination({ ...pagination, currentPage: 1 });
+    };
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">Product List</h1>
 
-            {/* Filtravimo komponentas */}
-            <FilterRange
+            {/* Įrankių juosta */}
+            <Tools
                 priceRange={priceRange}
                 setPriceRange={setPriceRange}
                 dateRange={dateRange}
                 setDateRange={setDateRange}
                 minDate={minDate}
                 maxDate={maxDate}
+                onSortChange={handleSortChange}
             />
 
             {/* Puslapio dydžio pasirinkimas */}
@@ -158,8 +165,7 @@ const ProductList = () => {
 
                             <button
                                 className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
-                                    pagination.currentPage >=
-                                    pagination.totalPages
+                                    pagination.currentPage >= pagination.totalPages
                                         ? 'opacity-50 cursor-not-allowed'
                                         : ''
                                 }`}
@@ -167,8 +173,7 @@ const ProductList = () => {
                                     handlePageChange(pagination.currentPage + 1)
                                 }
                                 disabled={
-                                    pagination.currentPage >=
-                                    pagination.totalPages
+                                    pagination.currentPage >= pagination.totalPages
                                 }
                             >
                                 Next
