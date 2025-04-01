@@ -777,7 +777,6 @@ const getAllProductsSorted = async (req, res) => {
 
         const options = { where };
 
-        // Сортировка по полям из БД
         if (["id", "createdAt", "name"].includes(sortField)) {
             options.order = [[sortField, order]];
         }
@@ -806,7 +805,6 @@ const getAllProductsSorted = async (req, res) => {
             return { ...product.dataValues, ratingCount, avgRating };
         });
 
-        // Доп. сортировка вручную
         if (sortField === "avgRating") {
             processed.sort((a, b) =>
                 order === "DESC" ? b.avgRating - a.avgRating : a.avgRating - b.avgRating
@@ -831,7 +829,8 @@ const getAllProductsSorted = async (req, res) => {
         console.error("Klaida serveryje:", err);
         return res.status(500).json({ message: "Klaida gaunant duomenis" });
     }
-};  
+};
+  
 
 export {
     getAllProductCount,
