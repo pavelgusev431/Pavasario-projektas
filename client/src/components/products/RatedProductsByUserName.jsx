@@ -47,7 +47,7 @@ export default function RatedProductsByUserName() {
                         >
                             <h2 className="text-lg font-bold flex items-center gap-3 text-gray-800">
                                 <Link
-                                    to={`/products/${product.id}`}
+                                    to={`/products/selected/${product.id}`}
                                     className="hover:text-blue-600 transition duration-300"
                                 >
                                     {product.name}

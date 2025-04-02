@@ -203,7 +203,7 @@ const About = () => {
                         />
                         <h4 className="text-xl font-bold mb-2">2. Buy it</h4>
                         <p>
-                            Once you've found the perfect item, add it to your
+                            Once you ve found the perfect item, add it to your
                             cart and purchase it.
                         </p>
                     </div>
