@@ -18,7 +18,7 @@ const NavBar = () => {
         const fetchBalance = async () => {
             try {
                 let response;
-                if(auth.id) response = await getBalance();
+                if (auth.id) response = await getBalance();
                 const data = response?.data;
                 setBalance(data?.balance || 0);
             } catch (error) {
