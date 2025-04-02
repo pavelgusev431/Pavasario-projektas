@@ -120,7 +120,10 @@ const ProductDetails = () => {
                         {stockStatus}
                     </p>
                     <p className="text-lg mb-4 text-gray-700">
-                        Seller: <Link to={`/users/${product.User.username}`}>{product.User.username}</Link>
+                        Seller:{' '}
+                        <Link to={`/users/${product.User.username}`}>
+                            {product.User.username}
+                        </Link>
                     </p>
                     <p className="text-lg mb-4 text-gray-700">
                         Contact: {product.User.contacts}

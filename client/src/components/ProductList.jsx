@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-import Tools from './Tools'; 
+import Tools from './Tools';
 import getFilteredProducts from '../helpers/getFilteredProducts';
 
 export default function ProductList() {
@@ -15,16 +15,16 @@ export default function ProductList() {
     const [pageSize, setPageSize] = useState(12);
     const [priceRange, setPriceRange] = useState([0, 5000]);
     const [dateRange, setDateRange] = useState([
-        new Date('2023-01-01').getTime(),
+        new Date('2024-01-01').getTime(),
         (() => {
             const today = new Date();
             today.setDate(today.getDate() + 1);
             return today.getTime();
         })(),
     ]);
-    const [sortValue, setSortValue] = useState('createdAt-asc'); 
+    const [sortValue, setSortValue] = useState('createdAt-asc');
 
-    const minDate = new Date('2023-01-01').getTime();
+    const minDate = new Date('2024-01-01').getTime();
     const maxDate = (() => {
         const today = new Date();
         today.setDate(today.getDate() + 1);
@@ -32,8 +32,6 @@ export default function ProductList() {
     })();
 
     const fetchProducts = async (page = 1) => {
-        if (isSorted) return;
-
         setLoading(true);
         try {
             const [sort, order] = sortValue.split('-');
@@ -104,7 +102,7 @@ export default function ProductList() {
                     id="pageSize"
                     value={pageSize}
                     onChange={handlePageSizeChange}
-                    className="p-2 border border-gray-300 rounded-md bg-white text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    className="p-2 border rounded-md"
                 >
                     <option value={6}>6</option>
                     <option value={12}>12</option>
@@ -112,7 +110,6 @@ export default function ProductList() {
                     <option value={24}>24</option>
                     <option value={30}>30</option>
                 </select>
-                
             </div>
 
             {/* Produktų rodymas */}
@@ -167,7 +164,8 @@ export default function ProductList() {
 
                             <button
                                 className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
-                                    pagination.currentPage >= pagination.totalPages
+                                    pagination.currentPage >=
+                                    pagination.totalPages
                                         ? 'opacity-50 cursor-not-allowed'
                                         : ''
                                 }`}
@@ -175,14 +173,14 @@ export default function ProductList() {
                                     handlePageChange(pagination.currentPage + 1)
                                 }
                                 disabled={
-                                    pagination.currentPage >= pagination.totalPages
+                                    pagination.currentPage >=
+                                    pagination.totalPages
                                 }
                             >
                                 Next
                             </button>
                         </div>
                     )}
-                    <BackToTopButton />
                 </div>
             ) : (
                 <p>No products available.</p>
