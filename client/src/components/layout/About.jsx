@@ -106,7 +106,9 @@ const About = () => {
             {/* About Section */}
             <div className="flex flex-col md:flex-row items-center gap-12">
                 <div className="w-full md:w-1/2 text-left font-sans">
-                    <h2 className="text-4xl font-bold mb-6">About Just Do It</h2>
+                    <h2 className="text-4xl font-bold mb-6">
+                        About Just Do It
+                    </h2>
                     <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                         Just Do It is an online electronics store created by
                         aspiring web developers from Techin. Launched in 2025,
@@ -127,7 +129,9 @@ const About = () => {
 
             {/* Selling and Shopping Sections */}
             <div className="mt-12">
-                <h3 className="text-2xl font-bold text-center mb-6">How to Sell</h3>
+                <h3 className="text-2xl font-bold text-center mb-6">
+                    How to Sell
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
@@ -135,8 +139,13 @@ const About = () => {
                             alt="Step 1"
                             className="w-24 h-24 mb-4"
                         />
-                        <h4 className="text-xl font-bold mb-2">1. List for free</h4>
-                        <p>Start selling by listing your item for free on our platform.</p>
+                        <h4 className="text-xl font-bold mb-2">
+                            1. List for free
+                        </h4>
+                        <p>
+                            Start selling by listing your item for free on our
+                            platform.
+                        </p>
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
@@ -144,8 +153,13 @@ const About = () => {
                             alt="Step 2"
                             className="w-24 h-24 mb-4"
                         />
-                        <h4 className="text-xl font-bold mb-2">2. Sell it, ship it</h4>
-                        <p>Once your item sells, ship it to the buyer and complete the transaction.</p>
+                        <h4 className="text-xl font-bold mb-2">
+                            2. Sell it, ship it
+                        </h4>
+                        <p>
+                            Once your item sells, ship it to the buyer and
+                            complete the transaction.
+                        </p>
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
@@ -153,23 +167,33 @@ const About = () => {
                             alt="Step 3"
                             className="w-24 h-24 mb-4"
                         />
-                        <h4 className="text-xl font-bold mb-2">3. It’s payday!</h4>
-                        <p>Get paid for your sale after the transaction is complete.</p>
+                        <h4 className="text-xl font-bold mb-2">
+                            3. It’s payday!
+                        </h4>
+                        <p>
+                            Get paid for your sale after the transaction is
+                            complete.
+                        </p>
                     </div>
                 </div>
             </div>
 
             <div className="mt-12">
-                <h3 className="text-2xl font-bold text-center mb-6">How to Shop</h3>
+                <h3 className="text-2xl font-bold text-center mb-6">
+                    How to Shop
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMGAGE
+                            src="path-to-image" // IMAGE
                             alt="Step 1"
                             className="w-24 h-24 mb-4"
                         />
                         <h4 className="text-xl font-bold mb-2">1. Find it</h4>
-                        <p>Browse through a variety of products and find what you need.</p>
+                        <p>
+                            Browse through a variety of products and find what
+                            you need.
+                        </p>
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
@@ -178,7 +202,10 @@ const About = () => {
                             className="w-24 h-24 mb-4"
                         />
                         <h4 className="text-xl font-bold mb-2">2. Buy it</h4>
-                        <p>Once you've found the perfect item, add it to your cart and purchase it.</p>
+                        <p>
+                            Once you've found the perfect item, add it to your
+                            cart and purchase it.
+                        </p>
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
@@ -187,14 +214,19 @@ const About = () => {
                             className="w-24 h-24 mb-4"
                         />
                         <h4 className="text-xl font-bold mb-2">3. Get it</h4>
-                        <p>Your product will be delivered to you as soon as possible!</p>
+                        <p>
+                            Your product will be delivered to you as soon as
+                            possible!
+                        </p>
                     </div>
                 </div>
             </div>
 
             {/* Meet Our Developers Section */}
             <div className="mt-12">
-                <h3 className="text-2xl font-bold text-center mb-6">Meet Our Developers</h3>
+                <h3 className="text-2xl font-bold text-center mb-6">
+                    Meet Our Developers
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     {currentUsers.map((user, index) => (
                         <a
@@ -209,25 +241,45 @@ const About = () => {
                                 alt={`${user.name} ${user.surname}`}
                                 className="w-24 h-24 rounded-full mb-4"
                             />
-                            <h4 className="text-xl font-bold mb-2">{user.name} {user.surname}</h4>
-                            <p className="text-gray-600 dark:text-gray-300">{user.role}</p>
+                            <h4 className="text-xl font-bold mb-2">
+                                {user.name} {user.surname}
+                            </h4>
+                            <p className="text-gray-600 dark:text-gray-300">
+                                {user.role}
+                            </p>
                         </a>
                     ))}
                 </div>
-                <div className="flex justify-center mt-6">
+
+                {/* Pagination Controls */}
+                <div className="flex justify-center mt-6 space-x-4">
+                    {/* Previous Button */}
                     <button
                         onClick={prevPage}
-                        className="bg-gray-800 text-white px-4 py-2 rounded-l-lg"
+                        className="bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200"
                         disabled={currentPage === 1}
                     >
-                        Previous
+                        &larr; Previous
                     </button>
+
+                    {/* Dots Pagination */}
+                    <div className="flex items-center space-x-2">
+                        {[...Array(totalPages)].map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setCurrentPage(index + 1)}
+                                className={`w-3 h-3 rounded-full ${currentPage === index + 1 ? 'bg-gray-800' : 'bg-gray-300'} transition-colors`}
+                            ></button>
+                        ))}
+                    </div>
+
+                    {/* Next Button */}
                     <button
                         onClick={nextPage}
-                        className="bg-gray-800 text-white px-4 py-2 rounded-r-lg"
+                        className="bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200"
                         disabled={currentPage === totalPages}
                     >
-                        Next
+                        Next &rarr;
                     </button>
                 </div>
             </div>
