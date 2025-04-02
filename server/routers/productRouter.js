@@ -10,7 +10,7 @@ import {
     getAllProductsSorted,
     getProductById,
     getUserProducts,
-    getAllProducts
+    getAllProducts,
 } from '../controllers/productController.js';
 import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
@@ -20,7 +20,9 @@ import { getPaginatedProducts } from '../controllers/paginatedProductController.
 const productRouter = express.Router();
 
 productRouter.route('/').get(getPaginatedProducts);
-productRouter.route('/search').get(validateSearchQuery,validate,getAllProducts);
+productRouter
+    .route('/search')
+    .get(validateSearchQuery, validate, getAllProducts);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
 productRouter.route('/trending').get(getTrendingUserProducts);
 productRouter.route('/bestnew').get(getHotProducts);

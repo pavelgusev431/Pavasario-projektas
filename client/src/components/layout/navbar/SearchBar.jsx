@@ -33,25 +33,27 @@ const SearchBar = () => {
         let trimmedQuery = query.trim().toLowerCase();
 
         if (trimmedQuery.length < 3 || trimmedQuery.length > 15) {
-            toast.error("Search query must be between 3 and 15 characters.");
+            toast.error('Search query must be between 3 and 15 characters.');
             return;
         }
 
         if (!/^[a-zA-Z0-9 ]+$/.test(trimmedQuery)) {
-            toast.error("Search query can only contain letters, numbers, and spaces.");
+            toast.error(
+                'Search query can only contain letters, numbers, and spaces.'
+            );
             return;
         }
 
         navigate(`/search?q=${encodeURIComponent(trimmedQuery)}`);
         setQuery('');
         setSuggestions([]);
-        setIsFocused(false); 
+        setIsFocused(false);
     };
 
     const handleSuggestionClick = (suggestion) => {
         setQuery(suggestion.name);
         setSuggestions([]);
-        setIsFocused(true); 
+        setIsFocused(true);
         navigate(`/search?q=${encodeURIComponent(suggestion.name)}`);
         setQuery('');
         setSuggestions([]);
@@ -65,7 +67,9 @@ const SearchBar = () => {
                     <input
                         type="search"
                         className={`peer cursor-pointer relative z-10 h-8 w-10 rounded-lg border bg-transparent pr-6 outline-none transition-all ${
-                            isFocused ? 'w-full border-gray-500 px-3' : 'focus:w-full focus:border-gray-500 focus:px-3'
+                            isFocused
+                                ? 'w-full border-gray-500 px-3'
+                                : 'focus:w-full focus:border-gray-500 focus:px-3'
                         }`}
                         placeholder="Search products..."
                         value={query}
@@ -73,8 +77,16 @@ const SearchBar = () => {
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                     />
-                    <button type="submit" className="absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
+                    <button
+                        type="submit"
+                        className="absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 50 50"
+                        >
                             <path d="M 21 3 C 11.6 3 4 10.6 4 20s7.6 17 17 17c3.4 0 6.5-1 9.1-2.7L42.4 46.6 46.6 42.4 34.5 30.3C36.7 27.4 38 23.9 38 20 38 10.6 30.4 3 21 3zM21 7c7.2 0 13 5.8 13 13s-5.8 13-13 13S8 27.2 8 20 13.8 7 21 7z"></path>
                         </svg>
                     </button>
@@ -87,7 +99,7 @@ const SearchBar = () => {
                         <li
                             key={product.id}
                             className="px-3 py-2 cursor-pointer hover:bg-gray-200"
-                            onMouseDown={() => handleSuggestionClick(product)} 
+                            onMouseDown={() => handleSuggestionClick(product)}
                         >
                             {product.name}
                         </li>

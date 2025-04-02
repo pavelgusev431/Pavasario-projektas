@@ -1,0 +1,7 @@
+client/src/components/layout/navbar/NavBar.jsx
+client/src/components/layout/navbar/SearchBar.jsx
+client/src/components/products/SearchedProducts.jsx
+client/src/helpers/searchProducts.js
+server/controllers/productController.js
+server/routers/productRouter.js
+server/validators/validateSearch.js

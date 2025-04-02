@@ -170,9 +170,9 @@ const getAllProducts = async (req, res) => {
             products = await Product.findAll({
                 where: {
                     name: {
-                        [Op.iLike]: `%${q}%`
-                    }
-                }
+                        [Op.iLike]: `%${q}%`,
+                    },
+                },
             });
         } else {
             products = await Product.findAll();
@@ -191,16 +191,19 @@ const getAllProducts = async (req, res) => {
         });
 
         const processedProducts = products.map((product) => {
-            const productRatings = ratings.filter((r) => r.product_id === product.id);
+            const productRatings = ratings.filter(
+                (r) => r.product_id === product.id
+            );
             const ratingCount = productRatings.length;
             const avgRating =
                 ratingCount > 0
-                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) / ratingCount
+                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
+                      ratingCount
                     : 0;
 
             return {
                 ...product.toJSON(),
-                avgRating: avgRating.toFixed(2),  
+                avgRating: avgRating.toFixed(2),
                 ratingCount,
             };
         });

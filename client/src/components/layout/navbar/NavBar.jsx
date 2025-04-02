@@ -118,7 +118,9 @@ const NavBar = () => {
                             />
                         </svg>
                     </button>
-                    <div className='justify-end'><SearchBar/></div>
+                    <div className="justify-end">
+                        <SearchBar />
+                    </div>
                     {auth && (
                         <button
                             className="relative"
