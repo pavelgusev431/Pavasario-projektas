@@ -29,27 +29,22 @@ const AdminPanel = () => {
         const res = await fetch(url("admin/users"), {
           credentials: "include",
         });
-    
         const data = await res.json();
         setUsers(data.data);
       } catch (error) {
         console.error("Klaida įkeliant naudotojus:", error);
       }
     };
-    
-
     fetchUsers();
   }, []);
 
   const handleDelete = async (userId) => {
     if (!window.confirm("Ištrinti naudotoją?")) return;
-  
     try {
       const res = await fetch(url(`admin/users/${userId}`), {
         method: "DELETE",
         credentials: "include",
       });
-  
       if (res.status === 204) {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
       } else {
@@ -60,7 +55,6 @@ const AdminPanel = () => {
       console.error("Serverio klaida:", err);
     }
   };
-  
 
   const handleBan = async (userId) => {
     try {
@@ -68,7 +62,6 @@ const AdminPanel = () => {
         method: "POST",
         credentials: "include",
       });
-  
       setUsers((prev) =>
         prev.map((user) =>
           user.id === userId ? { ...user, role: "banned" } : user
@@ -78,7 +71,6 @@ const AdminPanel = () => {
       console.error("Klaida uždraudžiant naudotoją:", error);
     }
   };
-  
 
   const handleSaveEdit = async () => {
     try {
@@ -90,7 +82,6 @@ const AdminPanel = () => {
         credentials: "include",
         body: JSON.stringify(editData),
       });
-  
       const data = await res.json();
       if (res.ok) {
         toast.success("Vartotojas atnaujintas!");
@@ -105,7 +96,6 @@ const AdminPanel = () => {
       console.error("Klaida išsaugant:", err);
     }
   };
-  
 
   const handleEditUser = (user) => {
     setEditingUser(user.id);
@@ -133,7 +123,7 @@ const AdminPanel = () => {
           onSubmit={handleSubmit(async (data) => {
             try {
               const hashedPassword = sha256(data.password);
-              const res = await fetch(url("/admin/users"), {
+              const res = await fetch(url("admin/users"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -291,7 +281,7 @@ const AdminPanel = () => {
                       const newRole = e.target.value;
                       try {
                         const res = await fetch(
-                          `http://localhost:3000/admin/users/role/${user.id}`,
+                          url(`admin/users/role/${user.id}`),
                           {
                             method: "PATCH",
                             headers: { "Content-Type": "application/json" },
@@ -299,7 +289,18 @@ const AdminPanel = () => {
                             body: JSON.stringify({ role: newRole }),
                           }
                         );
-                        const result = await res.json();
+                        let resultText = await res.text();
+                        let result;
+                        try {
+                          result = JSON.parse(resultText);
+                        } catch (err) {
+                          console.error(
+                            "Server returned non-JSON:",
+                            resultText
+                          );
+                          return;
+                        }
+
                         if (res.ok) {
                           setUsers((prev) =>
                             prev.map((u) =>
@@ -309,7 +310,7 @@ const AdminPanel = () => {
                         } else {
                           console.error(
                             "Klaida keičiant vaidmenį:",
-                            result.message
+                            result?.message || "Unknown error"
                           );
                         }
                       } catch (err) {

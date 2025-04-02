@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import axios from "axios";
-import Modal from "react-modal";
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router';
+import axios from 'axios';
+import Modal from 'react-modal';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -69,69 +69,72 @@ const ProductDetails = () => {
     setModalIsOpen(false);
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
-        <div className="w-full md:w-1/2 flex justify-center items-center p-4">
-          <div className="relative overflow-hidden w-96 h-96 md:w-128 md:h-128">
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
-              onClick={openModal}
-            />
-          </div>
-        </div>
-        <div className="w-full md:w-1/2 p-6 md:p-8">
-          <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
-            {product.name}
-          </h1>
-          <div className="flex items-center mb-4">
-            <div className="flex items-center">
-              {[...Array(5)].map((star, index) => (
-                <svg
-                  key={index}
-                  className={`w-6 h-6 ${
-                    index < Math.round(product.avgRating)
-                      ? "text-yellow-500"
-                      : "text-gray-300 dark:text-gray-600"
-                  }`}
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 .587l3.668 7.568L24 9.423l-6 5.847 1.42 8.293L12 18.897l-7.42 4.666L6 15.27 0 9.423l8.332-1.268z" />
-                </svg>
-              ))}
+    return (
+        <div className="container mx-auto p-4">
+            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+                <div className="w-full md:w-1/2 flex justify-center items-center p-4">
+                    <div className="relative overflow-hidden w-96 h-96 md:w-128 md:h-128">
+                        <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            onMouseMove={handleMouseMove}
+                            onClick={openModal}
+                        />
+                    </div>
+                </div>
+                <div className="w-full md:w-1/2 p-6 md:p-8">
+                    <h1 className="text-3xl font-bold mb-4 text-gray-800">
+                        {product.name}
+                    </h1>
+                    <div className="flex items-center mb-4">
+                        <div className="flex items-center">
+                            {[...Array(5)].map((star, index) => (
+                                <svg
+                                    key={index}
+                                    className={`w-6 h-6 ${
+                                        index < Math.round(product.avgRating)
+                                            ? 'text-yellow-500'
+                                            : 'text-gray-300'
+                                    }`}
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 .587l3.668 7.568L24 9.423l-6 5.847 1.42 8.293L12 18.897l-7.42 4.666L6 15.27 0 9.423l8.332-1.268z" />
+                                </svg>
+                            ))}
+                        </div>
+                        <span className="ml-2 text-gray-600">
+                            {product.avgRating} ({product.ratingCount} reviews)
+                        </span>
+                    </div>
+                    <p className="text-2xl font-bold text-red-500 mb-4">
+                        ${Number(product.price).toFixed(2)}
+                    </p>
+                    <p className="text-lg mb-4 text-gray-600">
+                        {product.description}
+                    </p>
+                    <p className={`text-lg font-bold mb-4 ${stockClass}`}>
+                        {stockStatus}
+                    </p>
+                    <p className="text-lg mb-4 text-gray-700">
+                        Seller:{' '}
+                        <Link to={`/users/${product.User.username}`}>
+                            {product.User.username}
+                        </Link>
+                    </p>
+                    <p className="text-lg mb-4 text-gray-700">
+                        Contact: {product.User.contacts}
+                    </p>
+                    {product.amount_in_stock > 0 && (
+                        <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300">
+                            Buy Now
+                        </button>
+                    )}
+                </div>
             </div>
-            <span className="ml-2 text-gray-600 dark:text-gray-400">
-              {product.avgRating} ({product.ratingCount} reviews)
-            </span>
-          </div>
-          <p className="text-2xl font-bold text-red-500 mb-4">
-            ${Number(product.price).toFixed(2)}
-          </p>
-          <p className="text-lg mb-4 text-gray-600 dark:text-gray-300">
-            {product.description}
-          </p>
-          <p className={`text-lg font-bold mb-4 ${stockClass}`}>
-            {stockStatus}
-          </p>
-          <p className="text-lg mb-4 text-gray-700 dark:text-gray-300">
-            Seller: {product.User.username}
-          </p>
-          <p className="text-lg mb-4 text-gray-700 dark:text-gray-300">
-            Contact: {product.User.contacts}
-          </p>
-          {product.amount_in_stock > 0 && (
-            <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300">
-              Buy Now
-            </button>
-          )}
-        </div>
-      </div>
 
       <Modal
         isOpen={modalIsOpen}

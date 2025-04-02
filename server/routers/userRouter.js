@@ -19,20 +19,12 @@ import {
     uploadToServer,
 } from '../controllers/uploadController.js';
 
-import {
-    banUser,
-    deleteUser,
-    updateUserRole,
-    getAllUsersWithRoles
-  } from '../controllers/adminController.js';
-  
 import express from 'express';
 import protect from '../validators/validateJWT.js';
 import validateCreateUser from '../validators/validateCreateUser.js';
 //some import
 // import validateUpdateInfo from '../validators/validateUpdateInfo.js';
 import validate from '../middlewares/validate.js';
-import admin from '../validators/validateAdmin.js';
 
 const userRouter = express.Router();
 
@@ -50,10 +42,10 @@ userRouter.route('/reset/:id').post(passwordReset);
 userRouter.use(protect);
 userRouter.route('/me').get(me);
 userRouter.route('/password/:id').patch(changePassword);
-userRouter.route('/:username').get(getUserByUsername);
 userRouter.route('/update/:id').patch(changeUserInfo);
 userRouter
     .route('/avatarFile')
     .patch(uploadToServer.single('file'), getFilePath);
-userRouter.route('/avatar/:id').patch(changeImageURL);
+userRouter.route('/avatar/:id').get(changeImageURL);
+userRouter.route('/:username').get(getUserByUsername);
 export default userRouter;

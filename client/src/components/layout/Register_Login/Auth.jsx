@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import createUser from '../../../helpers/createUser.js';
 import loginUser from '../../../helpers/loginUser.js';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
@@ -33,6 +33,16 @@ const Auth = () => {
     const [error, setError] = useState('');
     const [showReset, setShowReset] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        setValue('username', '');
+        setValue('email', '');
+        setValue('password', '');
+        setValue('repeatPassword', '');
+        setShowPassword(false);
+        setError('');
+        setShowReset(false);
+    }, [authType]);
 
     const handleResetShow = () => setShowReset(!showReset);
 

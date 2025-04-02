@@ -25,7 +25,7 @@ const Product = sq.define(
       tableName: 'products',
       timestamps: true,
     }
-);
+  );  
 
 // Nustatome ryšį tarp User ir Product
 User.hasMany(Product, { foreignKey: 'user_id' });

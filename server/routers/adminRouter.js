@@ -19,10 +19,9 @@ adminRouter.use(protect, admin);
 
 adminRouter.route('/users').get(getAllUsersWithRoles);
 adminRouter.route('/users').post(validateCreateUser, validate, createUser);
-adminRouter.route('/users/:id').delete(deleteUser);
-adminRouter.route('/users/ban/:id').post(banUser);
 adminRouter.route('/users/role/:id').patch(updateUserRole);
+adminRouter.route('/users/ban/:id').post(banUser);
+adminRouter.route('/users/:id').delete(deleteUser);
 adminRouter.route('/users/:id').patch(updateUserData);
-
 
 export default adminRouter;

@@ -7,6 +7,7 @@
     "start": "npm i && vite"
   },
   "dependencies": {
+    "@babel/runtime": "^7.27.0",
     "@tailwindcss/vite": "^4.0.3",
     "axios": "^1.7.9",
     "js-cookie": "^3.0.5",
@@ -15,8 +16,8 @@
     "lightningcss": "^1.29.2",
     "moment": "^2.30.1",
     "nanoid": "^5.1.5",
-    "react": "^19.0.0",
-    "react-dom": "19.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-form-hook": "^0.0.1",
     "react-hook-form": "^7.55.0",
     "react-hot-toast": "^2.5.2",
@@ -25,10 +26,12 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router": "^7.1.5",
     "react-router-dom": "^7.2.0",
+    "react-slider": "^2.0.6",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.0.3"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.26.10",
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
