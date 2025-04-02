@@ -15,7 +15,7 @@ export default function ProductList() {
     const [pageSize, setPageSize] = useState(12);
     const [priceRange, setPriceRange] = useState([0, 5000]);
     const [dateRange, setDateRange] = useState([
-        new Date('2023-01-01').getTime(),
+        new Date('2024-01-01').getTime(),
         (() => {
             const today = new Date();
             today.setDate(today.getDate() + 1);
@@ -24,7 +24,7 @@ export default function ProductList() {
     ]);
     const [sortValue, setSortValue] = useState('createdAt-asc'); 
 
-    const minDate = new Date('2023-01-01').getTime();
+    const minDate = new Date('2024-01-01').getTime();
     const maxDate = (() => {
         const today = new Date();
         today.setDate(today.getDate() + 1);
