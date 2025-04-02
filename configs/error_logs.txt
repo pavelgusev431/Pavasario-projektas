@@ -1,0 +1,6 @@
+client/src/components/layout/navbar/NavBar.jsx
+server/controllers/userController.js
+client/src/components/layout/navbar/NavBar.jsx
+client/src/helpers/getBalance.js
+server/controllers/userController.js
+server/routers/userRouter.js

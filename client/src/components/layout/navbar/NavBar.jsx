@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
+import getBalance from '../../../helpers/getBalance.js';
 
 const NavBar = () => {
     const location = useLocation();
@@ -16,9 +17,10 @@ const NavBar = () => {
     useEffect(() => {
         const fetchBalance = async () => {
             try {
-                const response = await fetch('/api/balance');
-                const data = await response.json();
-                setBalance(data.balance);
+                let response;
+                if(auth.id) response = await getBalance();
+                const data = response?.data;
+                setBalance(data?.balance || 0);
             } catch (error) {
                 console.error('Error fetching balance:', error);
             }
@@ -119,12 +121,10 @@ const NavBar = () => {
                     </button>
 
                     {auth && (
-                        <button
-                            className="relative"
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                        >
+                        <div className="relative">
                             <button
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}
                                 className={`fas fa-user-circle text-4xl cursor-pointer transition-transform duration-300 ${
                                     isHovered || isClicked
                                         ? 'text-red-500'
@@ -199,7 +199,7 @@ const NavBar = () => {
                                     </button>
                                 </div>
                             )}
-                        </button>
+                        </div>
                     )}
                 </div>
 

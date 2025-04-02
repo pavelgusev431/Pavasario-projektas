@@ -11,6 +11,7 @@ const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASS = process.env.ADMIN_PASS;
 const ADMIN_HASH = sha256(sha1(sha256(sha1(ADMIN_PASS)) + 'salt'));
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_BALANCE = +process.env.ADMIN_BALANCE;
 const CLIENT_HOST = process.env.CLIENT_HOST;
 const CLIENT_PORT = process.env.CLIENT_PORT;
 
@@ -27,6 +28,7 @@ const createAdmin = async () => {
             userId: admin.id,
             password: `${ADMIN_HASH}:${'salt'}`,
             role: 'admin',
+            balance: ADMIN_BALANCE,
         });
         console.log(
             `\x1b[34mUser \x1b[31m"${ADMIN_USER}"\x1b[34m secret created successfully\x1b[0m`
@@ -63,7 +65,6 @@ const getUserByUsername = async (req, res, next) => {
         const user = await User.findOne({ where: { username: username } });
         if (user === undefined)
             throw new AppError(`User "${username}" not found`, 404);
-        user.password = undefined;
         res.status(200).json({
             status: 'success',
             data: user,
@@ -134,15 +135,42 @@ const logout = async (req, res, next) => {
     }
 };
 
+const getBalance = async (_req, res, next) => {
+    try {
+        const { id } = res.locals;
+        if (id) {
+            const foundSecret = await Secret.findOne({ where: { userId: id } });
+            if (foundSecret) {
+                res.status(200).json({
+                    status: 'success',
+                    data: { balance: foundSecret.balance },
+                });
+            } else {
+                res.status(404).json({
+                    status: 'fail',
+                    message: 'User not found',
+                });
+            }
+        } else {
+            res.status(401).json({
+                status: 'fail',
+                message: 'Invalid user id provided',
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
 const me = async (_req, res, next) => {
     try {
         const { id } = res.locals;
         const user = await User.findByPk(id);
-        const secret = await Secret.findByPk(id);
+        const secret = await Secret.findOne({ where: { userId: id } });
         if (user && secret) {
             res.status(200).json({
                 status: 'success',
-                data: { ...user.DataValues, role: secret.role },
+                data: { ...user.dataValues, role: secret.role },
             });
         } else throw new AppError('User not found', 404);
     } catch (error) {
@@ -301,6 +329,7 @@ export {
     logout,
     forgot,
     passwordReset,
+    getBalance,
     me,
     getAllUsers,
     getAllUsersCount,

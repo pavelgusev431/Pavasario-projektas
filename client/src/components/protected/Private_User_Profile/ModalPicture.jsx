@@ -34,7 +34,7 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
         try {
             await updateUserAvatar(id, data);
             setError('');
-            setValue('picture', '');
+            setValue('file', '');
         } catch (error) {
             setError(error);
         }
@@ -71,18 +71,18 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
                     <div>
                         <input
                             type="file"
-                            {...register('picture', {
+                            {...register('file', {
                                 required: 'This field is required',
                                 onChange: () => {
                                     setError('');
-                                    clearErrors('picture');
+                                    clearErrors('file');
                                 },
                             })}
                             className="rounded p-1 border-1 border-slate-300 w-full"
                         />
-                        {errors.picture && (
+                        {errors.file && (
                             <p className="text-red-500 text-sm mt-1">
-                                {errors.picture.message}
+                                {errors.file.message}
                             </p>
                         )}
                     </div>
