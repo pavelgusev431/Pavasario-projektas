@@ -36,6 +36,7 @@ export default [
             ],
             'no-unused-vars': 'warn',
             'no-useless-escape': 'warn',
+            'prefer-const': 'off',
         },
     },
 ];

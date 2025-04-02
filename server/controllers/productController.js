@@ -163,16 +163,52 @@ const getUserProducts = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        // Retrieve all products from the database
-        const products = await Product.findAll();
+        const { q } = req.query;
 
-        // If no products are found, return a 404 response
+        let products;
+        if (q) {
+            products = await Product.findAll({
+                where: {
+                    name: {
+                        [Op.iLike]: `%${q}%`,
+                    },
+                },
+            });
+        } else {
+            products = await Product.findAll();
+        }
+
         if (products.length === 0) {
             return res.status(404).json({ message: 'Nėra produktų' });
         }
 
-        // Send the products as a response
-        return res.json({ data: products });
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map((product) => product.id),
+                },
+            },
+        });
+
+        const processedProducts = products.map((product) => {
+            const productRatings = ratings.filter(
+                (r) => r.product_id === product.id
+            );
+            const ratingCount = productRatings.length;
+            const avgRating =
+                ratingCount > 0
+                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
+                      ratingCount
+                    : 0;
+
+            return {
+                ...product.toJSON(),
+                avgRating: avgRating.toFixed(2),
+                ratingCount,
+            };
+        });
+
+        return res.json({ data: processedProducts });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
