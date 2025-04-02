@@ -103,13 +103,17 @@ const About = () => {
 
     return (
         <div className="max-w-6xl mx-auto px-6 py-12 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 transition-colors">
+            {/* About Section */}
             <div className="flex flex-col md:flex-row items-center gap-12">
                 <div className="w-full md:w-1/2 text-left font-sans">
                     <h2 className="text-4xl font-bold mb-6">About Just Do It</h2>
                     <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                        Just Do It is an online electronics store created by aspiring web developers from Techin. 
-                        Launched in 2025, we offer a wide range of high-quality gadgets, including smartphones, laptops, and smart home devices. 
-                        Our goal is to provide a simple and exciting shopping experience, where innovation and convenience meet.
+                        Just Do It is an online electronics store created by
+                        aspiring web developers from Techin. Launched in 2025,
+                        we offer a wide range of high-quality gadgets, including
+                        smartphones, laptops, and smart home devices. Our goal
+                        is to provide a simple and exciting shopping experience,
+                        where innovation and convenience meet.
                     </p>
                 </div>
                 <div className="w-full md:w-1/2 flex justify-center">
@@ -121,11 +125,76 @@ const About = () => {
                 </div>
             </div>
 
+            {/* Selling and Shopping Sections */}
             <div className="mt-12">
-                <h3 className="text-2xl font-bold text-center mb-6">
-                    Meet Our Developers
-                </h3>
+                <h3 className="text-2xl font-bold text-center mb-6">How to Sell</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+                    <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
+                        <img
+                            src="path-to-image" // IMAGE
+                            alt="Step 1"
+                            className="w-24 h-24 mb-4"
+                        />
+                        <h4 className="text-xl font-bold mb-2">1. List for free</h4>
+                        <p>Start selling by listing your item for free on our platform.</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
+                        <img
+                            src="path-to-image" // IMAGE
+                            alt="Step 2"
+                            className="w-24 h-24 mb-4"
+                        />
+                        <h4 className="text-xl font-bold mb-2">2. Sell it, ship it</h4>
+                        <p>Once your item sells, ship it to the buyer and complete the transaction.</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
+                        <img
+                            src="path-to-image" // IMAGE
+                            alt="Step 3"
+                            className="w-24 h-24 mb-4"
+                        />
+                        <h4 className="text-xl font-bold mb-2">3. It’s payday!</h4>
+                        <p>Get paid for your sale after the transaction is complete.</p>
+                    </div>
+                </div>
+            </div>
 
+            <div className="mt-12">
+                <h3 className="text-2xl font-bold text-center mb-6">How to Shop</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+                    <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
+                        <img
+                            src="path-to-image" // IMGAGE
+                            alt="Step 1"
+                            className="w-24 h-24 mb-4"
+                        />
+                        <h4 className="text-xl font-bold mb-2">1. Find it</h4>
+                        <p>Browse through a variety of products and find what you need.</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
+                        <img
+                            src="path-to-image" // IMAGE
+                            alt="Step 2"
+                            className="w-24 h-24 mb-4"
+                        />
+                        <h4 className="text-xl font-bold mb-2">2. Buy it</h4>
+                        <p>Once you've found the perfect item, add it to your cart and purchase it.</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
+                        <img
+                            src="path-to-image" // IMAGE
+                            alt="Step 3"
+                            className="w-24 h-24 mb-4"
+                        />
+                        <h4 className="text-xl font-bold mb-2">3. Get it</h4>
+                        <p>Your product will be delivered to you as soon as possible!</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Meet Our Developers Section */}
+            <div className="mt-12">
+                <h3 className="text-2xl font-bold text-center mb-6">Meet Our Developers</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     {currentUsers.map((user, index) => (
                         <a
@@ -137,46 +206,31 @@ const About = () => {
                         >
                             <img
                                 src={user.avatar}
-                                alt={user.name}
-                                className="w-24 h-24 rounded-full border-4 border-gray-600 object-cover"
+                                alt={`${user.name} ${user.surname}`}
+                                className="w-24 h-24 rounded-full mb-4"
                             />
-                            <p className="mt-2 text-lg font-medium text-gray-900 dark:text-white">
-                                {user.name} {user.surname}
-                            </p>
-                            <p className="text-gray-600 dark:text-gray-400">
-                                {user.role}
-                            </p>
+                            <h4 className="text-xl font-bold mb-2">{user.name} {user.surname}</h4>
+                            <p className="text-gray-600 dark:text-gray-300">{user.role}</p>
                         </a>
                     ))}
                 </div>
-
-                <div className="flex justify-center gap-4 mt-6">
+                <div className="flex justify-center mt-6">
                     <button
                         onClick={prevPage}
+                        className="bg-gray-800 text-white px-4 py-2 rounded-l-lg"
                         disabled={currentPage === 1}
-                        className="bg-gray-700 px-4 py-2 rounded-md disabled:opacity-50 text-white"
                     >
                         Previous
                     </button>
-                    <span className="text-lg font-medium">
-                        {currentPage} / {totalPages}
-                    </span>
                     <button
                         onClick={nextPage}
+                        className="bg-gray-800 text-white px-4 py-2 rounded-r-lg"
                         disabled={currentPage === totalPages}
-                        className="bg-gray-700 px-4 py-2 rounded-md disabled:opacity-50 text-white"
                     >
                         Next
                     </button>
                 </div>
             </div>
-
-            <button
-                onClick={toggleTheme}
-                className="fixed bottom-4 left-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 dark:bg-blue-800 dark:hover:bg-blue-900 transition duration-300"
-            >
-                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-            </button>
         </div>
     );
 };
