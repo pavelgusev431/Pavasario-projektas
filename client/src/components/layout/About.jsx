@@ -135,9 +135,9 @@ const About = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMAGE
+                            src="../src/public/banner_images/how-to-sell-step1.png" // IMAGE
                             alt="Step 1"
-                            className="w-24 h-24 mb-4"
+                            className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">
                             1. List for free
@@ -149,9 +149,9 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMAGE
+                            src="../src/public/banner_images/how-to-sell-step1.png" // IMAGE
                             alt="Step 2"
-                            className="w-24 h-24 mb-4"
+                            className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">
                             2. Sell it, ship it
@@ -163,9 +163,9 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMAGE
+                            src="../src/public/banner_images/how-to-sell-step1.png" // IMAGE
                             alt="Step 3"
-                            className="w-24 h-24 mb-4"
+                            className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">
                             3. It’s payday!
@@ -185,9 +185,9 @@ const About = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMAGE
+                            src="../src/public/banner_images/shopping-step1.png" // IMAGE
                             alt="Step 1"
-                            className="w-24 h-24 mb-4"
+                            className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">1. Find it</h4>
                         <p>
@@ -197,9 +197,9 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMAGE
+                            src="../src/public/banner_images/shopping-step1.png" // IMAGE
                             alt="Step 2"
-                            className="w-24 h-24 mb-4"
+                            className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">2. Buy it</h4>
                         <p>
@@ -209,9 +209,9 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="path-to-image" // IMAGE
+                            src="../src/public/banner_images/shopping-step1.png" // IMAGE
                             alt="Step 3"
-                            className="w-24 h-24 mb-4"
+                            className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">3. Get it</h4>
                         <p>
@@ -234,12 +234,12 @@ const About = () => {
                             href={user.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="min-w-[220px] text-center flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg transition-transform hover:scale-105"
+                            className="min-w-[280px] text-center flex flex-col items-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg transition-transform hover:scale-105"
                         >
                             <img
                                 src={user.avatar}
-                                alt={`${user.name} ${user.surname}`}
-                                className="w-24 h-24 rounded-full mb-4"
+                                alt={user.name}
+                                className="w-full h-auto mb-4 object-cover rounded-full"
                             />
                             <h4 className="text-xl font-bold mb-2">
                                 {user.name} {user.surname}
