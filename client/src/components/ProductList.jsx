@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-import Sort from './buttons/Sort';
 import BackToTopButton from './buttons/BackToTopButton';
 
 const ProductList = () => {
@@ -107,7 +106,7 @@ const ProductList = () => {
                     <option value={24}>24</option>
                     <option value={30}>30</option>
                 </select>
-                <Sort />
+                
             </div>
 
             {products.length > 0 ? (
