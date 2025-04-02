@@ -12,6 +12,7 @@ export default [
             eqeqeq: 'off',
             'no-unused-vars': 'warn',
             'prefer-const': ['error', { ignoreReadBeforeAssign: true }],
+            'prefer-const': 'off',
         },
     },
 ];
