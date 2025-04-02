@@ -114,7 +114,9 @@ export default function PublicUserProfile() {
                                     className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                                 >
                                     <div className="overflow-hidden rounded-t-lg flex justify-center">
-                                        <Link to={`/products/${product.id}`}>
+                                        <Link
+                                            to={`/products/selected/${product.id}`}
+                                        >
                                             <img
                                                 src={product.image_url}
                                                 alt={product.name}
