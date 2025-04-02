@@ -12,17 +12,27 @@ import {
     changeUserInfo,
     changePassword,
     changeImageURL,
+    
 } from '../controllers/userController.js';
 import {
     getFilePath,
     uploadToServer,
 } from '../controllers/uploadController.js';
+
+import {
+    banUser,
+    deleteUser,
+    updateUserRole,
+    getAllUsersWithRoles
+  } from '../controllers/adminController.js';
+  
 import express from 'express';
 import protect from '../validators/validateJWT.js';
 import validateCreateUser from '../validators/validateCreateUser.js';
 //some import
 // import validateUpdateInfo from '../validators/validateUpdateInfo.js';
 import validate from '../middlewares/validate.js';
+import admin from '../validators/validateAdmin.js';
 
 const userRouter = express.Router();
 

@@ -106,11 +106,18 @@ const login = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '360s' }
         );
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, { 
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
+        });
         res.cookie('tokenJS', 1);
         res.status(200).json({
             status: 'success',
-            data: user,
+            data: {
+                ...user.dataValues,
+                role: secret.role,
+            },
             token: token,
         });
     } catch (error) {
@@ -136,17 +143,32 @@ const logout = async (req, res, next) => {
 
 const me = async (_req, res, next) => {
     try {
-        const { id } = res.locals;
-        const user = await User.findByPk(id);
-        const secret = await Secret.findByPk(id);
-        if (user && secret) {
-            res.status(200).json({
-                status: 'success',
-                data: { ...user.DataValues, role: secret.role },
-            });
-        } else throw new AppError('User not found', 404);
+      const { id } = res.locals;
+  
+      const user = await User.findByPk(id);
+      const secret = await Secret.findOne({ where: { userId: id } });
+  
+      // 👇 Добавляем детальную проверку
+      if (!user) {
+        console.log(`❌ User not found: id = ${id}`);
+        throw new AppError('User not found', 404);
+      }
+  
+      if (!secret) {
+        console.log(`❌ Secret not found for userId = ${id}`);
+        throw new AppError('Secret not found', 404);
+      }
+  
+      // ✅ Всё есть — отправляем результат
+      res.status(200).json({
+        status: 'success',
+        data: {
+          ...user.dataValues,
+          role: secret.role,
+        },
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
 };
 
