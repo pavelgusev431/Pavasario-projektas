@@ -43,7 +43,7 @@ const users = [
         github: 'https://github.com/tadasrumsas',
         avatar: 'https://avatars.githubusercontent.com/tadasrumsas',
     },
-    {   
+    {
         name: 'Ilona',
         surname: 'Akinča',
         role: 'QA Head specialist',
@@ -105,24 +105,11 @@ const About = () => {
         <div className="max-w-6xl mx-auto px-6 py-12 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 transition-colors">
             <div className="flex flex-col md:flex-row items-center gap-12">
                 <div className="w-full md:w-1/2 text-left font-sans">
-                    <h2 className="text-4xl font-bold mb-6">Our Story</h2>
+                    <h2 className="text-4xl font-bold mb-6">About Just Do It</h2>
                     <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                        Welcome to{' '}
-                        <span className="font-semibold text-red-700">
-                            Just Do It
-                        </span>{' '}
-                        — a project created by aspiring web developers from
-                        <span className="text-red-500 font-medium">
-                            {' '}
-                            Techin
-                        </span>
-                        , where we learn programming and bring our ideas to
-                        life! As part of our{' '}
-                        <span className="font-semibold text-blue-700">
-                            Pavasario Projektas
-                        </span>
-                        , launched in 2025, we strive to build modern, stylish,
-                        and functional websites.
+                        Just Do It is an online electronics store created by aspiring web developers from Techin. 
+                        Launched in 2025, we offer a wide range of high-quality gadgets, including smartphones, laptops, and smart home devices. 
+                        Our goal is to provide a simple and exciting shopping experience, where innovation and convenience meet.
                     </p>
                 </div>
                 <div className="w-full md:w-1/2 flex justify-center">
