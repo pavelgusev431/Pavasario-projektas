@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
-import sha256 from "js-sha256";
+import { hashPassword } from "../../../helpers/hashedPassword.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import url from "../../../helpers/getURL.js";
 import { useForm } from "react-hook-form";
+import {
+  getAllUsers,
+  createUser,
+  deleteUser,
+  banUser,
+  updateUserRole,
+  updateUser,
+} from "../../../helpers/adminPanel.js";
 
 const AdminPanel = () => {
   const { register, handleSubmit, reset } = useForm({
@@ -26,9 +34,8 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(url("admin/users"), {
-          credentials: "include",
-        });
+        const users = await getAllUsers();
+        setUsers(users);
         const data = await res.json();
         setUsers(data.data);
       } catch (error) {
@@ -41,10 +48,8 @@ const AdminPanel = () => {
   const handleDelete = async (userId) => {
     if (!window.confirm("Ištrinti naudotoją?")) return;
     try {
-      const res = await fetch(url(`admin/users/${userId}`), {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const res = await deleteUser(userId);
+      console.log("Удаляется пользователь с ID:", userId);
       if (res.status === 204) {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
       } else {
@@ -58,10 +63,7 @@ const AdminPanel = () => {
 
   const handleBan = async (userId) => {
     try {
-      await fetch(url(`admin/users/ban/${userId}`), {
-        method: "POST",
-        credentials: "include",
-      });
+      await banUser(userId);
       setUsers((prev) =>
         prev.map((user) =>
           user.id === userId ? { ...user, role: "banned" } : user
@@ -74,14 +76,7 @@ const AdminPanel = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const res = await fetch(url(`admin/users/${editingUser}`), {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(editData),
-      });
+      await updateUser(editingUser, editData);
       const data = await res.json();
       if (res.ok) {
         toast.success("Vartotojas atnaujintas!");
@@ -122,24 +117,21 @@ const AdminPanel = () => {
         <form
           onSubmit={handleSubmit(async (data) => {
             try {
-              const hashedPassword = sha256(data.password);
-              const res = await fetch(url("admin/users"), {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ ...data, password: hashedPassword }),
-              });
+              const hashed = hashPassword(data.password, data.username);
 
-              const result = await res.json();
-              if (res.ok) {
-                toast.success("Vartotojas sėkmingai sukurtas!");
-                setUsers((prev) => [...prev, result.data]);
-                reset();
-              } else {
-                console.error("Klaida kuriant naudotoją:", result.message);
-              }
+              const payload = {
+                ...data,
+                password: hashed,
+              };
+              const result = await createUser(payload);
+              toast.success("Vartotojas sėkmingai sukurtas!");
+              setUsers((prev) => [...prev, result.data]);
+              reset();
             } catch (err) {
-              console.error("Klaida:", err);
+              console.error(
+                "Klaida kuriant naudotoją:",
+                err.response?.data || err
+              );
             }
           })}
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4"
@@ -280,41 +272,14 @@ const AdminPanel = () => {
                     onChange={async (e) => {
                       const newRole = e.target.value;
                       try {
-                        const res = await fetch(
-                          url(`admin/users/role/${user.id}`),
-                          {
-                            method: "PATCH",
-                            headers: { "Content-Type": "application/json" },
-                            credentials: "include",
-                            body: JSON.stringify({ role: newRole }),
-                          }
+                        await updateUserRole(user.id, newRole);
+                        setUsers((prev) =>
+                          prev.map((u) =>
+                            u.id === user.id ? { ...u, role: newRole } : u
+                          )
                         );
-                        let resultText = await res.text();
-                        let result;
-                        try {
-                          result = JSON.parse(resultText);
-                        } catch (err) {
-                          console.error(
-                            "Server returned non-JSON:",
-                            resultText
-                          );
-                          return;
-                        }
-
-                        if (res.ok) {
-                          setUsers((prev) =>
-                            prev.map((u) =>
-                              u.id === user.id ? { ...u, role: newRole } : u
-                            )
-                          );
-                        } else {
-                          console.error(
-                            "Klaida keičiant vaidmenį:",
-                            result?.message || "Unknown error"
-                          );
-                        }
                       } catch (err) {
-                        console.error("Tinklo klaida keičiant vaidmenį:", err);
+                        console.error("Klaida keičiant vaidmenį:", err);
                       }
                     }}
                     className="w-full bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-white rounded px-2 py-1"
