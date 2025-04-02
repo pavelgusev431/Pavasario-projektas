@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
+import SearchBar from './SearchBar.jsx';
 
 const NavBar = () => {
     const location = useLocation();
@@ -117,7 +118,7 @@ const NavBar = () => {
                             />
                         </svg>
                     </button>
-
+                    <div className='justify-end'><SearchBar/></div>
                     {auth && (
                         <button
                             className="relative"

@@ -1,4 +1,3 @@
-// getProductsBySubcategory.js
 import axios from 'axios';
 
 const getProductsBySubcategory = async (subcategoryId) => {

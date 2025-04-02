@@ -8,12 +8,13 @@ import PasswordReset from './components/layout/Register_Login/PasswordReset.jsx'
 import ProductList from './components/ProductList.jsx';
 import NavBar from './components/layout/navbar/NavBar.jsx';
 import UserProducts from './components/UserProducts.jsx';
-import ProductDetails from './components/ProductDetails.jsx'; // Import the new component
-
+import ProductDetails from './components/ProductDetails.jsx';
+import SearchedProducts from './components/products/SearchedProducts.jsx';
 import PublicUserProfile from './components/products/PublicUserProfile.jsx';
 import ProtectedRoutes from './components/layout/ProtectedRoutes.jsx';
 import ProductsPage from './components/products/SubcategoryProducts.jsx';
 import ProductsDropdown from './components/layout/navbar/ProductsDropdown.jsx';
+
 function App() {
     return (
         <Router>
@@ -22,6 +23,7 @@ function App() {
                 <Route index element={<Auth />} />
                 <Route path="home" element={<Home />} />
                 <Route path="products/:id" element={<UserProducts />} />
+                <Route path="/search" element={<SearchedProducts />} />
                 <Route
                     path="products/selected/:id"
                     element={<ProductDetails />}
