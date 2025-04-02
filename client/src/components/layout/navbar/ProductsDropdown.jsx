@@ -91,7 +91,7 @@ const ProductsDropdown = () => {
       onMouseEnter={() => setIsDropdownOpen(true)}
       onMouseLeave={handleMouseLeave}
     >
-      <button className="text-white">Products</button>
+      <button className="text-dark">Products</button>
       {isDropdownOpen && (
         <div
           className="absolute bg-white dark:bg-gray-900 shadow-lg rounded-md w-[90vw] max-w-[60rem] z-10 transition-all duration-300 ease-in-out"
