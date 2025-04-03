@@ -1,11 +1,11 @@
 import express from 'express';
 import {
-  getAllUsersWithRoles,
-  banUser,
-  deleteUser,
-  updateUserRole,
-  createUser,
-  updateUserData,
+    getAllUsersWithRoles,
+    banUser,
+    deleteUser,
+    updateUserRole,
+    createUser,
+    updateUserData,
 } from '../controllers/adminController.js';
 
 import validate from '../middlewares/validate.js';

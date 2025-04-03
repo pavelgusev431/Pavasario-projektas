@@ -13,7 +13,6 @@ import {
     changeUserInfo,
     changePassword,
     changeImageURL,
-    
 } from '../controllers/userController.js';
 import {
     getFilePath,

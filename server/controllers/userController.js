@@ -107,10 +107,10 @@ const login = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '360s' }
         );
-        res.cookie('token', token, { 
+        res.cookie('token', token, {
             httpOnly: true,
             sameSite: 'none',
-            secure: true
+            secure: true,
         });
         res.cookie('tokenJS', 1);
         res.status(200).json({
@@ -181,7 +181,7 @@ const me = async (_req, res, next) => {
             });
         } else throw new AppError('User not found', 404);
     } catch (error) {
-      next(error);
+        next(error);
     }
 };
 
