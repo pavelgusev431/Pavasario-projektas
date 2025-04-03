@@ -1,0 +1,2 @@
+server/controllers/paginatedProductController.js
+server/routers/adminRouter.js

@@ -6,13 +6,13 @@ import {
     logout,
     forgot,
     passwordReset,
+    getBalance,
     me,
     getAllUsers,
     getAllUsersCount,
     changeUserInfo,
     changePassword,
     changeImageURL,
-    
 } from '../controllers/userController.js';
 import {
     getFilePath,
@@ -40,7 +40,8 @@ userRouter.route('/forgot').post(forgot);
 userRouter.route('/:username').get(getUserByUsername);
 userRouter.route('/reset/:id').post(passwordReset);
 userRouter.use(protect);
-userRouter.route('/me').get(me);
+userRouter.route('/balance').get(getBalance);
+userRouter.route('/u/me').get(me);
 userRouter.route('/password/:id').patch(changePassword);
 userRouter.route('/update/:id').patch(changeUserInfo);
 userRouter

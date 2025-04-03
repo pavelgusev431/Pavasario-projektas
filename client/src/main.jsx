@@ -6,11 +6,11 @@ import App from './App.jsx';
 import MainContextProvider from './contexts/MainContext.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Router>
-      <MainContextProvider>
-        <App />
-      </MainContextProvider>
-    </Router>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Router>
+            <MainContextProvider>
+                <App />
+            </MainContextProvider>
+        </Router>
+    </React.StrictMode>
 );

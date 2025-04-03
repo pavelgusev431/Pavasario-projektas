@@ -71,8 +71,8 @@ const getUserProductsByUserName = async (req, res) => {
             productRatingsMap[rating.product_id].count += 1;
         });
 
-        let totalRatings = 0; 
-        let totalStars = 0; 
+        let totalRatings = 0;
+        let totalStars = 0;
 
         const processedProducts = products.map((product) => {
             const productRating = productRatingsMap[product.id];
@@ -223,7 +223,10 @@ const getHotProducts = async (req, res, next) => {
             const ratingCount = productRatings.length;
             const avgRating =
                 ratingCount > 0
-                    ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                    ? productRatings.reduce(
+                          (sum, rating) => sum + rating.stars,
+                          0
+                      ) / ratingCount
                     : 0;
 
             const createdAt = productCreationObject[product.id];
@@ -300,7 +303,10 @@ const getTopRatedProducts = async (req, res, next) => {
             const ratingCount = productRatings.length;
             const avgRating =
                 ratingCount > 0
-                    ? productRatings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                    ? productRatings.reduce(
+                          (sum, rating) => sum + rating.stars,
+                          0
+                      ) / ratingCount
                     : 0;
 
             return { ...product.dataValues, ratingCount, avgRating };
@@ -364,7 +370,8 @@ const getTopUserProducts = async (req, res, next) => {
             userStats[userId].products.forEach((product) => {
                 const productRating = productRatingsMap[product.id];
                 if (productRating) {
-                    const avgProductRating = productRating.stars / productRating.count;
+                    const avgProductRating =
+                        productRating.stars / productRating.count;
                     userStats[userId].totalStars += avgProductRating;
                     userStats[userId].totalRatings += 1;
                 }
@@ -503,7 +510,8 @@ const getTrendingUserProducts = async (req, res, next) => {
             userStats[userId].products.forEach((product) => {
                 const productRating = productRatingsMap[product.id];
                 if (productRating) {
-                    const avgProductRating = productRating.stars / productRating.count;
+                    const avgProductRating =
+                        productRating.stars / productRating.count;
                     userStats[userId].totalStars += avgProductRating;
                     userStats[userId].totalRatings += 1;
                 }
@@ -661,7 +669,7 @@ const getRatedProductsByUserName = async (req, res) => {
 
 export const getProductById = async (req, res) => {
     try {
-        console.log('Request params:', req.params); 
+        console.log('Request params:', req.params);
         const product = await Product.findByPk(req.params.id, {
             include: [
                 {
@@ -675,13 +683,14 @@ export const getProductById = async (req, res) => {
             ],
         });
         if (product) {
-            console.log('Product found:', product); 
+            console.log('Product found:', product);
 
             const ratings = product.Ratings;
             const ratingCount = ratings.length;
             const avgRating =
                 ratingCount > 0
-                    ? ratings.reduce((sum, rating) => sum + rating.stars, 0) / ratingCount
+                    ? ratings.reduce((sum, rating) => sum + rating.stars, 0) /
+                      ratingCount
                     : 0;
 
             res.json({
@@ -693,7 +702,7 @@ export const getProductById = async (req, res) => {
             res.status(404).json({ message: 'Product not found' });
         }
     } catch (error) {
-        console.error('Server error:', error); 
+        console.error('Server error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };

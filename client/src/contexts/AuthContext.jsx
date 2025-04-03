@@ -24,6 +24,7 @@ const AuthContextProvider = ({ children }) => {
             } catch (error) {
                 if (error) setAuth(null);
                 Cookies.remove('tokenJS');
+                console.log(error.message);
             } finally {
                 setLoading(false);
             }
