@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import { Routes, Route } from 'react-router';
 import Auth from './components/layout/Register_Login/Auth.jsx';
 import Home from './components/layout/Home.jsx';
 import Contact from './components/layout/Contact.jsx';
@@ -8,7 +8,7 @@ import PasswordReset from './components/layout/Register_Login/PasswordReset.jsx'
 import ProductList from './components/ProductList.jsx';
 import NavBar from './components/layout/navbar/NavBar.jsx';
 import UserProducts from './components/UserProducts.jsx';
-import ProductDetails from './components/ProductDetails.jsx'; // Import the new component
+import ProductDetails from './components/ProductDetails.jsx';
 
 import PublicUserProfile from './components/products/PublicUserProfile.jsx';
 import ProtectedRoutes from './components/layout/ProtectedRoutes.jsx';
@@ -17,7 +17,7 @@ import ProductsDropdown from './components/layout/navbar/ProductsDropdown.jsx';
 import AdminPanel from './components/protected/admin/adminpanel.jsx';
 function App() {
     return (
-        <Router>
+        <>
             <NavBar />
             <Routes>
                 <Route index element={<Auth />} />
@@ -44,7 +44,7 @@ function App() {
                 {ProtectedRoutes()}
                 <Route path="*" element={<NotFound />} />
             </Routes>
-        </Router>
+        </>
     );
 }
 

@@ -1,14 +1,2 @@
-client/src/App.jsx
-client/src/components/buttons/Sort.jsx
-client/src/components/FilterRange.jsx
-client/src/components/layout/navbar/NavBar.jsx
-client/src/components/layout/navbar/ProductsDropdown.jsx
-client/src/components/ProductDetails.jsx
-client/src/components/protected/admin/adminpanel.jsx
-client/src/main.jsx
-server/controllers/adminController.js
-server/controllers/productController.js
-server/controllers/userController.js
-server/models/productModel.js
+server/controllers/paginatedProductController.js
 server/routers/adminRouter.js
-server/routers/userRouter.js

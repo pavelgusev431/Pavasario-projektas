@@ -17,11 +17,12 @@ const adminRouter = express.Router();
 
 adminRouter.use(protect, admin);
 
-adminRouter.route('/users').get(getAllUsersWithRoles);
-adminRouter.route('/users').post(validateCreateUser, validate, createUser);
+adminRouter
+    .route('/users')
+    .get(getAllUsersWithRoles)
+    .post(validateCreateUser, validate, createUser);
 adminRouter.route('/users/role/:id').patch(updateUserRole);
 adminRouter.route('/users/ban/:id').post(banUser);
-adminRouter.route('/users/:id').delete(deleteUser);
-adminRouter.route('/users/:id').patch(updateUserData);
+adminRouter.route('/users/:id').patch(updateUserData).delete(deleteUser);
 
 export default adminRouter;
