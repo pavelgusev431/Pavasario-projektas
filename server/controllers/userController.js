@@ -107,11 +107,18 @@ const login = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '360s' }
         );
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, { 
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
+        });
         res.cookie('tokenJS', 1);
         res.status(200).json({
             status: 'success',
-            data: user,
+            data: {
+                ...user.dataValues,
+                role: secret.role,
+            },
             token: token,
         });
     } catch (error) {
@@ -174,7 +181,7 @@ const me = async (_req, res, next) => {
             });
         } else throw new AppError('User not found', 404);
     } catch (error) {
-        next(error);
+      next(error);
     }
 };
 

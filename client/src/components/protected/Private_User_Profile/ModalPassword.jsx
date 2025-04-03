@@ -6,7 +6,6 @@ import { sha256 } from 'js-sha256';
 
 const ModalPassword = ({ user, showModal, setShowModal }) => {
     const { id } = user;
-
     const [error, setError] = useState('');
 
     const {
@@ -38,30 +37,34 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
     };
 
     return (
-        <div
-            className="fixed w-dvw h-dvh z-40 flex flex-col place-items-center left-0 top-25"
-            style={{ backgroundColor: 'rgba(127, 127, 127, 0.25)' }}
-        >
-            <dialog
-                open={showModal}
-                className="bg-none rounded p-2 my-15 w-75 justify-self-center"
-            >
-                <div className="flex flex-row justify-between">
-                    <h3 className="bg-none rounded p-2 my-0 w-50 justify-self-center">
-                        Edit password
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-stone-900/50">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                        Edit Password
                     </h3>
                     <button
                         onClick={handleClose}
-                        className="bg-none rounded p-2 my-0 w-10"
+                        className="text-gray-500 hover:text-gray-700 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition duration-200"
                     >
-                        X
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
                     </button>
                 </div>
-                <form
-                    onSubmit={handleSubmit(submitHandler)}
-                    className="flex flex-col"
-                >
-                    <div>
+                <form onSubmit={handleSubmit(submitHandler)} className="p-6">
+                    <div className="mb-4">
                         <input
                             type="password"
                             placeholder="Old password"
@@ -74,32 +77,29 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
                                 pattern: {
                                     value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]{7,}$/,
                                     message:
-                                        "Password must only contain letters, numbers and these special characters: $&+,:;=?@#|'<>.^*()%!-",
+                                        'Password must contain valid characters',
                                 },
-                                validate: (value) => {
-                                    return (
-                                        (/^.*[A-Z].*$/.test(value) &&
-                                            /^.*\d.*$/.test(value) &&
-                                            /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
-                                                value
-                                            )) ||
-                                        'Password must contain at least 1 capital letter, 1 number and 1 special character'
-                                    );
-                                },
+                                validate: (value) =>
+                                    (/^.*[A-Z].*$/.test(value) &&
+                                        /^.*\d.*$/.test(value) &&
+                                        /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
+                                            value
+                                        )) ||
+                                    'Password must contain at least 1 capital letter, 1 number, and 1 special character',
                                 onChange: () => {
                                     setError('');
                                     clearErrors('oldPassword');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                         {errors.oldPassword && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-red-500 text-sm mt-2">
                                 {errors.oldPassword.message}
                             </p>
                         )}
                     </div>
-                    <div>
+                    <div className="mb-4">
                         <input
                             type="password"
                             placeholder="New password"
@@ -112,32 +112,29 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
                                 pattern: {
                                     value: /^[A-Za-z0-9$&+,:;=?@#|'<>.^*()%!-]{7,}$/,
                                     message:
-                                        "Password must only contain letters, numbers and these special characters: $&+,:;=?@#|'<>.^*()%!-",
+                                        'Password must contain valid characters',
                                 },
-                                validate: (value) => {
-                                    return (
-                                        (/^.*[A-Z].*$/.test(value) &&
-                                            /^.*\d.*$/.test(value) &&
-                                            /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
-                                                value
-                                            )) ||
-                                        'Password must contain at least 1 capital letter, 1 number and 1 special character'
-                                    );
-                                },
+                                validate: (value) =>
+                                    (/^.*[A-Z].*$/.test(value) &&
+                                        /^.*\d.*$/.test(value) &&
+                                        /^.*[$&+,:;=?@#|'<>.^*()%!-].*$/.test(
+                                            value
+                                        )) ||
+                                    'Password must contain at least 1 capital letter, 1 number, and 1 special character',
                                 onChange: () => {
                                     setError('');
                                     clearErrors('newPassword');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                         {errors.newPassword && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-red-500 text-sm mt-2">
                                 {errors.newPassword.message}
                             </p>
                         )}
                     </div>
-                    <div>
+                    <div className="mb-4">
                         <input
                             type="password"
                             placeholder="Repeat new password"
@@ -151,22 +148,27 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
                                     clearErrors('repeatPassword');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                         />
                         {errors.repeatPassword && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-red-500 text-sm mt-2">
                                 {errors.repeatPassword.message}
                             </p>
                         )}
                     </div>
-                    {error && <span>{error}</span>}
-                    <input
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                            {error}
+                        </div>
+                    )}
+                    <button
                         type="submit"
-                        value={'Submit new password'}
-                        className="bg-purple-500 mt-2 rounded text-center text-white"
-                    />
+                        className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    >
+                        Submit New Password
+                    </button>
                 </form>
-            </dialog>
+            </div>
         </div>
     );
 };

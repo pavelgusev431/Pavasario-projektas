@@ -17,7 +17,7 @@ const ProfileInfo = () => {
     const [editModalContacts, setEditModalContacts] = useState(false);
     const [editModalPicture, setEditModalPicture] = useState(false);
 
-    const re = () => {
+    const resetModals = () => {
         setEditModalUsername(false);
         setEditModalContacts(false);
         setEditModalDesc(false);
@@ -27,192 +27,196 @@ const ProfileInfo = () => {
     };
 
     const handleChangeEmail = () => {
-        re();
+        resetModals();
         setEditModalEmail(true);
     };
 
     const handleChangeUsername = () => {
-        re();
+        resetModals();
         setEditModalUsername(true);
     };
 
     const handleChangeDescription = () => {
-        re();
+        resetModals();
         setEditModalDesc(true);
     };
 
     const handleChangeContacts = () => {
-        re();
+        resetModals();
         setEditModalContacts(true);
     };
 
     const handleChangePassword = () => {
-        re();
+        resetModals();
         setEditModalPassword(true);
     };
 
     const handleChangePicture = () => {
-        re();
+        resetModals();
         setEditModalPicture(true);
     };
 
     return (
-        <>
-            <h2>Profile info</h2>
-            <section>
-                <p>
-                    <b>Email:</b>
-                    <span>{auth?.email}</span>
-                    <i>
+        <div className="flex justify-center items-center min-h-screen bg-gray-50">
+            <div className="w-full max-w-2xl p-8 bg-white rounded-lg shadow-lg">
+                <div className="flex items-center mb-6">
+                    <div className="w-2 h-8 bg-red-500 mr-3"></div>
+                    <h2 className="text-3xl font-bold text-gray-800">
+                        Profile Information
+                    </h2>
+                </div>
+
+                <div className="space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-gray-500">
+                                Email
+                            </span>
+                            <span className="text-lg">{auth?.email}</span>
+                        </div>
                         <button
                             onClick={handleChangeEmail}
-                            className="hover:cursor-pointer"
+                            className="p-2 text-gray-600 hover:text-red-500 hover:bg-gray-100 rounded-full transition duration-200"
                         >
-                            🖉
+                            <span className="text-xl">🖉</span>
                         </button>
-                    </i>
-                </p>
-            </section>
-            <section>
-                <p>
-                    <b>Username:</b>
-                    <span>{auth?.username}</span>
-                    <i>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-gray-500">
+                                Username
+                            </span>
+                            <span className="text-lg">{auth?.username}</span>
+                        </div>
                         <button
                             onClick={handleChangeUsername}
-                            className="hover:cursor-pointer"
+                            className="p-2 text-gray-600 hover:text-red-500 hover:bg-gray-100 rounded-full transition duration-200"
                         >
-                            🖉
+                            <span className="text-xl">🖉</span>
                         </button>
-                    </i>
-                </p>
-            </section>
-            <section>
-                <p>
-                    <b>Password:</b>
-                    <span>(secret)</span>
-                    <i>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-gray-500">
+                                Password
+                            </span>
+                            <span className="text-lg">••••••••</span>
+                        </div>
                         <button
                             onClick={handleChangePassword}
-                            className="hover:cursor-pointer"
+                            className="p-2 text-gray-600 hover:text-red-500 hover:bg-gray-100 rounded-full transition duration-200"
                         >
-                            🖉
+                            <span className="text-xl">🖉</span>
                         </button>
-                    </i>
-                </p>
-            </section>
-            <section>
-                <p>
-                    <b>Description:</b>
-                    <span>{auth?.description || 'Nothing here :('}</span>
-                    <i>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div className="flex flex-col flex-1">
+                            <span className="text-sm font-semibold text-gray-500">
+                                Description
+                            </span>
+                            <span className="text-lg">
+                                {auth?.description || 'Nothing here :('}
+                            </span>
+                        </div>
                         <button
                             onClick={handleChangeDescription}
-                            className="hover:cursor-pointer"
+                            className="p-2 text-gray-600 hover:text-red-500 hover:bg-gray-100 rounded-full transition duration-200"
                         >
-                            🖉
+                            <span className="text-xl">🖉</span>
                         </button>
-                    </i>
-                </p>
-            </section>
-            <section>
-                <p>
-                    <b>Contacts:</b>
-                    <span>{auth?.contacts || 'Nothing here :('}</span>
-                    <i>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div className="flex flex-col flex-1">
+                            <span className="text-sm font-semibold text-gray-500">
+                                Contacts
+                            </span>
+                            <span className="text-lg">
+                                {auth?.contacts || 'Nothing here :('}
+                            </span>
+                        </div>
                         <button
                             onClick={handleChangeContacts}
-                            className="hover:cursor-pointer"
+                            className="p-2 text-gray-600 hover:text-red-500 hover:bg-gray-100 rounded-full transition duration-200"
                         >
-                            🖉
+                            <span className="text-xl">🖉</span>
                         </button>
-                    </i>
-                </p>
-            </section>
-            <section>
-                <p className="flex flex-col justify-center items-center">
-                    <b>Avatar:</b>
-                    <img
-                        src={auth.image_url}
-                        alt="Your avatar will be shown here"
-                    />
-                    <i>
-                        <button
-                            onClick={handleChangePicture}
-                            className="hover:cursor-pointer"
-                        >
-                            🖉
-                        </button>
-                    </i>
-                </p>
-            </section>
-            <div>
-                {editModalEmail ? (
+                    </div>
+
+                    <div className="flex flex-col items-center p-6 bg-gray-50 rounded-lg">
+                        <span className="text-sm font-semibold text-gray-500 mb-3">
+                            Avatar
+                        </span>
+                        <div className="relative mb-4">
+                            <img
+                                src={auth.image_url}
+                                alt="Your avatar"
+                                className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                            />
+                            <button
+                                onClick={handleChangePicture}
+                                className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition duration-200"
+                            >
+                                <span className="text-gray-600 hover:text-red-500">
+                                    🖉
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {editModalEmail && (
                     <ModalEmail
                         user={auth}
                         showModal={editModalEmail}
                         setShowModal={setEditModalEmail}
                     />
-                ) : (
-                    <></>
                 )}
-            </div>
-            <div>
-                {editModalUsername ? (
+
+                {editModalUsername && (
                     <ModalUsername
                         user={auth}
                         showModal={editModalUsername}
                         setShowModal={setEditModalUsername}
                     />
-                ) : (
-                    <></>
                 )}
-            </div>
-            <div>
-                {editModalDesc ? (
+
+                {editModalDesc && (
                     <ModalDescription
                         user={auth}
                         showModal={editModalDesc}
                         setShowModal={setEditModalDesc}
                     />
-                ) : (
-                    <></>
                 )}
-            </div>
-            <div>
-                {editModalContacts ? (
+
+                {editModalContacts && (
                     <ModalContacts
                         user={auth}
                         showModal={editModalContacts}
                         setShowModal={setEditModalContacts}
                     />
-                ) : (
-                    <></>
                 )}
-            </div>
-            <div>
-                {editModalPassword ? (
+
+                {editModalPassword && (
                     <ModalPassword
                         user={auth}
                         showModal={editModalPassword}
                         setShowModal={setEditModalPassword}
                     />
-                ) : (
-                    <></>
                 )}
-            </div>
-            <div>
-                {editModalPicture ? (
+
+                {editModalPicture && (
                     <ModalPicture
                         user={auth}
                         showModal={editModalPicture}
                         setShowModal={setEditModalPicture}
                     />
-                ) : (
-                    <></>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 
