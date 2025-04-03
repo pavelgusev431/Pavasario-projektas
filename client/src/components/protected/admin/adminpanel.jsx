@@ -1,103 +1,28 @@
-import { useEffect, useState } from "react";
-import { hashPassword } from "../../../helpers/hashedPassword.js";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import url from "../../../helpers/getURL.js";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from 'react';
+import sha256 from 'js-sha256';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import url from '../../../helpers/getURL.js';
+import { useForm } from 'react-hook-form';
 import {
-  getAllUsers,
-  createUser,
-  deleteUser,
-  banUser,
-  updateUserRole,
-  updateUser,
-} from "../../../helpers/adminPanel.js";
+    banUser,
+    createUser,
+    deleteUser,
+    getAllUsers,
+    updateUser,
+} from '../../../helpers/adminPanel.js';
+
+import { hashPassword } from '../../../helpers/hashedPassword.js';
 
 const AdminPanel = () => {
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      contacts: "",
-      role: "user",
-    },
-  });
-  const [users, setUsers] = useState([]);
-  const [editingUser, setEditingUser] = useState(null);
-  const [editData, setEditData] = useState({
-    username: "",
-    email: "",
-    contacts: "",
-  });
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const users = await getAllUsers();
-        setUsers(users);
-        const data = await res.json();
-        setUsers(data.data);
-      } catch (error) {
-        console.error("Klaida įkeliant naudotojus:", error);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  const handleDelete = async (userId) => {
-    if (!window.confirm("Ištrinti naudotoją?")) return;
-    try {
-      const res = await deleteUser(userId);
-      console.log("Удаляется пользователь с ID:", userId);
-      if (res.status === 204) {
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-      } else {
-        const errorData = await res.json();
-        console.error("Pašalinimo klaida:", errorData.message);
-      }
-    } catch (err) {
-      console.error("Serverio klaida:", err);
-    }
-  };
-
-  const handleBan = async (userId) => {
-    try {
-      await banUser(userId);
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === userId ? { ...user, role: "banned" } : user
-        )
-      );
-    } catch (error) {
-      console.error("Klaida uždraudžiant naudotoją:", error);
-    }
-  };
-
-  const handleSaveEdit = async () => {
-    try {
-      await updateUser(editingUser, editData);
-      const data = await res.json();
-      if (res.ok) {
-        toast.success("Vartotojas atnaujintas!");
-        setUsers((prev) =>
-          prev.map((u) => (u.id === editingUser ? { ...u, ...editData } : u))
-        );
-        setEditingUser(null);
-      } else {
-        console.error("Atnaujinimo klaida:", data.message);
-      }
-    } catch (err) {
-      console.error("Klaida išsaugant:", err);
-    }
-  };
-
-  const handleEditUser = (user) => {
-    setEditingUser(user.id);
-    setEditData({
-      username: user.username,
-      email: user.email,
-      contacts: user.contacts || "",
+    const { register, handleSubmit, reset } = useForm({
+        defaultValues: {
+            username: '',
+            email: '',
+            password: '',
+            contacts: '',
+            role: 'user',
+        },
     });
     const [users, setUsers] = useState([]);
     const [editingUser, setEditingUser] = useState(null);
@@ -109,70 +34,64 @@ const AdminPanel = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            try {
-              const hashed = hashPassword(data.password, data.username);
-
-              const payload = {
-                ...data,
-                password: hashed,
-              };
-              const result = await createUser(payload);
-              toast.success("Vartotojas sėkmingai sukurtas!");
-              setUsers((prev) => [...prev, result.data]);
-              reset();
-            } catch (err) {
-              console.error(
-                "Klaida kuriant naudotoją:",
-                err.response?.data || err
-              );
-            }
-        } catch (err) {
-            console.error('Serverio klaida:', err);
-        }
-    };
-
-    const handleBan = async (userId) => {
-        try {
-            await fetch(url(`admin/users/ban/${userId}`), {
-                method: 'POST',
-                credentials: 'include',
-            });
-            setUsers((prev) =>
-                prev.map((user) =>
-                    user.id === userId ? { ...user, role: 'banned' } : user
-                )
-            );
-        } catch (error) {
-            console.error('Klaida uždraudžiant naudotoją:', error);
-        }
-    };
-
-    const handleSaveEdit = async () => {
-        try {
-            const res = await fetch(url(`admin/users/${editingUser}`), {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify(editData),
-            });
+          try {
+            const users = await getAllUsers();
+            setUsers(users);
             const data = await res.json();
-            if (res.ok) {
-                toast.success('Vartotojas atnaujintas!');
-                setUsers((prev) =>
-                    prev.map((u) =>
-                        u.id === editingUser ? { ...u, ...editData } : u
-                    )
-                );
-                setEditingUser(null);
-            } else {
-                console.error('Atnaujinimo klaida:', data.message);
-            }
+            setUsers(data.data);
+          } catch (error) {
+            console.error("Klaida įkeliant naudotojus:", error);
+          }
+        };
+        fetchUsers();
+      }, []);
+
+      const handleDelete = async (userId) => {
+        if (!window.confirm("Ištrinti naudotoją?")) return;
+        try {
+          const res = await deleteUser(userId);
+          console.log("Удаляется пользователь с ID:", userId);
+          if (res.status === 204) {
+            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+          } else {
+            const errorData = await res.json();
+            console.error("Pašalinimo klaida:", errorData.message);
+          }
         } catch (err) {
-            console.error('Klaida išsaugant:', err);
+          console.error("Serverio klaida:", err);
         }
-    };
+      };
+
+      const handleBan = async (userId) => {
+        try {
+          await banUser(userId);
+          setUsers((prev) =>
+            prev.map((user) =>
+              user.id === userId ? { ...user, role: "banned" } : user
+            )
+          );
+        } catch (error) {
+          console.error("Klaida uždraudžiant naudotoją:", error);
+        }
+      };
+
+      const handleSaveEdit = async () => {
+        try {
+          await updateUser(editingUser, editData);
+          const data = await res.json();
+          if (res.ok) {
+            toast.success("Vartotojas atnaujintas!");
+            setUsers((prev) =>
+              prev.map((u) => (u.id === editingUser ? { ...u, ...editData } : u))
+            );
+            setEditingUser(null);
+          } else {
+            console.error("Atnaujinimo klaida:", data.message);
+          }
+        } catch (err) {
+          console.error("Klaida išsaugant:", err);
+        }
+      };
 
     const handleEditUser = (user) => {
         setEditingUser(user.id);
@@ -203,32 +122,21 @@ const AdminPanel = () => {
                 <form
                     onSubmit={handleSubmit(async (data) => {
                         try {
-                            const hashedPassword = sha256(data.password);
-                            const res = await fetch(url('admin/users'), {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                credentials: 'include',
-                                body: JSON.stringify({
-                                    ...data,
-                                    password: hashedPassword,
-                                }),
-                            });
-
-                            const result = await res.json();
-                            if (res.ok) {
-                                toast.success('Vartotojas sėkmingai sukurtas!');
-                                setUsers((prev) => [...prev, result.data]);
-                                reset();
-                            } else {
-                                console.error(
-                                    'Klaida kuriant naudotoją:',
-                                    result.message
-                                );
-                            }
+                          const password = hashPassword(data.password, data.username);
+                      
+                          const payload = {
+                            ...data,
+                            password,
+                          };
+                      
+                          const result = await createUser(payload);
+                          toast.success("Vartotojas sėkmingai sukurtas!");
+                          setUsers((prev) => [...prev, result.data]);
+                          reset();
                         } catch (err) {
-                            console.error('Klaida:', err);
+                          console.error("Klaida kuriant naudotoją:", err.response?.data || err);
                         }
-                    })}
+                      })}
                     className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4"
                 >
                     <input
@@ -278,34 +186,23 @@ const AdminPanel = () => {
                     </div>
                 </form>
             </div>
-                {/* Роль */}
-                <div className="mt-3">
-                  <label className="text-sm text-gray-500 dark:text-gray-300 block mb-1">
-                    Vaidmuo:
-                  </label>
-                  <select
-                    value={user.role}
-                    onChange={async (e) => {
-                      const newRole = e.target.value;
-                      try {
-                        await updateUserRole(user.id, newRole);
-                        setUsers((prev) =>
-                          prev.map((u) =>
-                            u.id === user.id ? { ...u, role: newRole } : u
-                          )
-                        );
-                      } catch (err) {
-                        console.error("Klaida keičiant vaidmenį:", err);
-                      }
-                    }}
-                    className="w-full bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-white rounded px-2 py-1"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                    <option value="courier">Courier</option>
-                    <option value="banned">Banned</option>
-                  </select>
-                </div>
+
+            {/* Lentelė */}
+            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-4">
+                    Naudotojų sąrašas
+                </h2>
+
+                {users.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {users.map((user) => (
+                            <div
+                                key={user.id}
+                                className="bg-neutral-100 dark:bg-gray-700 p-4 rounded-lg shadow transition"
+                            >
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                                    ID: {user.id}
+                                </p>
 
                                 {editingUser === user.id ? (
                                     <>
