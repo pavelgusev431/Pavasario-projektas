@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import sha256 from 'js-sha256';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import url from '../../../helpers/getURL.js';
+import {url} from '../../../helpers/getURL.js';
 import { useForm } from 'react-hook-form';
 import {
     banUser,
