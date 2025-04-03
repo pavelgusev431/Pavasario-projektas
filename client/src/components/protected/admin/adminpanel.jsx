@@ -34,15 +34,14 @@ const AdminPanel = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-          try {
-            const users = await getAllUsers();
-            setUsers(users);
-            const data = await res.json();
-            setUsers(data.data);
-          } catch (error) {
-            console.error("Klaida įkeliant naudotojus:", error);
-          }
-        };
+            try {
+              const users = await getAllUsers();
+              setUsers(users);
+            } catch (error) {
+              console.error("Klaida įkeliant naudotojus:", error);
+            }
+          };
+          
         fetchUsers();
       }, []);
 
@@ -50,7 +49,6 @@ const AdminPanel = () => {
         if (!window.confirm("Ištrinti naudotoją?")) return;
         try {
           const res = await deleteUser(userId);
-          console.log("Удаляется пользователь с ID:", userId);
           if (res.status === 204) {
             setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
           } else {
@@ -77,21 +75,16 @@ const AdminPanel = () => {
 
       const handleSaveEdit = async () => {
         try {
-          await updateUser(editingUser, editData);
-          const data = await res.json();
-          if (res.ok) {
+            await updateUser(editingUser, editData);
             toast.success("Vartotojas atnaujintas!");
             setUsers((prev) =>
               prev.map((u) => (u.id === editingUser ? { ...u, ...editData } : u))
             );
             setEditingUser(null);
-          } else {
-            console.error("Atnaujinimo klaida:", data.message);
+          } catch (err) {
+            console.error("Klaida išsaugant:", err);
           }
-        } catch (err) {
-          console.error("Klaida išsaugant:", err);
-        }
-      };
+      };          
 
     const handleEditUser = (user) => {
         setEditingUser(user.id);
@@ -127,6 +120,7 @@ const AdminPanel = () => {
                           const payload = {
                             ...data,
                             password,
+                            role: data.role,
                           };
                       
                           const result = await createUser(payload);
@@ -257,13 +251,13 @@ const AdminPanel = () => {
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     fill="none"
                                                     viewBox="0 0 24 24"
-                                                    stroke-width="1.5"
+                                                    strokeWidth="1.5"
                                                     stroke="currentColor"
-                                                    class="size-6"
+                                                    className="size-6"
                                                 >
                                                     <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
                                                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
                                                     />
                                                 </svg>
