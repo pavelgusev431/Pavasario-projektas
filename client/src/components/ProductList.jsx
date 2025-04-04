@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import ProductCard from './ProductCard';
 import Tools from './Tools';
 import getFilteredProducts from '../helpers/getFilteredProducts';
+import debounce from 'lodash.debounce';
 
 export default function ProductList() {
     const [products, setProducts] = useState([]);
@@ -10,7 +11,7 @@ export default function ProductList() {
         totalPages: 0,
         totalProducts: 0,
     });
-    const [loading, setLoading] = useState(false);
+    
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(12);
     const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -31,36 +32,47 @@ export default function ProductList() {
         return today.getTime();
     })();
 
-    const fetchProducts = async (page = 1) => {
-        setLoading(true);
-        try {
-            const [sort, order] = sortValue.split('-');
-            const data = await getFilteredProducts({
-                page,
-                limit: pageSize,
-                minPrice: priceRange[0],
-                maxPrice: priceRange[1],
-                minDate: new Date(dateRange[0]).toISOString().split('T')[0],
-                maxDate: new Date(dateRange[1]).toISOString().split('T')[0],
-                sort,
-                order: order.toUpperCase(),
-            });
-            setProducts(data.products);
-            setPagination({
-                currentPage: data.pagination.currentPage,
-                totalPages: data.pagination.totalPages,
-                totalProducts: data.pagination.totalProducts,
-            });
-        } catch (err) {
-            setError('Error fetching products: ' + err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const fetchProducts = useCallback(
+        debounce(async (page = 1) => {
+           
+            try {
+                const [sort, order] = sortValue.split('-');
+                const data = await getFilteredProducts({
+                    page,
+                    limit: pageSize,
+                    minPrice: priceRange[0],
+                    maxPrice: priceRange[1],
+                    minDate: new Date(dateRange[0]).toISOString().split('T')[0],
+                    maxDate: new Date(dateRange[1]).toISOString().split('T')[0],
+                    sort,
+                    order: order.toUpperCase(),
+                });
+                setProducts(data.products);
+                setPagination({
+                    currentPage: data.pagination.currentPage,
+                    totalPages: data.pagination.totalPages,
+                    totalProducts: data.pagination.totalProducts,
+                });
+            } catch (err) {
+                setError('Klaida gaunant produktus: ' + err.message);
+            } 
+        }, 250), 
+        [pageSize, priceRange, dateRange, sortValue] 
+    );
 
     useEffect(() => {
         fetchProducts(pagination.currentPage);
-    }, [pageSize, priceRange, dateRange, sortValue, pagination.currentPage]);
+        return () => fetchProducts.cancel(); 
+    }, [fetchProducts, pagination.currentPage]);
+
+    const filteredProducts = useMemo(() => {
+        return products.filter(product => 
+            product.price >= priceRange[0] &&
+            product.price <= priceRange[1] &&
+            new Date(product.createdAt).getTime() >= dateRange[0] &&
+            new Date(product.createdAt).getTime() <= dateRange[1]
+        );
+    }, [products, priceRange, dateRange]);
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
@@ -113,12 +125,12 @@ export default function ProductList() {
             </div>
 
             {/* Produktų rodymas */}
-            {loading && <p>Loading products...</p>}
+           
             {error && <p className="text-red-500">{error}</p>}
-            {products.length > 0 ? (
+            {filteredProducts.length > 0 ? (
                 <div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
-                        {products.map((product) => (
+                        {filteredProducts.map((product) => (
                             <ProductCard
                                 key={product.id}
                                 product={product}
