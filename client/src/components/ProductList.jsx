@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import Tools from './Tools';
 import getFilteredProducts from '../helpers/getFilteredProducts';
+import BackToTopButton from './buttons/BackToTopButton';
 
 export default function ProductList() {
     const [products, setProducts] = useState([]);
@@ -185,6 +186,8 @@ export default function ProductList() {
             ) : (
                 <p>No products available.</p>
             )}
+
+            <BackToTopButton/>
         </div>
     );
 }
