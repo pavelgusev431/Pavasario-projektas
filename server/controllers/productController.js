@@ -804,6 +804,7 @@ const getAllProductsSorted = async (req, res) => {
     }
 };
 
+
 export {
     getAllProductCount,
     getUserProductsByUserName,
