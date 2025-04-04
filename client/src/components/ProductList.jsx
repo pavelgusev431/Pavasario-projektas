@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import ProductCard from './ProductCard';
 import Tools from './Tools';
 import getFilteredProducts from '../helpers/getFilteredProducts';
+import BackToTopButton from './buttons/BackToTopButton';
 import debounce from 'lodash.debounce';
 
 export default function ProductList() {
@@ -197,6 +198,8 @@ export default function ProductList() {
             ) : (
                 <p>No products available.</p>
             )}
+
+            <BackToTopButton/>
         </div>
     );
 }
