@@ -1,2 +1,4 @@
-server/controllers/paginatedProductController.js
-server/routers/adminRouter.js
+client/src/components/protected/productCRUD/ProductCreateModal.jsx
+client/src/helpers/createProduct.js
+client/src/helpers/deleteProduct.js
+client/src/helpers/editProduct.js
