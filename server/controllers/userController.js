@@ -97,6 +97,9 @@ const login = async (req, res, next) => {
         const secret = await Secret.findOne({
             where: { userId: user.id },
         });
+        if (secret.role === 'banned') {
+            throw new AppError('This account is banned.', 403);
+        }
         const salt = secret.password.split(':')[1];
         const hashedPassword = sha256(sha1(password + salt));
         if (hashedPassword !== secret.password.split(':')[0]) {
