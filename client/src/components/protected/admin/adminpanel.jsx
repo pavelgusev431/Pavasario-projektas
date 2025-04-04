@@ -10,6 +10,7 @@ import {
   deleteUser,
   getAllUsers,
   updateUser,
+  updateUserRole
 } from "../../../helpers/adminPanel.js";
 
 import { hashPassword } from "../../../helpers/hashedPassword.js";
@@ -268,52 +269,18 @@ const AdminPanel = () => {
                     onChange={async (e) => {
                       const newRole = e.target.value;
                       try {
-                        const res = await fetch(
-                          url(`admin/users/role/${user.id}`),
-                          {
-                            method: "PATCH",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            credentials: "include",
-                            body: JSON.stringify({
-                              role: newRole,
-                            }),
-                          }
+                        await updateUserRole(user.id, newRole);
+                        setUsers((prev) =>
+                          prev.map((u) =>
+                            u.id === user.id
+                              ? { ...u, role: newRole }
+                              : u
+                          )
                         );
-                        let resultText = await res.text();
-                        let result;
-                        try {
-                          result = JSON.parse(resultText);
-                        } catch (err) {
-                          console.error(
-                            "Server returned non-JSON:",
-                            resultText
-                          );
-                          return;
-                        }
-
-                        if (res.ok) {
-                          setUsers((prev) =>
-                            prev.map((u) =>
-                              u.id === user.id
-                                ? {
-                                    ...u,
-                                    role: newRole,
-                                  }
-                                : u
-                            )
-                          );
-                        } else {
-                          console.error(
-                            "Klaida keičiant vaidmenį:",
-                            result?.message || "Unknown error"
-                          );
-                        }
                       } catch (err) {
-                        console.error("Tinklo klaida keičiant vaidmenį:", err);
+                        console.error("Klaida keičiant vaidmenį:", err);
                       }
-                    }}
+                    }}                      
                     className="w-full bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-white rounded px-2 py-1"
                   >
                     <option value="user">User</option>
