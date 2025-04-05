@@ -1,4 +1,5 @@
 client/src/components/protected/productCRUD/ProductCreateModal.jsx
-client/src/helpers/createProduct.js
-client/src/helpers/deleteProduct.js
-client/src/helpers/editProduct.js
+client/src/helpers/getFileTypes.js
+server/controllers/uploadController.js
+server/routers/uploadRouter.js
+server/routers/userRouter.js
