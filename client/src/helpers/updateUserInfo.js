@@ -17,7 +17,7 @@ const updatePassword = async (id, data) => {
 
 const updateUserAvatar = async (id, data) => {
     const response1 = await axios
-        .patch(url(`users/avatarFile`), data, { withCredentials: true })
+        .patch(url(`upload/avatar`), data, { withCredentials: true })
         .catch((error) => {
             console.log(error);
         });

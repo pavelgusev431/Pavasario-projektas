@@ -3,12 +3,13 @@ import cors from 'cors';
 import errorHandler from '../middlewares/errorHandler.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+//Routers
 import userRouter from '../routers/userRouter.js';
 import productRouter from '../routers/productRouter.js';
-import morgan from 'morgan';
-import { getAllProductsSorted } from '../controllers/productController.js';
 import categoryRouter from '../routers/categoryRouter.js';
 import adminRouter from '../routers/adminRouter.js';
+import uploadRouter from '../routers/uploadRouter.js';
 
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
@@ -32,9 +33,9 @@ app.use(cookieParser());
 //routes go here
 app.use('/users', userRouter);
 app.use('/products', productRouter);
-app.get('/products/sorted', getAllProductsSorted);
 app.use('/categories', categoryRouter);
 app.use('/admin', adminRouter);
+app.use('/upload', uploadRouter);
 //==============
 //last
 app.use(errorHandler);
