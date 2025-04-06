@@ -90,9 +90,9 @@ VALUES
 --komentarai
  
 (3,1, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
-(4,1, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
-(4,1, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
-(5,1, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
+(4,1, 1, 6,  'sUKURE KOMETARA', '2025-01-25T16:28:44.450Z'),
+(4,1, 1, 6,  'sUKURE KOMETARA', '2023-09-14T17:18:44.450Z'),
+(5,1, 1, 6,  'sUKURE KOMETARA', '2020-01-25T18:48:44.450Z'),
  
 (3,2, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,2, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
@@ -110,8 +110,9 @@ VALUES
 (5,4, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
  
 --tikrinu
-(5,1, 1, 6,  'sUKURE KOMETARA', '2025-03-20T15:58:44.450Z'),
-(2,27, 1, 6,  'sUKURE KOMETARA', '2025-03-19T15:58:44.450Z');
+(5,1, 1, 6,  'sUKURE KOMETARA', '2025-02-20T15:58:44.450Z'),
+(2,27, 1, 6,  'sUKURE KOMETARA', '2025-03-19T15:58:44.450Z'),
+(2,27, 1, 6,  'sUKURE KOMETARA', '2025-04-07T10:11:44.450Z');
  
  
  
@@ -140,5 +141,7 @@ VALUES
 (5, 4, 'Puikus laikrodis, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
  
 --tikrinu
-(5, 1, 'Puikus telefonas, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
-(2, 27, 'Puikus laikrodis, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png');
+(5, 1, 'blogas telefonas, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
+(2, 27, 'Puikus laikrodis, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
+(2, 27, 'labai prastas laikrodis, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png');
+

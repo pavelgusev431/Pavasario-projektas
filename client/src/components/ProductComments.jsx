@@ -55,7 +55,7 @@ export default function ProductComments({ productId }) {
                 </div>
               </h2>
               <div className="text-gray-500 text-sm mt-1">
-                {moment(comment.timestamp).format("lll")}
+                {moment.utc(comment.timestamp).format("lll")}
               </div>
               <p className="mt-3 text-gray-700">{comment.comment}</p>
             </div>
