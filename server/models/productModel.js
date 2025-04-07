@@ -23,7 +23,7 @@ const Product = sq.define(
     },
     {
         tableName: 'products',
-        timestamps: true,
+        timestamps: false,
     }
 );
 
