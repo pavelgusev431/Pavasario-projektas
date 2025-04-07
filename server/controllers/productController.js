@@ -57,10 +57,11 @@ const getUserProductsByUserName = async (req, res) => {
 
         // Susiejame reitingus su įvykiais pagal rating.id
         const ratingEventMap = {};
-        ratings.forEach(rating => {
-            const matchingEvent = ratingEvents.find(event => 
-                event.user_id === rating.user_id &&
-                event.product_id === rating.product_id
+        ratings.forEach((rating) => {
+            const matchingEvent = ratingEvents.find(
+                (event) =>
+                    event.user_id === rating.user_id &&
+                    event.product_id === rating.product_id
             );
             if (matchingEvent) {
                 ratingEventMap[rating.id] = matchingEvent;
@@ -681,10 +682,11 @@ const getRatedProductsByUserName = async (req, res) => {
 
         // Susiejame reitingus su įvykiais pagal rating.id
         const ratingEventMap = {};
-        userRatings.forEach(rating => {
-            const matchingEvent = events.find(event => 
-                event.user_id === rating.user_id &&
-                event.product_id === rating.product_id
+        userRatings.forEach((rating) => {
+            const matchingEvent = events.find(
+                (event) =>
+                    event.user_id === rating.user_id &&
+                    event.product_id === rating.product_id
             );
             if (matchingEvent) {
                 ratingEventMap[rating.id] = matchingEvent;
@@ -851,7 +853,6 @@ const getAllProductsSorted = async (req, res) => {
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
     }
 };
-
 
 export {
     getAllProductCount,

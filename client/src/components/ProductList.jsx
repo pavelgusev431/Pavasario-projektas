@@ -12,7 +12,7 @@ export default function ProductList() {
         totalPages: 0,
         totalProducts: 0,
     });
-    
+
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(12);
     const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -35,7 +35,6 @@ export default function ProductList() {
 
     const fetchProducts = useCallback(
         debounce(async (page = 1) => {
-           
             try {
                 const [sort, order] = sortValue.split('-');
                 const data = await getFilteredProducts({
@@ -56,22 +55,23 @@ export default function ProductList() {
                 });
             } catch (err) {
                 setError('Klaida gaunant produktus: ' + err.message);
-            } 
-        }, 250), 
-        [pageSize, priceRange, dateRange, sortValue] 
+            }
+        }, 250),
+        [pageSize, priceRange, dateRange, sortValue]
     );
 
     useEffect(() => {
         fetchProducts(pagination.currentPage);
-        return () => fetchProducts.cancel(); 
+        return () => fetchProducts.cancel();
     }, [fetchProducts, pagination.currentPage]);
 
     const filteredProducts = useMemo(() => {
-        return products.filter(product => 
-            product.price >= priceRange[0] &&
-            product.price <= priceRange[1] &&
-            new Date(product.timestamp).getTime() >= dateRange[0] &&
-            new Date(product.timestamp).getTime() <= dateRange[1]
+        return products.filter(
+            (product) =>
+                product.price >= priceRange[0] &&
+                product.price <= priceRange[1] &&
+                new Date(product.timestamp).getTime() >= dateRange[0] &&
+                new Date(product.timestamp).getTime() <= dateRange[1]
         );
     }, [products, priceRange, dateRange]);
 
@@ -126,7 +126,7 @@ export default function ProductList() {
             </div>
 
             {/* Produktų rodymas */}
-           
+
             {error && <p className="text-red-500">{error}</p>}
             {filteredProducts.length > 0 ? (
                 <div>
@@ -199,7 +199,7 @@ export default function ProductList() {
                 <p>No products available.</p>
             )}
 
-            <BackToTopButton/>
+            <BackToTopButton />
         </div>
     );
 }

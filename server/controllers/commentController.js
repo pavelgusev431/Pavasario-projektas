@@ -53,11 +53,12 @@ const getProductCommentsById = async (req, res) => {
 
         // Susiejame reitingus su įvykiais pagal user_id ir kitus kriterijus
         const ratingEventMap = {};
-        ratings.forEach(rating => {
+        ratings.forEach((rating) => {
             // Ieškome atitinkančio įvykio pagal user_id ir timestamp eiliškumą
-            const matchingEvent = ratingEvents.find(event => 
-                event.user_id === rating.user_id &&
-                event.product_id === rating.product_id
+            const matchingEvent = ratingEvents.find(
+                (event) =>
+                    event.user_id === rating.user_id &&
+                    event.product_id === rating.product_id
             );
             if (matchingEvent) {
                 ratingEventMap[rating.id] = matchingEvent;
@@ -68,16 +69,18 @@ const getProductCommentsById = async (req, res) => {
 
         let totalStars = 0;
 
-        const comments = ratings.map((rating) => {
-            totalStars += rating.stars;
-            const event = ratingEventMap[rating.id];
-            return {
-                username: userMap[rating.user_id]?.username || 'Nežinomas',
-                comment: rating.comment,
-                stars: rating.stars,
-                timestamp: event ? event.timestamp : null,
-            };
-        }).filter(comment => comment.comment);
+        const comments = ratings
+            .map((rating) => {
+                totalStars += rating.stars;
+                const event = ratingEventMap[rating.id];
+                return {
+                    username: userMap[rating.user_id]?.username || 'Nežinomas',
+                    comment: rating.comment,
+                    stars: rating.stars,
+                    timestamp: event ? event.timestamp : null,
+                };
+            })
+            .filter((comment) => comment.comment);
 
         const avgRating = +(totalStars / ratings.length).toFixed(2);
 
@@ -93,4 +96,3 @@ const getProductCommentsById = async (req, res) => {
 };
 
 export { getProductCommentsById };
-

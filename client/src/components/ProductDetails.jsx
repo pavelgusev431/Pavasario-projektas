@@ -15,7 +15,7 @@ const ProductDetails = () => {
                 const response = await axios.get(
                     `http://localhost:3000/products/selected/${id}`
                 );
-                
+
                 setProduct(response.data);
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -28,8 +28,6 @@ const ProductDetails = () => {
     if (!product) {
         return <div>Loading...</div>;
     }
-
-    
 
     // Determine stock status
     let stockStatus;
@@ -162,7 +160,6 @@ const ProductDetails = () => {
             </Modal>
             <ProductComments productId={id} />
         </div>
-       
     );
 };
 

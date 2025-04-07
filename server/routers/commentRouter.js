@@ -1,9 +1,6 @@
 import express from 'express';
 
-import {
-  getProductCommentsById,
-} from '../controllers/commentController.js'
-
+import { getProductCommentsById } from '../controllers/commentController.js';
 
 const commentRouter = express.Router();
 

@@ -284,7 +284,7 @@ const About = () => {
                     </button>
                 </div>
             </div>
-            <BackToTopButton/>
+            <BackToTopButton />
         </div>
     );
 };
