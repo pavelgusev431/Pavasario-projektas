@@ -70,6 +70,7 @@ const checkFileTypes = (_req, res, next) => {
 const storage = multer.diskStorage({
     destination: (req, _file, cb) => {
         const { dirName } = req.cookies;
+        console.log(dirName);
         cb(null, `public/images/${dirName}`);
     },
     filename: (_req, file, cb) => {
@@ -96,12 +97,26 @@ const getDirectory = (req, res, next) => {
     try {
         const images = getImages();
         const { dirName } = req.body;
+        if (!dirName) {
+            res.status(423).json({
+                status: 'fail',
+                message: 'No directory name provided',
+            });
+            return;
+        }
         res.cookie('dirName', dirName, { httpOnly: true, maxAge: 10000 });
         if (!fs.existsSync(`${images}/${dirName}`)) {
             fs.mkdirSync(`${images}/${dirName}`);
-            return res.status(201).send();
+            return res.status(201).json({
+                status: 'success',
+                message: `Directory '${dirName}' created successfully`,
+            });
+        } else {
+            return res.status(200).json({
+                status: 'success',
+                message: `Directory '${dirName}' saved`,
+            });
         }
-        res.status(200).send();
     } catch (error) {
         next(error);
     }

@@ -1,5 +1,3 @@
-client/src/components/protected/productCRUD/ProductCreateModal.jsx
-client/src/helpers/getFileTypes.js
 server/controllers/uploadController.js
 server/routers/uploadRouter.js
-server/routers/userRouter.js
+server/validators/validateJWT.js
