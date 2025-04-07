@@ -7,6 +7,7 @@
     "lightningcss": "^1.29.2",
     "moment": "^2.30.1",
     "prettier": "^3.5.2",
+    "react-range-slider-input": "^3.2.1",
     "supports-color": "^10.0.0"
   },
   "devDependencies": {

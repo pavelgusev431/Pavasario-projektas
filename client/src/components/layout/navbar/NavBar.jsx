@@ -5,6 +5,7 @@ import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
 import AdminPanel from '../../protected/admin/adminpanel.jsx';
 import getBalance from '../../../helpers/getBalance.js';
+import SearchBar from './SearchBar.jsx';
 
 const NavBar = () => {
     const location = useLocation();
@@ -134,7 +135,9 @@ const NavBar = () => {
                             />
                         </svg>
                     </button>
-
+                    <div className="justify-end">
+                        <SearchBar />
+                    </div>
                     {auth && (
                         <div className="relative">
                             <button

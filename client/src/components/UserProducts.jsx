@@ -54,7 +54,7 @@ export default function UserProducts() {
                     />
                 ))}
             </div>
-            <BackToTopButton/>
+            <BackToTopButton />
         </div>
     );
 }
