@@ -2,11 +2,10 @@ import Product from '../models/productModel.js';
 import Event from '../models/eventModel.js';
 import Rating from '../models/ratingModel.js';
 import { Op } from 'sequelize';
+
 export const getPaginatedProducts = async (req, res) => {
     try {
-        let {
-            page = 1,
-            limit = 8,
+        const {
             minPrice,
             maxPrice,
             minDate,
@@ -14,11 +13,13 @@ export const getPaginatedProducts = async (req, res) => {
             sort,
             order,
         } = req.query;
+
+        let { page = 1, limit = 8 } = req.query;
         page = Math.max(Number(page), 1);
         limit = Math.max(Number(limit), 1);
         const offset = (page - 1) * limit;
 
-        let products = await Product.findAll();
+        const products = await Product.findAll();
 
         const events = await Event.findAll({
             where: {
@@ -35,7 +36,7 @@ export const getPaginatedProducts = async (req, res) => {
             },
         });
 
-        let productsWithTimestamps = products.map((product) => {
+        const productsWithTimestamps = products.map((product) => {
             const productEvents = events.filter(
                 (event) =>
                     event.user_id === product.user_id &&
@@ -65,7 +66,6 @@ export const getPaginatedProducts = async (req, res) => {
             };
         });
 
-        // Filtruojame visus produktus be puslapiavimo, kad gautume bendrą skaičių
         let allFilteredProducts = productsWithTimestamps;
 
         if (minPrice || maxPrice) {
@@ -73,8 +73,8 @@ export const getPaginatedProducts = async (req, res) => {
                 minPrice,
                 maxPrice,
                 allFilteredProducts,
-                null, // Be limit
-                null, // Be offset
+                null,
+                null,
                 'price'
             );
         }
@@ -84,13 +84,12 @@ export const getPaginatedProducts = async (req, res) => {
                 minDate,
                 maxDate,
                 allFilteredProducts,
-                null, // Be limit
-                null, // Be offset
+                null,
+                null,
                 'date'
             );
         }
 
-        // Rūšiuojame produktus su sortHelper
         const sortedProducts = await sortHelper(
             allFilteredProducts,
             sort,
@@ -99,16 +98,14 @@ export const getPaginatedProducts = async (req, res) => {
 
         const totalProducts = sortedProducts.length;
         const totalPages = Math.ceil(totalProducts / limit);
-
-        // Taikome puslapiavimą po filtravimo ir rūšiavimo
-        let paginatedProducts = sortedProducts.slice(offset, offset + limit);
+        const paginatedProducts = sortedProducts.slice(offset, offset + limit);
 
         res.json({
             products: paginatedProducts,
             pagination: {
                 currentPage: Number(page),
-                totalPages: totalPages,
-                totalProducts: totalProducts,
+                totalPages,
+                totalProducts,
             },
         });
     } catch (error) {
@@ -126,7 +123,7 @@ export const filterItemsByRange = async (
     value = 'price'
 ) => {
     const filteredItems = items.filter((item) => {
-        let itemValue =
+        const itemValue =
             value === 'date'
                 ? new Date(item.timestamp).getTime()
                 : parseFloat(item[value]);
@@ -156,11 +153,9 @@ export const sortHelper = async (products, sortField, order) => {
         ? sortField
         : 'createdAt';
 
-    // Tvarkos tikrinimas
-    const orderDirection = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const orderDirection = order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-    // Kopijuojame masyvą, kad nerūšiuotume originalo
-    let processed = [...products];
+    const processed = [...products];
 
     if (field === 'createdAt') {
         processed.sort((a, b) => {
@@ -189,7 +184,6 @@ export const sortHelper = async (products, sortField, order) => {
                 : a.avgRating - b.avgRating
         );
     } else {
-        // Numatytasis rūšiavimas pagal createdAt, jei laukas neatpažintas
         processed.sort((a, b) => {
             const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
             const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
