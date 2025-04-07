@@ -139,7 +139,7 @@ export default function PublicUserProfile() {
                 {product.comments.map((comment, index) => (
                   <div key={index} className="border-t pt-4">
                     <p className="text-gray-500 text-xs mt-1">
-                      {moment.utc(comment.timestamp).format("lll")}
+                      {moment(comment.timestamp).format("lll")}
                     </p>
                     <p className="text-sm font-medium text-gray-800">
                       <span className="font-semibold">{comment.username}</span>: {comment.comment}

@@ -64,7 +64,7 @@ export default function RatedProductsByUserName() {
                                 </div>
                             </h2>
                             <div className="text-gray-500 text-sm mt-1">
-                                {moment.utc(product.timestamp).format('lll')}
+                                {moment(product.timestamp).format('lll')}
                             </div>
                             <p className="mt-3 text-gray-700">
                                 {product.userComment}
