@@ -24,7 +24,7 @@ const protect = async (req, res, next) => {
         const foundUser = await User.findByPk(decodedUser.id);
         if (foundUser) {
             res.locals.id = foundUser.id;
-            res.locals.role = foundUser.role;
+            res.locals.role = decodedUser.role;
             next();
         } else {
             res.status(401).json({

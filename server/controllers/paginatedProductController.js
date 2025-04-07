@@ -4,21 +4,13 @@ import Rating from '../models/ratingModel.js';
 import { Op } from 'sequelize';
 export const getPaginatedProducts = async (req, res) => {
     try {
-        let {
-            page = 1,
-            limit = 8,
-            minPrice,
-            maxPrice,
-            minDate,
-            maxDate,
-            sort,
-            order,
-        } = req.query;
+        let { page = 1, limit = 8 } = req.query;
+        const { minPrice, maxPrice, minDate, maxDate, sort, order } = req.query;
         page = Math.max(Number(page), 1);
         limit = Math.max(Number(limit), 1);
         const offset = (page - 1) * limit;
 
-        let products = await Product.findAll();
+        const products = await Product.findAll();
 
         const events = await Event.findAll({
             where: {
@@ -35,7 +27,7 @@ export const getPaginatedProducts = async (req, res) => {
             },
         });
 
-        let productsWithTimestamps = products.map((product) => {
+        const productsWithTimestamps = products.map((product) => {
             const productEvents = events.filter(
                 (event) =>
                     event.user_id === product.user_id &&
@@ -101,7 +93,7 @@ export const getPaginatedProducts = async (req, res) => {
         const totalPages = Math.ceil(totalProducts / limit);
 
         // Taikome puslapiavimą po filtravimo ir rūšiavimo
-        let paginatedProducts = sortedProducts.slice(offset, offset + limit);
+        const paginatedProducts = sortedProducts.slice(offset, offset + limit);
 
         res.json({
             products: paginatedProducts,
@@ -126,7 +118,7 @@ export const filterItemsByRange = async (
     value = 'price'
 ) => {
     const filteredItems = items.filter((item) => {
-        let itemValue =
+        const itemValue =
             value === 'date'
                 ? new Date(item.timestamp).getTime()
                 : parseFloat(item[value]);
@@ -151,23 +143,27 @@ export const filterItemsByRange = async (
 };
 
 export const sortHelper = async (products, sortField, order) => {
-    const allowedSortFields = ['createdAt', 'price', 'name', 'avgRating'];
+    const allowedSortFields = ['timestamp', 'price', 'name', 'avgRating'];
     const field = allowedSortFields.includes(sortField)
         ? sortField
-        : 'createdAt';
+        : 'timestamp';
 
     // Tvarkos tikrinimas
     const orderDirection = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
     // Kopijuojame masyvą, kad nerūšiuotume originalo
-    let processed = [...products];
+    const processed = [...products];
 
-    if (field === 'createdAt') {
+    const defaultSort = () => {
         processed.sort((a, b) => {
             const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
             const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
             return orderDirection === 'DESC' ? dateB - dateA : dateA - dateB;
         });
+    };
+
+    if (field === 'timestamp') {
+        defaultSort();
     } else if (field === 'price') {
         processed.sort((a, b) => {
             const priceA = Number(a.price);
@@ -189,12 +185,7 @@ export const sortHelper = async (products, sortField, order) => {
                 : a.avgRating - b.avgRating
         );
     } else {
-        // Numatytasis rūšiavimas pagal createdAt, jei laukas neatpažintas
-        processed.sort((a, b) => {
-            const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
-            const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
-            return orderDirection === 'DESC' ? dateB - dateA : dateA - dateB;
-        });
+        defaultSort();
     }
 
     return processed;

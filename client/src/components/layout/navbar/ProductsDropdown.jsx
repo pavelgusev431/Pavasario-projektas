@@ -94,14 +94,14 @@ const ProductsDropdown = () => {
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={handleMouseLeave}
         >
-            <button className="">Products</button>
+            <button className="text-dark">Products</button>
             {isDropdownOpen && (
                 <div
-                    className="absolute bg-white shadow-lg rounded-md w-[90vw] max-w-[60rem] z-10 transition-all duration-300 ease-in-out"
+                    className="absolute bg-white dark:bg-gray-900 shadow-lg rounded-md w-[90vw] max-w-[60rem] z-10 transition-all duration-300 ease-in-out"
                     onMouseEnter={() => setIsDropdownOpen(true)}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <div className="flex flex-col md:flex-row p-4 space-y-4 md:space-y-0 md:space-x-4 border border-gray-200 rounded-md">
+                    <div className="flex flex-col md:flex-row p-4 space-y-4 md:space-y-0 md:space-x-4 border border-gray-200 dark:border-gray-700 rounded-md">
                         <ul className="w-full md:w-1/2 space-y-4">
                             {categories && categories.length > 0 ? (
                                 categories.map((category) => (
@@ -113,14 +113,14 @@ const ProductsDropdown = () => {
                                         }
                                         onMouseLeave={handleMouseLeave}
                                     >
-                                        <button className="w-auto text-left px-4 py-2 text-lg font-medium text-gray-800 hover:bg-gray-100 focus:outline-none transition duration-200">
+                                        <button className="w-auto text-left px-4 py-2 text-lg font-medium text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none transition duration-200">
                                             {category.name}
                                         </button>
                                         {openCategory === category.id &&
                                             category.subcategories && (
                                                 <div
                                                     ref={subcategoryRef}
-                                                    className="absolute left-0 md:left-full top-0 bg-white shadow-lg rounded-md w-auto md:w-72 z-20 transition-all duration-300 ease-in-out"
+                                                    className="absolute left-0 md:left-full top-0 bg-white dark:bg-gray-900 shadow-lg rounded-md w-auto md:w-72 z-20 transition-all duration-300 ease-in-out"
                                                 >
                                                     <ul className="p-4 space-y-2 rounded-md">
                                                         {category.subcategories
@@ -131,7 +131,7 @@ const ProductsDropdown = () => {
                                                                         key={
                                                                             sub.id
                                                                         }
-                                                                        className="px-4 py-2 text-lg text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200"
+                                                                        className="px-4 py-2 text-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition duration-200"
                                                                         onClick={() =>
                                                                             handleSubcategoryClick(
                                                                                 sub.id
@@ -145,7 +145,7 @@ const ProductsDropdown = () => {
                                                                 )
                                                             )
                                                         ) : (
-                                                            <li className="px-4 py-2 text-lg text-gray-500">
+                                                            <li className="px-4 py-2 text-lg text-gray-500 dark:text-gray-400">
                                                                 No subcategories
                                                             </li>
                                                         )}
@@ -155,7 +155,7 @@ const ProductsDropdown = () => {
                                     </li>
                                 ))
                             ) : (
-                                <li className="px-4 py-2 text-lg text-gray-500">
+                                <li className="px-4 py-2 text-lg text-gray-500 dark:text-gray-400">
                                     No categories found
                                 </li>
                             )}

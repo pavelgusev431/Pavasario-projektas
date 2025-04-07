@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
+import AdminPanel from '../../protected/admin/adminpanel.jsx';
+import getBalance from '../../../helpers/getBalance.js';
 import SearchBar from './SearchBar.jsx';
 
 const NavBar = () => {
@@ -17,9 +19,10 @@ const NavBar = () => {
     useEffect(() => {
         const fetchBalance = async () => {
             try {
-                const response = await fetch('/api/balance');
-                const data = await response.json();
-                setBalance(data.balance);
+                let response;
+                if (auth.id) response = await getBalance();
+                const data = response?.data;
+                setBalance(data?.balance || 0);
             } catch (error) {
                 console.error('Error fetching balance:', error);
             }
@@ -83,7 +86,21 @@ const NavBar = () => {
                                 About
                             </button>
                         </li>
+                        {auth?.role?.toLowerCase() === 'admin' && (
+                            <li>
+                                <button
+                                    onClick={() =>
+                                        handleNavigation('/adminpanel')
+                                    }
+                                    className={`block text-gray-900 cursor-pointer dark:text-white rounded-sm md:border-0 ${isActive('/adminpanel')}`}
+                                >
+                                    AdminPanel
+                                </button>
+                            </li>
+                        )}
                     </ul>
+                </div>
+                <div className="ml-2">
                     <ThemeToggleButton />
                 </div>
 
@@ -122,12 +139,10 @@ const NavBar = () => {
                         <SearchBar />
                     </div>
                     {auth && (
-                        <button
-                            className="relative"
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                        >
+                        <div className="relative">
                             <button
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}
                                 className={`fas fa-user-circle text-4xl cursor-pointer transition-transform duration-300 ${
                                     isHovered || isClicked
                                         ? 'text-red-500'
@@ -185,6 +200,15 @@ const NavBar = () => {
                                         <span>My reviews</span>
                                     </button>
                                     <button
+                                        onClick={() =>
+                                            handleNavigation('/myProducts')
+                                        }
+                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                    >
+                                        <i className="fas fa-store mr-3"></i>
+                                        <span>My Products</span>
+                                    </button>
+                                    <button
                                         onClick={handleLogout}
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
@@ -193,7 +217,7 @@ const NavBar = () => {
                                     </button>
                                 </div>
                             )}
-                        </button>
+                        </div>
                     )}
                 </div>
 
@@ -215,6 +239,13 @@ const NavBar = () => {
                             >
                                 <i className="fas fa-info-circle mr-3"></i>{' '}
                                 About
+                            </button>
+                            <button
+                                onClick={() => handleNavigation('/adminpanel')}
+                                className={`p-2 text-white w-full text-left hover:bg-gray-600 ${isActive('/adminpanel')}`}
+                            >
+                                <i className="fas fa-cogs mr-3"></i>
+                                AdminPanel
                             </button>
                             {!auth && (
                                 <button

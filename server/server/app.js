@@ -5,9 +5,11 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRouter from '../routers/userRouter.js';
 import productRouter from '../routers/productRouter.js';
+import commentRouter from '../routers/commentRouter.js';
 import morgan from 'morgan';
 import { getAllProductsSorted } from '../controllers/productController.js';
 import categoryRouter from '../routers/categoryRouter.js';
+import adminRouter from '../routers/adminRouter.js';
 
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
@@ -31,9 +33,10 @@ app.use(cookieParser());
 //routes go here
 app.use('/users', userRouter);
 app.use('/products', productRouter);
+app.use('/comments', commentRouter);
 app.get('/products/sorted', getAllProductsSorted);
 app.use('/categories', categoryRouter);
-
+app.use('/admin', adminRouter);
 //==============
 //last
 app.use(errorHandler);
