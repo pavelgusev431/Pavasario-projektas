@@ -24,7 +24,7 @@ export default function ProductList() {
             return today.getTime();
         })(),
     ]);
-    const [sortValue, setSortValue] = useState('createdAt-asc');
+    const [sortValue, setSortValue] = useState('timestamp-asc');
 
     const minDate = new Date('2024-01-01').getTime();
     const maxDate = (() => {
@@ -70,8 +70,8 @@ export default function ProductList() {
         return products.filter(product => 
             product.price >= priceRange[0] &&
             product.price <= priceRange[1] &&
-            new Date(product.createdAt).getTime() >= dateRange[0] &&
-            new Date(product.createdAt).getTime() <= dateRange[1]
+            new Date(product.timestamp).getTime() >= dateRange[0] &&
+            new Date(product.timestamp).getTime() <= dateRange[1]
         );
     }, [products, priceRange, dateRange]);
 
