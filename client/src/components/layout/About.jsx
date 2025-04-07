@@ -54,8 +54,8 @@ const users = [
         name: 'Dmytro',
         surname: 'Sokolov',
         role: 'QA specialist',
-        github: 'https://github.com/usereight',
-        avatar: 'https://avatars.githubusercontent.com/usereight',
+        github: 'https://github.com/drak0nch1k00',
+        avatar: 'https://avatars.githubusercontent.com/drak0nch1k00',
     },
 ];
 

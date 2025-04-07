@@ -1,3 +1,1 @@
-client/src/components/FilterRange.jsx
 client/src/components/layout/Contact.jsx
-server/controllers/paginatedProductController.js
