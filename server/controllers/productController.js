@@ -758,103 +758,6 @@ export const getProductById = async (req, res) => {
     }
 };
 
-const getAllProductsSorted = async (req, res) => {
-    try {
-        console.log('✅ Сортировка работает:', req.query);
-        const allowedSortFields = [
-            'id',
-            'createdAt',
-            'price',
-            'name',
-            'avgRating',
-        ];
-        const sortField = allowedSortFields.includes(req.query.sort)
-            ? req.query.sort
-            : 'id';
-
-        const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
-
-        const from = req.query.from?.trim() || null;
-        const to = req.query.to?.trim() || null;
-
-        const where = {};
-
-        if (from && to) {
-            where.createdAt = {
-                [Op.between]: [new Date(from), new Date(to)],
-            };
-        } else if (from) {
-            where.createdAt = {
-                [Op.gte]: new Date(from),
-            };
-        } else if (to) {
-            where.createdAt = {
-                [Op.lte]: new Date(to),
-            };
-        }
-
-        const options = { where };
-        const products = await Product.findAll(options);
-
-        if (products.length === 0) {
-            return res.status(404).json({ message: 'Nėra produktų' });
-        }
-
-        const ratings = await Rating.findAll({
-            where: {
-                product_id: {
-                    [Op.in]: products.map((product) => product.id),
-                },
-            },
-        });
-
-        const processed = products.map((product) => {
-            const productRatings = ratings.filter(
-                (r) => r.product_id === product.id
-            );
-
-            const ratingCount = productRatings.length;
-            const avgRating =
-                ratingCount > 0
-                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
-                      ratingCount
-                    : 0;
-
-            return {
-                ...product.dataValues,
-                ratingCount,
-                avgRating,
-            };
-        });
-
-        if (sortField === 'avgRating') {
-            processed.sort((a, b) =>
-                order === 'DESC'
-                    ? b.avgRating - a.avgRating
-                    : a.avgRating - b.avgRating
-            );
-        } else if (sortField === 'price') {
-            processed.sort((a, b) => {
-                const priceA = Number(a.price);
-                const priceB = Number(b.price);
-                return order === 'DESC' ? priceB - priceA : priceA - priceB;
-            });
-        }
-
-        return res.json({
-            products: processed,
-            pagination: {
-                currentPage: 1,
-                totalPages: 1,
-                totalProducts: processed.length,
-            },
-        });
-    } catch (err) {
-        console.error('Klaida serveryje:', err);
-        return res.status(500).json({ message: 'Klaida gaunant duomenis' });
-    }
-};
-
 const createProduct = async (req, res, next) => {
     try {
         const { id } = res.locals;
@@ -961,7 +864,6 @@ export {
     getTopUserProducts,
     getTrendingUserProducts,
     getRatedProductsByUserName,
-    getAllProductsSorted,
     getUserProducts,
     createProduct,
     editProduct,
