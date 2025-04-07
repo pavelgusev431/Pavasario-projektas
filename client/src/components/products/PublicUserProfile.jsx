@@ -36,7 +36,9 @@ export default function PublicUserProfile() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!user) return <p>User not found</p>;
-
+    const productsWithComments = products.filter(
+        (product) => product.comments.length > 0
+    );
     return (
         <>
             <header className="py-6 px-6 bg-gray-100 rounded-lg shadow-lg">
@@ -104,113 +106,107 @@ export default function PublicUserProfile() {
                 <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800 border-b pb-4">
                     Products Rated by Others for Me
                 </h2>
-                {products.length > 0 ? (
+                {productsWithComments.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {products
-                            .filter((product) => product.comments.length > 0)
-                            .map((product) => (
-                                <div
-                                    key={`+${product.id}`}
-                                    className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                                >
-                                    <div className="overflow-hidden rounded-t-lg flex justify-center">
-                                        <Link
-                                            to={`/products/selected/${product.id}`}
-                                        >
-                                            <img
-                                                src={product.image_url}
-                                                alt={product.name}
-                                                className="w-auto h-56 object-cover"
-                                            />
-                                        </Link>
-                                    </div>
-                                    <div className="p-4">
-                                        <h3 className="text-xl font-semibold text-gray-800">
-                                            {product.name}
-                                        </h3>
-                                        <div className="flex items-center gap-1 mt-2">
-                                            {[...Array(5)].map((_, i) => {
-                                                if (
-                                                    i <
+                        {productsWithComments.map((product) => (
+                            <div
+                                key={`+${product.id}`}
+                                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                            >
+                                {/* Produktų su komentarais atvaizdavimas */}
+                                <div className="overflow-hidden rounded-t-lg flex justify-center">
+                                    <Link
+                                        to={`/products/selected/${product.id}`}
+                                    >
+                                        <img
+                                            src={product.image_url}
+                                            alt={product.name}
+                                            className="w-auto h-56 object-cover"
+                                        />
+                                    </Link>
+                                </div>
+                                <div className="p-4">
+                                    <h3 className="text-xl font-semibold text-gray-800">
+                                        {product.name}
+                                    </h3>
+                                    <div className="flex items-center gap-1 mt-2">
+                                        {[...Array(5)].map((_, i) => {
+                                            if (
+                                                i <
+                                                Math.floor(product.avgRating)
+                                            ) {
+                                                return (
+                                                    <FaStar
+                                                        key={i}
+                                                        className="text-yellow-500"
+                                                    />
+                                                );
+                                            } else if (
+                                                i ===
                                                     Math.floor(
                                                         product.avgRating
-                                                    )
-                                                ) {
-                                                    return (
-                                                        <FaStar
-                                                            key={i}
-                                                            className="text-yellow-500"
-                                                        />
-                                                    );
-                                                } else if (
-                                                    i ===
-                                                        Math.floor(
-                                                            product.avgRating
-                                                        ) &&
-                                                    product.avgRating % 1 !== 0
-                                                ) {
-                                                    return (
-                                                        <FaStarHalf
-                                                            key={i}
-                                                            className="text-yellow-500"
-                                                        />
-                                                    );
-                                                } else {
-                                                    return (
-                                                        <FaStar
-                                                            key={i}
-                                                            className="text-gray-300"
-                                                        />
-                                                    );
-                                                }
-                                            })}
-                                            <span className="text-sm text-gray-600">
-                                                ({product.comments.length})
-                                            </span>
-                                        </div>
-
-                                        <h4 className="mt-4 font-semibold text-lg text-gray-700">
-                                            Comments
-                                        </h4>
-                                        <div className="space-y-4 mt-2">
-                                            {product.comments.map(
-                                                (comment, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="border-t pt-4"
-                                                    >
-                                                        <p className="text-gray-500 text-xs mt-1">
-                                                            {moment(
-                                                                comment.timestamp
-                                                            ).format('lll')}
-                                                        </p>
-                                                        <p className="text-sm font-medium text-gray-800">
-                                                            <span className="font-semibold">
-                                                                {
-                                                                    comment.username
-                                                                }
-                                                            </span>
-                                                            : {comment.comment}
-                                                        </p>
-                                                        <div className="flex items-center mt-1 text-yellow-500">
-                                                            {[
-                                                                ...Array(
-                                                                    comment.stars
-                                                                ),
-                                                            ].map((_, i) => (
-                                                                <FaStar
-                                                                    key={i}
-                                                                    className="text-yellow-500"
-                                                                />
-                                                            ))}
-                                                        </div>
+                                                    ) &&
+                                                product.avgRating % 1 !== 0
+                                            ) {
+                                                return (
+                                                    <FaStarHalf
+                                                        key={i}
+                                                        className="text-yellow-500"
+                                                    />
+                                                );
+                                            } else {
+                                                return (
+                                                    <FaStar
+                                                        key={i}
+                                                        className="text-gray-300"
+                                                    />
+                                                );
+                                            }
+                                        })}
+                                        <span className="text-sm text-gray-600">
+                                            ({product.comments.length})
+                                        </span>
+                                    </div>
+                                    <h4 className="mt-4 font-semibold text-lg text-gray-700">
+                                        Comments
+                                    </h4>
+                                    <div className="space-y-4 mt-2">
+                                        {product.comments.map(
+                                            (comment, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="border-t pt-4"
+                                                >
+                                                    <p className="text-gray-500 text-xs mt-1">
+                                                        {moment(
+                                                            comment.timestamp
+                                                        ).format('lll')}
+                                                    </p>
+                                                    <p className="text-sm font-medium text-gray-800">
+                                                        <span className="font-semibold">
+                                                            {comment.username}
+                                                        </span>
+                                                        : {comment.comment}
+                                                    </p>
+                                                    <div className="flex items-center mt-1 text-yellow-500">
+                                                        {[
+                                                            ...Array(
+                                                                comment.stars
+                                                            ),
+                                                        ].map((_, i) => (
+                                                            <FaStar
+                                                                key={i}
+                                                                className="text-yellow-500"
+                                                            />
+                                                        ))}
                                                     </div>
-                                                )
-                                            )}
-                                        </div>
+                                                </div>
+                                            )
+                                        )}
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
                     </div>
                 ) : (
                     <p className="text-center text-gray-600">

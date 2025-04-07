@@ -7,6 +7,7 @@ import morgan from 'morgan';
 //Routers
 import userRouter from '../routers/userRouter.js';
 import productRouter from '../routers/productRouter.js';
+import commentRouter from '../routers/commentRouter.js';
 import categoryRouter from '../routers/categoryRouter.js';
 import adminRouter from '../routers/adminRouter.js';
 import uploadRouter from '../routers/uploadRouter.js';
@@ -33,6 +34,7 @@ app.use(cookieParser());
 //routes go here
 app.use('/users', userRouter);
 app.use('/products', productRouter);
+app.use('/comments', commentRouter);
 app.use('/categories', categoryRouter);
 app.use('/admin', adminRouter);
 app.use('/upload', uploadRouter);

@@ -143,10 +143,10 @@ export const filterItemsByRange = async (
 };
 
 export const sortHelper = async (products, sortField, order) => {
-    const allowedSortFields = ['createdAt', 'price', 'name', 'avgRating'];
+    const allowedSortFields = ['timestamp', 'price', 'name', 'avgRating'];
     const field = allowedSortFields.includes(sortField)
         ? sortField
-        : 'createdAt';
+        : 'timestamp';
 
     // Tvarkos tikrinimas
     const orderDirection = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
@@ -162,7 +162,7 @@ export const sortHelper = async (products, sortField, order) => {
         });
     };
 
-    if (field === 'createdAt') {
+    if (field === 'timestamp') {
         defaultSort();
     } else if (field === 'price') {
         processed.sort((a, b) => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import BackToTopButton from '../buttons/BackToTopButton';
 
 const users = [
     {
@@ -283,6 +284,7 @@ const About = () => {
                     </button>
                 </div>
             </div>
+            <BackToTopButton />
         </div>
     );
 };

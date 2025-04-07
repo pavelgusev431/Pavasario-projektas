@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import axios from 'axios';
 import Modal from 'react-modal';
+import ProductComments from './ProductComments';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -14,7 +15,7 @@ const ProductDetails = () => {
                 const response = await axios.get(
                     `http://localhost:3000/products/selected/${id}`
                 );
-                console.log('Fetched product data:', response.data); // Debugging: Log the product data
+
                 setProduct(response.data);
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -27,9 +28,6 @@ const ProductDetails = () => {
     if (!product) {
         return <div>Loading...</div>;
     }
-
-    // Check if the product data is correctly fetched
-    console.log('Product data:', product);
 
     // Determine stock status
     let stockStatus;
@@ -160,6 +158,7 @@ const ProductDetails = () => {
                     />
                 </div>
             </Modal>
+            <ProductComments productId={id} />
         </div>
     );
 };

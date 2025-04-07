@@ -69,8 +69,7 @@ export const updateUserRole = async (req, res) => {
 };
 // Naujo naudotojo kūrimas
 export const createUser = async (req, res) => {
-    const { username, password, email, contacts } = req.body;
-    const role = 'user';
+    const { username, password, email, contacts, role } = req.body;
     const now = new Date();
     const salt = sha256(sha1(now.toString() + username));
     const hashedPassword = sha256(sha1(password + salt));
@@ -80,6 +79,7 @@ export const createUser = async (req, res) => {
         username: username,
         email: email,
         contacts: contacts,
+        role: role,
     });
 
     await Secret.create({

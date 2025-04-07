@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import sha256 from 'js-sha256';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import url from '../../../helpers/getURL.js';
 import { useForm } from 'react-hook-form';
+import {
+    banUser,
+    createUser,
+    deleteUser,
+    getAllUsers,
+    updateUser,
+    updateUserRole,
+} from '../../../helpers/adminPanel.js';
+
+import { hashPassword } from '../../../helpers/hashedPassword.js';
 
 const AdminPanel = () => {
     const { register, handleSubmit, reset } = useForm({
@@ -26,25 +36,20 @@ const AdminPanel = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await fetch(url('admin/users'), {
-                    credentials: 'include',
-                });
-                const data = await res.json();
-                setUsers(data.data);
+                const users = await getAllUsers();
+                setUsers(users);
             } catch (error) {
                 console.error('Klaida įkeliant naudotojus:', error);
             }
         };
+
         fetchUsers();
     }, []);
 
     const handleDelete = async (userId) => {
         if (!window.confirm('Ištrinti naudotoją?')) return;
         try {
-            const res = await fetch(url(`admin/users/${userId}`), {
-                method: 'DELETE',
-                credentials: 'include',
-            });
+            const res = await deleteUser(userId);
             if (res.status === 204) {
                 setUsers((prevUsers) =>
                     prevUsers.filter((user) => user.id !== userId)
@@ -60,10 +65,7 @@ const AdminPanel = () => {
 
     const handleBan = async (userId) => {
         try {
-            await fetch(url(`admin/users/ban/${userId}`), {
-                method: 'POST',
-                credentials: 'include',
-            });
+            await banUser(userId);
             setUsers((prev) =>
                 prev.map((user) =>
                     user.id === userId ? { ...user, role: 'banned' } : user
@@ -76,26 +78,14 @@ const AdminPanel = () => {
 
     const handleSaveEdit = async () => {
         try {
-            const res = await fetch(url(`admin/users/${editingUser}`), {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify(editData),
-            });
-            const data = await res.json();
-            if (res.ok) {
-                toast.success('Vartotojas atnaujintas!');
-                setUsers((prev) =>
-                    prev.map((u) =>
-                        u.id === editingUser ? { ...u, ...editData } : u
-                    )
-                );
-                setEditingUser(null);
-            } else {
-                console.error('Atnaujinimo klaida:', data.message);
-            }
+            await updateUser(editingUser, editData);
+            toast.success('Vartotojas atnaujintas!');
+            setUsers((prev) =>
+                prev.map((u) =>
+                    u.id === editingUser ? { ...u, ...editData } : u
+                )
+            );
+            setEditingUser(null);
         } catch (err) {
             console.error('Klaida išsaugant:', err);
         }
@@ -130,30 +120,26 @@ const AdminPanel = () => {
                 <form
                     onSubmit={handleSubmit(async (data) => {
                         try {
-                            const hashedPassword = sha256(data.password);
-                            const res = await fetch(url('admin/users'), {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                credentials: 'include',
-                                body: JSON.stringify({
-                                    ...data,
-                                    password: hashedPassword,
-                                }),
-                            });
+                            const password = hashPassword(
+                                data.password,
+                                data.username
+                            );
 
-                            const result = await res.json();
-                            if (res.ok) {
-                                toast.success('Vartotojas sėkmingai sukurtas!');
-                                setUsers((prev) => [...prev, result.data]);
-                                reset();
-                            } else {
-                                console.error(
-                                    'Klaida kuriant naudotoją:',
-                                    result.message
-                                );
-                            }
+                            const payload = {
+                                ...data,
+                                password,
+                                role: data.role,
+                            };
+
+                            const result = await createUser(payload);
+                            toast.success('Vartotojas sėkmingai sukurtas!');
+                            setUsers((prev) => [...prev, result.data]);
+                            reset();
                         } catch (err) {
-                            console.error('Klaida:', err);
+                            console.error(
+                                'Klaida kuriant naudotoją:',
+                                err.response?.data || err
+                            );
                         }
                     })}
                     className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4"
@@ -187,15 +173,6 @@ const AdminPanel = () => {
                     />
 
                     <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
-                        <select
-                            {...register('role')}
-                            defaultValue="user"
-                            className="w-full sm:w-auto p-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
-                        >
-                            <option value="user">User</option>
-                            <option value="courier">Courier</option>
-                            <option value="admin">Admin</option>
-                        </select>
                         <button
                             type="submit"
                             className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
@@ -276,13 +253,13 @@ const AdminPanel = () => {
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     fill="none"
                                                     viewBox="0 0 24 24"
-                                                    stroke-width="1.5"
+                                                    strokeWidth="1.5"
                                                     stroke="currentColor"
-                                                    class="size-6"
+                                                    className="size-6"
                                                 >
                                                     <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
                                                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
                                                     />
                                                 </svg>
@@ -307,57 +284,23 @@ const AdminPanel = () => {
                                         onChange={async (e) => {
                                             const newRole = e.target.value;
                                             try {
-                                                const res = await fetch(
-                                                    url(
-                                                        `admin/users/role/${user.id}`
-                                                    ),
-                                                    {
-                                                        method: 'PATCH',
-                                                        headers: {
-                                                            'Content-Type':
-                                                                'application/json',
-                                                        },
-                                                        credentials: 'include',
-                                                        body: JSON.stringify({
-                                                            role: newRole,
-                                                        }),
-                                                    }
+                                                await updateUserRole(
+                                                    user.id,
+                                                    newRole
                                                 );
-                                                let resultText =
-                                                    await res.text();
-                                                let result;
-                                                try {
-                                                    result =
-                                                        JSON.parse(resultText);
-                                                } catch (err) {
-                                                    console.error(
-                                                        'Server returned non-JSON:',
-                                                        resultText
-                                                    );
-                                                    return;
-                                                }
-
-                                                if (res.ok) {
-                                                    setUsers((prev) =>
-                                                        prev.map((u) =>
-                                                            u.id === user.id
-                                                                ? {
-                                                                      ...u,
-                                                                      role: newRole,
-                                                                  }
-                                                                : u
-                                                        )
-                                                    );
-                                                } else {
-                                                    console.error(
-                                                        'Klaida keičiant vaidmenį:',
-                                                        result?.message ||
-                                                            'Unknown error'
-                                                    );
-                                                }
+                                                setUsers((prev) =>
+                                                    prev.map((u) =>
+                                                        u.id === user.id
+                                                            ? {
+                                                                  ...u,
+                                                                  role: newRole,
+                                                              }
+                                                            : u
+                                                    )
+                                                );
                                             } catch (err) {
                                                 console.error(
-                                                    'Tinklo klaida keičiant vaidmenį:',
+                                                    'Klaida keičiant vaidmenį:',
                                                     err
                                                 );
                                             }
