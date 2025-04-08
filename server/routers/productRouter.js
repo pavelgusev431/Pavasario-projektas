@@ -11,6 +11,7 @@ import {
     getProductById,
     getUserProducts,
     getAllProducts,
+    getSearchRegex,
 } from '../controllers/productController.js';
 import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
@@ -23,6 +24,7 @@ productRouter.route('/').get(getPaginatedProducts);
 productRouter
     .route('/search')
     .get(validateSearchQuery, validate, getAllProducts);
+productRouter.route('/searchregex').get(getSearchRegex);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
 productRouter.route('/trending').get(getTrendingUserProducts);
 productRouter.route('/bestnew').get(getHotProducts);

@@ -1,13 +1,19 @@
-import { query } from 'express-validator';
+const zalgoRegex = new RegExp(process.env.ZALGO_REGEX);
 
-const validateSearchQuery = [
-    query('q')
-        .isLength({ min: 3, max: 15 })
-        .withMessage('Search query must be between 3 and 15 characters.')
-        .matches(/^[a-zA-Z0-9 ]*$/)
-        .withMessage(
-            'Search query can only contain letters, numbers, and spaces.'
-        ),
-];
+const validateSearchQuery = (req, res, next) => {
+    const { q } = req.query;
+    const trimmed = q?.trim().toLowerCase();
+
+    if (
+        !trimmed ||
+        trimmed.length < 3 ||
+        trimmed.length > 15 ||
+        zalgoRegex.test(trimmed)
+    ) {
+        return res.status(400).json({ error: 'Invalid search query.' });
+    }
+
+    next();
+};
 
 export default validateSearchQuery;
