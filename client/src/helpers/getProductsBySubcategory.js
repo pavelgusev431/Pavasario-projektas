@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import url from './getURL';
 const getProductsBySubcategory = async (subcategoryId) => {
     const response = await axios.get(
-        `http://localhost:3000/categories/products/${subcategoryId}`
+        url(`categories/products/${subcategoryId}`)
     );
     return response.data;
 };
