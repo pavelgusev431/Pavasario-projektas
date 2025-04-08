@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { searchSuggestions } from '../../../helpers/searchProducts';
+import getSearchRegex from '../../../helpers/getSearchRegex';
 
 const SearchBar = () => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [isFocused, setIsFocused] = useState(false);
+    const [zalgoRegex, setZalgoRegex] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,12 +30,37 @@ const SearchBar = () => {
         }
     }, [query]);
 
+    useEffect(() => {
+        const fetchRegex = async () => {
+            try {
+                const response = await getSearchRegex();
+                if (response?.zalgoRegex) {
+                    setZalgoRegex(new RegExp(response.zalgoRegex));
+                } else {
+                    console.error('Zalgo regex not found in the response.');
+                }
+            } catch (err) {
+                console.error('Failed to fetch Zalgo regex:', err);
+            }
+        };
+        fetchRegex();
+    }, []);
+
+    const isZalgo = (text) => {
+        return zalgoRegex ? zalgoRegex.test(text) : false;
+    };
+
     const handleSearch = (e) => {
         e.preventDefault();
         let trimmedQuery = query.trim().toLowerCase();
 
         if (trimmedQuery.length < 3 || trimmedQuery.length > 15) {
             toast.error('Search query must be between 3 and 15 characters.');
+            return;
+        }
+
+        if (isZalgo(trimmedQuery)) {
+            toast.error('Zalgo text is not allowed.');
             return;
         }
 
