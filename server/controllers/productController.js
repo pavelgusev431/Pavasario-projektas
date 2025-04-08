@@ -853,6 +853,10 @@ const getAllProductsSorted = async (req, res) => {
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
     }
 };
+const getSearchRegex = (req, res) => {
+    const zalgoRegex = process.env.ZALGO_REGEX;
+    res.json({ zalgoRegex });
+};
 
 export {
     getAllProductCount,
@@ -865,4 +869,5 @@ export {
     getRatedProductsByUserName,
     getAllProductsSorted,
     getUserProducts,
+    getSearchRegex,
 };
