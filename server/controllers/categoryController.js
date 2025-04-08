@@ -1,6 +1,8 @@
 import { Category, Subcategory } from '../models/categorySyncModel.js';
 import AppError from '../utilities/AppError.js';
 import Product from '../models/productModel.js';
+import Rating from '../models/ratingModel.js';
+import { Op } from 'sequelize';
 
 export const getAllCategoriesWithSubcategories = async (req, res, next) => {
     try {
@@ -80,11 +82,37 @@ export const getProductsBySubcategory = async (req, res) => {
                 .json({ message: 'No products found for this subcategory' });
         }
 
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map((product) => product.id),
+                },
+            },
+        });
+
+        const processedProducts = products.map((product) => {
+            const productRatings = ratings.filter(
+                (r) => r.product_id === product.id
+            );
+            const ratingCount = productRatings.length;
+            const avgRating =
+                ratingCount > 0
+                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
+                      ratingCount
+                    : 0;
+
+            return {
+                ...product.toJSON(),
+                avgRating: avgRating.toFixed(2),
+                ratingCount,
+            };
+        });
+
         res.status(200).json({
             status: 'success',
-            results: products.length,
+            results: processedProducts.length,
             data: {
-                products,
+                products: processedProducts,
             },
         });
     } catch (error) {

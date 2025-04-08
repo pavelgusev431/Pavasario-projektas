@@ -48,3 +48,9 @@ server/server/app.js
 server/utilities/checkPasswordHash.js
 server/validators/validateJWT.js
 server/validators/validateSearch.js
+client/src/components/layout/navbar/SearchBar.jsx
+client/src/components/products/SubcategoryProducts.jsx
+client/src/helpers/getProductsBySubcategory.js
+server/controllers/categoryController.js
+client/src/components/layout/navbar/NavBar.jsx
+client/src/components/layout/navbar/ProductsDropdown.jsx
