@@ -10,6 +10,7 @@ import morgan from 'morgan';
 import { getAllProductsSorted } from '../controllers/productController.js';
 import categoryRouter from '../routers/categoryRouter.js';
 import adminRouter from '../routers/adminRouter.js';
+import balanceRouter from '../routers/BalanceRouter.js';
 
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
@@ -37,6 +38,8 @@ app.use('/comments', commentRouter);
 app.get('/products/sorted', getAllProductsSorted);
 app.use('/categories', categoryRouter);
 app.use('/admin', adminRouter);
+app.use('/balance', balanceRouter);
+
 //==============
 //last
 app.use(errorHandler);
