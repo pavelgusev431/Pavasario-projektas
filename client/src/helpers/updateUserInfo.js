@@ -17,15 +17,24 @@ const updatePassword = async (id, data) => {
 
 const updateUserAvatar = async (id, data) => {
     const response1 = await axios
-        .patch(url(`upload/avatar`), data, { withCredentials: true })
+        .post(
+            url(`upload/dir`),
+            { dirName: `user${id}` },
+            { withCredentials: true }
+        )
         .catch((error) => {
             console.log(error);
         });
+    const formData = new FormData();
+    formData.append('avatar', data.avatar[0]);
     const response2 = await axios
-        .get(url(`users/avatar/${id}`), { withCredentials: true })
+        .post(url(`upload/avatar`), formData, {
+            withCredentials: true,
+        })
         .catch((error) => {
             console.log(error);
         });
+    console.log(response2);
     return { response1, response2 };
 };
 

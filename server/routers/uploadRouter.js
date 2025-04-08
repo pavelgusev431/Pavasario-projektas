@@ -12,5 +12,6 @@ const uploadRouter = express.Router();
 uploadRouter.route('/').get(checkFileTypes);
 uploadRouter.use(protect);
 uploadRouter.route('/dir').post(getDirectory);
-uploadRouter.route('/files').post(upload.array('images'), uploadResult);
+uploadRouter.route('/avatar').post(upload.single('avatar'), uploadResult);
+uploadRouter.route('/images').post(upload.array('images'), uploadResult);
 export default uploadRouter;

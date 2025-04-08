@@ -13,7 +13,6 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
         const fetch = async () => {
             const fileTypes = await getFileTypes();
             setAvailableFileTypes(fileTypes);
-            console.log(availableFileTypes);
             const strippedFileTypes = fileTypes
                 .map((fileType) => fileType.split('/')[1].toUpperCase())
                 .join(', ');
@@ -32,7 +31,6 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
 
     const submitHandler = async (data) => {
         try {
-            const image_url = new Date().toString() + ' ' + data.images[0];
             setError('');
             setValue('category_id', '');
             setValue('subcategory_id', '');

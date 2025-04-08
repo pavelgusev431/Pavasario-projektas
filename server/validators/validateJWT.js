@@ -10,22 +10,29 @@ const protect = async (req, res, next) => {
     try {
         const cookies = req.cookies;
         if (!cookies?.token)
-            throw new AppError('UnauthorizedL no token found', 401);
+            throw new AppError('Unauthorized: no token found', 401);
         const token = cookies.token;
+        let error;
         jsonwebtoken.verify(token, JWT_SECRET, async (err, decoded) => {
             if (err) {
-                throw new AppError('Unauthorized: invalid token', 401);
+                error = new AppError('Unauthorized: invalid token', 401);
+                return;
             }
             const decodedUser = decoded;
+            if (!decodedUser) {
+                error = new AppError('Unauthorized: invalid token', 401);
+                return;
+            }
             const foundUser = await User.findByPk(decodedUser.id);
             if (foundUser) {
                 res.locals.id = foundUser.id;
                 res.locals.role = decodedUser.role;
                 return next();
             } else {
-                throw new AppError('Unauthorized: user not found', 401);
+                error = new AppError('Unauthorized: user not found', 401);
             }
         });
+        if (error) throw error;
     } catch (error) {
         next(error);
     }

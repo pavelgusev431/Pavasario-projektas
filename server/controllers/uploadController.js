@@ -4,6 +4,7 @@ import AppError from '../utilities/AppError.js';
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import User from '../models/userModel.js';
 dotenv.config();
 
 //default path
@@ -73,8 +74,19 @@ const storage = multer.diskStorage({
         console.log(dirName);
         cb(null, `public/images/${dirName}`);
     },
-    filename: (_req, file, cb) => {
+    filename: async (req, file, cb) => {
         const suffixedName = Date.now() + '_' + file.originalname;
+        const { dirName } = req.cookies;
+        console.log(dirName);
+        const userId = dirName.split('user').join('');
+        if (userId) {
+            const foundUser = await User.findByPk(Number(userId));
+            if (foundUser) {
+                foundUser.image_url = `http://${process.env.HOST}:${process.env.PORT}/images/${dirName}/${suffixedName}`;
+                await foundUser.save();
+            }
+        }
+
         cb(null, suffixedName);
     },
 });
