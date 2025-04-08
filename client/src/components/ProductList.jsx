@@ -15,16 +15,52 @@ export default function ProductList() {
 
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(12);
-    const [priceRange, setPriceRange] = useState([0, 5000]);
-    const [dateRange, setDateRange] = useState([
-        new Date('2024-01-01').getTime(),
-        (() => {
-            const today = new Date();
-            today.setDate(today.getDate() + 1);
-            return today.getTime();
-        })(),
-    ]);
-    const [sortValue, setSortValue] = useState('timestamp-asc');
+    const [priceRange, setPriceRange] = useState(() => {
+        try {
+            const savedPriceRange = JSON.parse(
+                localStorage.getItem('priceRange')
+            );
+            return savedPriceRange ? savedPriceRange : [0, 5000];
+        } catch {
+            return [0, 5000];
+        }
+    });
+
+    const [dateRange, setDateRange] = useState(() => {
+        try {
+            const savedDateRange = JSON.parse(
+                localStorage.getItem('dateRange')
+            );
+            return savedDateRange
+                ? savedDateRange
+                : [
+                      new Date('2024-01-01').getTime(),
+                      new Date().setDate(new Date().getDate() + 1),
+                  ];
+        } catch {
+            return [
+                new Date('2024-01-01').getTime(),
+                new Date().setDate(new Date().getDate() + 1),
+            ];
+        }
+    });
+
+    const [sortValue, setSortValue] = useState(() => {
+        const savedSortValue = localStorage.getItem('sortValue');
+        const validSortValues = [
+            'timestamp-asc',
+            'timestamp-desc',
+            'price-asc',
+            'price-desc',
+            'avgRating-asc',
+            'avgRating-desc',
+            'name-asc',
+            'name-desc',
+        ];
+        return validSortValues.includes(savedSortValue)
+            ? savedSortValue
+            : 'timestamp-desc';
+    });
 
     const minDate = new Date('2024-01-01').getTime();
     const maxDate = (() => {
@@ -75,6 +111,12 @@ export default function ProductList() {
         );
     }, [products, priceRange, dateRange]);
 
+    useEffect(() => {
+        localStorage.setItem('priceRange', JSON.stringify(priceRange));
+        localStorage.setItem('dateRange', JSON.stringify(dateRange));
+        localStorage.setItem('sortValue', sortValue);
+    }, [priceRange, dateRange, sortValue]);
+
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
             setPagination({ ...pagination, currentPage: newPage });
@@ -88,6 +130,15 @@ export default function ProductList() {
 
     const handleSortChange = (newSortValue) => {
         setSortValue(newSortValue);
+        setPagination({ ...pagination, currentPage: 1 });
+    };
+    const resetFilters = () => {
+        setPriceRange([0, 5000]);
+        setDateRange([
+            new Date('2024-01-01').getTime(),
+            new Date().setDate(new Date().getDate() + 1),
+        ]);
+        setSortValue('timestamp-asc');
         setPagination({ ...pagination, currentPage: 1 });
     };
 
@@ -104,6 +155,8 @@ export default function ProductList() {
                 minDate={minDate}
                 maxDate={maxDate}
                 onSortChange={handleSortChange}
+                sortValue={sortValue}
+                resetFilters={resetFilters}
             />
 
             {/* Puslapio dydžio pasirinkimas */}
