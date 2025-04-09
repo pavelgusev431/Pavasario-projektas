@@ -2,7 +2,10 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
+import EventType from '../models/event_typeModel.js';
+import EventTarget from '../models/event_targetModel.js';     
 import { Op } from 'sequelize';
+import AppError from '../utilities/AppError.js';
 
 const getProductCommentsById = async (req, res) => {
     try {
@@ -95,4 +98,57 @@ const getProductCommentsById = async (req, res) => {
     }
 };
 
-export { getProductCommentsById };
+const createComment = async (req, res, next) => {
+    try {
+        const { id } = res.locals;
+        const { product_id, comment, stars, image_url } = req.body;
+
+        const newComment = await Rating.create({
+            user_id: id,
+            product_id,
+            comment,
+            stars: parseInt(stars),
+            image_url,
+        });
+
+        if (!newComment) {
+            throw new AppError('Internal server error', 500);
+        }
+
+       
+        const eventType = await EventType.findOne({ where: { name: 'created' } });
+        if (!eventType) {
+            throw new AppError('Event type "created" not found', 500);
+        }
+
+        
+        const eventTarget = await EventTarget.findOne({ where: { name: 'rating' } });
+        if (!eventTarget) {
+            throw new AppError('Event target "rating" not found', 500);
+        }
+
+        
+        const ratingDescription = `user_id: ${newComment.user_id}, product_id: ${newComment.product_id}, comment: ${newComment.comment}, stars: ${newComment.stars}, image_url: ${newComment.image_url}`;
+
+        // Create the Event
+            await Event.create({
+            user_id: id,
+            product_id,
+            type_id: eventType.id,
+            target_id: eventTarget.id,
+            description: ratingDescription,
+             
+        });
+
+        
+
+        res.status(201).json({
+            status: 'success',
+            data: newComment.dataValues,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { getProductCommentsById, createComment };
