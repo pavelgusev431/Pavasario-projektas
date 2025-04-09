@@ -1,8 +1,8 @@
 import express from 'express';
 import {
-  getUserBalance,
-  topUp,
-  getBalanceHistory
+    getUserBalance,
+    topUp,
+    getBalanceHistory,
 } from '../controllers/BalanceController.js';
 
 const router = express.Router();

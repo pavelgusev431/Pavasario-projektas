@@ -61,11 +61,11 @@ const Auth = () => {
                     setError('');
                     toast.success('Your account is created successfully!', {
                         position: 'top-center',
-                        autoClose: 10000,
+                        autoClose: 3000,
                         style: { background: '#161D2F', color: '#FFFFFF' },
                         hideProgressBar: true,
                     });
-                    setTimeout(() => setAuthType('login'), 3000);
+                    setTimeout(() => setAuthType('login'), 2000);
                 } else {
                     throw new Error(
                         response?.data?.message || 'Failed to create user'
@@ -77,11 +77,11 @@ const Auth = () => {
                 setAuth(user);
                 toast.success('Logged in successfully!', {
                     position: 'top-center',
-                    autoClose: 10000,
+                    autoClose: 3000,
                     style: { background: '#161D2F', color: '#FFFFFF' },
                     hideProgressBar: true,
                 });
-                setTimeout(() => navigate(from, { replace: true }), 3000);
+                setTimeout(() => navigate(from, { replace: true }), 2000);
             }
         } catch (err) {
             setError(err.message);
@@ -140,7 +140,7 @@ const Auth = () => {
                                 className={`px-4 py-2 w-1/2 text-sm font-medium rounded-l-lg transition ${
                                     authType === 'signup'
                                         ? 'bg-[#ff0051] text-white dark:bg-[#a30034]'
-                                        : 'dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500'
+                                        : 'dark:bg-gray-600 bg-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500'
                                 }`}
                             >
                                 Sign Up
@@ -164,7 +164,7 @@ const Auth = () => {
                         >
                             <div className="mb-4">
                                 <input
-                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                    className="w-full dark:placeholder:text-gray-300 placeholder:text-black px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                     type="text"
                                     placeholder="Username"
                                     {...register('username', {
@@ -191,7 +191,7 @@ const Auth = () => {
                             {authType === 'signup' && (
                                 <div className="mb-4">
                                     <input
-                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                        className="w-full dark:placeholder:text-gray-300 placeholder:text-black px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         type="email"
                                         placeholder="Email"
                                         {...register('email', {
@@ -226,7 +226,7 @@ const Auth = () => {
 
                             <div className="mb-4 relative">
                                 <input
-                                    className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                    className="w-full dark:placeholder:text-gray-300 placeholder:text-black px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Password"
                                     {...register('password', {
@@ -281,7 +281,7 @@ const Auth = () => {
                                         type={
                                             showPassword ? 'text' : 'password'
                                         }
-                                        className="w-full px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
+                                        className="w-full dark:placeholder:text-gray-300 placeholder:text-black px-4 py-3 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-0 focus:border-[#DB0045] peer"
                                         placeholder="Repeat Password"
                                         {...register('repeatPassword', {
                                             required: {
