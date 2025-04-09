@@ -57,7 +57,7 @@ const ProfileInfo = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="flex justify-center items-center h-svh bg-gray-50 dark:bg-gray-900">
             <div className="w-full max-w-2xl p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                 <div className="flex items-center mb-6">
                     <div className="w-2 h-8 bg-red-500 mr-3"></div>
