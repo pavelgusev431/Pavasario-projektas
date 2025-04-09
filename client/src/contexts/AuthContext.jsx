@@ -19,7 +19,7 @@ const AuthContextProvider = ({ children }) => {
                         throw new Error(
                             'Unauthorized. Perhaps the server has restarted and your session ended.'
                         );
-                    setAuth(data);
+                    setAuth(data.data.data);
                 }
             } catch (error) {
                 if (error) setAuth(null);

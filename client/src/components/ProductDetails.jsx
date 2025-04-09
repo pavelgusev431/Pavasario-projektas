@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router';
 import axios from 'axios';
 import Modal from 'react-modal';
 import ProductComments from './ProductComments';
+import { nanoid } from 'nanoid';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -72,15 +73,18 @@ const ProductDetails = () => {
             <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="w-full md:w-1/2 flex justify-center items-center p-4">
                     <div className="relative overflow-hidden w-96 h-96 md:w-128 md:h-128">
-                        <img
-                            src={product.image_url}
-                            alt={product.name}
-                            className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
+                        <button
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             onMouseMove={handleMouseMove}
                             onClick={openModal}
-                        />
+                        >
+                            <img
+                                src={product.image_url}
+                                alt={product.name}
+                                className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
+                            />
+                        </button>
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 p-6 md:p-8">
@@ -91,7 +95,7 @@ const ProductDetails = () => {
                         <div className="flex items-center">
                             {[...Array(5)].map((star, index) => (
                                 <svg
-                                    key={index}
+                                    key={nanoid(64)}
                                     className={`w-6 h-6 ${
                                         index < Math.round(product.avgRating)
                                             ? 'text-yellow-500'

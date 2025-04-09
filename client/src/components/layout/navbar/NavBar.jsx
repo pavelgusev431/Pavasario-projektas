@@ -203,7 +203,7 @@ const NavBar = () => {
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
                                         <i className="fas fa-user mr-3"></i>{' '}
-                                        Manage my account
+                                        <span>Manage my account</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -211,8 +211,8 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-box mr-3"></i> My
-                                        orders
+                                        <i className="fas fa-box mr-3"></i>{' '}
+                                        <span>My orders</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -221,7 +221,7 @@ const NavBar = () => {
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
                                         <i className="fas fa-times-circle mr-3"></i>{' '}
-                                        My cancellations
+                                        <span>My cancellations</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -229,8 +229,8 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-star mr-3"></i> My
-                                        reviews
+                                        <i className="fas fa-star mr-3"></i>{' '}
+                                        <span>My reviews</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -238,15 +238,15 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-store mr-3"></i> My
-                                        Products
+                                        <i className="fas fa-store mr-3"></i>{' '}
+                                        <span>My Products</span>
                                     </button>
                                     <button
                                         onClick={handleLogout}
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
                                         <i className="fas fa-sign-out-alt mr-3"></i>{' '}
-                                        Logout
+                                        <span>Logout</span>
                                     </button>
                                 </div>
                             )}
@@ -265,14 +265,15 @@ const NavBar = () => {
                                 onClick={() => handleNavigation('/contact')}
                                 className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
-                                <i className="fas fa-envelope mr-3"></i> Contact
+                                <i className="fas fa-envelope mr-3"></i>{' '}
+                                <span>Contact</span>
                             </button>
                             <button
                                 onClick={() => handleNavigation('/about')}
                                 className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <i className="fas fa-info-circle mr-3"></i>{' '}
-                                About
+                                <span>About</span>
                             </button>
                             {auth?.role?.toLowerCase() === 'admin' && (
                                 <button
@@ -282,7 +283,7 @@ const NavBar = () => {
                                     className="p-2 text-white w-full text-left hover:bg-gray-600"
                                 >
                                     <i className="fas fa-cogs mr-3"></i>{' '}
-                                    AdminPanel
+                                    <span>AdminPanel</span>
                                 </button>
                             )}
                             {!auth && (
@@ -291,7 +292,7 @@ const NavBar = () => {
                                     className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
                                     <i className="fas fa-user-plus mr-3"></i>{' '}
-                                    Sign Up
+                                    <span>Sign Up</span>
                                 </button>
                             )}
                         </div>

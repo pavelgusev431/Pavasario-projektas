@@ -1,18 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { updateUserAvatar } from '../../../helpers/updateUserInfo';
+import { updateUserAvatar } from '../../../helpers/updateUserInfo.js';
+import getFileTypes from '../../../helpers/getFileTypes.js';
 
 const ModalPicture = ({ user, showModal, setShowModal }) => {
     const { id } = user;
 
-    const availableTypes = [
-        'image/png',
-        'image/jpg',
-        'image/jpeg',
-        'image/gif',
-        'image/webp',
-        'image/svg',
-    ];
+    const [availableTypes, setAvailableTypes] = useState();
+    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
+        useState();
+
+    useEffect(() => {
+        console.log(user);
+        const fetchTypes = async () => {
+            const data = await getFileTypes();
+            setAvailableTypes(data);
+            const strippedFileTypes = data
+                .map((fileType) => fileType.split('/')[1].toUpperCase())
+                .join(', ');
+            setStrippedAvailableFileTypes(strippedFileTypes);
+        };
+        fetchTypes();
+    }, [user]);
 
     const [error, setError] = useState('');
 
@@ -25,7 +34,7 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
     } = useForm();
 
     const submitHandler = async (data) => {
-        const file = data.picture[0];
+        const file = data.avatar[0];
         if (!availableTypes.includes(file.type)) {
             setError('Invalid file type');
             return;
@@ -33,7 +42,7 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
         try {
             await updateUserAvatar(id, data);
             setError('');
-            setValue('file', '');
+            setValue('avatar', '');
         } catch (error) {
             setError(error.message);
         }
@@ -64,11 +73,29 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
                     <div>
                         <input
                             type="file"
-                            {...register('file', {
+                            {...register('avatar', {
                                 required: 'This field is required',
                                 onChange: () => {
                                     setError('');
-                                    clearErrors('file');
+                                    clearErrors('avatar');
+                                },
+                                validate: {
+                                    fileSize: (value) => {
+                                        if (!value[0]) return true;
+                                        return (
+                                            value[0].size <= 2000000 ||
+                                            'File size must be less than 2MB'
+                                        );
+                                    },
+                                    fileType: (value) => {
+                                        if (!value[0]) return true;
+                                        return (
+                                            availableTypes.includes(
+                                                value[0].type
+                                            ) ||
+                                            `The only available file formats are: ${strippedAvailableFileTypes}`
+                                        );
+                                    },
                                 },
                             })}
                             className="block w-full border border-gray-300 rounded-lg p-2 cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-white file:bg-purple-500 hover:file:bg-purple-600"
