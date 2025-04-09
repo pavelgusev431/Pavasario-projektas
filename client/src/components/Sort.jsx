@@ -1,11 +1,6 @@
-import { useState } from 'react';
-
-export default function Sort({ onSortChange }) {
-    const [sortValue, setSortValue] = useState('createdAt-asc');
-
+export default function Sort({ onSortChange, sortValue }) {
     const handleSortChange = (event) => {
         const newSortValue = event.target.value;
-        setSortValue(newSortValue);
         onSortChange(newSortValue);
     };
 
@@ -21,8 +16,8 @@ export default function Sort({ onSortChange }) {
                 </option>
                 <option value="price-asc">Price ↑</option>
                 <option value="price-desc">Price ↓</option>
-                <option value="createdAt-desc">Newest</option>
-                <option value="createdAt-asc">Oldest</option>
+                <option value="timestamp-desc">Newest</option>
+                <option value="timestamp-asc">Oldest</option>
                 <option value="avgRating-desc">Rating ↓</option>
                 <option value="avgRating-asc">Rating ↑</option>
                 <option value="name-asc">Name A-Z</option>

@@ -141,21 +141,25 @@ export const filterItemsByRange = async (
 };
 
 export const sortHelper = async (products, sortField, order) => {
-    const allowedSortFields = ['createdAt', 'price', 'name', 'avgRating'];
+    const allowedSortFields = ['timestamp', 'price', 'name', 'avgRating'];
     const field = allowedSortFields.includes(sortField)
         ? sortField
-        : 'createdAt';
+        : 'timestamp';
 
     const orderDirection = order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
     const processed = [...products];
 
-    if (field === 'createdAt') {
+    const defaultSort = () => {
         processed.sort((a, b) => {
             const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
             const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
             return orderDirection === 'DESC' ? dateB - dateA : dateA - dateB;
         });
+    };
+
+    if (field === 'timestamp') {
+        defaultSort();
     } else if (field === 'price') {
         processed.sort((a, b) => {
             const priceA = Number(a.price);
@@ -177,11 +181,7 @@ export const sortHelper = async (products, sortField, order) => {
                 : a.avgRating - b.avgRating
         );
     } else {
-        processed.sort((a, b) => {
-            const dateA = a.timestamp ? new Date(a.timestamp) : new Date(0);
-            const dateB = b.timestamp ? new Date(b.timestamp) : new Date(0);
-            return orderDirection === 'DESC' ? dateB - dateA : dateA - dateB;
-        });
+        defaultSort();
     }
 
     return processed;

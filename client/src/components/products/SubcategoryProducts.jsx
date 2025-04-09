@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // To get the subcategoryId from the URL
-import axios from 'axios';
-import ProductCard from '../ProductCard'; // Import the ProductCard component
+import { useParams } from 'react-router-dom';
+import ProductCard from '../ProductCard';
 import getProductsBySubcategory from '../../helpers/getProductsBySubcategory';
 
 const ProductsPage = () => {
-    const { subcategoryId } = useParams(); // Get subcategoryId from the URL
+    const { subcategoryId } = useParams();
     const [subcategory, setSubcategory] = useState({});
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -16,10 +15,13 @@ const ProductsPage = () => {
         const fetchProducts = async () => {
             try {
                 const response = await getProductsBySubcategory(subcategoryId);
-                if (response.data.products.length === 0) {
+                const products = response.data.products;
+
+                if (products.length === 0) {
                     setNoProducts(true);
                 } else {
-                    setProducts(response.data.products);
+                    setProducts(products);
+                    setSubcategory(products[0].subcategory);
                 }
             } catch (err) {
                 console.error('Error fetching products:', err);
@@ -29,19 +31,7 @@ const ProductsPage = () => {
             }
         };
 
-        const fetchSubcategory = async () => {
-            try {
-                const response = await axios.get(
-                    `http://localhost:3000/categories/products/${subcategoryId}`
-                );
-                setSubcategory(response.data);
-            } catch (err) {
-                console.error('Error fetching subcategory:', err);
-            }
-        };
-
         fetchProducts();
-        fetchSubcategory();
     }, [subcategoryId]);
 
     if (noProducts) {
@@ -50,7 +40,7 @@ const ProductsPage = () => {
                 No products found in this subcategory
             </div>
         );
-    } // Re-fetch if the subcategoryId changes
+    }
 
     if (isLoading)
         return <div className="text-center text-lg">Loading products...</div>;
@@ -62,7 +52,7 @@ const ProductsPage = () => {
                 <h2 className="text-l text-red-500 font-bold mb-2">Products</h2>
             </div>
             <h2 className="text-2xl font-bold ml-10 mb-2">
-                Products in this {subcategory.name}
+                Products in: {subcategory.name}
             </h2>
 
             {products.length === 0 ? (
@@ -72,7 +62,12 @@ const ProductsPage = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
                     {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                            avgRating={product.avgRating}
+                            ratingCount={product.ratingCount}
+                        />
                     ))}
                 </div>
             )}

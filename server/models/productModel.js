@@ -21,7 +21,10 @@ const Product = sq.define(
         image_url: { type: DataTypes.TEXT, allowNull: false },
         amount_in_stock: { type: DataTypes.BIGINT, allowNull: false },
     },
-    { tableName: 'products', timestamps: false }
+    {
+        tableName: 'products',
+        timestamps: false,
+    }
 );
 
 // Nustatome ryšį tarp User ir Product

@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import ProductCard from './ProductCard';
 import { getUserByUsername } from '../helpers/getUser.js';
 import { getUserProductsByUserName } from '../helpers/getProduct.js';
+import BackToTopButton from './buttons/BackToTopButton.jsx';
 
 export default function UserProducts() {
     const { username } = useParams();
@@ -53,6 +54,7 @@ export default function UserProducts() {
                     />
                 ))}
             </div>
+            <BackToTopButton />
         </div>
     );
 }

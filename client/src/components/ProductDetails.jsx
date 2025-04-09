@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import axios from 'axios';
 import Modal from 'react-modal';
+import ProductComments from './ProductComments';
+import { nanoid } from 'nanoid';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -14,7 +16,7 @@ const ProductDetails = () => {
                 const response = await axios.get(
                     `http://localhost:3000/products/selected/${id}`
                 );
-                console.log('Fetched product data:', response.data); // Debugging: Log the product data
+
                 setProduct(response.data);
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -27,9 +29,6 @@ const ProductDetails = () => {
     if (!product) {
         return <div>Loading...</div>;
     }
-
-    // Check if the product data is correctly fetched
-    console.log('Product data:', product);
 
     // Determine stock status
     let stockStatus;
@@ -74,15 +73,18 @@ const ProductDetails = () => {
             <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="w-full md:w-1/2 flex justify-center items-center p-4">
                     <div className="relative overflow-hidden w-96 h-96 md:w-128 md:h-128">
-                        <img
-                            src={product.image_url}
-                            alt={product.name}
-                            className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
+                        <button
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             onMouseMove={handleMouseMove}
                             onClick={openModal}
-                        />
+                        >
+                            <img
+                                src={product.image_url}
+                                alt={product.name}
+                                className="w-full h-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-pointer"
+                            />
+                        </button>
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 p-6 md:p-8">
@@ -93,7 +95,7 @@ const ProductDetails = () => {
                         <div className="flex items-center">
                             {[...Array(5)].map((star, index) => (
                                 <svg
-                                    key={index}
+                                    key={nanoid(64)}
                                     className={`w-6 h-6 ${
                                         index < Math.round(product.avgRating)
                                             ? 'text-yellow-500'
@@ -141,16 +143,16 @@ const ProductDetails = () => {
                 onRequestClose={closeModal}
                 contentLabel="Product Images"
                 className="fixed inset-0 flex items-center justify-center"
-                overlayClassName="fixed inset-0 bg-white bg-opacity-50 backdrop-blur"
+                overlayClassName="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-50 backdrop-blur"
             >
-                <div className="bg-white p-4 rounded-lg max-w-4xl mx-auto relative">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg max-w-4xl mx-auto relative">
                     <button
                         onClick={closeModal}
-                        className="absolute top-4 right-4 text-black text-2xl"
+                        className="absolute top-4 right-4 text-black dark:text-white text-2xl"
                     >
                         &times;
                     </button>
-                    <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white text-center">
                         {product.name}
                     </h2>
                     <img
@@ -160,6 +162,7 @@ const ProductDetails = () => {
                     />
                 </div>
             </Modal>
+            <ProductComments productId={id} />
         </div>
     );
 };
