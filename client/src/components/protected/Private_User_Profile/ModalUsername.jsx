@@ -31,8 +31,8 @@ const ModalUsername = ({ user, showModal, setShowModal }) => {
     return (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-stone-900/50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <h3 className="text-xl font-semibold text-gray-800">
+                <div className="flex items-center dark:bg-gray-800 justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 className="text-xl dark:text-white font-semibold text-gray-800">
                         Edit Username
                     </h3>
                     <button
@@ -55,7 +55,10 @@ const ModalUsername = ({ user, showModal, setShowModal }) => {
                         </svg>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit(submitHandler)} className="p-6">
+                <form
+                    onSubmit={handleSubmit(submitHandler)}
+                    className="dark:bg-gray-800 p-6"
+                >
                     <div className="mb-4">
                         <input
                             type="text"

@@ -10,6 +10,8 @@ export default function Tools({
     minDate,
     maxDate,
     onSortChange,
+    sortValue,
+    resetFilters,
 }) {
     const [isToolsVisible, setIsToolsVisible] = useState(false);
 
@@ -36,7 +38,13 @@ export default function Tools({
                         minDate={minDate}
                         maxDate={maxDate}
                     />
-                    <Sort onSortChange={onSortChange} />
+                    <Sort onSortChange={onSortChange} sortValue={sortValue} />
+                    <button
+                        onClick={resetFilters}
+                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    >
+                        Reset Filters
+                    </button>
                 </div>
             )}
         </div>

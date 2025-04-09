@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
-import getBalance from '../../../helpers/getBalance.js';
+import { getBalance } from '../../../helpers/Balance.js';
 import SearchBar from './SearchBar.jsx';
 
 const NavBar = () => {
@@ -18,24 +18,54 @@ const NavBar = () => {
     useEffect(() => {
         const fetchBalance = async () => {
             try {
-                let response;
-                if (auth.id) response = await getBalance();
-                const data = response?.data;
-                setBalance(data?.balance || 0);
+                if (auth?.id) {
+                    const result = await getBalance(auth.id);
+                    setBalance(result.balance || 0);
+                }
             } catch (error) {
-                console.error('Error fetching balance:', error);
+                console.error('Ошибка получения баланса:', error);
             }
         };
 
-        if (auth) {
-            fetchBalance();
-        }
+        if (auth?.id) fetchBalance();
+
+        const handleBalanceUpdate = () => {
+            if (auth?.id) fetchBalance();
+        };
+
+        window.addEventListener('balance-updated', handleBalanceUpdate);
 
         return () => {
+            window.removeEventListener('balance-updated', handleBalanceUpdate);
             setIsHovered(false);
             setIsClicked(false);
         };
     }, [auth, location]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                !event.target.closest('.mobile-menu') &&
+                !event.target.closest('.menu-toggle')
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleNavigation = (path) => {
         navigate(path);
@@ -51,7 +81,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900 ">
+        <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900">
             <div className="flex items-center justify-between mx-auto px-2 md:px-4">
                 <button
                     className="flex items-center"
@@ -65,14 +95,14 @@ const NavBar = () => {
                 </button>
 
                 <div className="hidden md:flex items-center ml-2">
-                    <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700  dark:bg-gray-800  dark:md:bg-gray-900">
+                    <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700 dark:bg-gray-800 dark:md:bg-gray-900">
                         <li>
                             <ProductsDropdown />
                         </li>
                         <li>
                             <button
                                 onClick={() => handleNavigation('/contact')}
-                                className={`block py-2 px-2 text-gray-900 cursor-pointer dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 ${isActive('/contact')}`}
+                                className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/contact')}`}
                             >
                                 Contact
                             </button>
@@ -80,7 +110,7 @@ const NavBar = () => {
                         <li>
                             <button
                                 onClick={() => handleNavigation('/about')}
-                                className={`block py-2 px-2 text-gray-900 cursor-pointer dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 ${isActive('/about')}`}
+                                className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/about')}`}
                             >
                                 About
                             </button>
@@ -91,7 +121,7 @@ const NavBar = () => {
                                     onClick={() =>
                                         handleNavigation('/adminpanel')
                                     }
-                                    className={`block text-gray-900 cursor-pointer dark:text-white rounded-sm md:border-0 ${isActive('/adminpanel')}`}
+                                    className={`block dark:text-white rounded-sm md:border-0 ${isActive('/adminpanel')}`}
                                 >
                                     AdminPanel
                                 </button>
@@ -99,6 +129,7 @@ const NavBar = () => {
                         )}
                     </ul>
                 </div>
+
                 <div className="ml-2">
                     <ThemeToggleButton />
                 </div>
@@ -107,21 +138,22 @@ const NavBar = () => {
                     {!auth && (
                         <button
                             onClick={() => handleNavigation('/signup')}
-                            className="block py-2 px-2 text-gray-900 dark:text-white rounded-sm hover:bg-gray-100 dark: md:hover:bg-transparent md:border-0 md: md:p-0 font-medium cursor-pointer"
+                            className="block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 font-medium cursor-pointer"
                         >
                             Sign Up
                         </button>
                     )}
+
+                    {/* Burger Button */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="p-2 w-12 h-12 flex items-center justify-center text-sm text-gray-500 dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
+                        className="menu-toggle p-2 w-12 h-12 flex items-center justify-center text-sm dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2"
                         aria-controls="navbar-default"
                         aria-expanded={isMenuOpen}
                     >
                         <span className="sr-only">Open main menu</span>
                         <svg
                             className="w-6 h-6"
-                            xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                         >
@@ -134,13 +166,15 @@ const NavBar = () => {
                             />
                         </svg>
                     </button>
+
                     <div className="justify-end">
                         <SearchBar />
                     </div>
+
                     {auth && (
                         <div className="relative">
                             <button
-                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseEnter={() => setIsHovered(false)}
                                 onMouseLeave={() => setIsHovered(false)}
                                 className={`fas fa-user-circle text-4xl cursor-pointer transition-transform duration-300 ${
                                     isHovered || isClicked
@@ -159,7 +193,7 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-wallet mr-3"></i>{' '}
                                         <span>
-                                            Balance: ${balance.toFixed(2)}
+                                            Balance: €{balance.toFixed(2)}
                                         </span>
                                     </button>
                                     <button
@@ -168,7 +202,7 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-user mr-3"></i>
+                                        <i className="fas fa-user mr-3"></i>{' '}
                                         <span>Manage my account</span>
                                     </button>
                                     <button
@@ -177,7 +211,7 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-box mr-3"></i>
+                                        <i className="fas fa-box mr-3"></i>{' '}
                                         <span>My orders</span>
                                     </button>
                                     <button
@@ -186,7 +220,7 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-times-circle mr-3"></i>
+                                        <i className="fas fa-times-circle mr-3"></i>{' '}
                                         <span>My cancellations</span>
                                     </button>
                                     <button
@@ -195,7 +229,7 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-star mr-3"></i>
+                                        <i className="fas fa-star mr-3"></i>{' '}
                                         <span>My reviews</span>
                                     </button>
                                     <button
@@ -204,14 +238,14 @@ const NavBar = () => {
                                         }
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-store mr-3"></i>
+                                        <i className="fas fa-store mr-3"></i>{' '}
                                         <span>My Products</span>
                                     </button>
                                     <button
                                         onClick={handleLogout}
                                         className="p-2 text-white w-full text-left hover:bg-gray-600"
                                     >
-                                        <i className="fas fa-sign-out-alt mr-3"></i>
+                                        <i className="fas fa-sign-out-alt mr-3"></i>{' '}
                                         <span>Logout</span>
                                     </button>
                                 </div>
@@ -221,9 +255,10 @@ const NavBar = () => {
                 </div>
 
                 {isMenuOpen && (
-                    <div className="absolute top-18 right-2 bg-white dark:bg-gray-900 shadow-lg rounded-lg z-50 border border-gray-200 dark:border-gray-700 p-5 transition-all duration-300 w-48 md:w-64">
+                    <div className="mobile-menu absolute top-18 right-2 bg-white dark:bg-gray-900 shadow-lg rounded-lg z-50 border border-gray-200 dark:border-gray-700 p-5 transition-all duration-300 w-48 md:w-64">
                         <div className="flex flex-col space-y-2">
-                            <div className="w-full">
+                            <div className="p-2 text-black flex dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <i className="fas fa-bag-shopping pt-1 mr-4"></i>
                                 <ProductsDropdown />
                             </div>
                             <button
@@ -240,13 +275,17 @@ const NavBar = () => {
                                 <i className="fas fa-info-circle mr-3"></i>{' '}
                                 <span>About</span>
                             </button>
-                            <button
-                                onClick={() => handleNavigation('/adminpanel')}
-                                className={`p-2 text-white w-full text-left hover:bg-gray-600 ${isActive('/adminpanel')}`}
-                            >
-                                <i className="fas fa-cogs mr-3"></i>
-                                <span>AdminPanel</span>
-                            </button>
+                            {auth?.role?.toLowerCase() === 'admin' && (
+                                <button
+                                    onClick={() =>
+                                        handleNavigation('/adminpanel')
+                                    }
+                                    className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                >
+                                    <i className="fas fa-cogs mr-3"></i>{' '}
+                                    <span>AdminPanel</span>
+                                </button>
+                            )}
                             {!auth && (
                                 <button
                                     onClick={() => handleNavigation('/signup')}

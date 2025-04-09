@@ -43,79 +43,69 @@ VALUES
 (5, 1, 5, 'Tikrinu ar veikia data', 249, 'tikrinu', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYlODcqSHiGaEh6eLqV-nH8wxlHLoMPsP8eg&s', 8);
 
  
-INSERT INTO "events" (user_id,product_id, type_id, target_id,  description, timestamp)
+INSERT INTO "events" (user_id, product_id, type_id, target_id, description, timestamp)
 VALUES
--- userio sukurimas
-(2,null, 1, 1,  'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
-(3,null, 1, 1,  'vartotojas sukurtas', '2025-03-27T15:58:44.450Z'),
-(4,null, 1, 1,  'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
-(5,null, 1, 1,  'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
-(6,null, 1, 1,  'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
- 
--- produktu sukurimas
-(2,1, 1, 2,  'ikele iPhone 15 Pro', '2024-03-25T15:58:44.450Z'),
-(2,2, 1, 2,  'ikele MacBook Air M2', '2025-04-07T15:58:44.450Z'),
-(2,3, 1, 2,  'ikele AirPods Pro', '2025-03-25T15:58:44.450Z'),
-(2,4, 1, 2,  'Samsung SmartWatch', '2025-03-25T15:58:44.450Z'),
-(2,5, 1, 2,  'ikele iPad Pro 12.9', '2025-03-25T15:58:44.450Z'),
-(2,6, 1, 2,  'ikele Apple TV 4K', '2025-03-25T15:58:44.450Z'),
-(2,7, 1, 2,  'ikele Beats Studio3 Wireless', '2025-03-25T15:58:44.450Z'),
-(2,8, 1, 2,  'ikele Apple Magic Mouse', '2025-03-25T15:58:44.450Z'),
-(2,9, 1, 2,  'ikele Apple Keyboard', '2025-03-25T15:58:44.450Z'),
-(2,10, 1, 2,  'ikele Samsung External SSD', '2025-03-25T15:58:44.450Z'),
- 
-(3,11, 1, 2,  'ikele Samsung Galaxy S24', '2025-03-25T15:58:44.450Z'),
-(3,12, 1, 2,  'ikele Samsung Galaxy Tab S8', '2025-03-25T15:58:44.450Z'),
-(3,13, 1, 2,  'ikele Samsung Galaxy Buds2', '2025-03-25T15:58:44.450Z'),
-(3,14, 1, 2,  'ikele Samsung Samsung SmartWatch', '2025-03-25T15:58:44.450Z'),
-(3,15, 1, 2,  'ikele Samsung QLED TV', '2025-03-25T15:58:44.450Z'),
-(3,16, 1, 2,  'ikele Samsung Notebook', '2025-03-25T15:58:44.450Z'),
-(3,17, 1, 2,  'ikele Samsung Soundbar', '2025-03-25T15:58:44.450Z'),
-(3,18, 1, 2,  'ikele Samsung Monitor', '2025-03-25T15:58:44.450Z'),
-(3,19, 1, 2,  'ikele Samsung Powerbank', '2025-03-25T15:58:44.450Z'),
-(3,20, 1, 2,  'ikele Samsung External SSD', '2025-03-25T15:58:44.450Z'),
- 
-(4,21, 1, 2,  'ikele MacBook Air M2', '2025-03-25T15:58:44.450Z'),
- 
-(5,22, 1, 2,  'ikele betkas', '2025-03-25T15:58:44.450Z'),
-(5,23, 1, 2,  'ikele Testo telefonas', '2025-03-25T15:58:44.450Z'),
-(5,24, 1, 2,  'ikele Testo kompiuteris', '2025-03-25T15:58:44.450Z'),
-(5,25, 1, 2,  'ikele Testo ausinės', '2025-03-25T15:58:44.450Z'),
-(5,26, 1, 2,  'ikele Testo laikrodis', '2025-03-25T15:58:44.450Z'),
- 
-(5,27, 1, 2,  'ikele tikrinu', '2025-03-25T15:58:44.450Z'),
- 
- 
- 
- 
- 
---komentarai
- 
-(3,1, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
-(4,1, 1, 6,  'sUKURE KOMETARA', '2025-01-25T16:28:44.450Z'),
-(4,1, 1, 6,  'sUKURE KOMETARA', '2023-09-14T17:18:44.450Z'),
-(5,1, 1, 6,  'sUKURE KOMETARA', '2020-01-25T18:48:44.450Z'),
- 
-(3,2, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
-(4,2, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
-(4,2, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
-(5,2, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
- 
-(3,3, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
-(4,3, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
-(4,3, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
-(5,3, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
- 
-(3,4, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
-(4,4, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
-(4,4, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
-(5,4, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
- 
---tikrinu
-(5,1, 1, 6,  'sUKURE KOMETARA', '2025-02-20T15:58:44.450Z'),
-(2,27, 1, 6,  'sUKURE KOMETARA', '2025-03-19T15:58:44.450Z'),
-(2,27, 1, 6,  'sUKURE KOMETARA', '2025-04-07T10:11:44.450Z');
- 
+-- 👤 Создание пользователей
+(2, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
+(3, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-27T15:58:44.450Z'),
+(4, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
+(5, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
+(6, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
+
+-- 📦 Создание продуктов
+(2, 1, 1, 2, 'ikele iPhone 15 Pro', '2024-03-25T15:58:44.450Z'),
+(2, 2, 1, 2, 'ikele MacBook Air M2', '2025-04-07T15:58:44.450Z'),
+(2, 3, 1, 2, 'ikele AirPods Pro', '2025-03-25T15:58:44.450Z'),
+(2, 4, 1, 2, 'Samsung SmartWatch', '2025-03-25T15:58:44.450Z'),
+(2, 5, 1, 2, 'ikele iPad Pro 12.9', '2025-03-25T15:58:44.450Z'),
+(2, 6, 1, 2, 'ikele Apple TV 4K', '2025-03-25T15:58:44.450Z'),
+(2, 7, 1, 2, 'ikele Beats Studio3 Wireless', '2025-03-25T15:58:44.450Z'),
+(2, 8, 1, 2, 'ikele Apple Magic Mouse', '2025-03-25T15:58:44.450Z'),
+(2, 9, 1, 2, 'ikele Apple Keyboard', '2025-03-25T15:58:44.450Z'),
+(2, 10, 1, 2, 'ikele Samsung External SSD', '2025-03-25T15:58:44.450Z'),
+
+(3, 11, 1, 2, 'ikele Samsung Galaxy S24', '2025-03-25T15:58:44.450Z'),
+(3, 12, 1, 2, 'ikele Samsung Galaxy Tab S8', '2025-03-25T15:58:44.450Z'),
+(3, 13, 1, 2, 'ikele Samsung Galaxy Buds2', '2025-03-25T15:58:44.450Z'),
+(3, 14, 1, 2, 'ikele Samsung Samsung SmartWatch', '2025-03-25T15:58:44.450Z'),
+(3, 15, 1, 2, 'ikele Samsung QLED TV', '2025-03-25T15:58:44.450Z'),
+(3, 16, 1, 2, 'ikele Samsung Notebook', '2025-03-25T15:58:44.450Z'),
+(3, 17, 1, 2, 'ikele Samsung Soundbar', '2025-03-25T15:58:44.450Z'),
+(3, 18, 1, 2, 'ikele Samsung Monitor', '2025-03-25T15:58:44.450Z'),
+(3, 19, 1, 2, 'ikele Samsung Powerbank', '2025-03-25T15:58:44.450Z'),
+(3, 20, 1, 2, 'ikele Samsung External SSD', '2025-03-25T15:58:44.450Z'),
+
+(4, 21, 1, 2, 'ikele MacBook Air M2', '2025-03-25T15:58:44.450Z'),
+
+(5, 22, 1, 2, 'ikele betkas', '2025-03-25T15:58:44.450Z'),
+(5, 23, 1, 2, 'ikele Testo telefonas', '2025-03-25T15:58:44.450Z'),
+(5, 24, 1, 2, 'ikele Testo kompiuteris', '2025-03-25T15:58:44.450Z'),
+(5, 25, 1, 2, 'ikele Testo ausinės', '2025-03-25T15:58:44.450Z'),
+(5, 26, 1, 2, 'ikele Testo laikrodis', '2025-03-25T15:58:44.450Z'),
+(5, 27, 1, 2, 'ikele tikrinu', '2025-03-25T15:58:44.450Z'),
+
+-- 💰 Пополнения
+(7, NULL, 1, 4, 'ADDENDUM: +10€', '2025-04-07T09:00:00.000Z'),
+(7, NULL, 1, 4, 'ADDENDUM: +20€', '2025-04-07T10:00:00.000Z'),
+(7, NULL, 1, 4, 'ADDENDUM: +5€', '2025-04-07T11:00:00.000Z'),
+(7, NULL, 1, 4, 'ADDENDUM: +30€', '2025-04-07T12:00:00.000Z'),
+(7, NULL, 1, 4, 'ADDENDUM: +25€', '2025-04-07T13:00:00.000Z'),
+
+-- 🛒 Покупки
+(7, 11, 2, 5, 'PURCHASE: Samsung Galaxy S24', '2025-04-07T14:00:00.000Z'),
+(7, 13, 2, 5, 'PURCHASE: Samsung Galaxy Buds2', '2025-04-07T15:00:00.000Z'),
+(7, 15, 2, 5, 'PURCHASE: Samsung QLED TV', '2025-04-07T16:00:00.000Z'),
+(7, 18, 2, 5, 'PURCHASE: Samsung Monitor', '2025-04-07T17:00:00.000Z'),
+(7, 20, 2, 5, 'PURCHASE: Samsung External SSD', '2025-04-07T18:00:00.000Z'),
+
+-- 💼 Продажи
+(7, 2, 2, 6, 'SALE: MacBook Air M2', '2025-04-07T19:00:00.000Z'),
+(7, 4, 2, 6, 'SALE: Samsung SmartWatch', '2025-04-07T20:00:00.000Z'),
+(7, 5, 2, 6, 'SALE: iPad Pro 12.9', '2025-04-07T21:00:00.000Z'),
+(7, 7, 2, 6, 'SALE: Beats Studio3 Wireless', '2025-04-07T22:00:00.000Z'),
+(7, 9, 2, 6, 'SALE: Apple Keyboard', '2025-04-07T23:00:00.000Z');
+
+
  
  
  

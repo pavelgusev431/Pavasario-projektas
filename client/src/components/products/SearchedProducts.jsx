@@ -1,13 +1,42 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ProductCard from '../ProductCard';
 import { searchProducts } from '../../helpers/searchProducts';
+import getSearchRegex from '../../helpers/getSearchRegex';
 
 const SearchedProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchParams] = useSearchParams();
+    const [zalgoRegex, setZalgoRegex] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchRegex = async () => {
+            try {
+                const response = await getSearchRegex();
+                if (response?.zalgoRegex) {
+                    const regex = new RegExp(response.zalgoRegex);
+                    setZalgoRegex(regex);
+                }
+            } catch (err) {
+                console.error('Failed to fetch Zalgo regex:', err);
+            }
+        };
+
+        fetchRegex();
+    }, []);
+
+    const isZalgo = (text) => {
+        try {
+            return zalgoRegex ? zalgoRegex.test(text) : false;
+        } catch (e) {
+            console.error('Error in Zalgo check:', e);
+            return false;
+        }
+    };
 
     const fetchSearchResults = async (query) => {
         if (!query) return;
@@ -17,7 +46,6 @@ const SearchedProducts = () => {
 
         try {
             const response = await searchProducts(query);
-
             if (response && response.data) {
                 const productsData = response.data.data || response.data;
                 setProducts(productsData);
@@ -40,12 +68,27 @@ const SearchedProducts = () => {
 
     useEffect(() => {
         const query = searchParams.get('q');
-        if (query) {
-            fetchSearchResults(query);
+
+        if (zalgoRegex && query) {
+            const trimmedQuery = query.trim().toLowerCase();
+
+            const isInvalid =
+                trimmedQuery.length < 3 ||
+                trimmedQuery.length > 15 ||
+                !/^[a-zA-Z0-9 ]+$/.test(trimmedQuery) ||
+                isZalgo(trimmedQuery);
+
+            if (isInvalid) {
+                toast.error('Zalgo? Not on my watch.');
+                navigate('*');
+                return;
+            }
+
+            fetchSearchResults(trimmedQuery);
         } else {
             setProducts([]);
         }
-    }, [searchParams]);
+    }, [searchParams, navigate, zalgoRegex]);
 
     const searchQuery = searchParams.get('q');
 

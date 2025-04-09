@@ -854,6 +854,10 @@ const deleteProduct = async (req, res, next) => {
         next(error);
     }
 };
+const getSearchRegex = (req, res) => {
+    const zalgoRegex = process.env.ZALGO_REGEX;
+    res.json({ zalgoRegex });
+};
 
 export {
     getAllProductCount,
@@ -868,4 +872,5 @@ export {
     createProduct,
     editProduct,
     deleteProduct,
+    getSearchRegex,
 };

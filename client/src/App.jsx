@@ -15,6 +15,7 @@ import ProtectedRoutes from './components/layout/ProtectedRoutes.jsx';
 import ProductsPage from './components/products/SubcategoryProducts.jsx';
 import ProductsDropdown from './components/layout/navbar/ProductsDropdown.jsx';
 import AdminPanel from './components/protected/admin/adminpanel.jsx';
+import BalancePage from './components/protected/productCRUD/BalancePage.jsx';
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="users/:username" element={<PublicUserProfile />} />
                 <Route path="products" element={<ProductList />} />
                 <Route path="/" element={<ProductsDropdown />} />
+                <Route path="/balance" element={<BalancePage />} />
                 <Route
                     path="/products/s/:subcategoryId"
                     element={<ProductsPage />}

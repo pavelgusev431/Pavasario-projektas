@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { searchSuggestions } from '../../../helpers/searchProducts';
+import getSearchRegex from '../../../helpers/getSearchRegex';
 
 const SearchBar = () => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [isFocused, setIsFocused] = useState(false);
+    const [zalgoRegex, setZalgoRegex] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,12 +30,37 @@ const SearchBar = () => {
         }
     }, [query]);
 
+    useEffect(() => {
+        const fetchRegex = async () => {
+            try {
+                const response = await getSearchRegex();
+                if (response?.zalgoRegex) {
+                    setZalgoRegex(new RegExp(response.zalgoRegex));
+                } else {
+                    console.error('Zalgo regex not found in the response.');
+                }
+            } catch (err) {
+                console.error('Failed to fetch Zalgo regex:', err);
+            }
+        };
+        fetchRegex();
+    }, []);
+
+    const isZalgo = (text) => {
+        return zalgoRegex ? zalgoRegex.test(text) : false;
+    };
+
     const handleSearch = (e) => {
         e.preventDefault();
         let trimmedQuery = query.trim().toLowerCase();
 
         if (trimmedQuery.length < 3 || trimmedQuery.length > 15) {
             toast.error('Search query must be between 3 and 15 characters.');
+            return;
+        }
+
+        if (isZalgo(trimmedQuery)) {
+            toast.error('Zalgo text is not allowed.');
             return;
         }
 
@@ -79,13 +106,14 @@ const SearchBar = () => {
                     />
                     <button
                         type="submit"
-                        className="absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
+                        className="absolute dark:bg-white-700 top-0 dark:text-white right-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
                             height="20"
                             viewBox="0 0 50 50"
+                            className="dark:fill-white"
                         >
                             <path d="M 21 3 C 11.6 3 4 10.6 4 20s7.6 17 17 17c3.4 0 6.5-1 9.1-2.7L42.4 46.6 46.6 42.4 34.5 30.3C36.7 27.4 38 23.9 38 20 38 10.6 30.4 3 21 3zM21 7c7.2 0 13 5.8 13 13s-5.8 13-13 13S8 27.2 8 20 13.8 7 21 7z"></path>
                         </svg>

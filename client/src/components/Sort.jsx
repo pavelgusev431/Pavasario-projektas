@@ -1,11 +1,6 @@
-import { useState } from 'react';
-
-export default function Sort({ onSortChange }) {
-    const [sortValue, setSortValue] = useState('timestamp-asc');
-
+export default function Sort({ onSortChange, sortValue }) {
     const handleSortChange = (event) => {
         const newSortValue = event.target.value;
-        setSortValue(newSortValue);
         onSortChange(newSortValue);
     };
 

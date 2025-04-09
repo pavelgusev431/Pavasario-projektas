@@ -12,6 +12,7 @@ import categoryRouter from '../routers/categoryRouter.js';
 import adminRouter from '../routers/adminRouter.js';
 import uploadRouter from '../routers/uploadRouter.js';
 import imageRouter from '../routers/imageRouter.js';
+import balanceRouter from '../routers/BalanceRouter.js';
 
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
@@ -40,6 +41,8 @@ app.use('/categories', categoryRouter);
 app.use('/admin', adminRouter);
 app.use('/upload', uploadRouter);
 app.use('/images', imageRouter);
+app.use('/balance', balanceRouter);
+
 //==============
 //last
 app.use(errorHandler);
