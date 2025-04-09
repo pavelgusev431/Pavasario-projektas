@@ -45,7 +45,9 @@ const SearchBar = () => {
         };
         fetchRegex();
     }, []);
-
+    useEffect(() => {
+        setIsFocused(false);
+    }, [query]);
     const isZalgo = (text) => {
         return zalgoRegex ? zalgoRegex.test(text) : false;
     };
@@ -89,14 +91,16 @@ const SearchBar = () => {
     return (
         <div className="flex flex-col items-center justify-center relative">
             <ToastContainer position="top-center" />
-            <div className="flex items-center justify-center">
+            <div
+                className={`flex items-center ${isFocused ? '  justify-center' : 'hover:bg-gray-200 px-1 py-2 rounded-md'}`}
+            >
                 <form onSubmit={handleSearch} className="relative mx-auto flex">
                     <input
                         type="search"
-                        className={`peer cursor-pointer relative z-10 h-8 w-10 rounded-lg border bg-transparent pr-6 outline-none transition-all ${
+                        className={`peer cursor-pointer relative z-10 h-8 w-10 rounded-lg border bg-transparent  outline-none transition-all ${
                             isFocused
-                                ? 'w-full border-gray-500 px-3'
-                                : 'focus:w-full focus:border-gray-500 focus:px-3'
+                                ? 'w-full pl-10 border-gray-500 px-3'
+                                : 'focus:w-full  placeholder:opacity-0 focus:border-gray-500 focus:px-3 opacity-0'
                         }`}
                         placeholder="Search products..."
                         value={query}
@@ -106,7 +110,7 @@ const SearchBar = () => {
                     />
                     <button
                         type="submit"
-                        className="absolute dark:bg-white-700 top-0 dark:text-white right-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
+                        className="absolute dark:bg-white-700 top-0 dark:text-white border-gray-500 left-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
