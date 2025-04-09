@@ -36,7 +36,12 @@ const About = () => {
                         About Just Do It
                     </h2>
                     <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                    Just Do It is an online electronics store created by aspiring web developers from Techin. Launched in 2025, we offer a wide range of high-quality gadgets, including smartphones, laptops, and smart home devices. Our goal is to provide a simple and exciting shopping experience, where innovation and convenience meet.
+                        Just Do It is an online electronics store created by
+                        aspiring web developers from Techin. Launched in 2025,
+                        we offer a wide range of high-quality gadgets, including
+                        smartphones, laptops, and smart home devices. Our goal
+                        is to provide a simple and exciting shopping experience,
+                        where innovation and convenience meet.
                     </p>
                 </div>
                 <div className="w-full md:w-1/2 flex justify-center">
