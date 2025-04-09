@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { updateUserInfo } from '../../../helpers/updateUserInfo';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ModalContacts = ({ user, showModal, setShowModal }) => {
     const { id, contacts } = user;
@@ -14,12 +15,18 @@ const ModalContacts = ({ user, showModal, setShowModal }) => {
         setValue,
         clearErrors,
     } = useForm();
-
     const submitHandler = async (data) => {
         try {
             await updateUserInfo(id, data);
             setError('');
             setValue('contacts', '');
+            toast.success('Contacts updated successfully!', {
+                position: 'bottom-right',
+                autoClose: 2000,
+                style: { background: '#161D2F', color: '#FFFFFF' },
+                hideProgressBar: true,
+            });
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             setError(error);
         }
@@ -32,6 +39,7 @@ const ModalContacts = ({ user, showModal, setShowModal }) => {
     return (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-stone-900/50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
+                <ToastContainer />
                 <div className="flex dark:bg-gray-800 items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 className="text-xl dark:text-white font-semibold text-gray-800">
                         Edit Contacts

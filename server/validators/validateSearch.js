@@ -7,7 +7,7 @@ const validateSearchQuery = (req, res, next) => {
     if (
         !trimmed ||
         trimmed.length < 3 ||
-        trimmed.length > 15 ||
+        trimmed.length > 30 ||
         zalgoRegex.test(trimmed)
     ) {
         return res.status(400).json({ error: 'Invalid search query.' });
