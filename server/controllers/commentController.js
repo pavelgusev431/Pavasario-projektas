@@ -101,14 +101,14 @@ const getProductCommentsById = async (req, res) => {
 const createComment = async (req, res, next) => {
     try {
         const { id } = res.locals;
-        const { product_id, comment, stars, image_url } = req.body;
+        const { product_id, comment, stars} = req.body;
 
         const newComment = await Rating.create({
             user_id: id,
             product_id,
             comment,
             stars: parseInt(stars),
-            image_url,
+           
         });
 
         if (!newComment) {
@@ -128,7 +128,7 @@ const createComment = async (req, res, next) => {
         }
 
         
-        const ratingDescription = `user_id: ${newComment.user_id}, product_id: ${newComment.product_id}, comment: ${newComment.comment}, stars: ${newComment.stars}, image_url: ${newComment.image_url}`;
+        const ratingDescription = `comment: ${newComment.comment}, stars: ${newComment.stars}`;
 
         // Create the Event
             await Event.create({

@@ -26,14 +26,7 @@ const validateCreateComment = [
     .isInt({ min: 1, max: 5 })
     .withMessage('Stars must be an integer between 1 and 5'),
 
-  body('image_url')
-    .optional({ nullable: true }) // Leidžia laukui būti tuščiam
-    .isString()
-    .withMessage('Image URL must be a string')
-    .isURL()
-    .withMessage('Image URL must be a valid URL')
-    .isLength({ max: 255 })
-    .withMessage('Image URL must not exceed 255 characters'),
+  
 ];
 
 export default validateCreateComment;
