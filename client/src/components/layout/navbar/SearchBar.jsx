@@ -122,7 +122,7 @@ const SearchBar = () => {
             </div>
 
             {suggestions.length > 0 && (
-                <ul className="absolute top-full mt-2 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-auto">
+                <ul className="absolute top-full dark:bg-gray-800 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-auto">
                     {suggestions.map((product) => (
                         <li
                             key={product.id}
