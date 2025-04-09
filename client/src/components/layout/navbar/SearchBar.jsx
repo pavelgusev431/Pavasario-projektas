@@ -54,8 +54,8 @@ const SearchBar = () => {
         e.preventDefault();
         let trimmedQuery = query.trim().toLowerCase();
 
-        if (trimmedQuery.length < 3 || trimmedQuery.length > 15) {
-            toast.error('Search query must be between 3 and 15 characters.');
+        if (trimmedQuery.length < 3 || trimmedQuery.length > 30) {
+            toast.error('Search query must be between 3 and 30 characters.');
             return;
         }
 
