@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import getFileTypes from '../../../helpers/getFileTypes.js';
+import createProduct from '../../../helpers/createProduct.js';
 
 const ProductCreateModal = ({ showModal, setShowModal }) => {
     const [availableFileTypes, setAvailableFileTypes] = useState();
@@ -31,6 +32,7 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
 
     const submitHandler = async (data) => {
         try {
+            await createProduct(data);
             setError('');
             setValue('category_id', '');
             setValue('subcategory_id', '');
@@ -38,6 +40,7 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
             setValue('price', '');
             setValue('description', '');
             setValue('amount_in_stock', '');
+            setValue('images', '');
         } catch (error) {
             setError(error);
         }
@@ -165,10 +168,19 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
                                 validate: {
                                     fileSize: (value) => {
                                         if (!value[0]) return true;
-                                        return (
-                                            value[0].size <= 2000000 ||
-                                            'File size must be less than 2MB'
-                                        );
+                                        return value
+                                            .forEach(
+                                                (element) =>
+                                                    element.size <= 2000000 ||
+                                                    'File size must be less than 2MB'
+                                            )
+                                            .reduce(
+                                                (acc, cur) => {
+                                                    if (cur !== true)
+                                                        return acc + cur;
+                                                },
+                                                ['']
+                                            );
                                     },
                                     fileType: (value) => {
                                         if (!value[0]) return true;

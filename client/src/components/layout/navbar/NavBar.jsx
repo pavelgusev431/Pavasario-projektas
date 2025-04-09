@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
 import ProductsDropdown from './ProductsDropdown';
-import AdminPanel from '../../protected/admin/adminpanel.jsx';
 import getBalance from '../../../helpers/getBalance.js';
 import SearchBar from './SearchBar.jsx';
 
@@ -231,21 +230,22 @@ const NavBar = () => {
                                 onClick={() => handleNavigation('/contact')}
                                 className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
-                                <i className="fas fa-envelope mr-3"></i> Contact
+                                <i className="fas fa-envelope mr-3"></i>{' '}
+                                <span>Contact</span>
                             </button>
                             <button
                                 onClick={() => handleNavigation('/about')}
                                 className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <i className="fas fa-info-circle mr-3"></i>{' '}
-                                About
+                                <span>About</span>
                             </button>
                             <button
                                 onClick={() => handleNavigation('/adminpanel')}
                                 className={`p-2 text-white w-full text-left hover:bg-gray-600 ${isActive('/adminpanel')}`}
                             >
                                 <i className="fas fa-cogs mr-3"></i>
-                                AdminPanel
+                                <span>AdminPanel</span>
                             </button>
                             {!auth && (
                                 <button
@@ -253,7 +253,7 @@ const NavBar = () => {
                                     className="p-2 text-black dark:text-white w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
                                     <i className="fas fa-user-plus mr-3"></i>{' '}
-                                    Sign Up
+                                    <span>Sign Up</span>
                                 </button>
                             )}
                         </div>

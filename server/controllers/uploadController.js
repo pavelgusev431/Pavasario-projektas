@@ -2,25 +2,15 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 import AppError from '../utilities/AppError.js';
 import fs from 'fs';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import images from '../utilities/getImages.js';
 import User from '../models/userModel.js';
 dotenv.config();
 
-//default path
-const getImages = () => {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const images = path.join(__dirname, '..', 'public', 'images');
-    return images;
-};
-
 //checkers
 const checkMulter = () => {
-    const images = getImages();
     try {
         fs.access(
-            images,
+            images(),
             fs.constants.F_OK |
                 fs.constants.R_OK |
                 fs.constants.W_OK |
@@ -33,7 +23,7 @@ const checkMulter = () => {
                     );
             }
         );
-        const formattedImages = images
+        const formattedImages = images()
             .split('/')
             .map((image) => {
                 if (image != 'public' && image != 'images') {
@@ -71,19 +61,19 @@ const checkFileTypes = (_req, res, next) => {
 const storage = multer.diskStorage({
     destination: (req, _file, cb) => {
         const { dirName } = req.cookies;
-        console.log(dirName);
-        cb(null, `public/images/${dirName}`);
+        cb(null, `public/images/${dirName || ''}`);
     },
     filename: async (req, file, cb) => {
         const suffixedName = Date.now() + '_' + file.originalname;
         const { dirName } = req.cookies;
-        console.log(dirName);
-        const userId = dirName.split('user').join('');
-        if (userId) {
-            const foundUser = await User.findByPk(Number(userId));
-            if (foundUser) {
-                foundUser.image_url = `http://${process.env.HOST}:${process.env.PORT}/images/${dirName}/${suffixedName}`;
-                await foundUser.save();
+        if (dirName) {
+            const userId = dirName.split('user').join('');
+            if (!isNaN(userId)) {
+                const foundUser = await User.findByPk(Number(userId));
+                if (foundUser) {
+                    foundUser.image_url = `http://${process.env.HOST}:${process.env.PORT}/images/${dirName}/${suffixedName}`;
+                    await foundUser.save();
+                }
             }
         }
 
@@ -107,7 +97,6 @@ const uploadResult = (_req, res, next) => {
 //directory setter
 const getDirectory = (req, res, next) => {
     try {
-        const images = getImages();
         const { dirName } = req.body;
         if (!dirName) {
             res.status(423).json({
@@ -117,8 +106,8 @@ const getDirectory = (req, res, next) => {
             return;
         }
         res.cookie('dirName', dirName, { httpOnly: true, maxAge: 10000 });
-        if (!fs.existsSync(`${images}/${dirName}`)) {
-            fs.mkdirSync(`${images}/${dirName}`);
+        if (!fs.existsSync(`${images()}/${dirName}`)) {
+            fs.mkdirSync(`${images()}/${dirName}`);
             return res.status(201).json({
                 status: 'success',
                 message: `Directory '${dirName}' created successfully`,
