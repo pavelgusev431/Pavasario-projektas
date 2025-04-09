@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { updateUserInfo } from '../../../helpers/updateUserInfo';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ModalDescription = ({ user, showModal, setShowModal }) => {
     const { id, description } = user;
@@ -20,6 +21,13 @@ const ModalDescription = ({ user, showModal, setShowModal }) => {
             await updateUserInfo(id, data);
             setError('');
             setValue('description', '');
+            toast.success('Contacts updated successfully!', {
+                position: 'bottom-right',
+                autoClose: 2000,
+                style: { background: '#161D2F', color: '#FFFFFF' },
+                hideProgressBar: true,
+            });
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             setError(error);
         }
@@ -31,9 +39,10 @@ const ModalDescription = ({ user, showModal, setShowModal }) => {
 
     return (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-stone-900/50">
+            <ToastContainer />
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <h3 className="text-xl font-semibold text-gray-800">
+                <div className="flex dark:bg-gray-800 items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 className="text-xl dark:text-white font-semibold text-gray-800">
                         Edit Description
                     </h3>
                     <button
@@ -56,7 +65,10 @@ const ModalDescription = ({ user, showModal, setShowModal }) => {
                         </svg>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit(submitHandler)} className="p-6">
+                <form
+                    onSubmit={handleSubmit(submitHandler)}
+                    className="dark:bg-gray-800 p-6"
+                >
                     <div className="mb-4">
                         <textarea
                             type="text"
