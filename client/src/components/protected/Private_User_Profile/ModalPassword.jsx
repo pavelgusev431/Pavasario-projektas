@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { updatePassword } from '../../../helpers/updateUserInfo.js';
 import { sha1 } from 'js-sha1';
 import { sha256 } from 'js-sha256';
-
+import { ToastContainer, toast } from 'react-toastify';
 const ModalPassword = ({ user, showModal, setShowModal }) => {
     const { id } = user;
     const [error, setError] = useState('');
@@ -26,6 +26,13 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
             setValue('oldPassword', '');
             setValue('newPassword', '');
             setValue('repeatPassword', '');
+            toast.success('Contacts updated successfully!', {
+                position: 'bottom-right',
+                autoClose: 2000,
+                style: { background: '#161D2F', color: '#FFFFFF' },
+                hideProgressBar: true,
+            });
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             setError(error);
         }
@@ -37,6 +44,7 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
 
     return (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-stone-900/50">
+            <ToastContainer />
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
                 <div className="flex dark:bg-gray-800 items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 className="text-xl dark:text-white font-semibold text-gray-800">

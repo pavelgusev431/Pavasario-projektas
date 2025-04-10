@@ -2,10 +2,12 @@ import Product from '../models/productModel.js';
 import Event from '../models/eventModel.js';
 import Rating from '../models/ratingModel.js';
 import { Op } from 'sequelize';
+
 export const getPaginatedProducts = async (req, res) => {
     try {
-        let { page = 1, limit = 8 } = req.query;
         const { minPrice, maxPrice, minDate, maxDate, sort, order } = req.query;
+
+        let { page = 1, limit = 8 } = req.query;
         page = Math.max(Number(page), 1);
         limit = Math.max(Number(limit), 1);
         const offset = (page - 1) * limit;
@@ -57,7 +59,6 @@ export const getPaginatedProducts = async (req, res) => {
             };
         });
 
-        // Filtruojame visus produktus be puslapiavimo, kad gautume bendrą skaičių
         let allFilteredProducts = productsWithTimestamps;
 
         if (minPrice || maxPrice) {
@@ -65,8 +66,8 @@ export const getPaginatedProducts = async (req, res) => {
                 minPrice,
                 maxPrice,
                 allFilteredProducts,
-                null, // Be limit
-                null, // Be offset
+                null,
+                null,
                 'price'
             );
         }
@@ -76,13 +77,12 @@ export const getPaginatedProducts = async (req, res) => {
                 minDate,
                 maxDate,
                 allFilteredProducts,
-                null, // Be limit
-                null, // Be offset
+                null,
+                null,
                 'date'
             );
         }
 
-        // Rūšiuojame produktus su sortHelper
         const sortedProducts = await sortHelper(
             allFilteredProducts,
             sort,
@@ -91,16 +91,14 @@ export const getPaginatedProducts = async (req, res) => {
 
         const totalProducts = sortedProducts.length;
         const totalPages = Math.ceil(totalProducts / limit);
-
-        // Taikome puslapiavimą po filtravimo ir rūšiavimo
         const paginatedProducts = sortedProducts.slice(offset, offset + limit);
 
         res.json({
             products: paginatedProducts,
             pagination: {
                 currentPage: Number(page),
-                totalPages: totalPages,
-                totalProducts: totalProducts,
+                totalPages,
+                totalProducts,
             },
         });
     } catch (error) {
@@ -148,10 +146,8 @@ export const sortHelper = async (products, sortField, order) => {
         ? sortField
         : 'timestamp';
 
-    // Tvarkos tikrinimas
-    const orderDirection = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const orderDirection = order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-    // Kopijuojame masyvą, kad nerūšiuotume originalo
     const processed = [...products];
 
     const defaultSort = () => {

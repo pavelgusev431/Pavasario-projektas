@@ -2,6 +2,9 @@ import User from '../models/userModel.js';
 import Secret from '../models/userSecretModel.js';
 import { sha256 } from 'js-sha256';
 import { sha1 } from 'js-sha1';
+import Event from '../models/eventModel.js';
+import EventType from '../models/event_typeModel.js';
+import EventTarget from '../models/event_targetModel.js';
 
 // Gauti visus naudotojus + vaidmenis
 export const getAllUsersWithRoles = async (req, res) => {
@@ -88,6 +91,14 @@ export const createUser = async (req, res) => {
         role: role,
     });
 
+    await Event.create({
+        user_id: user.id,
+        product_id: null,
+        type_id: 1,
+        target_id: 1,
+        description: `Sukurtas vartotojas: ${username}`,
+    });
+
     res.status(201).json({
         status: 'success',
         data: user,
@@ -122,5 +133,23 @@ export const updateUserData = async (req, res, next) => {
         });
     } catch (error) {
         next(error);
+    }
+};
+
+export const getAllEvents = async (req, res) => {
+    try {
+        const events = await Event.findAll({
+            include: [
+                { association: 'eventType' },
+                { association: 'eventTarget' },
+                { association: 'user' },
+            ],
+            order: [['timestamp', 'DESC']],
+        });
+
+        res.status(200).json(events);
+    } catch (error) {
+        console.error('Klaida gaunant įvykius:', error);
+        res.status(500).json({ message: 'Nepavyko gauti įvykių' });
     }
 };

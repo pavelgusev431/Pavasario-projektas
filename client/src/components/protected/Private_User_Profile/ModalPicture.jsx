@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { updateUserAvatar } from '../../../helpers/updateUserInfo.js';
 import getFileTypes from '../../../helpers/getFileTypes.js';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ModalPicture = ({ user, showModal, setShowModal }) => {
     const { id } = user;
@@ -42,6 +43,13 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
             await updateUserAvatar(id, data);
             setError('');
             setValue('avatar', '');
+            toast.success('Contacts updated successfully!', {
+                position: 'bottom-right',
+                autoClose: 2000,
+                style: { background: '#161D2F', color: '#FFFFFF' },
+                hideProgressBar: true,
+            });
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             setError(error.message);
         }
@@ -55,6 +63,7 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <ToastContainer />
             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 max-w-md w-full">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">Edit Picture</h3>

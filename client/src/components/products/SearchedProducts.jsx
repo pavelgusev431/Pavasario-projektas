@@ -72,7 +72,7 @@ const SearchedProducts = () => {
 
             const isInvalid =
                 trimmedQuery.length < 3 ||
-                trimmedQuery.length > 15 ||
+                trimmedQuery.length > 30 ||
                 !/^[a-zA-Z0-9 ]+$/.test(trimmedQuery) ||
                 isZalgo(trimmedQuery);
 
