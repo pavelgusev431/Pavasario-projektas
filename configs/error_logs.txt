@@ -1,1 +1,1 @@
-client/src/components/ProductDetails.jsx
+client/src/components/ProductComments.jsx
