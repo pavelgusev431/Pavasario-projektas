@@ -1,0 +1,14 @@
+client/src/components/layout/navbar/NavBar.jsx
+client/src/components/layout/navbar/SearchBar.jsx
+client/src/components/layout/Register_Login/Auth.jsx
+client/src/components/ProductDetails.jsx
+client/src/components/products/SearchedProducts.jsx
+client/src/components/protected/Private_User_Profile/ModalContacts.jsx
+client/src/components/protected/Private_User_Profile/ModalDescription.jsx
+client/src/components/protected/Private_User_Profile/ModalEmail.jsx
+client/src/components/protected/Private_User_Profile/ModalPassword.jsx
+client/src/components/protected/Private_User_Profile/ModalPicture.jsx
+client/src/components/protected/Private_User_Profile/ModalUsername.jsx
+client/src/components/protected/Private_User_Profile/ProfileInfo.jsx
+client/src/helpers/getURL.js
+server/validators/validateSearch.js
