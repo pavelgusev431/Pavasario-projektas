@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
 import {
     getBalance,
     topUpBalance,
@@ -33,7 +34,7 @@ const BalancePage = () => {
     }, [auth, loading]);
 
     const handleTopUp = async () => {
-        if (!auth || !auth.id) {
+        if (!auth?.id) {
             setMessage('User not authenticated yet. Please wait...');
             return;
         }
@@ -47,17 +48,14 @@ const BalancePage = () => {
 
         setIsLoading(true);
         try {
-            console.log('Top-up payload:', { userId, amount: numericAmount });
             const result = await topUpBalance(userId, numericAmount);
             setBalance(result.balance);
             setMessage('Balance successfully replenished!');
             setAmount('');
 
-            // обновим историю
             const updatedHistory = await getBalanceHistory(userId);
             setHistory(updatedHistory);
 
-            // отправим событие для других компонентов (например, NavBar)
             window.dispatchEvent(new Event('balance-updated'));
         } catch (err) {
             console.error('Top-up error:', err);
@@ -123,10 +121,10 @@ const BalancePage = () => {
                                 (a, b) =>
                                     new Date(b.timestamp) -
                                     new Date(a.timestamp)
-                            ) // Сортировка по убыванию
-                            .map((item, index) => (
+                            )
+                            .map((item) => (
                                 <li
-                                    key={index}
+                                    key={nanoid(64)}
                                     className="py-2 text-gray-700 dark:text-gray-300"
                                 >
                                     <strong>

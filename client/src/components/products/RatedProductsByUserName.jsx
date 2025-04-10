@@ -53,14 +53,12 @@ export default function RatedProductsByUserName() {
                                     {product.name}
                                 </Link>
                                 <div className="flex items-center">
-                                    {[...Array(product.userRating)].map(
-                                        (_, i) => (
-                                            <FaStar
-                                                key={i}
-                                                className="text-yellow-500"
-                                            />
-                                        )
-                                    )}
+                                    {[...Array(product.userRating)].map(() => (
+                                        <FaStar
+                                            key={nanoid(64)}
+                                            className="text-yellow-500"
+                                        />
+                                    ))}
                                 </div>
                             </h2>
                             <div className="text-gray-500 text-sm mt-1">

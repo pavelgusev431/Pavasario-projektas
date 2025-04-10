@@ -50,9 +50,9 @@ export default function ProductComments({ productId }) {
                                     </Link>
                                 </span>
                                 <div className="flex items-center">
-                                    {[...Array(comment.stars)].map((_, i) => (
+                                    {[...Array(comment.stars)].map(() => (
                                         <FaStar
-                                            key={i}
+                                            key={nanoid(64)}
                                             className="text-yellow-500"
                                         />
                                     ))}
@@ -69,7 +69,7 @@ export default function ProductComments({ productId }) {
                 </div>
             ) : (
                 <p className="text-center text-gray-600 mt-6">
-                    Product dont have comments.
+                    Product does not have comments.
                 </p>
             )}
         </section>

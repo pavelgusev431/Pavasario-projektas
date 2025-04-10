@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import sha256 from 'js-sha256';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import url from '../../../helpers/getURL.js';
 import { useForm } from 'react-hook-form';
 import {
     banUser,
@@ -120,10 +118,7 @@ const AdminPanel = () => {
                 <form
                     onSubmit={handleSubmit(async (data) => {
                         try {
-                            const password = hashPassword(
-                                data.password,
-                                data.username
-                            );
+                            const password = hashPassword(data.password);
 
                             const payload = {
                                 ...data,
@@ -276,10 +271,14 @@ const AdminPanel = () => {
 
                                 {/* Роль */}
                                 <div className="mt-3">
-                                    <label className="text-sm text-gray-500 dark:text-gray-300 block mb-1">
+                                    <label
+                                        htmlFor="role_select"
+                                        className="text-sm text-gray-500 dark:text-gray-300 block mb-1"
+                                    >
                                         Vaidmuo:
                                     </label>
                                     <select
+                                        id="role_select"
                                         value={user.role}
                                         onChange={async (e) => {
                                             const newRole = e.target.value;
@@ -288,8 +287,8 @@ const AdminPanel = () => {
                                                     user.id,
                                                     newRole
                                                 );
-                                                setUsers((prev) =>
-                                                    prev.map((u) =>
+                                                setUsers(
+                                                    users.map((u) =>
                                                         u.id === user.id
                                                             ? {
                                                                   ...u,

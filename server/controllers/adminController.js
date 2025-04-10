@@ -3,8 +3,6 @@ import Secret from '../models/userSecretModel.js';
 import { sha256 } from 'js-sha256';
 import { sha1 } from 'js-sha1';
 import Event from '../models/eventModel.js';
-import EventType from '../models/event_typeModel.js';
-import EventTarget from '../models/event_targetModel.js';
 
 // Gauti visus naudotojus + vaidmenis
 export const getAllUsersWithRoles = async (req, res) => {

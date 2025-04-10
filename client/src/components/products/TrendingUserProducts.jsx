@@ -9,7 +9,6 @@ export default function TrendingUserProducts() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userName, setUserName] = useState('');
-    const [userId, setUserId] = useState(null);
     const [noUser, setNoUser] = useState(false);
 
     useEffect(() => {
@@ -25,10 +24,6 @@ export default function TrendingUserProducts() {
                 setProducts(response.data.data);
 
                 const userId = response.data.user_id;
-
-                if (userId) {
-                    setUserId(userId);
-                }
 
                 if (userId) {
                     const userResponse = await getUserById(userId);

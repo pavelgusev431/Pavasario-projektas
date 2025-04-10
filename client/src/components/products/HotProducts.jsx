@@ -15,6 +15,7 @@ export default function HotProducts() {
                 setProducts(response.data.data);
             } catch (err) {
                 setError('Nepavyko įkelti produktų. Bandykite dar kartą.');
+                console.log(err);
             } finally {
                 setLoading(false);
             }

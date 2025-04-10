@@ -51,6 +51,7 @@ const ProductsPage = () => {
                 <div className="w-2 h-6 bg-red-500"></div>
                 <h2 className="text-l text-red-500 font-bold mb-2">Products</h2>
             </div>
+            <div>{error}</div>
             <h2 className="text-2xl font-bold ml-10 mb-2">
                 Products in: {subcategory.name}
             </h2>
