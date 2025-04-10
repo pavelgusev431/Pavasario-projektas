@@ -58,7 +58,6 @@ export const getCategoryWithSubcategories = async (req, res, next) => {
 export const getProductsBySubcategory = async (req, res) => {
     try {
         const subcategoryId = req.params.subcategoryId;
-        console.log('Received subcategoryId:', subcategoryId);
 
         if (!subcategoryId || isNaN(subcategoryId)) {
             return res

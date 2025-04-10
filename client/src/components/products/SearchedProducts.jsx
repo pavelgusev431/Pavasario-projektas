@@ -29,15 +29,6 @@ const SearchedProducts = () => {
         fetchRegex();
     }, []);
 
-    const isZalgo = (text) => {
-        try {
-            return zalgoRegex ? zalgoRegex.test(text) : false;
-        } catch (e) {
-            console.error('Error in Zalgo check:', e);
-            return false;
-        }
-    };
-
     const fetchSearchResults = async (query) => {
         if (!query) return;
 
@@ -46,7 +37,7 @@ const SearchedProducts = () => {
 
         try {
             const response = await searchProducts(query);
-            if (response && response.data) {
+            if (response?.data) {
                 const productsData = response.data.data || response.data;
                 setProducts(productsData);
             } else {
@@ -68,7 +59,14 @@ const SearchedProducts = () => {
 
     useEffect(() => {
         const query = searchParams.get('q');
-
+        const isZalgo = (text) => {
+            try {
+                return zalgoRegex ? zalgoRegex.test(text) : false;
+            } catch (e) {
+                console.error('Error in Zalgo check:', e);
+                return false;
+            }
+        };
         if (zalgoRegex && query) {
             const trimmedQuery = query.trim().toLowerCase();
 

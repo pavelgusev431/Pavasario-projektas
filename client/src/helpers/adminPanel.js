@@ -5,7 +5,6 @@ const API = axios.create({
     withCredentials: true,
 });
 
-// Получить всех пользователей
 export const getAllUsers = async () => {
     const res = await API.get(url('admin/users'));
     return res.data.data;

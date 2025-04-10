@@ -5,6 +5,7 @@ import { getUserByUsername } from '../../helpers/getUser.js';
 import { getUserProductsByUserName } from '../../helpers/getProduct.js';
 import RatedProductsByUserName from './RatedProductsByUserName.jsx';
 import moment from 'moment';
+import { nanoid } from 'nanoid';
 export default function PublicUserProfile() {
     const { username } = useParams();
 
@@ -59,7 +60,7 @@ export default function PublicUserProfile() {
                             {user.username}
                         </h1>
                         <p className="text-lg text-gray-600">
-                            Average User Rating:
+                            <span>Average User Rating:</span>
                             <span className="font-bold text-yellow-500">
                                 {avgUserRating || 'N/A'}
                             </span>
@@ -137,7 +138,7 @@ export default function PublicUserProfile() {
                                             ) {
                                                 return (
                                                     <FaStar
-                                                        key={i}
+                                                        key={nanoid(64)}
                                                         className="text-yellow-500"
                                                     />
                                                 );
@@ -150,14 +151,14 @@ export default function PublicUserProfile() {
                                             ) {
                                                 return (
                                                     <FaStarHalf
-                                                        key={i}
+                                                        key={nanoid(64)}
                                                         className="text-yellow-500"
                                                     />
                                                 );
                                             } else {
                                                 return (
                                                     <FaStar
-                                                        key={i}
+                                                        key={nanoid(64)}
                                                         className="text-gray-300"
                                                     />
                                                 );
@@ -171,38 +172,34 @@ export default function PublicUserProfile() {
                                         Comments
                                     </h4>
                                     <div className="space-y-4 mt-2">
-                                        {product.comments.map(
-                                            (comment, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="border-t pt-4"
-                                                >
-                                                    <p className="text-gray-500 text-xs mt-1">
-                                                        {moment(
-                                                            comment.timestamp
-                                                        ).format('lll')}
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-800">
-                                                        <span className="font-semibold">
-                                                            {comment.username}
-                                                        </span>
-                                                        : {comment.comment}
-                                                    </p>
-                                                    <div className="flex items-center mt-1 text-yellow-500">
-                                                        {[
-                                                            ...Array(
-                                                                comment.stars
-                                                            ),
-                                                        ].map((_, i) => (
-                                                            <FaStar
-                                                                key={i}
-                                                                className="text-yellow-500"
-                                                            />
-                                                        ))}
-                                                    </div>
+                                        {product.comments.map((comment) => (
+                                            <div
+                                                key={nanoid(64)}
+                                                className="border-t pt-4"
+                                            >
+                                                <p className="text-gray-500 text-xs mt-1">
+                                                    {moment(
+                                                        comment.timestamp
+                                                    ).format('lll')}
+                                                </p>
+                                                <p className="text-sm font-medium text-gray-800">
+                                                    <span className="font-semibold">
+                                                        {comment.username}
+                                                    </span>
+                                                    : {comment.comment}
+                                                </p>
+                                                <div className="flex items-center mt-1 text-yellow-500">
+                                                    {[
+                                                        ...Array(comment.stars),
+                                                    ].map(() => (
+                                                        <FaStar
+                                                            key={nanoid(64)}
+                                                            className="text-yellow-500"
+                                                        />
+                                                    ))}
                                                 </div>
-                                            )
-                                        )}
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>

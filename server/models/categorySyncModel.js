@@ -1,6 +1,5 @@
 import Category from './categoryModel.js';
 import Subcategory from './subcategoryModel.js';
-import AppError from '../utilities/AppError.js';
 import sq from '../database/sequelize.js';
 import Product from './productModel.js';
 Category.hasMany(Subcategory, {
@@ -19,7 +18,7 @@ const syncModels = async () => {
         await Category.sync({ alter: true });
         console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
 
-        const categories = await Category.bulkCreate([
+        await Category.bulkCreate([
             { name: 'Electronics' },
             { name: 'Fashion & Apparel' },
             { name: 'Home & Furniture' },

@@ -10,8 +10,7 @@ const SubmitEmailForPasswordReset = () => {
     } = useForm();
 
     const send = async (data) => {
-        const response = await sendEmail(data.email);
-        console.log(response);
+        await sendEmail(data.email);
         toast.success('Password reset email sent!', {
             position: 'top-center',
             autoClose: 10000,
@@ -28,6 +27,7 @@ const SubmitEmailForPasswordReset = () => {
 
     return (
         <div>
+            <ToastContainer />
             <form onSubmit={handleSubmit(send)}>
                 <div className="mb-4">
                     <input

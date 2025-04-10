@@ -20,7 +20,7 @@ export default function ProductList() {
             const savedPriceRange = JSON.parse(
                 localStorage.getItem('priceRange')
             );
-            return savedPriceRange ? savedPriceRange : [0, 5000];
+            return savedPriceRange || [0, 5000];
         } catch {
             return [0, 5000];
         }
@@ -31,12 +31,12 @@ export default function ProductList() {
             const savedDateRange = JSON.parse(
                 localStorage.getItem('dateRange')
             );
-            return savedDateRange
-                ? savedDateRange
-                : [
-                      new Date('2024-01-01').getTime(),
-                      new Date().setDate(new Date().getDate() + 1),
-                  ];
+            return (
+                savedDateRange || [
+                    new Date('2024-01-01').getTime(),
+                    new Date().setDate(new Date().getDate() + 1),
+                ]
+            );
         } catch {
             return [
                 new Date('2024-01-01').getTime(),
@@ -69,8 +69,8 @@ export default function ProductList() {
         return today.getTime();
     })();
 
-    const fetchProducts = useCallback(
-        debounce(async (page = 1) => {
+    const fetchProducts = useCallback(() => {
+        const func = debounce(async (page = 1) => {
             try {
                 const [sort, order] = sortValue.split('-');
                 const data = await getFilteredProducts({
@@ -92,13 +92,13 @@ export default function ProductList() {
             } catch (err) {
                 setError('Klaida gaunant produktus: ' + err.message);
             }
-        }, 250),
-        [pageSize, priceRange, dateRange, sortValue]
-    );
+        }, 250);
+        func();
+    }, [pageSize, priceRange, dateRange, sortValue]);
 
     useEffect(() => {
         fetchProducts(pagination.currentPage);
-        return () => fetchProducts.cancel();
+        return () => fetchProducts();
     }, [fetchProducts, pagination.currentPage]);
 
     const filteredProducts = useMemo(() => {

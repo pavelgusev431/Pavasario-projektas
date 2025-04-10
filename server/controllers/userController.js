@@ -322,21 +322,25 @@ const changePassword = async (req, res, next) => {
 };
 
 const changeImageURL = async (req, res, next) => {
-    const { id } = req.params;
-    const foundUser = await User.findByPk(id);
-    if (!foundUser) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Unknown user',
-        });
-    } else {
-        const imageURL = req.cookies?.filepath;
-        foundUser.image_url = imageURL;
-        await foundUser.save();
-        res.status(203).json({
-            status: 'success',
-            message: 'Image url changed',
-        });
+    try {
+        const { id } = req.params;
+        const foundUser = await User.findByPk(id);
+        if (!foundUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Unknown user',
+            });
+        } else {
+            const imageURL = req.cookies?.filepath;
+            foundUser.image_url = imageURL;
+            await foundUser.save();
+            res.status(203).json({
+                status: 'success',
+                message: 'Image url changed',
+            });
+        }
+    } catch (error) {
+        next(error);
     }
 };
 

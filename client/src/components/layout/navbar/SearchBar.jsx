@@ -27,7 +27,7 @@ const SearchBar = () => {
         if (query.length >= 3) {
             const fetchSuggestions = async () => {
                 const response = await searchSuggestions(query);
-                if (response && response.data) {
+                if (response?.data) {
                     setSuggestions(response.data);
                 }
             };
@@ -149,9 +149,14 @@ const SearchBar = () => {
                         <li
                             key={product.id}
                             className="px-3 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white"
-                            onMouseDown={() => handleSuggestionClick(product)}
                         >
-                            {product.name}
+                            <button
+                                onMouseDown={() =>
+                                    handleSuggestionClick(product)
+                                }
+                            >
+                                {product.name}
+                            </button>
                         </li>
                     ))}
                 </ul>
