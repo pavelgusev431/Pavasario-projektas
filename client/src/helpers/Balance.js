@@ -9,7 +9,6 @@ export const getBalance = async (userId) => {
 };
 
 export const topUpBalance = async (userId, amount) => {
-    console.log('Top-up payload:', { userId, amount });
     const res = await axios.post(`${BASE_URL}/topup`, { userId, amount });
     return res.data;
 };

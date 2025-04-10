@@ -1,5 +1,6 @@
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { nanoid } from 'nanoid';
 
 const images = [
     '../src/public/banner_images/1.png',
@@ -20,7 +21,7 @@ const BannerCarousel = () => {
             showStatus={false}
         >
             {images.map((src, index) => (
-                <div key={index}>
+                <div key={nanoid(64)}>
                     <img src={src} alt={`Slide ${index + 1}`} />
                 </div>
             ))}

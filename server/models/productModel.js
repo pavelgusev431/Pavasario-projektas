@@ -18,7 +18,7 @@ const Product = sq.define(
         name: { type: DataTypes.STRING(255), allowNull: false },
         price: { type: DataTypes.FLOAT, allowNull: false },
         description: { type: DataTypes.TEXT, allowNull: false },
-        image_url: { type: DataTypes.TEXT, allowNull: false },
+        image_url: { type: DataTypes.TEXT, allowNull: true },
         amount_in_stock: { type: DataTypes.BIGINT, allowNull: false },
     },
     {

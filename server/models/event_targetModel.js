@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
 
 const EventTarget = sq.define(
-    'EventType',
+    'EventTarget',
     {
         id: {
             type: DataTypes.INTEGER,

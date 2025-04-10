@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import { Routes, Route } from 'react-router';
 import Auth from './components/layout/Register_Login/Auth.jsx';
 import Home from './components/layout/Home.jsx';
 import Contact from './components/layout/Contact.jsx';

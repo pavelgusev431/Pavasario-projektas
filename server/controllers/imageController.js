@@ -2,6 +2,10 @@ import images from '../utilities/getImages.js';
 import Product from '../models/productModel.js';
 import AppError from '../utilities/AppError.js';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
+const HOST = process.env.HOST;
+const PORT = process.env.PORT;
 
 const getImage = (req, res, next) => {
     try {
@@ -21,7 +25,10 @@ const getImages = async (req, res, next) => {
             throw new AppError('Product not found', 404);
         } else {
             let files = fs.readdirSync(`./public/images/${dir}`);
-            if (files) files = files.map((file) => `${dir}/${file}`);
+            if (files)
+                files = files.map(
+                    (file) => `http://${HOST}:${PORT}/images/${dir}/${file}`
+                );
             res.status(200).json({
                 status: 'success',
                 data: files,
