@@ -1,1 +1,1 @@
-client/src/components/layout/navbar/NavBar.jsx
+client/src/components/layout/Home/Carousel.jsx
