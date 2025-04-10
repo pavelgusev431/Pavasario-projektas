@@ -11,7 +11,6 @@ const ModalPicture = ({ user, showModal, setShowModal }) => {
         useState();
 
     useEffect(() => {
-        console.log(user);
         const fetchTypes = async () => {
             const data = await getFileTypes();
             setAvailableTypes(data);

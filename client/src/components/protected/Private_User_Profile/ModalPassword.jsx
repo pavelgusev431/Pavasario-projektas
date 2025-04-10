@@ -28,12 +28,11 @@ const ModalPassword = ({ user, showModal, setShowModal }) => {
             setValue('repeatPassword', '');
         } catch (error) {
             setError(error);
-            console.log(error);
         }
     };
 
     const handleClose = () => {
-        setShowModal(false);
+        setShowModal(!showModal);
     };
 
     return (

@@ -1,18 +1,19 @@
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import { useState } from 'react';
 import ProductCreateModal from './ProductCreateModal.jsx';
+import MyProductList from './MyProductList.jsx';
 
 const MyProducts = () => {
-    const { auth } = useContext(AuthContext);
-
     const [productCreateModal, setProductCreateModal] = useState();
-    const [productEditModal, setProductEditModal] = useState();
-    const [productDeleteModal, setProductDeleteModal] = useState();
+    //some code
+    // const [productEditModal, setProductEditModal] = useState();
+    // const [productDeleteModal, setProductDeleteModal] = useState();
+    const [update, setUpdate] = useState(0);
 
     const handleProductCreate = () => {
         setProductCreateModal(true);
-        setProductEditModal(false);
-        setProductDeleteModal(false);
+        //some code
+        // setProductEditModal(false);
+        // setProductDeleteModal(false);
     };
 
     return (
@@ -27,11 +28,14 @@ const MyProducts = () => {
                 <ProductCreateModal
                     showModal={productCreateModal}
                     setShowModal={setProductCreateModal}
+                    setUpdate={setUpdate}
                 />
             ) : (
                 <></>
             )}
-            <section>{}</section>
+            <section>
+                <MyProductList update={update} />
+            </section>
         </>
     );
 };

@@ -720,7 +720,6 @@ const getRatedProductsByUserName = async (req, res) => {
 
 export const getProductById = async (req, res) => {
     try {
-        console.log('Request params:', req.params);
         const product = await Product.findByPk(req.params.id, {
             include: [
                 {
@@ -734,8 +733,6 @@ export const getProductById = async (req, res) => {
             ],
         });
         if (product) {
-            console.log('Product found:', product);
-
             const ratings = product.Ratings;
             const ratingCount = ratings.length;
             const avgRating =
@@ -753,8 +750,7 @@ export const getProductById = async (req, res) => {
             res.status(404).json({ message: 'Product not found' });
         }
     } catch (error) {
-        console.error('Server error:', error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: `Server error: ${error}` });
     }
 };
 
@@ -767,7 +763,6 @@ const createProduct = async (req, res, next) => {
             name,
             price,
             description,
-            image_url,
             amount_in_stock,
         } = req.body;
         const newProduct = await Product.create({
@@ -777,7 +772,6 @@ const createProduct = async (req, res, next) => {
             name,
             price,
             description,
-            image_url,
             amount_in_stock,
         });
         if (!newProduct) {
@@ -804,6 +798,7 @@ const editProduct = async (req, res, next) => {
             price,
             description,
             amount_in_stock,
+            image_url,
         } = req.body;
         const foundProduct = await Product.findByPk(productId);
         if (!foundProduct) {
@@ -822,6 +817,7 @@ const editProduct = async (req, res, next) => {
             foundProduct.amount_in_stock =
                 amount_in_stock || foundProduct.amount_in_stock;
             foundProduct.description = description || foundProduct.description;
+            foundProduct.image_url = image_url || foundProduct.image_url;
             await foundProduct.save();
             res.status(200).json({
                 status: 'success',
