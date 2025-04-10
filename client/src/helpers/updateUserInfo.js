@@ -27,6 +27,7 @@ const updateUserAvatar = async (id, data) => {
         });
     const formData = new FormData();
     formData.append('avatar', data.avatar[0]);
+    console.log(formData);
     const response2 = await axios
         .post(url(`upload/avatar`), formData, {
             withCredentials: true,
