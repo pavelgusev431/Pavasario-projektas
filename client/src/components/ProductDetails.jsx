@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
-import axios from 'axios';
 import Modal from 'react-modal';
 import ProductComments from './ProductComments';
 import { nanoid } from 'nanoid';
+import getSelectedProduct from '../helpers/getSelectedProducts';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -13,12 +13,14 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
+                const productData = await getSelectedProduct(id);
+                setProduct(productData);
                 const response = await axios.get(
                     `http://localhost:3000/products/selected/${id}`
                 );
                 setProduct(response.data);
             } catch (error) {
-                console.error('Error fetching product:', error);
+                console.log(error.message);
             }
         };
 

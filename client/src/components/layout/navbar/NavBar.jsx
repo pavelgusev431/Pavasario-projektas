@@ -82,93 +82,95 @@ const NavBar = () => {
 
     return (
         <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900">
-            <div className="flex items-center justify-between mx-auto px-2 md:px-4">
-                <button
-                    onClick={() => handleNavigation('/home')}
-                    className="transition-transform duration-300 hover:scale-110"
-                >
-                    <img
-                        src="../src/public/banner_images/logo.png"
-                        alt="Logo"
-                        className="h-20 cursor-pointer object-contain"
-                    />
-                </button>
+            <div className="flex items-center mx-auto px-2 md:px-4 justify-between w-full">
+                {/* Left Section */}
+                <div className="flex items-center space-x-4">
+                    <button
+                        className="flex items-center"
+                        onClick={() => handleNavigation('/home')}
+                    >
+                        <img
+                            src="../src/public/banner_images/logo.png"
+                            alt="Logo"
+                            className="h-20 md:h-20 cursor-pointer object-contain"
+                        />
+                    </button>
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex items-center ml-2">
-                    <ul className="font-medium flex flex-row space-x-4 bg-white dark:bg-gray-900 rounded-lg">
-                        <li>
-                            <div className="py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <ProductsDropdown />{' '}
-                                {/* Wrap ProductsDropdown in a div for consistent alignment */}
-                            </div>
-                        </li>
-                        <li>
-                            <button
-                                onClick={() => handleNavigation('/contact')}
-                                className={`py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 ${isActive('/contact')}`}
-                            >
-                                Contact
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={() => handleNavigation('/about')}
-                                className={`py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 ${isActive('/about')}`}
-                            >
-                                About
-                            </button>
-                        </li>
-                        {auth?.role?.toLowerCase() === 'admin' && (
+                    <div className="hidden md:flex items-center ml-2">
+                        <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700 dark:bg-gray-800 dark:md:bg-gray-900">
+                            <li>
+                                <ProductsDropdown />
+                            </li>
+                            <li>
+                                <ThemeToggleButton />
+                            </li>
                             <li>
                                 <button
-                                    onClick={() =>
-                                        handleNavigation('/adminpanel')
-                                    }
-                                    className={`py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 ${isActive('/adminpanel')}`}
+                                    onClick={() => handleNavigation('/contact')}
+                                    className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/contact')}`}
                                 >
-                                    AdminPanel
+                                    Contact
                                 </button>
                             </li>
+                            <li>
+                                <button
+                                    onClick={() => handleNavigation('/about')}
+                                    className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/about')}`}
+                                >
+                                    About
+                                </button>
+                            </li>
+                            {auth?.role?.toLowerCase() === 'admin' && (
+                                <li>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation('/adminpanel')
+                                        }
+                                        className={`block dark:text-white rounded-sm md:border-0 ${isActive('/adminpanel')}`}
+                                    >
+                                        AdminPanel
+                                    </button>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Right Section */}
+                <div className="flex items-center space-x-4 ml-auto">
+                    <div className="flex items-center">
+                        {!auth && (
+                            <button
+                                onClick={() => handleNavigation('/signup')}
+                                className="block p-3 dark:text-white rounded-md hover:bg-gray-200 md:mr-2 md:p-3 font-medium cursor-pointer"
+                            >
+                                Sign Up
+                            </button>
                         )}
-                    </ul>
-                </div>
 
-                <div className="ml-2">
-                    <ThemeToggleButton />
-                </div>
-
-                <div className="flex items-center space-x-4 md:space-x-6 ml-auto">
-                    {!auth && (
+                        {/* Burger Button */}
                         <button
-                            onClick={() => handleNavigation('/signup')}
-                            className="py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 font-medium"
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="menu-toggle p-2 w-12 h-12 flex items-center justify-center text-sm dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2"
+                            aria-controls="navbar-default"
+                            aria-expanded={isMenuOpen}
                         >
-                            Sign Up
+                            <span className="sr-only">Open main menu</span>
+                            <svg
+                                className="w-6 h-6"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M3 6h18M3 12h18M3 18h18"
+                                />
+                            </svg>
                         </button>
-                    )}
-
-                    {/* Burger */}
-                    <button
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="menu-toggle p-2 w-12 h-12 flex items-center justify-center text-sm dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 transition-transform duration-300 hover:scale-110"
-                        aria-controls="navbar-default"
-                        aria-expanded={isMenuOpen}
-                    >
-                        <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M3 6h18M3 12h18M3 18h18"
-                            />
-                        </svg>
-                    </button>
+                    </div>
 
                     <div className="justify-end">
                         <SearchBar />
@@ -252,52 +254,6 @@ const NavBar = () => {
                         </div>
                     )}
                 </div>
-
-                {/* Mobile Menu */}
-                {isMenuOpen && (
-                    <div className="mobile-menu absolute top-20 right-2 bg-white dark:bg-gray-900 shadow-lg rounded-lg z-50 border border-gray-200 dark:border-gray-700 p-5 transition-all duration-300 w-64">
-                        <div className="flex flex-col space-y-2">
-                            <div className="p-2 text-black flex dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <i className="fas fa-bag-shopping pt-1 mr-4"></i>
-                                <ProductsDropdown />
-                            </div>
-                            <button
-                                onClick={() => handleNavigation('/contact')}
-                                className="p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                                <i className="fas fa-envelope mr-3"></i>
-                                Contact
-                            </button>
-                            <button
-                                onClick={() => handleNavigation('/about')}
-                                className="p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                                <i className="fas fa-info-circle mr-3"></i>
-                                About
-                            </button>
-                            {auth?.role?.toLowerCase() === 'admin' && (
-                                <button
-                                    onClick={() =>
-                                        handleNavigation('/adminpanel')
-                                    }
-                                    className="p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                >
-                                    <i className="fas fa-cogs mr-3"></i>
-                                    AdminPanel
-                                </button>
-                            )}
-                            {!auth && (
-                                <button
-                                    onClick={() => handleNavigation('/signup')}
-                                    className="p-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                >
-                                    <i className="fas fa-user-plus mr-3"></i>
-                                    Sign Up
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                )}
             </div>
         </nav>
     );

@@ -1,5 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sq from '../database/sequelize.js';
+import EventType from './event_typeModel.js';
+import EventTarget from './event_targetModel.js';
+import User from './userModel.js';
 
 const Event = sq.define(
     'Event',
@@ -37,6 +40,10 @@ const Event = sq.define(
     },
     { timestamps: false, tableName: 'events' }
 );
+
+Event.belongsTo(EventType, { foreignKey: 'type_id', as: 'eventType' });
+Event.belongsTo(EventTarget, { foreignKey: 'target_id', as: 'eventTarget' });
+Event.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 try {
     await Event.sync({ alter: true, force: true });

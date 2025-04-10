@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import getFileTypes from '../../../helpers/getFileTypes.js';
 import createProduct from '../../../helpers/createProduct.js';
+import getAllCategories from '../../../helpers/getAllCategories.js';
 
-const ProductCreateModal = ({ showModal, setShowModal }) => {
+const ProductCreateModal = ({ showModal, setShowModal, setUpdate }) => {
     const [availableFileTypes, setAvailableFileTypes] = useState();
     const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
         useState();
+    const [categories, setCategories] = useState([]);
+    const [subcategories, setSubcategories] = useState([]);
 
     const [error, setError] = useState('');
 
@@ -18,6 +21,9 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
                 .map((fileType) => fileType.split('/')[1].toUpperCase())
                 .join(', ');
             setStrippedAvailableFileTypes(strippedFileTypes);
+
+            const cat = await getAllCategories();
+            setCategories(cat.data.categories);
         };
         fetch();
     }, []);
@@ -33,6 +39,7 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
     const submitHandler = async (data) => {
         try {
             await createProduct(data);
+            setUpdate((update) => update + 1);
             setError('');
             setValue('category_id', '');
             setValue('subcategory_id', '');
@@ -90,6 +97,62 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
                         {errors.name && (
                             <p className="text-red-500 text-sm mt-1">
                                 {errors.name.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <select
+                            name="category"
+                            id="cat"
+                            {...register('category_id', {
+                                required: 'This field is required',
+                            })}
+                        >
+                            <option value="">Select category</option>
+                            {categories?.map((category) => {
+                                const { id, name } = category;
+                                return (
+                                    <option
+                                        onClick={() =>
+                                            setSubcategories(
+                                                category.subcategories
+                                            )
+                                        }
+                                        value={id}
+                                        key={name}
+                                    >
+                                        {name}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                        {errors.category && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.category.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <select
+                            name="subcategory"
+                            id="subcat"
+                            {...register('subcategory_id', {
+                                required: 'This field is required',
+                            })}
+                        >
+                            <option value="">Select subcategory</option>
+                            {subcategories?.map((subcategory) => {
+                                const { id, name } = subcategory;
+                                return (
+                                    <option value={id} key={name}>
+                                        {name}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                        {errors.subcategory && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.subcategory.message}
                             </p>
                         )}
                     </div>
@@ -166,22 +229,6 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
                                     clearErrors('images');
                                 },
                                 validate: {
-                                    fileSize: (value) => {
-                                        if (!value[0]) return true;
-                                        return value
-                                            .forEach(
-                                                (element) =>
-                                                    element.size <= 2000000 ||
-                                                    'File size must be less than 2MB'
-                                            )
-                                            .reduce(
-                                                (acc, cur) => {
-                                                    if (cur !== true)
-                                                        return acc + cur;
-                                                },
-                                                ['']
-                                            );
-                                    },
                                     fileType: (value) => {
                                         if (!value[0]) return true;
                                         return (

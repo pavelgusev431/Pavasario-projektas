@@ -120,13 +120,18 @@ const ProductsDropdown = () => {
                                                                 <li
                                                                     key={sub.id}
                                                                     className="px-4 py-2 text-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition duration-200"
-                                                                    onClick={() =>
-                                                                        handleSubcategoryClick(
-                                                                            sub.id
-                                                                        )
-                                                                    }
                                                                 >
-                                                                    {sub.name}
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleSubcategoryClick(
+                                                                                sub.id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            sub.name
+                                                                        }
+                                                                    </button>
                                                                 </li>
                                                             )
                                                         )

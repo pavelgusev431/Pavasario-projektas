@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { FaStar, FaStarHalf } from 'react-icons/fa';
+import { nanoid } from 'nanoid';
 
 export default function ProductCard({ product, avgRating, ratingCount }) {
     return (
@@ -27,7 +28,7 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
                             if (i < Math.floor(avgRating)) {
                                 return (
                                     <FaStar
-                                        key={i}
+                                        key={nanoid(64)}
                                         className="text-yellow-500"
                                     />
                                 );
@@ -37,13 +38,16 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
                             ) {
                                 return (
                                     <FaStarHalf
-                                        key={i}
+                                        key={nanoid(64)}
                                         className="text-yellow-500"
                                     />
                                 );
                             } else {
                                 return (
-                                    <FaStar key={i} className="text-gray-300" />
+                                    <FaStar
+                                        key={nanoid(64)}
+                                        className="text-gray-300"
+                                    />
                                 );
                             }
                         })}

@@ -9,7 +9,7 @@ export const getUserBalance = async (req, res) => {
 
         res.json({ balance: user.balance || 0 });
     } catch (err) {
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ error: `Server error: ${err}` });
     }
 };
 
@@ -19,7 +19,6 @@ export const topUp = async (req, res) => {
     try {
         const user = await Secret.findOne({ where: { userId } });
         if (!user) {
-            console.log('❌ User not found');
             return res.status(404).json({ error: 'User not found' });
         }
 
@@ -27,7 +26,7 @@ export const topUp = async (req, res) => {
 
         await user.update({ balance: newBalance });
 
-        const newEvent = await Event.create({
+        await Event.create({
             user_id: userId,
             product_id: null,
             type_id: 1,
@@ -49,12 +48,12 @@ export const getBalanceHistory = async (req, res) => {
         const history = await Event.findAll({
             where: {
                 user_id: userId,
-                target_id: [4, 5, 6],
+                target_id: [5, 6],
             },
             order: [['timestamp', 'DESC']],
         });
         res.json(history);
     } catch (err) {
-        res.status(500).json({ error: 'Error getting history' });
+        res.status(500).json({ error: `Error getting history: ${err}` });
     }
 };
