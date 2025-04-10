@@ -83,7 +83,10 @@ const NavBar = () => {
     return (
         <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900">
             <div className="flex items-center justify-between mx-auto px-2 md:px-4">
-                <button onClick={() => handleNavigation('/home')}>
+                <button
+                    onClick={() => handleNavigation('/home')}
+                    className="transition-transform duration-300 hover:scale-110"
+                >
                     <img
                         src="../src/public/banner_images/logo.png"
                         alt="Logo"
@@ -148,7 +151,7 @@ const NavBar = () => {
                     {/* Burger */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="menu-toggle p-2 w-12 h-12 flex items-center justify-center text-sm dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="menu-toggle p-2 w-12 h-12 flex items-center justify-center text-sm dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 transition-transform duration-300 hover:scale-110"
                         aria-controls="navbar-default"
                         aria-expanded={isMenuOpen}
                     >
@@ -178,7 +181,7 @@ const NavBar = () => {
                                 onClick={() =>
                                     setIsDropdownOpen(!isDropdownOpen)
                                 }
-                                className="fas fa-user-circle text-4xl cursor-pointer text-gray-500 hover:text-[#800020] transition-colors duration-300"
+                                className="fas fa-user-circle text-4xl cursor-pointer text-gray-500 hover:text-[#800020] transition-transform duration-300 hover:scale-110"
                             ></button>
 
                             {isDropdownOpen && (
