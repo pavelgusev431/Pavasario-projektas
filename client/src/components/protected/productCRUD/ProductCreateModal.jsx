@@ -1,8 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import getFileTypes from '../../../helpers/getFileTypes.js';
+import createProduct from '../../../helpers/createProduct.js';
 
 const ProductCreateModal = ({ showModal, setShowModal }) => {
+    const [availableFileTypes, setAvailableFileTypes] = useState();
+    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
+        useState();
+
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetch = async () => {
+            const fileTypes = await getFileTypes();
+            setAvailableFileTypes(fileTypes);
+            const strippedFileTypes = fileTypes
+                .map((fileType) => fileType.split('/')[1].toUpperCase())
+                .join(', ');
+            setStrippedAvailableFileTypes(strippedFileTypes);
+        };
+        fetch();
+    }, []);
 
     const {
         register,
@@ -14,9 +32,15 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
 
     const submitHandler = async (data) => {
         try {
-            console.log(data);
+            await createProduct(data);
             setError('');
+            setValue('category_id', '');
+            setValue('subcategory_id', '');
             setValue('name', '');
+            setValue('price', '');
+            setValue('description', '');
+            setValue('amount_in_stock', '');
+            setValue('images', '');
         } catch (error) {
             setError(error);
         }
@@ -37,7 +61,7 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
             >
                 <div className="flex flex-row justify-between">
                     <h3 className="bg-none rounded p-2 my-0 w-50 justify-self-center">
-                        Edit email
+                        Create new product
                     </h3>
                     <button
                         onClick={handleClose}
@@ -127,6 +151,52 @@ const ProductCreateModal = ({ showModal, setShowModal }) => {
                         {errors.amount_in_stock && (
                             <p className="text-red-500 text-sm mt-1">
                                 {errors.amount_in_stock.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <input
+                            type="file"
+                            multiple
+                            {...register('images', {
+                                required:
+                                    'Add at least one image of your product',
+                                onChange: () => {
+                                    setError('');
+                                    clearErrors('images');
+                                },
+                                validate: {
+                                    fileSize: (value) => {
+                                        if (!value[0]) return true;
+                                        return value
+                                            .forEach(
+                                                (element) =>
+                                                    element.size <= 2000000 ||
+                                                    'File size must be less than 2MB'
+                                            )
+                                            .reduce(
+                                                (acc, cur) => {
+                                                    if (cur !== true)
+                                                        return acc + cur;
+                                                },
+                                                ['']
+                                            );
+                                    },
+                                    fileType: (value) => {
+                                        if (!value[0]) return true;
+                                        return (
+                                            availableFileTypes.includes(
+                                                value[0].type
+                                            ) ||
+                                            `The only available file formats are: ${strippedAvailableFileTypes}`
+                                        );
+                                    },
+                                },
+                            })}
+                        />
+                        {errors.images && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.images.message}
                             </p>
                         )}
                     </div>

@@ -85,26 +85,25 @@ VALUES
 (5, 27, 1, 2, 'ikele tikrinu', '2025-03-25T15:58:44.450Z'),
 
 -- 💰 Пополнения
-(7, NULL, 1, 4, 'ADDENDUM: +10€', '2025-04-07T09:00:00.000Z'),
-(7, NULL, 1, 4, 'ADDENDUM: +20€', '2025-04-07T10:00:00.000Z'),
-(7, NULL, 1, 4, 'ADDENDUM: +5€', '2025-04-07T11:00:00.000Z'),
-(7, NULL, 1, 4, 'ADDENDUM: +30€', '2025-04-07T12:00:00.000Z'),
-(7, NULL, 1, 4, 'ADDENDUM: +25€', '2025-04-07T13:00:00.000Z'),
+(5, NULL, 1, 4, 'ADDENDUM: +10€', '2025-04-07T09:00:00.000Z'),
+(5, NULL, 1, 4, 'ADDENDUM: +20€', '2025-04-07T10:00:00.000Z'),
+(5, NULL, 1, 4, 'ADDENDUM: +5€', '2025-04-07T11:00:00.000Z'),
+(5, NULL, 1, 4, 'ADDENDUM: +30€', '2025-04-07T12:00:00.000Z'),
+(5, NULL, 1, 4, 'ADDENDUM: +25€', '2025-04-07T13:00:00.000Z'),
 
 -- 🛒 Покупки
-(7, 11, 2, 5, 'PURCHASE: Samsung Galaxy S24', '2025-04-07T14:00:00.000Z'),
-(7, 13, 2, 5, 'PURCHASE: Samsung Galaxy Buds2', '2025-04-07T15:00:00.000Z'),
-(7, 15, 2, 5, 'PURCHASE: Samsung QLED TV', '2025-04-07T16:00:00.000Z'),
-(7, 18, 2, 5, 'PURCHASE: Samsung Monitor', '2025-04-07T17:00:00.000Z'),
-(7, 20, 2, 5, 'PURCHASE: Samsung External SSD', '2025-04-07T18:00:00.000Z'),
+(5, 11, 2, 5, 'PURCHASE: Samsung Galaxy S24', '2025-04-07T14:00:00.000Z'),
+(5, 13, 2, 5, 'PURCHASE: Samsung Galaxy Buds2', '2025-04-07T15:00:00.000Z'),
+(5, 15, 2, 5, 'PURCHASE: Samsung QLED TV', '2025-04-07T16:00:00.000Z'),
+(5, 18, 2, 5, 'PURCHASE: Samsung Monitor', '2025-04-07T17:00:00.000Z'),
+(5, 20, 2, 5, 'PURCHASE: Samsung External SSD', '2025-04-07T18:00:00.000Z'),
 
 -- 💼 Продажи
-(7, 2, 2, 6, 'SALE: MacBook Air M2', '2025-04-07T19:00:00.000Z'),
-(7, 4, 2, 6, 'SALE: Samsung SmartWatch', '2025-04-07T20:00:00.000Z'),
-(7, 5, 2, 6, 'SALE: iPad Pro 12.9', '2025-04-07T21:00:00.000Z'),
-(7, 7, 2, 6, 'SALE: Beats Studio3 Wireless', '2025-04-07T22:00:00.000Z'),
-(7, 9, 2, 6, 'SALE: Apple Keyboard', '2025-04-07T23:00:00.000Z');
-
+(5, 2, 2, 6, 'SALE: MacBook Air M2', '2025-04-07T19:00:00.000Z'),
+(5, 4, 2, 6, 'SALE: Samsung SmartWatch', '2025-04-07T20:00:00.000Z'),
+(5, 5, 2, 6, 'SALE: iPad Pro 12.9', '2025-04-07T21:00:00.000Z'),
+(5, 7, 2, 6, 'SALE: Beats Studio3 Wireless', '2025-04-07T22:00:00.000Z'),
+(5, 9, 2, 6, 'SALE: Apple Keyboard', '2025-04-07T23:00:00.000Z');
 
  
  

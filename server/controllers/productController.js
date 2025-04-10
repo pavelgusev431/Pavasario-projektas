@@ -2,6 +2,7 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
+import AppError from '../utilities/AppError.js';
 import { Op } from 'sequelize';
 
 const getUserProductsByUserName = async (req, res) => {
@@ -757,100 +758,100 @@ export const getProductById = async (req, res) => {
     }
 };
 
-const getAllProductsSorted = async (req, res) => {
+const createProduct = async (req, res, next) => {
     try {
-        console.log('✅ Сортировка работает:', req.query);
-        const allowedSortFields = [
-            'id',
-            'createdAt',
-            'price',
-            'name',
-            'avgRating',
-        ];
-        const sortField = allowedSortFields.includes(req.query.sort)
-            ? req.query.sort
-            : 'id';
-
-        const order = req.query.order === 'desc' ? 'DESC' : 'ASC';
-
-        const from = req.query.from?.trim() || null;
-        const to = req.query.to?.trim() || null;
-
-        const where = {};
-
-        if (from && to) {
-            where.createdAt = {
-                [Op.between]: [new Date(from), new Date(to)],
-            };
-        } else if (from) {
-            where.createdAt = {
-                [Op.gte]: new Date(from),
-            };
-        } else if (to) {
-            where.createdAt = {
-                [Op.lte]: new Date(to),
-            };
-        }
-
-        const options = { where };
-        const products = await Product.findAll(options);
-
-        if (products.length === 0) {
-            return res.status(404).json({ message: 'Nėra produktų' });
-        }
-
-        const ratings = await Rating.findAll({
-            where: {
-                product_id: {
-                    [Op.in]: products.map((product) => product.id),
-                },
-            },
+        const { id } = res.locals;
+        const {
+            category_id,
+            subcategory_id,
+            name,
+            price,
+            description,
+            image_url,
+            amount_in_stock,
+        } = req.body;
+        const newProduct = await Product.create({
+            user_id: id,
+            category_id,
+            subcategory_id,
+            name,
+            price,
+            description,
+            image_url,
+            amount_in_stock,
         });
-
-        const processed = products.map((product) => {
-            const productRatings = ratings.filter(
-                (r) => r.product_id === product.id
-            );
-
-            const ratingCount = productRatings.length;
-            const avgRating =
-                ratingCount > 0
-                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
-                      ratingCount
-                    : 0;
-
-            return {
-                ...product.dataValues,
-                ratingCount,
-                avgRating,
-            };
-        });
-
-        if (sortField === 'avgRating') {
-            processed.sort((a, b) =>
-                order === 'DESC'
-                    ? b.avgRating - a.avgRating
-                    : a.avgRating - b.avgRating
-            );
-        } else if (sortField === 'price') {
-            processed.sort((a, b) => {
-                const priceA = Number(a.price);
-                const priceB = Number(b.price);
-                return order === 'DESC' ? priceB - priceA : priceA - priceB;
+        if (!newProduct) {
+            throw new AppError('Internal server error', 500);
+        } else {
+            res.status(201).json({
+                status: 'success',
+                data: newProduct.dataValues,
             });
         }
+    } catch (error) {
+        next(error);
+    }
+};
 
-        return res.json({
-            products: processed,
-            pagination: {
-                currentPage: 1,
-                totalPages: 1,
-                totalProducts: processed.length,
-            },
-        });
-    } catch (err) {
-        console.error('Klaida serveryje:', err);
-        return res.status(500).json({ message: 'Klaida gaunant duomenis' });
+const editProduct = async (req, res, next) => {
+    try {
+        const { id } = res.locals;
+        const { productId } = req.params;
+        const {
+            category_id,
+            subcategory_id,
+            name,
+            price,
+            description,
+            amount_in_stock,
+        } = req.body;
+        const foundProduct = await Product.findByPk(productId);
+        if (!foundProduct) {
+            throw new AppError('Product not found', 404);
+        } else if (foundProduct.user_id !== id) {
+            throw new AppError(
+                "Forbidden to change other user's products",
+                403
+            );
+        } else {
+            foundProduct.category_id = category_id || foundProduct.category_id;
+            foundProduct.subcategory_id =
+                subcategory_id || foundProduct.subcategory_id;
+            foundProduct.name = name || foundProduct.name;
+            foundProduct.price = price || foundProduct.price;
+            foundProduct.amount_in_stock =
+                amount_in_stock || foundProduct.amount_in_stock;
+            foundProduct.description = description || foundProduct.description;
+            await foundProduct.save();
+            res.status(200).json({
+                status: 'success',
+                message: 'Changed product successfully',
+                data: foundProduct.dataValues,
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+const deleteProduct = async (req, res, next) => {
+    try {
+        const { id } = res.locals;
+        const { productId } = req.params;
+        const foundProduct = await Product.findByPk(productId);
+        if (!foundProduct) {
+            throw new AppError('Product not found', 404);
+        } else if (foundProduct.user_id !== id) {
+            throw new AppError(
+                "Forbidden to delete other user's products",
+                403
+            );
+        } else {
+            await foundProduct.destroy();
+            res.status(203).send();
+        }
+    } catch (error) {
+        next(error);
     }
 };
 const getSearchRegex = (req, res) => {
@@ -867,7 +868,9 @@ export {
     getTopUserProducts,
     getTrendingUserProducts,
     getRatedProductsByUserName,
-    getAllProductsSorted,
     getUserProducts,
+    createProduct,
+    editProduct,
+    deleteProduct,
     getSearchRegex,
 };

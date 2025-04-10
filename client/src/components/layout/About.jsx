@@ -1,69 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import BackToTopButton from '../buttons/BackToTopButton';
-
-const users = [
-    {
-        name: 'Pavel',
-        surname: 'Gusev',
-        role: 'Git-hub Manager',
-        github: 'https://github.com/Pavel-techin',
-        avatar: 'https://avatars.githubusercontent.com/Pavel-techin',
-    },
-    {
-        name: 'Darius',
-        surname: 'Alksnis',
-        role: 'Team Leader',
-        github: 'https://github.com/Darius911',
-        avatar: 'https://avatars.githubusercontent.com/Darius911',
-    },
-    {
-        name: 'Jarovslav',
-        surname: 'Paškel',
-        role: 'Scrum Master',
-        github: 'https://github.com/Jaronimo1337',
-        avatar: 'https://avatars.githubusercontent.com/Jaronimo1337',
-    },
-    {
-        name: 'Karolis',
-        surname: 'Rožan',
-        role: 'Full-stack Developer',
-        github: 'https://github.com/KarolisRZN',
-        avatar: 'https://avatars.githubusercontent.com/KarolisRZN',
-    },
-    {
-        name: 'Tomaš',
-        surname: 'Mučunas',
-        role: 'Full-stack Developer',
-        github: 'https://github.com/TomasMucunas',
-        avatar: 'https://avatars.githubusercontent.com/TomasMucunas',
-    },
-    {
-        name: 'Tadas',
-        surname: 'Rumšas',
-        role: 'Full-stack Developer',
-        github: 'https://github.com/tadasrumsas',
-        avatar: 'https://avatars.githubusercontent.com/tadasrumsas',
-    },
-    {
-        name: 'Ilona',
-        surname: 'Akinča',
-        role: 'QA Head specialist',
-        github: 'https://github.com/iakinca',
-        avatar: 'https://avatars.githubusercontent.com/iakinca',
-    },
-    {
-        name: 'Dmytro',
-        surname: 'Sokolov',
-        role: 'QA specialist',
-        github: 'https://github.com/usereight',
-        avatar: 'https://avatars.githubusercontent.com/usereight',
-    },
-];
 
 const About = () => {
-    const [currentPage, setCurrentPage] = useState(1);
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const usersPerPage = 3;
 
     useEffect(() => {
         const storedTheme = localStorage.getItem('theme');
@@ -88,19 +26,6 @@ const About = () => {
     useEffect(() => {
         document.documentElement.classList.toggle('dark', isDarkMode);
     }, [isDarkMode]);
-
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-    const totalPages = Math.ceil(users.length / usersPerPage);
-
-    const nextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
-
-    const prevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
 
     return (
         <div className="max-w-6xl mx-auto px-6 py-12 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 transition-colors">
@@ -136,7 +61,7 @@ const About = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="../src/public/banner_images/how-to-sell-step1.png" // IMAGE
+                            src="../src/public/banner_images/how-to-sell-step1.png"
                             alt="Step 1"
                             className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
@@ -150,7 +75,7 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="../src/public/banner_images/how-to-sell-step1.png" // IMAGE
+                            src="../src/public/banner_images/how-to-sell-step1.png"
                             alt="Step 2"
                             className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
@@ -164,7 +89,7 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="../src/public/banner_images/how-to-sell-step1.png" // IMAGE
+                            src="../src/public/banner_images/how-to-sell-step1.png"
                             alt="Step 3"
                             className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
@@ -186,7 +111,7 @@ const About = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="../src/public/banner_images/shopping-step1.png" // IMAGE
+                            src="../src/public/banner_images/shopping-step1.png"
                             alt="Step 1"
                             className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
@@ -198,19 +123,19 @@ const About = () => {
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="../src/public/banner_images/shopping-step1.png" // IMAGE
+                            src="../src/public/banner_images/shopping-step1.png"
                             alt="Step 2"
                             className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
                         <h4 className="text-xl font-bold mb-2">2. Buy it</h4>
                         <p>
-                            Once you ve found the perfect item, add it to your
+                            Once you’ve found the perfect item, add it to your
                             cart and purchase it.
                         </p>
                     </div>
                     <div className="flex flex-col items-center text-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg">
                         <img
-                            src="../src/public/banner_images/shopping-step1.png" // IMAGE
+                            src="../src/public/banner_images/shopping-step1.png"
                             alt="Step 3"
                             className="w-full h-auto mb-4 object-cover rounded-lg"
                         />
@@ -222,69 +147,6 @@ const About = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Meet Our Developers Section */}
-            <div className="mt-12">
-                <h3 className="text-2xl font-bold text-center mb-6">
-                    Meet Our Developers
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-                    {currentUsers.map((user, index) => (
-                        <a
-                            key={index}
-                            href={user.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="min-w-[280px] text-center flex flex-col items-center p-6 bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg transition-transform hover:scale-105"
-                        >
-                            <img
-                                src={user.avatar}
-                                alt={user.name}
-                                className="w-full h-auto mb-4 object-cover rounded-full"
-                            />
-                            <h4 className="text-xl font-bold mb-2">
-                                {user.name} {user.surname}
-                            </h4>
-                            <p className="text-gray-600 dark:text-gray-300">
-                                {user.role}
-                            </p>
-                        </a>
-                    ))}
-                </div>
-
-                {/* Pagination Controls */}
-                <div className="flex justify-center mt-6 space-x-4">
-                    {/* Previous Button */}
-                    <button
-                        onClick={prevPage}
-                        className="bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200"
-                        disabled={currentPage === 1}
-                    >
-                        &larr; Previous
-                    </button>
-
-                    {/* Dots Pagination */}
-                    <div className="flex items-center space-x-2">
-                        {[...Array(totalPages)].map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setCurrentPage(index + 1)}
-                                className={`w-3 h-3 rounded-full ${currentPage === index + 1 ? 'bg-gray-800' : 'bg-gray-300'} transition-colors`}
-                            ></button>
-                        ))}
-                    </div>
-
-                    {/* Next Button */}
-                    <button
-                        onClick={nextPage}
-                        className="bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200"
-                        disabled={currentPage === totalPages}
-                    >
-                        Next &rarr;
-                    </button>
-                </div>
-            </div>
-            <BackToTopButton />
         </div>
     );
 };

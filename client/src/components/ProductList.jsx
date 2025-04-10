@@ -168,7 +168,7 @@ export default function ProductList() {
                     id="pageSize"
                     value={pageSize}
                     onChange={handlePageSizeChange}
-                    className="p-2 border rounded-md"
+                    className="p-2 dark:text-white dark:bg-gray-900 border rounded-md"
                 >
                     <option value={6}>6</option>
                     <option value={12}>12</option>

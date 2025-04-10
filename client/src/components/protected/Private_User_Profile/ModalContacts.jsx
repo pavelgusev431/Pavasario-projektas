@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { updateUserInfo } from '../../../helpers/updateUserInfo';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ModalContacts = ({ user, showModal, setShowModal }) => {
     const { id, contacts } = user;
@@ -14,12 +15,18 @@ const ModalContacts = ({ user, showModal, setShowModal }) => {
         setValue,
         clearErrors,
     } = useForm();
-
     const submitHandler = async (data) => {
         try {
             await updateUserInfo(id, data);
             setError('');
             setValue('contacts', '');
+            toast.success('Contacts updated successfully!', {
+                position: 'bottom-right',
+                autoClose: 2000,
+                style: { background: '#161D2F', color: '#FFFFFF' },
+                hideProgressBar: true,
+            });
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             setError(error);
         }
@@ -32,8 +39,9 @@ const ModalContacts = ({ user, showModal, setShowModal }) => {
     return (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-stone-900/50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <h3 className="text-xl font-semibold text-gray-800">
+                <ToastContainer />
+                <div className="flex dark:bg-gray-800 items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 className="text-xl dark:text-white font-semibold text-gray-800">
                         Edit Contacts
                     </h3>
                     <button
@@ -56,8 +64,11 @@ const ModalContacts = ({ user, showModal, setShowModal }) => {
                         </svg>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit(submitHandler)} className="p-6">
-                    <div className="mb-4">
+                <form
+                    onSubmit={handleSubmit(submitHandler)}
+                    className="p-6 dark:bg-gray-800"
+                >
+                    <div className="mb-4 dark:bg-gray-800">
                         <textarea
                             type="text"
                             placeholder={
@@ -70,7 +81,7 @@ const ModalContacts = ({ user, showModal, setShowModal }) => {
                                     clearErrors('contacts');
                                 },
                             })}
-                            className="w-full h-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                            className="w-full h-32 px-4 py-2 dark:text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
                         />
                         {errors.contacts && (
                             <p className="text-red-500 text-sm mt-2">
