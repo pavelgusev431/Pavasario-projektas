@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import getFileTypes from '../../../helpers/getFileTypes.js';
 import createComment from '../../../helpers/createComment.js';
 
-export default function ReviewCreateModal({ showModal, setShowModal }) {
+export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
     const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] = useState('');
     const [error, setError] = useState('');
@@ -30,22 +30,8 @@ export default function ReviewCreateModal({ showModal, setShowModal }) {
 
     const submitHandler = async (data) => {
         try {
-            const formData = new FormData();
-            formData.append('product_id', data.product_id);
-            formData.append('comment', data.comment.trim());
-            formData.append('stars', data.stars);
-            if (data.images && data.images.length > 0) {
-                Array.from(data.images).forEach((file) => {
-                    formData.append('images', file); // Siunčiame failus kaip 'images'
-                });
-            }
-
-            console.log('Siunčiami duomenys:');
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-
-            await createComment(formData);
+            await createComment(data); // Siunčiame duomenis į createComment helperį
+            setUpdate((update) => update + 1); // Atnaujiname būseną, kaip ProductCreateModal
             setError('');
             setValue('product_id', '');
             setValue('comment', '');
@@ -53,7 +39,6 @@ export default function ReviewCreateModal({ showModal, setShowModal }) {
             setValue('images', '');
             setShowModal(false);
         } catch (error) {
-            console.error('Klaida iš backend:', error.response?.data);
             setError(error.response?.data?.message || 'Nepavyko sukurti komentaro');
         }
     };
@@ -85,7 +70,6 @@ export default function ReviewCreateModal({ showModal, setShowModal }) {
                 <form
                     onSubmit={handleSubmit(submitHandler)}
                     className="flex flex-col"
-                    encType="multipart/form-data"
                 >
                     <div>
                         <input
@@ -116,21 +100,6 @@ export default function ReviewCreateModal({ showModal, setShowModal }) {
                             placeholder="Komentaras"
                             {...register('comment', {
                                 required: 'Komentaras yra privalomas',
-                                minLength: {
-                                    value: 1,
-                                    message: 'Komentaras turi būti bent 1 simbolio ilgumo',
-                                },
-                                maxLength: {
-                                    value: 255,
-                                    message: 'Komentaras negali viršyti 255 simbolių',
-                                },
-                                validate: {
-                                    isString: (value) =>
-                                        typeof value === 'string' || 'Komentaras turi būti tekstas',
-                                    allowedCharacters: (value) =>
-                                        /^[A-Za-z0-9ąčęėįšųūž\s.,!?()-]*$/.test(value) ||
-                                        'Leidžiami tik raidės, skaičiai, lietuviški simboliai ir tam tikri ženklai (.,!?()- ir tarpai)',
-                                },
                                 onChange: () => {
                                     setError('');
                                     clearErrors('comment');
@@ -159,8 +128,6 @@ export default function ReviewCreateModal({ showModal, setShowModal }) {
                                     message: 'Įvertinimas negali būti didesnis nei 5',
                                 },
                                 valueAsNumber: true,
-                                validate: (value) =>
-                                    Number.isInteger(value) || 'Įvertinimas turi būti sveikasis skaičius',
                                 onChange: () => {
                                     setError('');
                                     clearErrors('stars');
@@ -184,17 +151,12 @@ export default function ReviewCreateModal({ showModal, setShowModal }) {
                                     clearErrors('images');
                                 },
                                 validate: {
-                                    fileSize: (value) => {
-                                        if (!value || value.length === 0) return true; // Neprivalomas laukas
-                                        return Array.from(value).every(
-                                            (file) => file.size <= 2000000
-                                        ) || 'Failo dydis turi būti mažesnis nei 2MB';
-                                    },
                                     fileType: (value) => {
-                                        if (!value || value.length === 0) return true; // Neprivalomas laukas
-                                        return Array.from(value).every((file) =>
-                                            availableFileTypes.includes(file.type)
-                                        ) || `Leidžiami failų formatai: ${strippedAvailableFileTypes}`;
+                                        if (!value || !Array.from(value)[0]) return true; // Neprivalomas
+                                        return (
+                                            availableFileTypes.includes(Array.from(value)[0].type) ||
+                                            `Leidžiami failų formatai: ${strippedAvailableFileTypes}`
+                                        );
                                     },
                                 },
                             })}
