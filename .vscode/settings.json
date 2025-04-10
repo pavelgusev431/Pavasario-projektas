@@ -1,1 +1,9 @@
-{ "editor.quickSuggestions": { "strings": true } }
+{
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "files.associations": {
+        "*.css": "tailwindcss",
+        "*.scss": "tailwindcss",
+    },
+}

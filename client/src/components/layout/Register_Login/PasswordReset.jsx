@@ -1,7 +1,6 @@
 import { sendNewPassword } from '../../../helpers/passwordReset.js';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { sha1 } from 'js-sha1';
 import { sha256 } from 'js-sha256';
 
@@ -18,7 +17,6 @@ const PasswordReset = () => {
     const sendPassword = async (data) => {
         const password = data.password;
         const hashedPassword = sha256(sha1(password));
-        console.log(hashedPassword);
         await sendNewPassword(userid, salt, hashedPassword);
         alert('Password changed');
         navigate('/');

@@ -6,6 +6,7 @@ import sha1 from 'js-sha1';
 import sha256 from 'js-sha256';
 import { sendEmail } from '../utilities/mailer.js';
 import dotenv from 'dotenv';
+import Event from '../models/eventModel.js';
 dotenv.config();
 const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASS = process.env.ADMIN_PASS;
@@ -53,6 +54,15 @@ const createUser = async (req, res) => {
         password: `${hashedPassword}:${salt}`,
         role: role,
     });
+
+    await Event.create({
+        user_id: user.id,
+        product_id: null,
+        type_id: 1,
+        target_id: 1,
+        description: `Vartotojas "${username}" sėkmingai užsiregistravo.`,
+    });
+
     res.status(201).json({
         status: 'success',
         data: user,
@@ -312,21 +322,25 @@ const changePassword = async (req, res, next) => {
 };
 
 const changeImageURL = async (req, res, next) => {
-    const { id } = req.params;
-    const foundUser = await User.findByPk(id);
-    if (!foundUser) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Unknown user',
-        });
-    } else {
-        const imageURL = req.cookies?.filepath;
-        foundUser.image_url = imageURL;
-        await foundUser.save();
-        res.status(203).json({
-            status: 'success',
-            message: 'Image url changed',
-        });
+    try {
+        const { id } = req.params;
+        const foundUser = await User.findByPk(id);
+        if (!foundUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Unknown user',
+            });
+        } else {
+            const imageURL = req.cookies?.filepath;
+            foundUser.image_url = imageURL;
+            await foundUser.save();
+            res.status(203).json({
+                status: 'success',
+                message: 'Image url changed',
+            });
+        }
+    } catch (error) {
+        next(error);
     }
 };
 

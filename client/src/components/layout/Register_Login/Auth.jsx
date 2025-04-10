@@ -42,7 +42,7 @@ const Auth = () => {
         setShowPassword(false);
         setError('');
         setShowReset(false);
-    }, [authType]);
+    }, [authType, setValue]);
 
     const handleResetShow = () => setShowReset(!showReset);
 

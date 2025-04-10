@@ -34,7 +34,6 @@ const updateUserAvatar = async (id, data) => {
         .catch((error) => {
             console.log(error);
         });
-    console.log(response2);
     return { response1, response2 };
 };
 
