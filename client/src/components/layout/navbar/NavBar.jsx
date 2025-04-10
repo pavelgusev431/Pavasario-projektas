@@ -102,6 +102,9 @@ const NavBar = () => {
                                 <ProductsDropdown />
                             </li>
                             <li>
+                                <ThemeToggleButton />
+                            </li>
+                            <li>
                                 <button
                                     onClick={() => handleNavigation('/contact')}
                                     className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/contact')}`}
