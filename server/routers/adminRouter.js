@@ -6,7 +6,7 @@ import {
     updateUserRole,
     createUser,
     updateUserData,
-    getAllEvents
+    getAllEvents,
 } from '../controllers/adminController.js';
 
 import validate from '../middlewares/validate.js';
@@ -24,7 +24,6 @@ adminRouter
 adminRouter.route('/users/role/:id').patch(updateUserRole);
 adminRouter.route('/users/ban/:id').post(banUser);
 adminRouter.route('/users/:id').patch(updateUserData).delete(deleteUser);
-adminRouter.route('/events',).get(getAllEvents);
-
+adminRouter.route('/events').get(getAllEvents);
 
 export default adminRouter;

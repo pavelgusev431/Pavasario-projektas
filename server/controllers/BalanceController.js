@@ -44,18 +44,17 @@ export const topUp = async (req, res) => {
 };
 
 export const getBalanceHistory = async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const history = await Event.findAll({
-      where: {
-        user_id: userId,
-        target_id: [5, 6]
-      },
-      order: [['timestamp', 'DESC']]
-    });
-    res.json(history);
-  } catch (err) {
-    res.status(500).json({ error: "Error getting history" });
-  }
-
+    const { userId } = req.params;
+    try {
+        const history = await Event.findAll({
+            where: {
+                user_id: userId,
+                target_id: [5, 6],
+            },
+            order: [['timestamp', 'DESC']],
+        });
+        res.json(history);
+    } catch (err) {
+        res.status(500).json({ error: 'Error getting history' });
+    }
 };

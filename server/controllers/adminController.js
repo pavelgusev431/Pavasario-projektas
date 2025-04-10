@@ -138,19 +138,18 @@ export const updateUserData = async (req, res, next) => {
 
 export const getAllEvents = async (req, res) => {
     try {
-      const events = await Event.findAll({
-        include: [
-          { association: 'eventType' },
-          { association: 'eventTarget' },
-          { association: 'user' },
-        ],
-        order: [['timestamp', 'DESC']],
-      });
-  
-      res.status(200).json(events);
+        const events = await Event.findAll({
+            include: [
+                { association: 'eventType' },
+                { association: 'eventTarget' },
+                { association: 'user' },
+            ],
+            order: [['timestamp', 'DESC']],
+        });
+
+        res.status(200).json(events);
     } catch (error) {
-      console.error("Klaida gaunant įvykius:", error);
-      res.status(500).json({ message: "Nepavyko gauti įvykių" });
+        console.error('Klaida gaunant įvykius:', error);
+        res.status(500).json({ message: 'Nepavyko gauti įvykių' });
     }
-  };
-  
+};

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { searchSuggestions } from '../../../helpers/searchProducts';
 import getSearchRegex from '../../../helpers/getSearchRegex';
@@ -9,7 +9,19 @@ const SearchBar = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [isFocused, setIsFocused] = useState(false);
     const [zalgoRegex, setZalgoRegex] = useState(null);
+    const inputRef = useRef(null);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        setQuery('');
+        setSuggestions([]);
+        setIsFocused(false);
+
+        if (inputRef.current) {
+            inputRef.current.blur();
+        }
+    }, [location.pathname, location.search]);
 
     useEffect(() => {
         if (query.length >= 3) {
@@ -45,9 +57,7 @@ const SearchBar = () => {
         };
         fetchRegex();
     }, []);
-    useEffect(() => {
-        setIsFocused(false);
-    }, [query]);
+
     const isZalgo = (text) => {
         return zalgoRegex ? zalgoRegex.test(text) : false;
     };
@@ -74,43 +84,51 @@ const SearchBar = () => {
         }
 
         navigate(`/search?q=${encodeURIComponent(trimmedQuery)}`);
-        setQuery('');
-        setSuggestions([]);
-        setIsFocused(false);
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setQuery(suggestion.name);
-        setSuggestions([]);
-        setIsFocused(true);
         navigate(`/search?q=${encodeURIComponent(suggestion.name)}`);
-        setQuery('');
-        setSuggestions([]);
     };
 
     return (
         <div className="flex flex-col items-center justify-center relative">
             <ToastContainer position="top-center" />
             <div
-                className={`flex items-center ${isFocused ? '  justify-center' : 'hover:bg-gray-200 px-1 py-2 rounded-md'}`}
+                className={`flex items-center ${isFocused || query ? 'justify-center' : 'hover:bg-gray-200 px-1 py-2 rounded-md'}`}
             >
                 <form onSubmit={handleSearch} className="relative mx-auto flex">
                     <input
+                        ref={inputRef}
                         type="search"
-                        className={`peer cursor-pointer relative z-10 h-8 w-10 rounded-lg border bg-transparent  outline-none transition-all ${
-                            isFocused
-                                ? 'w-full pl-10 border-gray-500 px-3'
-                                : 'focus:w-full  placeholder:opacity-0 focus:border-gray-500 focus:px-3 opacity-0'
+                        className={`peer cursor-pointer relative z-10 h-8 w-10 rounded-lg border bg-transparent outline-none transition-all text-black dark:text-white ${
+                            isFocused || query
+                                ? 'w-full pl-10 border-gray-500 px-3 opacity-100'
+                                : 'focus:w-full focus:opacity-100 placeholder:opacity-0 focus:border-gray-500 focus:px-3 opacity-0'
                         }`}
                         placeholder="Search products..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
+                        onBlur={() => {
+                            if (!query) {
+                                setIsFocused(false);
+                            }
+                        }}
                     />
                     <button
                         type="submit"
-                        className="absolute dark:bg-white-700 top-0 dark:text-white border-gray-500 left-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
+                        className="absolute dark:bg-transparent top-0 dark:text-white border-gray-500 left-0 bottom-0 my-auto h-8 w-10 px-3 rounded-lg"
+                        onClick={() => {
+                            if (!query && inputRef.current) {
+                                if (isFocused) {
+                                    setIsFocused(false);
+                                    inputRef.current.blur();
+                                } else {
+                                    setIsFocused(true);
+                                    inputRef.current.focus();
+                                }
+                            }
+                        }}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -125,12 +143,12 @@ const SearchBar = () => {
                 </form>
             </div>
 
-            {suggestions.length > 0 && (
+            {suggestions.length > 0 && isFocused && (
                 <ul className="absolute top-full dark:bg-gray-800 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-auto">
                     {suggestions.map((product) => (
                         <li
                             key={product.id}
-                            className="px-3 py-2 cursor-pointer hover:bg-gray-200"
+                            className="px-3 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white"
                             onMouseDown={() => handleSuggestionClick(product)}
                         >
                             {product.name}

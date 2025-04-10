@@ -15,7 +15,6 @@ import imageRouter from '../routers/imageRouter.js';
 import balanceRouter from '../routers/BalanceRouter.js';
 import eventRouter from '../routers/eventRouter.js';
 
-
 dotenv.config();
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
 const CLIENT_PORT = process.env.CLIENT_PORT || '3000';
@@ -45,7 +44,6 @@ app.use('/upload', uploadRouter);
 app.use('/images', imageRouter);
 app.use('/balance', balanceRouter);
 app.use('/events', eventRouter);
-
 
 //==============
 //last
