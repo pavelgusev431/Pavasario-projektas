@@ -151,4 +151,29 @@ const createComment = async (req, res, next) => {
     }
 };
 
-export { getProductCommentsById, createComment };
+const getUserComments = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Neteisingas vartotojo ID' });
+        }
+
+        const comments = await Rating.findAll({
+            where: { user_id: userId },
+        });
+
+        if (comments.length === 0) {
+            return res
+                .status(200)
+                .json({ message: 'Komentarų šiam vartotojui nerasta' });
+        }
+
+        return res.json({ data: comments });
+    } catch (error) {
+        console.error('Klaida gaunant vartotojo komentarus:', error);
+        return res.status(500).json({ message: 'Serverio klaida' });
+    }
+};
+
+export { getProductCommentsById, createComment, getUserComments };
