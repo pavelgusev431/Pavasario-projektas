@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { nanoid } from 'nanoid';
 
 const users = [
     {
@@ -133,14 +134,18 @@ const Contact = () => {
                     <form
                         action="mailto:justdoitserviceemail@gmail.com"
                         method="post"
-                        enctype="text/plain"
+                        encType="text/plain"
                         className="space-y-6"
                     >
                         <div>
-                            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                            <label
+                                htmlFor="email_input"
+                                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+                            >
                                 Name:
                             </label>
                             <input
+                                id="email_input"
                                 type="text"
                                 name="name"
                                 className="w-full p-4 text-base border border-gray-200 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -148,10 +153,14 @@ const Contact = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                            <label
+                                htmlFor="email_input"
+                                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+                            >
                                 E-mail:
                             </label>
                             <input
+                                id="_input"
                                 type="text"
                                 name="mail"
                                 className="w-full p-4 text-base border border-gray-200 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -159,10 +168,14 @@ const Contact = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                            <label
+                                htmlFor="comment_input"
+                                className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+                            >
                                 Comment:
                             </label>
                             <textarea
+                                id="_input"
                                 name="comment"
                                 rows="4"
                                 className="w-full p-4 text-base border border-gray-200 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -187,9 +200,9 @@ const Contact = () => {
                     Meet Our Developers
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
-                    {currentUsers.map((user, index) => (
+                    {currentUsers.map((user) => (
                         <a
-                            key={index}
+                            key={nanoid(64)}
                             href={user.github}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -225,7 +238,7 @@ const Contact = () => {
                     <div className="flex items-center space-x-2">
                         {[...Array(totalPages)].map((_, index) => (
                             <button
-                                key={index}
+                                key={nanoid(64)}
                                 onClick={() => setCurrentPage(index + 1)}
                                 className={`w-3 h-3 rounded-full ${
                                     currentPage === index + 1

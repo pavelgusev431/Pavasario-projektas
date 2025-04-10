@@ -1,32 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
 const About = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    useEffect(() => {
-        const storedTheme = localStorage.getItem('theme');
-        if (storedTheme === 'dark') {
-            setIsDarkMode(true);
-            document.documentElement.classList.add('dark');
-        } else {
-            setIsDarkMode(false);
-            document.documentElement.classList.remove('dark');
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        setIsDarkMode((prevState) => {
-            const newTheme = !prevState;
-            localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-            document.documentElement.classList.toggle('dark', newTheme);
-            return newTheme;
-        });
-    };
-
-    useEffect(() => {
-        document.documentElement.classList.toggle('dark', isDarkMode);
-    }, [isDarkMode]);
-
     return (
         <div className="max-w-6xl mx-auto px-6 py-12 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 transition-colors">
             {/* About Section */}

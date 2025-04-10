@@ -9,7 +9,7 @@ export const getUserBalance = async (req, res) => {
 
         res.json({ balance: user.balance || 0 });
     } catch (err) {
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ error: `Server error: ${err}` });
     }
 };
 
@@ -54,6 +54,6 @@ export const getBalanceHistory = async (req, res) => {
         });
         res.json(history);
     } catch (err) {
-        res.status(500).json({ error: 'Error getting history' });
+        res.status(500).json({ error: `Error getting history: ${err}` });
     }
 };
