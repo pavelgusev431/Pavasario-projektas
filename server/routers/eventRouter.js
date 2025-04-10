@@ -3,6 +3,6 @@ import { getAllEvents } from '../controllers/eventController.js';
 
 const eventRouter = express.Router();
 
-eventRouter.get('/', getAllEvents);
+eventRouter.route('/').get(getAllEvents);
 
 export default eventRouter;
