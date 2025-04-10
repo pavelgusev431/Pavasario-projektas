@@ -1,5 +1,4 @@
 #!/bin/sh
 npm run lint -s
 npm run prettify -s
-git add .
-git add .
+git add --all

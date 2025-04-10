@@ -1,9 +1,0 @@
-client/src/components/layout/navbar/NavBar.jsx
-client/src/components/layout/navbar/SearchBar.jsx
-client/src/components/ProductDetails.jsx
-client/src/helpers/getSelectedProducts.js
-server/controllers/adminController.js
-server/controllers/BalanceController.js
-server/controllers/eventController.js
-server/routers/adminRouter.js
-server/server/app.js

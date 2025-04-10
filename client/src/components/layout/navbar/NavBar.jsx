@@ -83,8 +83,10 @@ const NavBar = () => {
     return (
         <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900">
             <div className="flex items-center mx-auto px-2 md:px-4 justify-between w-full">
+                <ThemeToggleButton />
+
                 {/* Left Section */}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center">
                     <button
                         className="flex items-center"
                         onClick={() => handleNavigation('/home')}
@@ -97,17 +99,14 @@ const NavBar = () => {
                     </button>
 
                     <div className="hidden md:flex items-center ml-2">
-                        <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:border-gray-700 dark:bg-gray-800 dark:md:bg-gray-900">
-                            <li>
+                        <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:gap-3 md:mt-0 md:border-0 md:bg-white dark:border-gray-700 dark:bg-gray-800 dark:md:bg-gray-900">
+                            <li className="rounded-sm dark:hover:bg-gray-600 hover:bg-gray-200 md:p-3">
                                 <ProductsDropdown />
-                            </li>
-                            <li>
-                                <ThemeToggleButton />
                             </li>
                             <li>
                                 <button
                                     onClick={() => handleNavigation('/contact')}
-                                    className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/contact')}`}
+                                    className={`block py-2 px-2 dark:hover:bg-gray-600 dark:text-white rounded-sm hover:bg-gray-200 md:p-3 ${isActive('/contact')}`}
                                 >
                                     Contact
                                 </button>
@@ -115,7 +114,7 @@ const NavBar = () => {
                             <li>
                                 <button
                                     onClick={() => handleNavigation('/about')}
-                                    className={`block py-2 px-2 dark:text-white rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${isActive('/about')}`}
+                                    className={`block py-2 px-2 dark:hover:bg-gray-600 dark:text-white rounded-sm hover:bg-gray-100 md:p-3 ${isActive('/about')}`}
                                 >
                                     About
                                 </button>
@@ -142,7 +141,7 @@ const NavBar = () => {
                         {!auth && (
                             <button
                                 onClick={() => handleNavigation('/signup')}
-                                className="block p-3 dark:text-white rounded-md hover:bg-gray-200 md:mr-2 md:p-3 font-medium cursor-pointer"
+                                className="block p-3 dark:text-white dark:hover:bg-gray-600 rounded-md hover:bg-gray-200 md:mr-2 md:p-3 font-medium cursor-pointer"
                             >
                                 Sign Up
                             </button>
