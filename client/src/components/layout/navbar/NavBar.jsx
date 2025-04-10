@@ -114,7 +114,7 @@ const NavBar = () => {
                             <li>
                                 <button
                                     onClick={() => handleNavigation('/about')}
-                                    className={`block py-2 px-2 dark:hover:bg-gray-600 dark:text-white rounded-sm hover:bg-gray-100 md:p-3 ${isActive('/about')}`}
+                                    className={`block py-2 px-2 dark:hover:bg-gray-600 dark:text-white rounded-sm hover:bg-gray-200 md:p-3 ${isActive('/about')}`}
                                 >
                                     About
                                 </button>
@@ -125,7 +125,7 @@ const NavBar = () => {
                                         onClick={() =>
                                             handleNavigation('/adminpanel')
                                         }
-                                        className={`block dark:text-white rounded-sm md:border-0 ${isActive('/adminpanel')}`}
+                                        className={`block dark:text-white dark:hover:bg-gray-600 md:p-3 hover:bg-gray-200 rounded-sm md:border-0 ${isActive('/adminpanel')}`}
                                     >
                                         AdminPanel
                                     </button>
