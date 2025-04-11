@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import ProductComments from './ProductComments';
 import { nanoid } from 'nanoid';
 import getSelectedProduct from '../helpers/getSelectedProducts';
-import url from "../helpers/getURL.js";
+import url from '../helpers/getURL.js';
 
 const ProductDetails = () => {
     const { id } = useParams();

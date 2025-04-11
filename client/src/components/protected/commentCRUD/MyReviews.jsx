@@ -26,12 +26,21 @@ export default function MyReviews() {
                     const commentsWithImages = await Promise.all(
                         commentsData.map(async (comment) => {
                             try {
-                                const imgResponse = await axios.get(url(`images/c/comment${comment.id}`), {
-                                    withCredentials: true,
-                                });
-                                return { ...comment, images: imgResponse.data.data || [] };
+                                const imgResponse = await axios.get(
+                                    url(`images/c/comment${comment.id}`),
+                                    {
+                                        withCredentials: true,
+                                    }
+                                );
+                                return {
+                                    ...comment,
+                                    images: imgResponse.data.data || [],
+                                };
                             } catch (imgErr) {
-                                console.error(`Klaida gaunant komentaro ${comment.id} paveikslėlius:`, imgErr);
+                                console.error(
+                                    `Klaida gaunant komentaro ${comment.id} paveikslėlius:`,
+                                    imgErr
+                                );
                                 return { ...comment, images: [] };
                             }
                         })
@@ -89,7 +98,9 @@ export default function MyReviews() {
                                 </div>
                             )}
                             <p className="text-lg">{comment.comment}</p>
-                            <p className="text-sm text-gray-500">{comment.stars} stars</p>
+                            <p className="text-sm text-gray-500">
+                                {comment.stars} stars
+                            </p>
                         </div>
                     ))
                 )}

@@ -94,7 +94,7 @@ const SearchBar = () => {
         <div className="flex flex-col items-center justify-center relative">
             <ToastContainer position="top-center" />
             <div
-                className={`flex items-center ${isFocused || query ? 'justify-center' : 'hover:bg-gray-200 px-1 py-2 rounded-md'}`}
+                className={`flex items-center ${isFocused || query ? 'justify-center' : 'hover:bg-gray-200 dark:hover:bg-gray-600 px-1 py-2 rounded-md'}`}
             >
                 <form onSubmit={handleSearch} className="relative mx-auto flex">
                     <input

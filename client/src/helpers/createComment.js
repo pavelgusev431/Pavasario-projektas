@@ -23,14 +23,22 @@ const createComment = async (data) => {
             for (const image of images) {
                 const formData = new FormData();
                 formData.append('images', image);
-                await axios.post(url('upload/images'), formData, { withCredentials: true });
+                await axios.post(url('upload/images'), formData, {
+                    withCredentials: true,
+                });
             }
 
             // 3. Gauname paveikslėlius
-            const allCommentImages = await axios.get(url(`images/c/comment${id}`), {
-                withCredentials: true,
-            });
-            console.log('Gauti paveikslėliai arba klaida:', allCommentImages.response?.data || allCommentImages);
+            const allCommentImages = await axios.get(
+                url(`images/c/comment${id}`),
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log(
+                'Gauti paveikslėliai arba klaida:',
+                allCommentImages.response?.data || allCommentImages
+            );
             const frontCover = allCommentImages.data.data[0];
 
             // 4. Atnaujiname komentarą su image_url

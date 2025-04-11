@@ -3,9 +3,14 @@ import { useForm } from 'react-hook-form';
 import getFileTypes from '../../../helpers/getFileTypes.js';
 import createComment from '../../../helpers/createComment.js';
 
-export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }) {
+export default function ReviewCreateModal({
+    showModal,
+    setShowModal,
+    setUpdate,
+}) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
-    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] = useState('');
+    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
+        useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -30,8 +35,8 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
 
     const submitHandler = async (data) => {
         try {
-            await createComment(data); 
-            setUpdate((update) => update + 1); 
+            await createComment(data);
+            setUpdate((update) => update + 1);
             setError('');
             setValue('product_id', '');
             setValue('comment', '');
@@ -39,7 +44,9 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
             setValue('images', '');
             setShowModal(false);
         } catch (error) {
-            setError(error.response?.data?.message || 'Nepavyko sukurti komentaro');
+            setError(
+                error.response?.data?.message || 'Nepavyko sukurti komentaro'
+            );
         }
     };
 
@@ -79,7 +86,8 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 required: 'Produkto ID yra privalomas',
                                 min: {
                                     value: 1,
-                                    message: 'Produkto ID turi būti teigiamas skaičius',
+                                    message:
+                                        'Produkto ID turi būti teigiamas skaičius',
                                 },
                                 valueAsNumber: true,
                                 onChange: () => {
@@ -125,7 +133,8 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 },
                                 max: {
                                     value: 5,
-                                    message: 'Įvertinimas negali būti didesnis nei 5',
+                                    message:
+                                        'Įvertinimas negali būti didesnis nei 5',
                                 },
                                 valueAsNumber: true,
                                 onChange: () => {
@@ -152,9 +161,12 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 },
                                 validate: {
                                     fileType: (value) => {
-                                        if (!value || !Array.from(value)[0]) return true; 
+                                        if (!value || !Array.from(value)[0])
+                                            return true;
                                         return (
-                                            availableFileTypes.includes(Array.from(value)[0].type) ||
+                                            availableFileTypes.includes(
+                                                Array.from(value)[0].type
+                                            ) ||
                                             `Leidžiami failų formatai: ${strippedAvailableFileTypes}`
                                         );
                                     },
