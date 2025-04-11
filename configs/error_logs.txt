@@ -1,0 +1,2 @@
+client/src/components/layout/Home/Carousel.jsx
+client/src/components/ProductComments.jsx

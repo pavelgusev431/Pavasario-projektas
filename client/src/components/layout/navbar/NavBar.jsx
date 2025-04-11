@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import ThemeToggleButton from '../../buttons/ThemeToggleButton.jsx';
@@ -10,10 +10,10 @@ const NavBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
-    const [isHovered, setIsHovered] = useState(false);
-    const [isClicked, setIsClicked] = useState(false);
-    const [balance, setBalance] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [balance, setBalance] = useState(0);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         const fetchBalance = async () => {
@@ -34,21 +34,18 @@ const NavBar = () => {
         };
 
         window.addEventListener('balance-updated', handleBalanceUpdate);
-
         return () => {
             window.removeEventListener('balance-updated', handleBalanceUpdate);
-            setIsHovered(false);
-            setIsClicked(false);
         };
     }, [auth, location]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
-                !event.target.closest('.mobile-menu') &&
-                !event.target.closest('.menu-toggle')
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
             ) {
-                setIsMenuOpen(false);
+                setIsDropdownOpen(false);
             }
         };
 
@@ -70,10 +67,13 @@ const NavBar = () => {
     const handleNavigation = (path) => {
         navigate(path);
         setIsMenuOpen(false);
+        setIsDropdownOpen(false);
     };
 
     const isActive = (path) =>
-        location.pathname === path ? 'text-[#800020]' : 'text-black';
+        location.pathname === path
+            ? 'text-[#800020]'
+            : 'text-black dark:text-white';
 
     const handleLogout = () => {
         setAuth(null);
@@ -176,81 +176,77 @@ const NavBar = () => {
                         <SearchBar />
                     </div>
 
+                    {/* Account Dropdown */}
                     {auth && (
-                        <div className="relative">
+                        <div className="relative" ref={dropdownRef}>
                             <button
-                                onMouseEnter={() => setIsHovered(false)}
-                                onMouseLeave={() => setIsHovered(false)}
-                                className={`fas fa-user-circle text-4xl cursor-pointer transition-transform duration-300 ${
-                                    isHovered || isClicked
-                                        ? 'text-red-500'
-                                        : 'text-gray-500'
-                                }`}
-                                onClick={() => setIsClicked(!isClicked)}
+                                onClick={() =>
+                                    setIsDropdownOpen(!isDropdownOpen)
+                                }
+                                className="fas fa-user-circle text-4xl cursor-pointer text-gray-500 hover:text-[#800020] transition-transform duration-300 hover:scale-110"
                             ></button>
-                            {(isHovered || isClicked) && (
-                                <div className="absolute top-9 right-0 bg-gradient-to-t from-black to-gray-700 shadow-lg rounded-lg z-50 border border-white p-5 transition-all duration-300 w-48 md:w-64">
+
+                            {isDropdownOpen && (
+                                <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg py-2 animate-fade-in z-50">
                                     <button
                                         onClick={() =>
                                             handleNavigation('/balance')
                                         }
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-wallet mr-3"></i>{' '}
-                                        <span>
-                                            Balance: €{balance.toFixed(2)}
-                                        </span>
+                                        <i className="fas fa-wallet mr-3"></i>
+                                        <span>Balance: €{balance.toFixed(2)}</span>
                                     </button>
                                     <button
                                         onClick={() =>
                                             handleNavigation('/profile')
                                         }
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-user mr-3"></i>{' '}
-                                        <span>Manage my account</span>
+                                        <i className="fas fa-user mr-3"></i>
+                                        <span>Manage Account</span>
                                     </button>
                                     <button
                                         onClick={() =>
                                             handleNavigation('/orders')
                                         }
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-box mr-3"></i>{' '}
-                                        <span>My orders</span>
+                                        <i className="fas fa-box mr-3"></i>
+                                        <span>My Orders</span>
                                     </button>
                                     <button
                                         onClick={() =>
                                             handleNavigation('/cancellations')
                                         }
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-times-circle mr-3"></i>{' '}
-                                        <span>My cancellations</span>
+                                        <i className="fas fa-times-circle mr-3"></i>
+                                        <span>Cancellations</span>
                                     </button>
                                     <button
                                         onClick={() =>
                                             handleNavigation('/reviews')
                                         }
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-star mr-3"></i>{' '}
-                                        <span>My reviews</span>
+                                        <i className="fas fa-star mr-3"></i>
+                                        <span>My Reviews</span>
                                     </button>
                                     <button
                                         onClick={() =>
                                             handleNavigation('/myProducts')
                                         }
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-store mr-3"></i>{' '}
+                                        <i className="fas fa-store mr-3"></i>
                                         <span>My Products</span>
                                     </button>
                                     <button
                                         onClick={handleLogout}
-                                        className="p-2 text-white w-full text-left hover:bg-gray-600"
+                                        className="flex items-center w-full px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
-                                        <i className="fas fa-sign-out-alt mr-3"></i>{' '}
+                                        <i className="fas fa-sign-out-alt mr-3"></i>
                                         <span>Logout</span>
                                     </button>
                                 </div>
