@@ -195,7 +195,7 @@ const NavBar = () => {
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-wallet mr-3"></i>
-                                        Balance: €{balance.toFixed(2)}
+                                        <span>Balance: €{balance.toFixed(2)}</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -204,7 +204,7 @@ const NavBar = () => {
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-user mr-3"></i>
-                                        Manage Account
+                                        <span>Manage Account</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -213,7 +213,7 @@ const NavBar = () => {
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-box mr-3"></i>
-                                        My Orders
+                                        <span>My Orders</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -222,7 +222,7 @@ const NavBar = () => {
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-times-circle mr-3"></i>
-                                        Cancellations
+                                        <span>Cancellations</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -231,7 +231,7 @@ const NavBar = () => {
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-star mr-3"></i>
-                                        My Reviews
+                                        <span>My Reviews</span>
                                     </button>
                                     <button
                                         onClick={() =>
@@ -240,14 +240,14 @@ const NavBar = () => {
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-store mr-3"></i>
-                                        My Products
+                                        <span>My Products</span>
                                     </button>
                                     <button
                                         onClick={handleLogout}
                                         className="flex items-center w-full px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         <i className="fas fa-sign-out-alt mr-3"></i>
-                                        Logout
+                                        <span>Logout</span>
                                     </button>
                                 </div>
                             )}
