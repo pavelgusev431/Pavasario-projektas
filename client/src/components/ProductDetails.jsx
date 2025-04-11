@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import ProductComments from './ProductComments';
 import { nanoid } from 'nanoid';
 import getSelectedProduct from '../helpers/getSelectedProducts';
+import url from "../helpers/getURL.js";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -16,7 +17,7 @@ const ProductDetails = () => {
                 const productData = await getSelectedProduct(id);
                 setProduct(productData);
                 const response = await axios.get(
-                    `http://localhost:3000/products/selected/${id}`
+                    url(`/products/selected/${id}`)
                 );
                 setProduct(response.data);
             } catch (error) {
