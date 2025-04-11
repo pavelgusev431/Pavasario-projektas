@@ -30,8 +30,8 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
 
     const submitHandler = async (data) => {
         try {
-            await createComment(data); // Siunčiame duomenis į createComment helperį
-            setUpdate((update) => update + 1); // Atnaujiname būseną, kaip ProductCreateModal
+            await createComment(data); 
+            setUpdate((update) => update + 1); 
             setError('');
             setValue('product_id', '');
             setValue('comment', '');
@@ -58,7 +58,7 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
             >
                 <div className="flex flex-row justify-between">
                     <h3 className="bg-none rounded p-2 my-0 w-50 justify-self-center">
-                        Sukurti naują atsiliepimą
+                        Create new review
                     </h3>
                     <button
                         onClick={handleClose}
@@ -152,7 +152,7 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 },
                                 validate: {
                                     fileType: (value) => {
-                                        if (!value || !Array.from(value)[0]) return true; // Neprivalomas
+                                        if (!value || !Array.from(value)[0]) return true; 
                                         return (
                                             availableFileTypes.includes(Array.from(value)[0].type) ||
                                             `Leidžiami failų formatai: ${strippedAvailableFileTypes}`

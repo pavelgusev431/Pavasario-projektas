@@ -27,15 +27,15 @@ const createComment = async (data) => {
             }
 
             // 3. Gauname paveikslėlius
-            const allCommentImages = await axios.get(url(`images/d/comment${id}`), {
+            const allCommentImages = await axios.get(url(`images/c/comment${id}`), {
                 withCredentials: true,
             });
-            console.log('Gauti paveikslėliai:', allCommentImages.data);
+            console.log('Gauti paveikslėliai arba klaida:', allCommentImages.response?.data || allCommentImages);
             const frontCover = allCommentImages.data.data[0];
 
             // 4. Atnaujiname komentarą su image_url
             const updatedComment = await axios.patch(
-                url(`comments/comment/c/${id}`),
+                url(`comments/comment/${id}`),
                 { image_url: frontCover },
                 { withCredentials: true }
             );

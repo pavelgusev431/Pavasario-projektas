@@ -2,14 +2,16 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import getUserComments from '../../../helpers/getUserComments.js';
 import ReviewCreateModal from './ReviewCreateModal.jsx';
+import axios from 'axios';
+import url from '../../../helpers/getURL.js';
 
 export default function MyReviews() {
     const { auth, loading } = useContext(AuthContext);
     const [comments, setComments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [reviewCreateModal, setReviewCreateModal] = useState(false); // Inicializuota false
-    const [update, setUpdate] = useState(0); // Pridedame atnaujinimo būseną
+    const [reviewCreateModal, setReviewCreateModal] = useState(false);
+    const [update, setUpdate] = useState(0);
 
     const handleReviewCreate = () => {
         setReviewCreateModal(true);
@@ -20,7 +22,21 @@ export default function MyReviews() {
             const fetchComments = async () => {
                 try {
                     const response = await getUserComments(auth.id);
-                    setComments(response.data.data || []);
+                    const commentsData = response.data.data || [];
+                    const commentsWithImages = await Promise.all(
+                        commentsData.map(async (comment) => {
+                            try {
+                                const imgResponse = await axios.get(url(`images/c/comment${comment.id}`), {
+                                    withCredentials: true,
+                                });
+                                return { ...comment, images: imgResponse.data.data || [] };
+                            } catch (imgErr) {
+                                console.error(`Klaida gaunant komentaro ${comment.id} paveikslėlius:`, imgErr);
+                                return { ...comment, images: [] };
+                            }
+                        })
+                    );
+                    setComments(commentsWithImages);
                 } catch (err) {
                     console.error('Klaida gaunant komentarus:', err);
                     setError(err.message || 'Nepavyko gauti komentarų');
@@ -30,9 +46,9 @@ export default function MyReviews() {
             };
             fetchComments();
         }
-    }, [auth, loading, update]); // Pridedame update kaip priklausomybę
+    }, [auth, loading, update]);
 
-    if (loading || isLoading) return <p>Kraunama...</p>;
+    if (loading || isLoading) return <p>Loading...</p>;
     if (!auth) return <p>Not logged in</p>;
     if (error) return <p>error: {error}</p>;
 
@@ -48,7 +64,7 @@ export default function MyReviews() {
                 <ReviewCreateModal
                     showModal={reviewCreateModal}
                     setShowModal={setReviewCreateModal}
-                    setUpdate={setUpdate} // Perduodame setUpdate
+                    setUpdate={setUpdate}
                 />
             )}
             <div className="">
@@ -56,12 +72,24 @@ export default function MyReviews() {
             </div>
             <div className="flex flex-row gap-2 flex-wrap">
                 {comments.length === 0 ? (
-                    <p className="text-gray-500">Nėra atsiliepimų</p>
+                    <p className="text-gray-500">You have no reviews</p>
                 ) : (
                     comments.map((comment) => (
                         <div key={comment.id} className="border p-4 rounded-lg">
+                            {comment.images && comment.images.length > 0 && (
+                                <div className="flex gap-2 mb-2">
+                                    {comment.images.map((imageUrl, index) => (
+                                        <img
+                                            key={index}
+                                            src={imageUrl}
+                                            alt={`Komentaro ${comment.id} paveikslėlis ${index + 1}`}
+                                            className="w-32 h-32 object-cover"
+                                        />
+                                    ))}
+                                </div>
+                            )}
                             <p className="text-lg">{comment.comment}</p>
-                            <p className="text-sm text-gray-500">{comment.stars}</p>
+                            <p className="text-sm text-gray-500">{comment.stars} stars</p>
                         </div>
                     ))
                 )}
