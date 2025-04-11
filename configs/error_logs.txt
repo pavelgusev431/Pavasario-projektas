@@ -1,2 +1,0 @@
-client/src/components/protected/productCRUD/MyProducts.jsx
-client/src/components/protected/productCRUD/ProductCreateModal.jsx
