@@ -39,4 +39,32 @@ const getImages = async (req, res, next) => {
     }
 };
 
-export { getImage, getImages };
+const getCommentImages = (req, res, next) => {
+    try {
+        const { dirName } = req.params;
+        console.log('Gautas dirName:', dirName);
+        const dirPath = `${images()}/${dirName}`;
+        console.log('Kelias:', dirPath);
+        const exists = fs.existsSync(dirPath);
+        console.log('Ar aplankas egzistuoja:', exists);
+        if (!exists) {
+            return res
+                .status(404)
+                .json({ status: 'fail', message: 'Katalogas nerastas' });
+        }
+        const files = fs.readdirSync(dirPath);
+        console.log('Failai:', files);
+        const fileUrls = files.map(
+            (file) => `http://${HOST}:${PORT}/images/${dirName}/${file}`
+        );
+        console.log('Failų URL:', fileUrls);
+        return res.status(200).json({ status: 'success', data: fileUrls });
+    } catch (error) {
+        console.error('Klaida getImages:', error);
+        return res
+            .status(500)
+            .json({ status: 'error', message: error.message });
+    }
+};
+
+export { getImage, getImages, getCommentImages };

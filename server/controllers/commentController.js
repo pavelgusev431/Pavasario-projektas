@@ -2,7 +2,10 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
+import EventType from '../models/event_typeModel.js';
+import EventTarget from '../models/event_targetModel.js';
 import { Op } from 'sequelize';
+import AppError from '../utilities/AppError.js';
 
 const getProductCommentsById = async (req, res) => {
     try {
@@ -95,4 +98,115 @@ const getProductCommentsById = async (req, res) => {
     }
 };
 
-export { getProductCommentsById };
+const createComment = async (req, res, next) => {
+    try {
+        const { id } = res.locals; // Vartotojo ID iš JWT
+        const { product_id, comment, stars } = req.body; // Gauname duomenis iš užklausos kūno
+
+        // Sukuriame naują komentarą
+        const newComment = await Rating.create({
+            user_id: id,
+            product_id,
+            comment,
+            stars: parseInt(stars), // Užtikriname, kad stars būtų skaičius
+        });
+
+        // Patikriname, ar komentaras sėkmingai sukurtas
+        if (!newComment) {
+            throw new AppError('Nepavyko sukurti komentaro', 500);
+        }
+
+        // Gauname įvykio tipą
+        const eventType = await EventType.findOne({
+            where: { name: 'created' },
+        });
+        if (!eventType) {
+            throw new AppError('Įvykio tipas "created" nerastas', 500);
+        }
+
+        // Gauname įvykio tikslą
+        const eventTarget = await EventTarget.findOne({
+            where: { name: 'rating' },
+        });
+        if (!eventTarget) {
+            throw new AppError('Įvykio tikslas "rating" nerastas', 500);
+        }
+
+        // Sukuriame įvykio aprašymą
+        const ratingDescription = `comment: ${newComment.comment}, stars: ${newComment.stars}`;
+
+        // Sukuriame susijusį įvykį
+        await Event.create({
+            user_id: id,
+            product_id,
+            type_id: eventType.id,
+            target_id: eventTarget.id,
+            description: ratingDescription,
+        });
+
+        // Grąžiname sėkmingą atsakymą
+        res.status(201).json({
+            status: 'success',
+            data: newComment.dataValues,
+        });
+    } catch (error) {
+        next(error); // Perduodame klaidą middleware
+    }
+};
+
+const editComment = async (req, res, next) => {
+    try {
+        const { id } = res.locals; // Vartotojo ID iš JWT
+        const { commentId } = req.params;
+        const { product_id, comment, stars, image_url } = req.body;
+        const foundComment = await Rating.findByPk(commentId);
+        if (!foundComment) {
+            throw new AppError('Comment not found', 404);
+        }
+        if (foundComment.user_id !== id) {
+            throw new AppError("Forbidden to edit other user's comments", 403);
+        }
+        foundComment.product_id = product_id || foundComment.product_id;
+        foundComment.comment = comment || foundComment.comment;
+        foundComment.stars =
+            stars !== undefined ? parseInt(stars) : foundComment.stars;
+        foundComment.image_url = image_url || foundComment.image_url;
+        await foundComment.save();
+        res.status(200).json({
+            status: 'success',
+            message: 'Comment updated successfully',
+            data: foundComment.dataValues,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getUserComments = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+
+        if (!userId) {
+            return res
+                .status(400)
+                .json({ message: 'Neteisingas vartotojo ID' });
+        }
+
+        const comments = await Rating.findAll({
+            where: { user_id: userId },
+        });
+
+        if (comments.length === 0) {
+            return res
+                .status(200)
+                .json({ message: 'Komentarų šiam vartotojui nerasta' });
+        }
+
+        return res.json({ data: comments });
+    } catch (error) {
+        console.error('Klaida gaunant vartotojo komentarus:', error);
+        return res.status(500).json({ message: 'Serverio klaida' });
+    }
+};
+
+export { getProductCommentsById, createComment, getUserComments, editComment };

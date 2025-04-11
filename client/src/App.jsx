@@ -16,6 +16,7 @@ import ProductsPage from './components/products/SubcategoryProducts.jsx';
 import ProductsDropdown from './components/layout/navbar/ProductsDropdown.jsx';
 import AdminPanel from './components/protected/admin/adminpanel.jsx';
 import BalancePage from './components/protected/productCRUD/BalancePage.jsx';
+import MyReviews from './components/protected/commentCRUD/MyReviews.jsx';
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
                 <Route path="products" element={<ProductList />} />
                 <Route path="/" element={<ProductsDropdown />} />
                 <Route path="/balance" element={<BalancePage />} />
+                <Route path="/reviews" element={<MyReviews />} />
                 <Route
                     path="/products/s/:subcategoryId"
                     element={<ProductsPage />}
