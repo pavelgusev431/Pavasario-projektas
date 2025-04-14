@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import getFileTypes from '../../../helpers/getFileTypes.js';
 import createComment from '../../../helpers/createComment.js';
-
+import { FaStar} from 'react-icons/fa';
 export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
     const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] = useState('');
@@ -26,6 +26,7 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
         formState: { errors },
         setValue,
         clearErrors,
+        watch,
     } = useForm();
 
     const submitHandler = async (data) => {
@@ -114,31 +115,38 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                         )}
                     </div>
                     <div>
+                        <div className="flex space-x-1 mb-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                    key={star}
+                                    type="button"
+                                    onClick={() => {
+                                        setValue('stars', star);
+                                        clearErrors('stars');
+                                        setError('');
+                                    }}
+                                    className="focus:outline-none"
+                                >
+                                    <FaStar
+                                        size={28}
+                                        color={watch('stars') >= star ? '#facc15' : '#d1d5db'}
+                                        className="transition-colors hover:scale-110"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                        {/* Paslėptas inputas */}
                         <input
-                            type="number"
-                            placeholder="Įvertinimas (1-5)"
+                            type="hidden"
                             {...register('stars', {
                                 required: 'Įvertinimas yra privalomas',
-                                min: {
-                                    value: 1,
-                                    message: 'Įvertinimas turi būti bent 1',
-                                },
-                                max: {
-                                    value: 5,
-                                    message: 'Įvertinimas negali būti didesnis nei 5',
-                                },
+                                min: { value: 1, message: 'Mažiausias įvertinimas yra 1' },
+                                max: { value: 5, message: 'Didžiausias įvertinimas yra 5' },
                                 valueAsNumber: true,
-                                onChange: () => {
-                                    setError('');
-                                    clearErrors('stars');
-                                },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
                         />
                         {errors.stars && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.stars.message}
-                            </p>
+                            <p className="text-red-500 text-sm">{errors.stars.message}</p>
                         )}
                     </div>
                     <div>
