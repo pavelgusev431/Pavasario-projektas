@@ -1,2 +1,1 @@
-client/src/components/protected/commentCRUD/MyReviews.jsx
-client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
+client/src/components/ProductDetails.jsx
