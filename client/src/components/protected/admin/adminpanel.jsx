@@ -65,7 +65,7 @@ const AdminPanel = () => {
 
     const interval = setInterval(() => {
       fetchEvents();
-    }, 3000); //Update every 5 seconds
+    }, 2000); //Update every 5 seconds
 
     return () => clearInterval(interval);
   }, []);
