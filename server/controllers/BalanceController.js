@@ -48,7 +48,7 @@ export const getBalanceHistory = async (req, res) => {
         const history = await Event.findAll({
             where: {
                 user_id: userId,
-                target_id: [5, 6],
+                target_id: [3, 7],
             },
             order: [['timestamp', 'DESC']],
         });
