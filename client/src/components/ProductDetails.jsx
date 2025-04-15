@@ -4,26 +4,51 @@ import Modal from 'react-modal';
 import ProductComments from './ProductComments';
 import { nanoid } from 'nanoid';
 import getSelectedProduct from '../helpers/getSelectedProducts';
+import axios from 'axios';
 
 const ProductDetails = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-    const thumbnailsRef = useRef(null); // для прокрутки миниатюр
+    const [allImages, setAllImages] = useState([]);
+    const thumbnailsRef = useRef(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 const productData = await getSelectedProduct(id);
                 setProduct(productData);
-                setSelectedImage(productData.image_url); // установить главное изображение
+                setSelectedImage(productData.image_url);
             } catch (error) {
                 console.log(error.message);
             }
         };
 
+        // Fetch all images from the server for this product
+        const fetchAllImages = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:3000/images/d/product${id}`
+                );
+                const urls = res.data.data.map((img) =>
+                    typeof img === 'string'
+                        ? `http://localhost:3000/images/d/product${id}/${img}`
+                        : img.url
+                );
+                setAllImages(
+                    res.data.data.length ? res.data.data : [product?.image_url]
+                );
+                // Set the main image as selected if not already set
+                if (urls.length && !selectedImage) setSelectedImage(urls[0]);
+            } catch (e) {
+                setAllImages([product?.image_url]);
+            }
+        };
+
         fetchProduct();
+        fetchAllImages();
+        // eslint-disable-next-line
     }, [id]);
 
     if (!product) {
@@ -79,15 +104,12 @@ const ProductDetails = () => {
         }
     };
 
-    const allImages = product.image_urls?.length
-        ? [product.image_url, ...product.image_urls]
-        : [product.image_url];
-
     return (
         <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white transition-colors duration-300">
             <div className="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-colors duration-300">
-                {/* ЛЕВАЯ СТОРОНА */}
+                {/* LEFT SIDE: Main Image and Thumbnails */}
                 <div className="w-full md:w-1/2 flex flex-col items-center p-4">
+                    {/* Main Image */}
                     <div className="relative w-full max-w-md h-auto mb-4">
                         <button
                             onMouseEnter={handleMouseEnter}
@@ -104,24 +126,22 @@ const ProductDetails = () => {
                         </button>
                     </div>
 
-                    {/* Галерея миниатюр */}
+                    {/* Thumbnails */}
                     {allImages.length > 1 && (
                         <div className="relative w-full max-w-md mt-4">
-                            {/* Стрелка влево */}
                             <button
                                 onClick={() => scrollThumbnails('left')}
-                                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-700 p-1 rounded-full shadow hover:bg-gray-200"
+                                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-700 p-1 rounded-full shadow hover:bg-gray-200"
                             >
                                 ◀
                             </button>
-
                             <div
                                 ref={thumbnailsRef}
                                 className="flex space-x-2 overflow-x-auto px-8 scrollbar-hide"
                             >
                                 {allImages.map((img, index) => (
                                     <img
-                                        key={index}
+                                        key={img}
                                         src={img}
                                         alt={`Thumbnail ${index}`}
                                         onClick={() =>
@@ -135,11 +155,9 @@ const ProductDetails = () => {
                                     />
                                 ))}
                             </div>
-
-                            {/* Стрелка вправо */}
                             <button
                                 onClick={() => scrollThumbnails('right')}
-                                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-700 p-1 rounded-full shadow hover:bg-gray-200"
+                                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-700 p-1 rounded-full shadow hover:bg-gray-200"
                             >
                                 ▶
                             </button>
@@ -147,7 +165,7 @@ const ProductDetails = () => {
                     )}
                 </div>
 
-                {/* ПРАВАЯ СТОРОНА */}
+                {/* RIGHT SIDE */}
                 <div className="w-full md:w-1/2 p-6 md:p-8">
                     <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
                         {product.name}
@@ -207,7 +225,7 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            {/* МОДАЛЬНОЕ ОКНО */}
+            {/* modal */}
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
