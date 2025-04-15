@@ -1,1 +1,1 @@
-server/validators/validateSearch.js
+client/src/components/layout/navbar/SearchBar.jsx
