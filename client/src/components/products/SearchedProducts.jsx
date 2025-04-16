@@ -6,6 +6,7 @@ import getFilteredProducts from '../../helpers/getFilteredProducts';
 import Tools from '../Tools';
 import { searchProducts } from '../../helpers/searchProducts';
 import getSearchRegex from '../../helpers/getSearchRegex';
+import BackToTopButton from '../buttons/BackToTopButton';
 import debounce from 'lodash.debounce';
 
 const SearchedProducts = () => {
@@ -14,7 +15,7 @@ const SearchedProducts = () => {
     const [error, setError] = useState(null);
     const [searchParams] = useSearchParams();
     const [zalgoRegex, setZalgoRegex] = useState(null);
-    const [pageSize, setPageSize] = useState(12);
+    const [pageSize, setPageSize] = useState(120);
     const navigate = useNavigate();
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -47,10 +48,10 @@ const SearchedProducts = () => {
         try {
             const response = await searchProducts(query);
             if (response?.data) {
+                console.log("response from search data: ",response.data)
                 const productsData = response.data.data || response.data;
                 setProducts(productsData);
                 console.log(productsData,"thats starter data");
-                
             } else {
                 setProducts([]);
             }
@@ -168,7 +169,7 @@ const SearchedProducts = () => {
                     sort,
                     order: order.toUpperCase(),
                 });
-                {/*setProducts(data.products);*/}
+                 setProducts(data.products)
                 setPagination({
                     currentPage: data.pagination.currentPage,
                     totalPages: data.pagination.totalPages,
@@ -179,7 +180,7 @@ const SearchedProducts = () => {
             }
         }, 250);
         func();
-    }, [pageSize, priceRange, dateRange, sortValue]);
+    }, [pageSize, priceRange, dateRange, sortValue, searchQuery]);
 
     useEffect(() => {
         fetchProducts(pagination.currentPage);
@@ -187,8 +188,17 @@ const SearchedProducts = () => {
     }, [fetchProducts, pagination.currentPage]);
 
     const filteredProducts = useMemo(() => {
+        console.log("date ranges",dateRange)
+        // console.log("obj values",Object.values(products[0])[4])
+        console.log("filtering products: ",products)
+        // console.log("date getter: ",new Date(products[0].timestamp).getTime());
+        console.log("searchquery",searchQuery)
+        console.log("AAAAAAAAAAAAA type of query",typeof(searchQuery))
+        
         return products.filter(
             (product) =>
+                // console.log("includes?????",product.name.toLowerCase(), "includes", product.name.toLowerCase().includes("a")) &&
+                product.name.toLowerCase().includes(searchQuery) &&
                 product.price >= priceRange[0] &&
                 product.price <= priceRange[1] &&
                 new Date(product.timestamp).getTime() >= dateRange[0] &&
@@ -201,6 +211,17 @@ const SearchedProducts = () => {
         localStorage.setItem('dateRange', JSON.stringify(dateRange));
         localStorage.setItem('sortValue', sortValue);
     }, [priceRange, dateRange, sortValue]);
+
+    const handlePageChange = (newPage) => {
+        if (newPage > 0 && newPage <= pagination.totalPages) {
+            setPagination({ ...pagination, currentPage: newPage });
+        }
+    };
+
+    const handlePageSizeChange = (event) => {
+        setPageSize(parseInt(event.target.value));
+        setPagination({ ...pagination, currentPage: 1 });
+    };
 
     const handleSortChange = (newSortValue) => {
         setSortValue(newSortValue);
@@ -278,6 +299,7 @@ const SearchedProducts = () => {
                         </div>
                     ))}
             </div>
+            <BackToTopButton />
         </div>
     );
 };

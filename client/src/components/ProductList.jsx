@@ -83,6 +83,7 @@ export default function ProductList() {
                     sort,
                     order: order.toUpperCase(),
                 });
+                console.log("from data: ",data)
                 setProducts(data.products);
                 setPagination({
                     currentPage: data.pagination.currentPage,
@@ -102,6 +103,7 @@ export default function ProductList() {
     }, [fetchProducts, pagination.currentPage]);
 
     const filteredProducts = useMemo(() => {
+        console.log("products in total list: ",products)//remove
         return products.filter(
             (product) =>
                 product.price >= priceRange[0] &&

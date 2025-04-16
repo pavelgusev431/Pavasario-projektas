@@ -24,6 +24,7 @@ const getFilteredProducts = async ({
                 order,
             },
         });
+        console.log("response from axios: ",response.data)
         return response.data;
     } catch (error) {
         console.error('Error fetching filtered products:', error);
