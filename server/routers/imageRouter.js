@@ -7,7 +7,7 @@ import {
 
 const imageRouter = express.Router();
 
-imageRouter.route('/d/:dirName').get(getImages);
+imageRouter.route('/d/:dir').get(getImages);
 imageRouter.route('/c/:dirName').get(getCommentImages);
 imageRouter.route('/:dir/:file').get(getImage);
 
