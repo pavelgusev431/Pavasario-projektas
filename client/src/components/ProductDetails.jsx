@@ -305,17 +305,68 @@ const ProductDetails = () => {
                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 backdrop-blur"
             >
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg max-w-4xl mx-auto relative transition-colors duration-300">
+                    {/* Close Button */}
                     <button
                         onClick={closeModal}
                         className="absolute top-4 right-4 text-black dark:text-white text-2xl"
                     >
                         &times;
                     </button>
+
+                    {/* Left Arrow */}
+                    {allImages.length > 1 && (
+                        <button
+                            onClick={handlePrevImage}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-200 flex items-center justify-center border border-gray-300"
+                            aria-label="Previous image"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-8 w-8 text-gray-700 dark:text-gray-200"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M15 19l-7-7 7-7"
+                                />
+                            </svg>
+                        </button>
+                    )}
+
+                    {/* Main Image */}
                     <img
                         src={selectedImage}
                         alt="Zoomed"
                         className="w-full h-auto max-h-screen object-contain rounded-md"
                     />
+
+                    {/* Right Arrow */}
+                    {allImages.length > 1 && (
+                        <button
+                            onClick={handleNextImage}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-200 flex items-center justify-center border border-gray-300"
+                            aria-label="Next image"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-8 w-8 text-gray-700 dark:text-gray-200"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 5l7 7-7 7"
+                                />
+                            </svg>
+                        </button>
+                    )}
                 </div>
             </Modal>
 
