@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import Modal from 'react-modal';
 import ProductComments from './ProductComments';
 import { nanoid } from 'nanoid';
@@ -158,13 +158,9 @@ const ProductDetails = () => {
                 {/* LEFT SIDE: Main Image and Thumbnails */}
                 <div className="w-full md:w-1/2 flex flex-col items-center p-4">
                     {/* Main Image with pretty arrows and swipe */}
-                    <div
-                        className="relative w-full max-w-2xl h-[600px] mb-6 flex items-center justify-center overflow-hidden rounded-2xl bg-gray-100 border-4 border-red-400 shadow-lg"
-                        onTouchStart={handleTouchStart}
-                        onTouchEnd={handleTouchEnd}
-                    >
+                    <div className="relative w-full max-w-2xl h-[600px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-100 border-4 border-red-400 shadow-lg">
                         {/* Left Arrow */}
-                        {allImages.length > 1 && (
+                        {!modalIsOpen && allImages.length > 1 && (
                             <button
                                 onClick={handlePrevImage}
                                 className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-200 flex items-center justify-center border border-gray-300"
@@ -186,23 +182,17 @@ const ProductDetails = () => {
                                 </svg>
                             </button>
                         )}
-                        <button
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
-                            onMouseMove={handleMouseMove}
+
+                        {/* Main Image */}
+                        <img
+                            src={selectedImage}
+                            alt={product.name}
+                            className="w-full h-full object-contain transition-transform duration-300 ease-in-out cursor-pointer"
                             onClick={openModal}
-                            className="w-full h-full"
-                            style={{ display: 'block' }}
-                        >
-                            <img
-                                src={selectedImage}
-                                alt={product.name}
-                                className="w-full h-full object-contain transition-transform duration-300 ease-in-out cursor-zoom-in"
-                                style={{ pointerEvents: 'none' }} // Prevents accidental drag
-                            />
-                        </button>
+                        />
+
                         {/* Right Arrow */}
-                        {allImages.length > 1 && (
+                        {!modalIsOpen && allImages.length > 1 && (
                             <button
                                 onClick={handleNextImage}
                                 className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-200 flex items-center justify-center border border-gray-300"
