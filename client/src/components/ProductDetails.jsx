@@ -14,6 +14,11 @@ const ProductDetails = () => {
     const [allImages, setAllImages] = useState([]);
     const thumbnailsRef = useRef(null);
 
+    // Swipe state
+    const [touchStartX, setTouchStartX] = useState(null);
+    const [slideDirection, setSlideDirection] = useState(null); // "left" or "right"
+    const [animating, setAnimating] = useState(false);
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -127,24 +132,47 @@ const ProductDetails = () => {
         }
     };
 
+    // Touch event handlers
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = (e) => {
+        if (touchStartX === null) return;
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 50) {
+            // Minimum swipe distance
+            if (diff > 0) {
+                handlePrevImage(e);
+            } else {
+                handleNextImage(e);
+            }
+        }
+        setTouchStartX(null);
+    };
+
     return (
         <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white transition-colors duration-300">
             <div className="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-colors duration-300">
                 {/* LEFT SIDE: Main Image and Thumbnails */}
                 <div className="w-full md:w-1/2 flex flex-col items-center p-4">
-                    {/* Main Image with pretty arrows */}
-                    <div className="relative w-full max-w-md h-[400px] mb-4 flex items-center justify-center overflow-hidden rounded-md bg-gray-100">
+                    {/* Main Image with pretty arrows and swipe */}
+                    <div
+                        className="relative w-full max-w-2xl h-[600px] mb-6 flex items-center justify-center overflow-hidden rounded-2xl bg-gray-100 border-4 border-red-400 shadow-lg"
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                    >
                         {/* Left Arrow */}
                         {allImages.length > 1 && (
                             <button
                                 onClick={handlePrevImage}
-                                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-2 rounded-full shadow hover:bg-gray-200 flex items-center justify-center"
+                                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-200 flex items-center justify-center border border-gray-300"
                                 aria-label="Previous image"
                             >
-                                {/* Heroicons solid chevron-left */}
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-gray-700 dark:text-gray-200"
+                                    className="h-8 w-8 text-gray-700 dark:text-gray-200"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -177,13 +205,12 @@ const ProductDetails = () => {
                         {allImages.length > 1 && (
                             <button
                                 onClick={handleNextImage}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-2 rounded-full shadow hover:bg-gray-200 flex items-center justify-center"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-200 flex items-center justify-center border border-gray-300"
                                 aria-label="Next image"
                             >
-                                {/* Heroicons solid chevron-right */}
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-gray-700 dark:text-gray-200"
+                                    className="h-8 w-8 text-gray-700 dark:text-gray-200"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
