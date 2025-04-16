@@ -32,3 +32,8 @@ export const updateUserRole = async (id, role) => {
     const res = await API.patch(url(`admin/users/role/${id}`), { role });
     return res.data;
 };
+
+export const getAllEvents = async () => {
+    const res = await API.get(url('admin/events'));
+    return res.data;
+};
