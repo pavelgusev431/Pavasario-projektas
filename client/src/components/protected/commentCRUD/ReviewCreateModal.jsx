@@ -5,6 +5,7 @@ import createComment from '../../../helpers/createComment.js';
 import { FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 
+
 export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
     const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] = useState('');
@@ -46,7 +47,10 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                 style: { background: '#161D2F', color: '#FFFFFF' },
                 hideProgressBar: true,
             });
-            setShowModal(false);
+            setTimeout(() => {
+                setShowModal(false);
+                window.location.reload();
+            }, 2500);
         } catch (error) {
             setError(error.response?.data?.message || 'Nepavyko sukurti komentaro');
         }
