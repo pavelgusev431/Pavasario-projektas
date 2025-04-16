@@ -75,19 +75,21 @@ const ProductDetails = () => {
     const closeModal = () => setModalIsOpen(false);
 
     const handleMouseEnter = (e) => {
-        e.target.style.transform = 'scale(1.5)';
-        e.target.style.transition = 'transform 0.3s ease';
+        e.currentTarget.querySelector('img').style.transform = 'scale(1.5)';
+        e.currentTarget.querySelector('img').style.transition =
+            'transform 0.3s ease';
     };
 
     const handleMouseLeave = (e) => {
-        e.target.style.transform = 'scale(1)';
+        e.currentTarget.querySelector('img').style.transform = 'scale(1)';
     };
 
     const handleMouseMove = (e) => {
-        const { left, top, width, height } = e.target.getBoundingClientRect();
-        const x = ((e.clientX - left) / width) * 100;
-        const y = ((e.clientY - top) / height) * 100;
-        e.target.style.transformOrigin = `${x}% ${y}%`;
+        const img = e.currentTarget.querySelector('img');
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        img.style.transformOrigin = `${x}% ${y}%`;
     };
 
     const handleThumbnailClick = (url) => {
@@ -104,63 +106,115 @@ const ProductDetails = () => {
         }
     };
 
+    // Find the index of the currently selected image
+    const currentIndex = allImages.findIndex((img) => img === selectedImage);
+
+    // Handlers for arrows
+    const handlePrevImage = (e) => {
+        e.stopPropagation();
+        if (allImages.length > 0) {
+            const prevIndex =
+                (currentIndex - 1 + allImages.length) % allImages.length;
+            setSelectedImage(allImages[prevIndex]);
+        }
+    };
+
+    const handleNextImage = (e) => {
+        e.stopPropagation();
+        if (allImages.length > 0) {
+            const nextIndex = (currentIndex + 1) % allImages.length;
+            setSelectedImage(allImages[nextIndex]);
+        }
+    };
+
     return (
         <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white transition-colors duration-300">
             <div className="flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-colors duration-300">
                 {/* LEFT SIDE: Main Image and Thumbnails */}
                 <div className="w-full md:w-1/2 flex flex-col items-center p-4">
-                    {/* Main Image */}
-                    <div className="relative w-full max-w-md h-auto mb-4">
+                    {/* Main Image with pretty arrows */}
+                    <div className="relative w-full max-w-md h-[400px] mb-4 flex items-center justify-center overflow-hidden rounded-md bg-gray-100">
+                        {/* Left Arrow */}
+                        {allImages.length > 1 && (
+                            <button
+                                onClick={handlePrevImage}
+                                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-2 rounded-full shadow hover:bg-gray-200 flex items-center justify-center"
+                                aria-label="Previous image"
+                            >
+                                {/* Heroicons solid chevron-left */}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 text-gray-700 dark:text-gray-200"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M15 19l-7-7 7-7"
+                                    />
+                                </svg>
+                            </button>
+                        )}
                         <button
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             onMouseMove={handleMouseMove}
                             onClick={openModal}
-                            className="w-full"
+                            className="w-full h-full"
+                            style={{ display: 'block' }}
                         >
                             <img
                                 src={selectedImage}
                                 alt={product.name}
-                                className="w-full object-contain rounded-md transition-transform duration-300 ease-in-out cursor-zoom-in max-h-[400px]"
+                                className="w-full h-full object-contain transition-transform duration-300 ease-in-out cursor-zoom-in"
+                                style={{ pointerEvents: 'none' }} // Prevents accidental drag
                             />
                         </button>
+                        {/* Right Arrow */}
+                        {allImages.length > 1 && (
+                            <button
+                                onClick={handleNextImage}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700 p-2 rounded-full shadow hover:bg-gray-200 flex items-center justify-center"
+                                aria-label="Next image"
+                            >
+                                {/* Heroicons solid chevron-right */}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 text-gray-700 dark:text-gray-200"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5l7 7-7 7"
+                                    />
+                                </svg>
+                            </button>
+                        )}
                     </div>
 
-                    {/* Thumbnails */}
+                    {/* Thumbnails (no arrows here) */}
                     {allImages.length > 1 && (
-                        <div className="relative w-full max-w-md mt-4">
-                            <button
-                                onClick={() => scrollThumbnails('left')}
-                                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-700 p-1 rounded-full shadow hover:bg-gray-200"
-                            >
-                                ◀
-                            </button>
-                            <div
-                                ref={thumbnailsRef}
-                                className="flex space-x-2 overflow-x-auto px-8 scrollbar-hide"
-                            >
-                                {allImages.map((img, index) => (
-                                    <img
-                                        key={img}
-                                        src={img}
-                                        alt={`Thumbnail ${index}`}
-                                        onClick={() =>
-                                            handleThumbnailClick(img)
-                                        }
-                                        className={`w-20 h-20 object-cover rounded-md cursor-pointer border-2 ${
-                                            selectedImage === img
-                                                ? 'border-red-500'
-                                                : 'border-transparent'
-                                        } hover:border-red-400 transition`}
-                                    />
-                                ))}
-                            </div>
-                            <button
-                                onClick={() => scrollThumbnails('right')}
-                                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-700 p-1 rounded-full shadow hover:bg-gray-200"
-                            >
-                                ▶
-                            </button>
+                        <div className="w-full max-w-md mt-4 flex space-x-2 overflow-x-auto px-8 scrollbar-hide">
+                            {allImages.map((img, index) => (
+                                <img
+                                    key={img}
+                                    src={img}
+                                    alt={`Thumbnail ${index}`}
+                                    onClick={() => handleThumbnailClick(img)}
+                                    className={`w-20 h-20 object-cover rounded-md cursor-pointer border-2 ${
+                                        selectedImage === img
+                                            ? 'border-red-500'
+                                            : 'border-transparent'
+                                    } hover:border-red-400 transition`}
+                                />
+                            ))}
                         </div>
                     )}
                 </div>
