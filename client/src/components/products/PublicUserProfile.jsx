@@ -99,6 +99,16 @@ export default function PublicUserProfile() {
                             {user.contacts}
                         </p>
                     </div>
+
+                    <div>
+                    <Link to={`/products/u/${user.username}`}>
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
+                    View All Products
+                    </button>
+                    </Link>
+                    </div>
+
+                    
                 </div>
             </section>
 
