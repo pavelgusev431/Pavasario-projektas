@@ -89,7 +89,7 @@ export default function ProductComments({ productId }) {
                             <div className="text-gray-500 text-sm mt-1">
                                 {moment(comment.timestamp).format('lll')}
                             </div>
-                            <p className="mt-3 text-gray-700">
+                            <p className="mt-3 text-gray-700 max-w-full break-words ">
                                 {comment.comment}
                             </p>
 
@@ -119,13 +119,13 @@ export default function ProductComments({ productId }) {
             {/* Modal paveikslėlio peržiūrai */}
             {selectedImage && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+                    className="fixed bottom-0 left-0  bg-black/25 flex items-center justify-center z-50 h-svh w-screen"
                     onClick={() => setSelectedImage(null)}
                 >
                     <img
                         src={selectedImage}
                         alt="Peržiūrimas paveikslėlis"
-                        className="max-w-100 max-h-100 rounded-lg shadow-2xl"
+                        className="max-w-100 max-h-100 rounded-lg shadow-2xl flex items-center justify-center"
                     />
                 </div>
             )}
