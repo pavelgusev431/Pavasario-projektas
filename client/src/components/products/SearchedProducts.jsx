@@ -93,7 +93,6 @@ const SearchedProducts = () => {
 
         try {
             const [sort, order] = sortValue.split('-');
-            console.log("sort:", sort, "order:",order)
             const response = await searchProducts(query,sort,order)
             if (response?.data) {
                 const productsData = response.data.data || response.data;
