@@ -58,6 +58,8 @@ export const getCategoryWithSubcategories = async (req, res, next) => {
 export const getProductsBySubcategory = async (req, res) => {
     try {
         const subcategoryId = req.params.subcategoryId;
+        const limit = req.query.limit || 6;
+        const offset = req.query.offset || 0;
 
         if (!subcategoryId || isNaN(subcategoryId)) {
             return res
@@ -65,7 +67,7 @@ export const getProductsBySubcategory = async (req, res) => {
                 .json({ message: 'Invalid or missing subcategory ID' });
         }
 
-        const products = await Product.findAll({
+        const { count, rows: products } = await Product.findAndCountAll({
             where: {
                 subcategory_id: subcategoryId,
             },
@@ -73,6 +75,8 @@ export const getProductsBySubcategory = async (req, res) => {
                 model: Subcategory,
                 as: 'subcategory',
             },
+            offset: offset,
+            limit: limit,
         });
 
         if (!products || products.length === 0) {
@@ -110,6 +114,7 @@ export const getProductsBySubcategory = async (req, res) => {
         res.status(200).json({
             status: 'success',
             results: processedProducts.length,
+            totalProducts: count,
             data: {
                 products: processedProducts,
             },
