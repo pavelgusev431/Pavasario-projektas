@@ -5,6 +5,12 @@ INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
 ('trending', 'trending@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', 'text text write here more 5 words',  'Konstutucijos 45, Vilnius'),
 ('bestnew', 'bestnew@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
 
+INSERT INTO user_secrets ("userId", password, role, balance) VALUES
+(2, '$2b$12$KMkszHbaqSbbkOeG8E0jZe9oCFOfD8XgMOhDWk9QHE3WWfAjNlvxG', 'user', 0),
+(3, '$2b$12$KMkszHbaqSbbkOeG8E0jZe9oCFOfD8XgMOhDWk9QHE3WWfAjNlvxG', 'user', 0),
+(4, '$2b$12$KMkszHbaqSbbkOeG8E0jZe9oCFOfD8XgMOhDWk9QHE3WWfAjNlvxG', 'user', 0),
+(5, '$2b$12$KMkszHbaqSbbkOeG8E0jZe9oCFOfD8XgMOhDWk9QHE3WWfAjNlvxG', 'user', 0),
+(6, '$2b$12$KMkszHbaqSbbkOeG8E0jZe9oCFOfD8XgMOhDWk9QHE3WWfAjNlvxG', 'user', 0);
 
 
 INSERT INTO products (user_id, category_id, subcategory_id, name, price, description, image_url, amount_in_stock)
