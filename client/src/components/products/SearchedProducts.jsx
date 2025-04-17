@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ProductCard from '../ProductCard';
-import getFilteredProducts from '../../helpers/getFilteredProducts';
 import Tools from '../Tools';
 import { searchProducts } from '../../helpers/searchProducts';
 import getSearchRegex from '../../helpers/getSearchRegex';
@@ -15,12 +14,58 @@ const SearchedProducts = () => {
     const [error, setError] = useState(null);
     const [searchParams] = useSearchParams();
     const [zalgoRegex, setZalgoRegex] = useState(null);
-    const [pageSize, setPageSize] = useState(120);
     const navigate = useNavigate();
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 0,
         totalProducts: 0,
+    });
+
+    const [dateRange, setDateRange] = useState(() => {
+        try {
+            const savedDateRange = JSON.parse(
+                localStorage.getItem('dateRange')
+            );
+            return (
+                savedDateRange || [
+                    new Date('2024-01-01').getTime(),
+                    new Date().setDate(new Date().getDate() + 1),
+                ]
+            );
+        } catch {
+            return [
+                new Date('2024-01-01').getTime(),
+                new Date().setDate(new Date().getDate() + 1),
+            ];
+        }
+    });
+
+    const [sortValue, setSortValue] = useState(() => {
+
+        const savedSortValue = localStorage.getItem('sortValue');
+        const validSortValues = [
+            'timestamp-asc',
+            'timestamp-desc',
+            'price-asc',
+            'price-desc',
+            'avgRating-asc',
+            'avgRating-desc',
+            'name-asc',
+            'name-desc',
+        ];
+        return validSortValues.includes(savedSortValue)
+            ? savedSortValue
+            : 'timestamp-desc';
+    });
+    const [priceRange, setPriceRange] = useState(() => {
+        try {
+            const savedPriceRange = JSON.parse(
+                localStorage.getItem('priceRange')
+            );
+            return savedPriceRange || [0, 5000];
+        } catch {
+            return [0, 5000];
+        }
     });
 
     useEffect(() => {
@@ -38,7 +83,8 @@ const SearchedProducts = () => {
 
         fetchRegex();
     }, []);
-
+    
+    
     const fetchSearchResults = async (query) => {
         if (!query) return;
 
@@ -46,18 +92,17 @@ const SearchedProducts = () => {
         setError(null);
 
         try {
-            const response = await searchProducts(query);
+            const [sort, order] = sortValue.split('-');
+            console.log("sort:", sort, "order:",order)
+            const response = await searchProducts(query,sort,order)
             if (response?.data) {
-                console.log("response from search data: ",response.data)
                 const productsData = response.data.data || response.data;
                 setProducts(productsData);
-                console.log(productsData,"thats starter data");
             } else {
                 setProducts([]);
             }
         } catch (err) {
             console.error('Error fetching search results:', err);
-
             if (err.response && err.response.status === 404) {
                 setProducts([]);
             } else {
@@ -68,6 +113,10 @@ const SearchedProducts = () => {
             setLoading(false);
         }
     };
+ 
+
+
+    
 
     useEffect(() => {
         const query = searchParams.get('q');
@@ -98,55 +147,9 @@ const SearchedProducts = () => {
         } else {
             setProducts([]);
         }
-    }, [searchParams, navigate, zalgoRegex]);
+    }, [searchParams, navigate, zalgoRegex,sortValue]);
 
     const searchQuery = searchParams.get('q');
-
-    const [dateRange, setDateRange] = useState(() => {
-        try {
-            const savedDateRange = JSON.parse(
-                localStorage.getItem('dateRange')
-            );
-            return (
-                savedDateRange || [
-                    new Date('2024-01-01').getTime(),
-                    new Date().setDate(new Date().getDate() + 1),
-                ]
-            );
-        } catch {
-            return [
-                new Date('2024-01-01').getTime(),
-                new Date().setDate(new Date().getDate() + 1),
-            ];
-        }
-    });
-
-    const [sortValue, setSortValue] = useState(() => {
-        const savedSortValue = localStorage.getItem('sortValue');
-        const validSortValues = [
-            'timestamp-asc',
-            'timestamp-desc',
-            'price-asc',
-            'price-desc',
-            'avgRating-asc',
-            'avgRating-desc',
-            'name-asc',
-            'name-desc',
-        ];
-        return validSortValues.includes(savedSortValue)
-            ? savedSortValue
-            : 'timestamp-desc';
-    });
-    const [priceRange, setPriceRange] = useState(() => {
-        try {
-            const savedPriceRange = JSON.parse(
-                localStorage.getItem('priceRange')
-            );
-            return savedPriceRange || [0, 5000];
-        } catch {
-            return [0, 5000];
-        }
-    });
 
     const minDate = new Date('2024-01-01').getTime();
     const maxDate = (() => {
@@ -155,73 +158,22 @@ const SearchedProducts = () => {
         return today.getTime();
     })();
 
-    const fetchProducts = useCallback(() => {
-        const func = debounce(async (page = 1) => {
-            try {
-                const [sort, order] = sortValue.split('-');
-                const data = await getFilteredProducts({
-                    page,
-                    limit: pageSize,
-                    minPrice: priceRange[0],
-                    maxPrice: priceRange[1],
-                    minDate: new Date(dateRange[0]).toISOString().split('T')[0],
-                    maxDate: new Date(dateRange[1]).toISOString().split('T')[0],
-                    sort,
-                    order: order.toUpperCase(),
-                });
-                 setProducts(data.products)
-                setPagination({
-                    currentPage: data.pagination.currentPage,
-                    totalPages: data.pagination.totalPages,
-                    totalProducts: data.pagination.totalProducts,
-                });
-            } catch (err) {
-                setError('Klaida gaunant produktus: ' + err.message);
-            }
-        }, 250);
-        func();
-    }, [pageSize, priceRange, dateRange, sortValue, searchQuery]);
-
-    useEffect(() => {
-        fetchProducts(pagination.currentPage);
-        return () => fetchProducts();
-    }, [fetchProducts, pagination.currentPage]);
-
     const filteredProducts = useMemo(() => {
-        console.log("date ranges",dateRange)
-        // console.log("obj values",Object.values(products[0])[4])
-        console.log("filtering products: ",products)
-        // console.log("date getter: ",new Date(products[0].timestamp).getTime());
-        console.log("searchquery",searchQuery)
-        console.log("AAAAAAAAAAAAA type of query",typeof(searchQuery))
-        
         return products.filter(
             (product) =>
-                // console.log("includes?????",product.name.toLowerCase(), "includes", product.name.toLowerCase().includes("a")) &&
                 product.name.toLowerCase().includes(searchQuery) &&
                 product.price >= priceRange[0] &&
                 product.price <= priceRange[1] &&
                 new Date(product.timestamp).getTime() >= dateRange[0] &&
                 new Date(product.timestamp).getTime() <= dateRange[1]
         );
-    }, [products, priceRange, dateRange]);
+    }, [products, priceRange, dateRange, sortValue]);
 
     useEffect(() => {
         localStorage.setItem('priceRange', JSON.stringify(priceRange));
         localStorage.setItem('dateRange', JSON.stringify(dateRange));
         localStorage.setItem('sortValue', sortValue);
     }, [priceRange, dateRange, sortValue]);
-
-    const handlePageChange = (newPage) => {
-        if (newPage > 0 && newPage <= pagination.totalPages) {
-            setPagination({ ...pagination, currentPage: newPage });
-        }
-    };
-
-    const handlePageSizeChange = (event) => {
-        setPageSize(parseInt(event.target.value));
-        setPagination({ ...pagination, currentPage: 1 });
-    };
 
     const handleSortChange = (newSortValue) => {
         setSortValue(newSortValue);
@@ -239,8 +191,6 @@ const SearchedProducts = () => {
 
     return (
         <div className="container p-4">
-            {console.log("products: ",products)}
-            {console.log("filtered products: ",filteredProducts)}
             <div className="mt-8 w-full">
                 {/* Įrankių juosta */}
             <Tools
