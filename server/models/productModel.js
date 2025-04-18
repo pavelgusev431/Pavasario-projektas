@@ -3,6 +3,7 @@ import sq from '../database/sequelize.js';
 import User from './userModel.js';
 import Rating from './ratingModel.js';
 import Subcategory from './subcategoryModel.js';
+import AppError from '../utilities/AppError.js';
 
 // Aprašome User modelį
 // Define User model
