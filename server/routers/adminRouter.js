@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import {
     getAllUsersWithRoles,
@@ -8,15 +9,15 @@ import {
     updateUserData,
     getAllEvents,
 } from '../controllers/adminController.js';
-
 import validate from '../middlewares/validate.js';
 import validateCreateUser from '../validators/validateCreateUser.js';
 import protect from '../validators/validateJWT.js';
 import admin from '../validators/validateAdmin.js';
+
+/**@type {express.Router}*/
 const adminRouter = express.Router();
 
 adminRouter.use(protect, admin);
-
 adminRouter
     .route('/users')
     .get(getAllUsersWithRoles)

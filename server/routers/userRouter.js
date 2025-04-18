@@ -1,3 +1,4 @@
+// @ts-check
 import {
     createUser,
     getUserByUsername,
@@ -22,6 +23,7 @@ import validateCreateUser from '../validators/validateCreateUser.js';
 // import validateUpdateInfo from '../validators/validateUpdateInfo.js';
 import validate from '../middlewares/validate.js';
 
+/**@type {express.Router}*/
 const userRouter = express.Router();
 
 userRouter

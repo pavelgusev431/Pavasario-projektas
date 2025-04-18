@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import {
     getImage,
@@ -5,6 +6,7 @@ import {
     getCommentImages,
 } from '../controllers/imageController.js';
 
+/**@type {express.Router}*/
 const imageRouter = express.Router();
 
 imageRouter.route('/d/:dirName').get(getImages);

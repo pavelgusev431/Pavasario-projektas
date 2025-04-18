@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import protect from '../validators/validateJWT.js';
 import validateCreateComment from '../validators/validateCreateComment.js';
@@ -9,6 +10,7 @@ import {
     editComment,
 } from '../controllers/commentController.js';
 
+/**@type {express.Router}*/
 const commentRouter = express.Router();
 
 commentRouter.route('/:id/comments').get(getProductCommentsById);

@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import {
     checkFileTypes,
@@ -7,6 +8,7 @@ import {
 } from '../controllers/uploadController.js';
 import protect from '../validators/validateJWT.js';
 
+/**@type {express.Router}*/
 const uploadRouter = express.Router();
 
 uploadRouter.route('/').get(checkFileTypes);

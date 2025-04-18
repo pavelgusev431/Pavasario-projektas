@@ -1,14 +1,23 @@
+// @ts-check
 import fs from 'fs';
 import images from '../utilities/getImages.js';
 
 const cleanup = async () => {
-    fs.rmSync(images(), { recursive: true, force: true }, (error) => {
-        throw new Error(error);
-    });
-    if (!fs.existsSync(images()))
-        fs.mkdirSync(images(), { force: true }, (error) => {
-            throw new Error(error);
-        });
+    /**@type {object}*/
+    const rmOptions = {
+        /**@type {boolean}*/
+        recursive: true,
+        /**@type {boolean}*/
+        force: true,
+    };
+    fs.rmSync(images(), rmOptions);
+
+    /**@type {object}*/
+    const mkOptions = {
+        /**@type {boolean}*/
+        force: true,
+    };
+    if (!fs.existsSync(images())) fs.mkdirSync(images(), mkOptions);
     console.log('\x1b[0mImages\x1b[30m directory cleaned up\x1b[0m');
 };
 

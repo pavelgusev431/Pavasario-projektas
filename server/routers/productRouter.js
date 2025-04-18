@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import {
     getUserProductsByUserName,
@@ -18,9 +19,9 @@ import {
 import protect from '../validators/validateJWT.js';
 import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
-
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
 
+/**@type {express.Router}*/
 const productRouter = express.Router();
 
 productRouter.route('/').get(getPaginatedProducts);
