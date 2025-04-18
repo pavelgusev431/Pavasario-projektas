@@ -43,19 +43,19 @@ export const banUser = async (req, res) => {
 // Ištrinti naudotoją
 export const deleteUser = async (req, res) => {
     const { id } = req.params;
-  
-    try {      
-      await Event.destroy({ where: { user_id: id } });      
-      await Secret.destroy({ where: { userId: id } });     
-      await User.destroy({ where: { id } });
-  
-      res.status(204).send();
+
+    try {
+        await Event.destroy({ where: { user_id: id } });
+        await Secret.destroy({ where: { userId: id } });
+        await User.destroy({ where: { id } });
+
+        res.status(204).send();
     } catch (err) {
-      console.error("Klaida tryniant naudotoją:", err);
-      res.status(500).json({ error: "Nepavyko ištrinti naudotojo" });
+        console.error('Klaida tryniant naudotoją:', err);
+        res.status(500).json({ error: 'Nepavyko ištrinti naudotojo' });
     }
-  };
-  
+};
+
 // Naudotojo vaidmens keitimas
 export const updateUserRole = async (req, res) => {
     const { id } = req.params;

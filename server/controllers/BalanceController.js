@@ -29,8 +29,8 @@ export const topUp = async (req, res) => {
         await Event.create({
             user_id: userId,
             product_id: null,
-            type_id: 1,
-            target_id: 4,
+            type_id: 3,
+            target_id: 3,
             description: `ADDENDUM: +${amount}€`,
             timestamp: new Date(),
         });
@@ -48,7 +48,7 @@ export const getBalanceHistory = async (req, res) => {
         const history = await Event.findAll({
             where: {
                 user_id: userId,
-                target_id: [3, 7],
+                target_id: [3],
             },
             order: [['timestamp', 'DESC']],
         });

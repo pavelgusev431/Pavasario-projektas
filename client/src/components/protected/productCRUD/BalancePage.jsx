@@ -73,6 +73,21 @@ const BalancePage = () => {
         return <div className="text-center mt-10">❌ Unauthorized user</div>;
     }
 
+    const topUps = history.filter(
+        (item) =>
+            item.type_id === 3 &&
+            (item.description.toLowerCase().includes('пополн') ||
+                item.description.toLowerCase().includes('addendum') ||
+                item.description.includes('+'))
+    );
+
+    const expenses = history.filter(
+        (item) =>
+            item.type_id === 3 &&
+            (item.description.toLowerCase().includes('списан') ||
+                item.description.includes('-'))
+    );
+
     return (
         <div className="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg mt-10">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
@@ -105,39 +120,80 @@ const BalancePage = () => {
                 </div>
             )}
 
-            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
-                📜 Transaction History
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
+                Transaction History
             </h3>
 
-            <div className="max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 rounded-md">
-                <ul className="divide-y divide-gray-200 dark:divide-gray-600">
-                    {history.length === 0 ? (
-                        <li className="py-2 text-gray-500 dark:text-gray-400">
-                            History is empty
-                        </li>
-                    ) : (
-                        [...history]
-                            .sort(
-                                (a, b) =>
-                                    new Date(b.timestamp) -
-                                    new Date(a.timestamp)
-                            )
-                            .map((item) => (
-                                <li
-                                    key={nanoid(64)}
-                                    className="py-2 text-gray-700 dark:text-gray-300"
-                                >
-                                    <strong>
-                                        {new Date(
-                                            item.timestamp
-                                        ).toLocaleString()}
-                                        :
-                                    </strong>{' '}
-                                    {item.description}
-                                </li>
-                            ))
-                    )}
-                </ul>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left side */}
+                <div>
+                    <h4 className="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2 text-left">
+                        Expenses
+                    </h4>
+                    <ul className="divide-y divide-gray-200 dark:divide-gray-600 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600">
+                        {expenses.length === 0 ? (
+                            <li className="py-2 text-gray-500 dark:text-gray-400">
+                                There are no expenses
+                            </li>
+                        ) : (
+                            expenses
+                                .sort(
+                                    (a, b) =>
+                                        new Date(b.timestamp) -
+                                        new Date(a.timestamp)
+                                )
+                                .map((item) => (
+                                    <li
+                                        key={nanoid()}
+                                        className="py-2 text-red-500 dark:text-red-400 text-left"
+                                    >
+                                        <strong>
+                                            {new Date(
+                                                item.timestamp
+                                            ).toLocaleString()}
+                                            :
+                                        </strong>{' '}
+                                        {item.description}
+                                    </li>
+                                ))
+                        )}
+                    </ul>
+                </div>
+
+                {/* Right side */}
+                <div>
+                    <h4 className="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2 text-right">
+                        Refills
+                    </h4>
+                    <ul className="divide-y divide-gray-200 dark:divide-gray-600 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600">
+                        {topUps.length === 0 ? (
+                            <li className="py-2 text-gray-500 dark:text-gray-400 text-right">
+                                No refills
+                            </li>
+                        ) : (
+                            topUps
+                                .sort(
+                                    (a, b) =>
+                                        new Date(b.timestamp) -
+                                        new Date(a.timestamp)
+                                )
+                                .map((item) => (
+                                    <li
+                                        key={nanoid()}
+                                        className="py-2 text-green-600 dark:text-green-400 text-right"
+                                    >
+                                        <strong>
+                                            {new Date(
+                                                item.timestamp
+                                            ).toLocaleString()}
+                                            :
+                                        </strong>{' '}
+                                        {item.description}
+                                    </li>
+                                ))
+                        )}
+                    </ul>
+                </div>
             </div>
         </div>
     );

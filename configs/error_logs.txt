@@ -1,1 +1,27 @@
+npm warn Unknown env config "s". This will stop working in the next major version of npm.
+client/src/App.jsx
+client/src/components/layout/navbar/ProductsDropdown.jsx
+client/src/components/layout/navbar/SearchBar.jsx
+client/src/components/ProductCard.jsx
+client/src/components/ProductDetails.jsx
+client/src/components/products/CategoryProducts.jsx
+client/src/components/products/HighestRatedProducts.jsx
+client/src/components/products/PublicUserProfile.jsx
+client/src/components/products/RatedProductsByUserName.jsx
+client/src/components/products/SearchedProducts.jsx
+client/src/components/products/SubcategoryProducts.jsx
+client/src/components/products/TopUserProducts.jsx
+client/src/components/products/TrendingUserProducts.jsx
+client/src/components/protected/admin/adminpanel.jsx
+client/src/components/protected/commentCRUD/MyReviews.jsx
+client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
+client/src/components/protected/productCRUD/BalancePage.jsx
+client/src/helpers/adminPanel.js
+client/src/helpers/getCategoryProducts.js
+server/controllers/adminController.js
+server/controllers/BalanceController.js
+server/controllers/categoryController.js
+server/models/categorySyncModel.js
+server/routers/categoryRouter.js
+server/routers/imageRouter.js
 server/validators/validateSearch.js
