@@ -4,7 +4,7 @@ import Tools from './Tools';
 import getFilteredProducts from '../helpers/getFilteredProducts';
 import BackToTopButton from './buttons/BackToTopButton';
 import debounce from 'lodash.debounce';
-
+ 
 export default function ProductList() {
     const [products, setProducts] = useState([]);
     const [pagination, setPagination] = useState({
@@ -12,7 +12,7 @@ export default function ProductList() {
         totalPages: 0,
         totalProducts: 0,
     });
-
+ 
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(12);
     const [priceRange, setPriceRange] = useState(() => {
@@ -20,23 +20,23 @@ export default function ProductList() {
             const savedPriceRange = JSON.parse(
                 localStorage.getItem('priceRange')
             );
-            return savedPriceRange || [0, 5000];
+            return savedPriceRange ? savedPriceRange : [0, 5000];
         } catch {
             return [0, 5000];
         }
     });
-
+ 
     const [dateRange, setDateRange] = useState(() => {
         try {
             const savedDateRange = JSON.parse(
                 localStorage.getItem('dateRange')
             );
-            return (
-                savedDateRange || [
-                    new Date('2024-01-01').getTime(),
-                    new Date().setDate(new Date().getDate() + 1),
-                ]
-            );
+            return savedDateRange
+                ? savedDateRange
+                : [
+                      new Date('2024-01-01').getTime(),
+                      new Date().setDate(new Date().getDate() + 1),
+                  ];
         } catch {
             return [
                 new Date('2024-01-01').getTime(),
@@ -44,7 +44,7 @@ export default function ProductList() {
             ];
         }
     });
-
+ 
     const [sortValue, setSortValue] = useState(() => {
         const savedSortValue = localStorage.getItem('sortValue');
         const validSortValues = [
@@ -61,16 +61,16 @@ export default function ProductList() {
             ? savedSortValue
             : 'timestamp-desc';
     });
-
+ 
     const minDate = new Date('2024-01-01').getTime();
     const maxDate = (() => {
         const today = new Date();
         today.setDate(today.getDate() + 1);
         return today.getTime();
     })();
-
-    const fetchProducts = useCallback(() => {
-        const func = debounce(async (page = 1) => {
+ 
+    const fetchProducts = useCallback(
+        debounce(async (page = 1) => {
             try {
                 const [sort, order] = sortValue.split('-');
                 const data = await getFilteredProducts({
@@ -92,15 +92,15 @@ export default function ProductList() {
             } catch (err) {
                 setError('Klaida gaunant produktus: ' + err.message);
             }
-        }, 250);
-        func();
-    }, [pageSize, priceRange, dateRange, sortValue]);
-
+        }, 250),
+        [pageSize, priceRange, dateRange, sortValue]
+    );
+ 
     useEffect(() => {
         fetchProducts(pagination.currentPage);
-        return () => fetchProducts();
+        return () => fetchProducts.cancel();
     }, [fetchProducts, pagination.currentPage]);
-
+ 
     const filteredProducts = useMemo(() => {
         return products.filter(
             (product) =>
@@ -110,24 +110,24 @@ export default function ProductList() {
                 new Date(product.timestamp).getTime() <= dateRange[1]
         );
     }, [products, priceRange, dateRange]);
-
+ 
     useEffect(() => {
         localStorage.setItem('priceRange', JSON.stringify(priceRange));
         localStorage.setItem('dateRange', JSON.stringify(dateRange));
         localStorage.setItem('sortValue', sortValue);
     }, [priceRange, dateRange, sortValue]);
-
+ 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= pagination.totalPages) {
             setPagination({ ...pagination, currentPage: newPage });
         }
     };
-
+ 
     const handlePageSizeChange = (event) => {
         setPageSize(parseInt(event.target.value));
         setPagination({ ...pagination, currentPage: 1 });
     };
-
+ 
     const handleSortChange = (newSortValue) => {
         setSortValue(newSortValue);
         setPagination({ ...pagination, currentPage: 1 });
@@ -141,11 +141,11 @@ export default function ProductList() {
         setSortValue('timestamp-asc');
         setPagination({ ...pagination, currentPage: 1 });
     };
-
+ 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">Product List</h1>
-
+ 
             {/* Įrankių juosta */}
             <Tools
                 priceRange={priceRange}
@@ -158,7 +158,7 @@ export default function ProductList() {
                 sortValue={sortValue}
                 resetFilters={resetFilters}
             />
-
+ 
             {/* Puslapio dydžio pasirinkimas */}
             <div className="mb-4">
                 <label htmlFor="pageSize" className="mr-2">
@@ -168,7 +168,7 @@ export default function ProductList() {
                     id="pageSize"
                     value={pageSize}
                     onChange={handlePageSizeChange}
-                    className="p-2 dark:text-white dark:bg-gray-900 border rounded-md"
+                    className="p-2 border rounded-md"
                 >
                     <option value={6}>6</option>
                     <option value={12}>12</option>
@@ -177,9 +177,9 @@ export default function ProductList() {
                     <option value={30}>30</option>
                 </select>
             </div>
-
+ 
             {/* Produktų rodymas */}
-
+ 
             {error && <p className="text-red-500">{error}</p>}
             {filteredProducts.length > 0 ? (
                 <div>
@@ -208,7 +208,7 @@ export default function ProductList() {
                             >
                                 Previous
                             </button>
-
+ 
                             {Array.from(
                                 { length: pagination.totalPages },
                                 (_, index) => (
@@ -227,7 +227,7 @@ export default function ProductList() {
                                     </button>
                                 )
                             )}
-
+ 
                             <button
                                 className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
                                     pagination.currentPage >=
@@ -251,7 +251,7 @@ export default function ProductList() {
             ) : (
                 <p>No products available.</p>
             )}
-
+ 
             <BackToTopButton />
         </div>
     );
