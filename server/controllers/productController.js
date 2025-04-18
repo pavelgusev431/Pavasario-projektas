@@ -5,6 +5,10 @@ import AppError from '../utilities/AppError.js';
 import { Op } from 'sequelize';
 import Subcategory from '../models/subcategoryModel.js';
 import Product from '../models/productModel.js';
+import {
+    sortHelper,
+    filterItemsByRange,
+} from './paginatedProductController.js';
 
 const getUserProductsByUserName = async (req, res) => {
     try {
@@ -165,7 +169,13 @@ const getUserProducts = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const { q } = req.query;
+        const { q, minPrice, maxPrice, minDate, maxDate, sort, order } =
+            req.query;
+
+        let { page = 1, limit = 8 } = req.query;
+        page = Math.max(Number(page), 1);
+        limit = Math.max(Number(limit), 1);
+        const offset = (page - 1) * limit;
 
         let products;
         if (q) {
@@ -184,6 +194,13 @@ const getAllProducts = async (req, res) => {
             return res.status(404).json({ message: 'Nėra produktų' });
         }
 
+        const events = await Event.findAll({
+            where: {
+                type_id: 1,
+                target_id: 2,
+            },
+        });
+
         const ratings = await Rating.findAll({
             where: {
                 product_id: {
@@ -193,6 +210,17 @@ const getAllProducts = async (req, res) => {
         });
 
         const processedProducts = products.map((product) => {
+            const productEvents = events.filter(
+                (event) =>
+                    event.user_id === product.user_id &&
+                    event.product_id === product.id
+            );
+            const latestEvent = productEvents.length
+                ? productEvents.sort(
+                      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+                  )[0]
+                : null;
+
             const productRatings = ratings.filter(
                 (r) => r.product_id === product.id
             );
@@ -205,12 +233,45 @@ const getAllProducts = async (req, res) => {
 
             return {
                 ...product.toJSON(),
+                timestamp: latestEvent ? latestEvent.timestamp : null,
                 avgRating: avgRating.toFixed(2),
                 ratingCount,
             };
         });
 
-        return res.json({ data: processedProducts });
+        let allFilteredProducts = processedProducts;
+
+        if (minPrice || maxPrice) {
+            allFilteredProducts = await filterItemsByRange(
+                minPrice,
+                maxPrice,
+                allFilteredProducts,
+                null,
+                null,
+                'price'
+            );
+        }
+
+        if (minDate || maxDate) {
+            allFilteredProducts = await filterItemsByRange(
+                minDate,
+                maxDate,
+                allFilteredProducts,
+                null,
+                null,
+                'date'
+            );
+        }
+
+        console.log('controller:', sort, order);
+        console.log('query!!!!!!!!: ', req.query);
+        const sortedProducts = await sortHelper(
+            allFilteredProducts,
+            sort,
+            order
+        );
+
+        return res.json({ data: sortedProducts });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });

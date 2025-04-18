@@ -40,12 +40,11 @@ const getProductCommentsById = async (req, res) => {
             where: { id: { [Op.in]: userIds } },
         });
 
-        // Gauname visus įvykius, susijusius su šio produkto reitingais
         const ratingEvents = await Event.findAll({
             where: {
                 product_id: productId,
-                type_id: 1, // "created"
-                target_id: 6, // "rating"
+                type_id: 1,
+                target_id: 6,
             },
         });
 
@@ -54,10 +53,8 @@ const getProductCommentsById = async (req, res) => {
             userMap[user.id] = user;
         });
 
-        // Susiejame reitingus su įvykiais pagal user_id ir kitus kriterijus
         const ratingEventMap = {};
         ratings.forEach((rating) => {
-            // Ieškome atitinkančio įvykio pagal user_id ir timestamp eiliškumą
             const matchingEvent = ratingEvents.find(
                 (event) =>
                     event.user_id === rating.user_id &&
@@ -65,7 +62,6 @@ const getProductCommentsById = async (req, res) => {
             );
             if (matchingEvent) {
                 ratingEventMap[rating.id] = matchingEvent;
-                // Pašaliname panaudotą įvykį, kad jis nebūtų pakartotinai priskirtas
                 ratingEvents.splice(ratingEvents.indexOf(matchingEvent), 1);
             }
         });
@@ -77,6 +73,7 @@ const getProductCommentsById = async (req, res) => {
                 totalStars += rating.stars;
                 const event = ratingEventMap[rating.id];
                 return {
+                    id: rating.id,
                     username: userMap[rating.user_id]?.username || 'Nežinomas',
                     comment: rating.comment,
                     stars: rating.stars,

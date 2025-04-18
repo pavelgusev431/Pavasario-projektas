@@ -1,9 +1,11 @@
 import url from './getURL.js';
 import axios from 'axios';
 
-export const searchProducts = async (query) => {
+export const searchProducts = async (query, sort, order) => {
     try {
-        const response = await axios.get(url(`products/search?q=${query}`));
+        const response = await axios.get(
+            url(`products/search?q=${query}&order=${order}&sort=${sort}`)
+        );
         return response;
     } catch (error) {
         console.log(error);

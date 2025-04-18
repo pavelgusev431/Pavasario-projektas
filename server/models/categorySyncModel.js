@@ -28,7 +28,7 @@ const syncModels = async () => {
             { name: 'Automotive' },
             { name: 'Books & Media' },
             { name: 'Groceries & Food' },
-            { name: 'Office & School Supplies' },
+            { name: 'Office Supplies' },
         ]);
         console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
 
@@ -63,7 +63,7 @@ const syncModels = async () => {
             where: { name: 'Groceries & Food' },
         });
         const officeCategory = await Category.findOne({
-            where: { name: 'Office & School Supplies' },
+            where: { name: 'Office Supplies' },
         });
         await Subcategory.bulkCreate([
             {
