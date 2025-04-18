@@ -91,7 +91,7 @@ const SearchedProducts = () => {
     const searchQuery = searchParams.get('q');
 
     return (
-        <div className="container p-4">
+        <div className="p-4">
             <div className="mt-8 w-full">
                 <div className="flex ml-10 flex-row gap-2 mt-2">
                     <div className="w-2 h-6 bg-red-500"></div>

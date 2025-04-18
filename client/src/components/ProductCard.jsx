@@ -8,7 +8,7 @@ export default function ProductCard({ product, avgRating, ratingCount }) {
             to={`/products/selected/${product.id}`}
             className="no-underline text-black"
         >
-            <div className="bg-white dark:bg-transparent rounded-lg shadow-lg hover:shadow-xl hover:scale-105 hover:animate-ease-in hover:animate-duration-300 transition-shadow p-4 flex flex-col items-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 hover:animate-ease-in hover:animate-duration-300 transition-shadow p-4 flex flex-col items-center">
                 <div className="w-full h-48 overflow-hidden">
                     <img
                         src={product.image_url}

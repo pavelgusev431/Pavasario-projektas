@@ -50,9 +50,20 @@ export default function TrendingUserProducts() {
                     Trending user
                 </h2>
             </div>
-            <h2 className="text-2xl font-bold ml-10 mb-2">
-                {noUser ? 'No Trending Users' : `Trending ${userName} products`}
-            </h2>
+            <div className="flex justify-between">
+                <h2 className="text-2xl font-bold ml-10 mb-2">
+                    {noUser
+                        ? 'No Trending Users'
+                        : `Trending ${userName} products`}
+                </h2>
+                <div className="text-center mt-4 mr-10">
+                    <Link to={`/products/u/${userName}`}>
+                        <button className="bg-red-500 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
+                            View All Products
+                        </button>
+                    </Link>
+                </div>
+            </div>
             {noUser ? (
                 <p className="text-gray-500 text-center">
                     Currently, no users are trending. Check back later!
@@ -68,13 +79,6 @@ export default function TrendingUserProducts() {
                                 ratingCount={product.ratingCount}
                             />
                         ))}
-                    </div>
-                    <div className="text-center mt-4">
-                        <Link to={`/products/u/${userName}`}>
-                            <button className="bg-red-500 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
-                                View All Products
-                            </button>
-                        </Link>
                     </div>
                 </>
             )}
