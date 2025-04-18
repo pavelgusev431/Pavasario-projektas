@@ -14,7 +14,6 @@ const validateSearchQuery = (req, res, next) => {
     if (isInvalid) {
         return res.status(400).json({ error: 'Invalid search query.' });
     }
-
     next();
 };
 

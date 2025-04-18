@@ -107,10 +107,8 @@ export default function MyReviews() {
                                     ))}
                                 </div>
                             )}
-                            <p className="text-base text-gray-700 mb-2">
-                                {comment.comment}
-                            </p>
-                            <p className="text-sm text-yellow-500 font-semibold">
+                            <p className="text-lg">{comment.comment}</p>
+                            <p className="text-sm text-gray-500">
                                 {comment.stars} stars
                             </p>
                         </div>

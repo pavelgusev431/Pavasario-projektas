@@ -17,7 +17,7 @@ import ProductsDropdown from './components/layout/navbar/ProductsDropdown.jsx';
 import AdminPanel from './components/protected/admin/adminpanel.jsx';
 import BalancePage from './components/protected/productCRUD/BalancePage.jsx';
 import MyReviews from './components/protected/commentCRUD/MyReviews.jsx';
-
+import CategoryProducts from './components/products/CategoryProducts.jsx';
 function App() {
     return (
         <>
@@ -26,6 +26,8 @@ function App() {
                 <Route index element={<Auth />} />
                 <Route path="home" element={<Home />} />
                 <Route path="products/:id" element={<UserProducts />} />
+                <Route path="categories/:id" element={<CategoryProducts />} />
+
                 <Route path="/search" element={<SearchedProducts />} />
                 <Route
                     path="products/selected/:id"
