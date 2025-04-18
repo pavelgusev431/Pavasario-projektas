@@ -5,10 +5,14 @@ import createComment from '../../../helpers/createComment.js';
 import { FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 
-
-export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }) {
+export default function ReviewCreateModal({
+    showModal,
+    setShowModal,
+    setUpdate,
+}) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
-    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] = useState('');
+    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
+        useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -52,7 +56,9 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                 window.location.reload();
             }, 2500);
         } catch (error) {
-            setError(error.response?.data?.message || 'Nepavyko sukurti komentaro');
+            setError(
+                error.response?.data?.message || 'Nepavyko sukurti komentaro'
+            );
         }
     };
 
@@ -88,7 +94,10 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                         </svg>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit(submitHandler)} className="dark:bg-gray-800 p-6">
+                <form
+                    onSubmit={handleSubmit(submitHandler)}
+                    className="dark:bg-gray-800 p-6"
+                >
                     <div className="mb-4">
                         <input
                             type="number"
@@ -97,7 +106,8 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 required: 'Product ID is required',
                                 min: {
                                     value: 1,
-                                    message: 'Product ID must be a positive number',
+                                    message:
+                                        'Product ID must be a positive number',
                                 },
                                 valueAsNumber: true,
                                 onChange: () => {
@@ -150,7 +160,11 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 >
                                     <FaStar
                                         size={28}
-                                        color={watch('stars') >= star ? '#facc15' : '#d1d5db'}
+                                        color={
+                                            watch('stars') >= star
+                                                ? '#facc15'
+                                                : '#d1d5db'
+                                        }
                                         className="transition-colors hover:scale-110"
                                     />
                                 </button>
@@ -160,13 +174,21 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                             type="hidden"
                             {...register('stars', {
                                 required: 'Rating is required',
-                                min: { value: 1, message: 'Minimum rating is 1' },
-                                max: { value: 5, message: 'Maximum rating is 5' },
+                                min: {
+                                    value: 1,
+                                    message: 'Minimum rating is 1',
+                                },
+                                max: {
+                                    value: 5,
+                                    message: 'Maximum rating is 5',
+                                },
                                 valueAsNumber: true,
                             })}
                         />
                         {errors.stars && (
-                            <p className="text-red-500 text-sm mt-2">{errors.stars.message}</p>
+                            <p className="text-red-500 text-sm mt-2">
+                                {errors.stars.message}
+                            </p>
                         )}
                     </div>
                     <div className="mb-4">
@@ -183,9 +205,12 @@ export default function ReviewCreateModal({ showModal, setShowModal, setUpdate }
                                 },
                                 validate: {
                                     fileType: (value) => {
-                                        if (!value || !Array.from(value)[0]) return true;
+                                        if (!value || !Array.from(value)[0])
+                                            return true;
                                         return (
-                                            availableFileTypes.includes(Array.from(value)[0].type) ||
+                                            availableFileTypes.includes(
+                                                Array.from(value)[0].type
+                                            ) ||
                                             `Allowed file types: ${strippedAvailableFileTypes}`
                                         );
                                     },

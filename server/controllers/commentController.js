@@ -3,7 +3,7 @@ import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
 import EventType from '../models/event_typeModel.js';
-import EventTarget from '../models/event_targetModel.js';     
+import EventTarget from '../models/event_targetModel.js';
 import { Op } from 'sequelize';
 import AppError from '../utilities/AppError.js';
 
@@ -73,14 +73,14 @@ const getProductCommentsById = async (req, res) => {
                 totalStars += rating.stars;
                 const event = ratingEventMap[rating.id];
                 return {
-                    id: rating.id, 
+                    id: rating.id,
                     username: userMap[rating.user_id]?.username || 'Nežinomas',
                     comment: rating.comment,
                     stars: rating.stars,
                     timestamp: event ? event.timestamp : null,
                 };
             })
-            .filter((comment) => comment.comment); 
+            .filter((comment) => comment.comment);
 
         const avgRating = +(totalStars / ratings.length).toFixed(2);
 
@@ -94,7 +94,6 @@ const getProductCommentsById = async (req, res) => {
         return res.status(500).json({ message: 'Klaida gaunant komentarus' });
     }
 };
-
 
 const createComment = async (req, res, next) => {
     try {
@@ -115,13 +114,17 @@ const createComment = async (req, res, next) => {
         }
 
         // Gauname įvykio tipą
-        const eventType = await EventType.findOne({ where: { name: 'created' } });
+        const eventType = await EventType.findOne({
+            where: { name: 'created' },
+        });
         if (!eventType) {
             throw new AppError('Įvykio tipas "created" nerastas', 500);
         }
 
         // Gauname įvykio tikslą
-        const eventTarget = await EventTarget.findOne({ where: { name: 'rating' } });
+        const eventTarget = await EventTarget.findOne({
+            where: { name: 'rating' },
+        });
         if (!eventTarget) {
             throw new AppError('Įvykio tikslas "rating" nerastas', 500);
         }
@@ -158,11 +161,12 @@ const editComment = async (req, res, next) => {
             throw new AppError('Comment not found', 404);
         }
         if (foundComment.user_id !== id) {
-            throw new AppError('Forbidden to edit other user\'s comments', 403);
+            throw new AppError("Forbidden to edit other user's comments", 403);
         }
         foundComment.product_id = product_id || foundComment.product_id;
         foundComment.comment = comment || foundComment.comment;
-        foundComment.stars = stars !== undefined ? parseInt(stars) : foundComment.stars;
+        foundComment.stars =
+            stars !== undefined ? parseInt(stars) : foundComment.stars;
         foundComment.image_url = image_url || foundComment.image_url;
         await foundComment.save();
         res.status(200).json({
@@ -180,7 +184,9 @@ const getUserComments = async (req, res) => {
         const userId = parseInt(req.params.id);
 
         if (!userId) {
-            return res.status(400).json({ message: 'Neteisingas vartotojo ID' });
+            return res
+                .status(400)
+                .json({ message: 'Neteisingas vartotojo ID' });
         }
 
         const comments = await Rating.findAll({

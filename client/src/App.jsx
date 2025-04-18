@@ -36,7 +36,7 @@ function App() {
                 <Route path="products" element={<ProductList />} />
                 <Route path="/" element={<ProductsDropdown />} />
                 <Route path="/balance" element={<BalancePage />} />
-                <Route path="/reviews" element={<MyReviews />} />   
+                <Route path="/reviews" element={<MyReviews />} />
                 <Route
                     path="/products/s/:subcategoryId"
                     element={<ProductsPage />}

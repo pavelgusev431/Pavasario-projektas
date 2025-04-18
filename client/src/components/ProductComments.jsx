@@ -11,52 +11,60 @@ export default function ProductComments({ productId }) {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null); 
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
-    const fetchComments = async () => {
-        try {
-            setLoading(true);
-            const response = await getProductCommentsById(productId);
-            const rawComments = response.data.data || [];
+        const fetchComments = async () => {
+            try {
+                setLoading(true);
+                const response = await getProductCommentsById(productId);
+                const rawComments = response.data.data || [];
 
-            const commentsWithImages = await Promise.all(
-                rawComments.map(async (comment) => {
-                    try {
-                        const imgResponse = await axios.get(url(`images/c/comment${comment.id}`));
+                const commentsWithImages = await Promise.all(
+                    rawComments.map(async (comment) => {
+                        try {
+                            const imgResponse = await axios.get(
+                                url(`images/c/comment${comment.id}`)
+                            );
 
-                        if (imgResponse.status === 200) {
-                            return { ...comment, images: imgResponse.data.data || [] };
-                        } else {
-                            return { ...comment, images: [] };
+                            if (imgResponse.status === 200) {
+                                return {
+                                    ...comment,
+                                    images: imgResponse.data.data || [],
+                                };
+                            } else {
+                                return { ...comment, images: [] };
+                            }
+                        } catch (err) {
+                            if (err.response?.status === 404) {
+                                // Tyliai ignoruojam 404 (kai nėra paveiksliukų)
+                                return { ...comment, images: [] };
+                            } else {
+                                console.error(
+                                    `Kita klaida gaunant komentarą ${comment.id}:`,
+                                    err
+                                );
+                                return { ...comment, images: [] };
+                            }
                         }
-                    } catch (err) {
-                        if (err.response?.status === 404) {
-                            // Tyliai ignoruojam 404 (kai nėra paveiksliukų)
-                            return { ...comment, images: [] };
-                        } else {
-                            console.error(`Kita klaida gaunant komentarą ${comment.id}:`, err);
-                            return { ...comment, images: [] };
-                        }
-                    }
-                })
-            );
+                    })
+                );
 
-            setComments(commentsWithImages);
-            setLoading(false);
-        } catch (err) {
-            setError('Nepavyko užkrauti komentarų');
-            setLoading(false);
-            console.error(err);
-        }
-    };
+                setComments(commentsWithImages);
+                setLoading(false);
+            } catch (err) {
+                setError('Nepavyko užkrauti komentarų');
+                setLoading(false);
+                console.error(err);
+            }
+        };
 
-    fetchComments();
-}, [productId]);
-
+        fetchComments();
+    }, [productId]);
 
     if (loading) return <div className="text-center p-4">Loading...</div>;
-    if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
+    if (error)
+        return <div className="text-center p-4 text-red-500">{error}</div>;
 
     return (
         <section className="px-4 bg-white shadow-lg rounded-2xl my-8">
@@ -102,7 +110,9 @@ export default function ProductComments({ productId }) {
                                             src={imageUrl}
                                             alt={`Komentaro ${comment.id} paveikslėlis ${index + 1}`}
                                             className="w-32 h-32 object-cover rounded-md cursor-pointer"
-                                            onClick={() => setSelectedImage(imageUrl)}
+                                            onClick={() =>
+                                                setSelectedImage(imageUrl)
+                                            }
                                         />
                                     ))}
                                 </div>
