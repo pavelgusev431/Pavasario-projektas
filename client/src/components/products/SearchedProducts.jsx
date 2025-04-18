@@ -8,7 +8,7 @@ import BackToTopButton from "../buttons/BackToTopButton";
 import Sort from "../Sort";
 import { searchProducts } from "../../helpers/searchProducts";
 import getSearchRegex from "../../helpers/getSearchRegex";
-
+//betkas  konfliktas
 export default function SearchedProducts() {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({

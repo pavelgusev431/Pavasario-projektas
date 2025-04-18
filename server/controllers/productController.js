@@ -931,3 +931,5 @@ export {
     deleteProduct,
     getSearchRegex,
 };
+
+//kometaras konfliktas 1
