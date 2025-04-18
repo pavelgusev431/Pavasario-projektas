@@ -1,11 +1,2 @@
-client/src/components/ProductDetails.jsx
-client/src/components/products/PublicUserProfile.jsx
-client/src/components/products/RatedProductsByUserName.jsx
-client/src/components/protected/admin/adminpanel.jsx
-client/src/components/protected/commentCRUD/MyReviews.jsx
-client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
-client/src/components/protected/productCRUD/BalancePage.jsx
-client/src/helpers/adminPanel.js
-server/controllers/adminController.js
-server/controllers/BalanceController.js
-server/routers/imageRouter.js
+client/src/components/products/SubcategoryProducts.jsx
+server/controllers/categoryController.js

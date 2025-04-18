@@ -10,7 +10,7 @@ const ProductsPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [noProducts, setNoProducts] = useState(false);
-    const [pageSize, setPageSize] = useState(12);
+    const [pageSize, setPageSize] = useState(8);
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 0,
@@ -27,7 +27,6 @@ const ProductsPage = () => {
                 );
                 const products = response.data.products;
                 const totalProducts = response.totalProducts;
-                console.log(totalProducts);
 
                 if (products.length === 0) {
                     setNoProducts(true);

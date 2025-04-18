@@ -58,7 +58,7 @@ export const getCategoryWithSubcategories = async (req, res, next) => {
 export const getProductsBySubcategory = async (req, res) => {
     try {
         const subcategoryId = req.params.subcategoryId;
-        const limit = req.query.limit || 6;
+        const limit = req.query.limit || 8;
         const offset = req.query.offset || 0;
 
         if (!subcategoryId || isNaN(subcategoryId)) {
