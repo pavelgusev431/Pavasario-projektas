@@ -89,16 +89,16 @@ VALUES
 (5, 25, 1, 2, 'ikele Testo ausinės', '2025-03-25T15:58:44.450Z'),
 (5, 26, 1, 2, 'ikele Testo laikrodis', '2025-03-25T15:58:44.450Z'),
 (5, 27, 1, 2, 'ikele tikrinu', '2025-03-25T15:58:44.450Z'),
- 
+
 --new user products
- 
+
 (6, 28, 1, 2, 'ikele Testo kompiuteris', '2025-04-14T15:58:44.450Z'),
 (6, 29, 1, 2, 'ikele Testo ausinės', '2025-04-15T15:58:44.450Z'),
 (6, 30, 1, 2, 'ikele Testo laikrodis', '2025-04-16T15:58:44.450Z'),
 (6, 31, 1, 2, 'ikele tikrinu', '2025-04-15T15:58:44.450Z'),
  
  -- ratingai naujam useriui
- 
+
  (3,28, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,28, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
 (4,28, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
@@ -119,8 +119,8 @@ VALUES
 (4,31, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
 (5,31, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
 --visi kiti
- 
- 
+
+
 (3,1, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,1, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
 (4,1, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
@@ -196,9 +196,9 @@ VALUES
 (5, 1, 'blogas telefonas, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (2, 27, 'Puikus laikrodis, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (2, 27, 'labai prastas laikrodis, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
- 
+
 --naujo userio eventas
- 
+
 (3, 28, 'Puikus telefonas, labai rekomenduoju!', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 28, 'Puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 28, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
