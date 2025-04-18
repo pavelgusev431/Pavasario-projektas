@@ -55,28 +55,27 @@ export default function ReviewCreateModal({
     };
 
     return (
-        <div
-            className="fixed w-dvw h-dvh z-40 flex flex-col place-items-center left-0 top-25"
-            style={{ backgroundColor: 'rgba(127, 127, 127, 0.25)' }}
-        >
+        <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm flex items-center justify-center">
             <dialog
                 open={showModal}
-                className="bg-none rounded p-2 my-15 w-75 justify-self-center"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-xl p-6 w-full max-w-lg"
             >
-                <div className="flex flex-row justify-between">
-                    <h3 className="bg-none rounded p-2 my-0 w-50 justify-self-center">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-semibold text-gray-800">
                         Create new review
                     </h3>
                     <button
                         onClick={handleClose}
-                        className="bg-none rounded p-2 my-0 w-10"
+                        className="text-gray-500 hover:text-red-500 transition-colors text-xl font-bold"
+                        title="Uždaryti"
                     >
-                        X
+                        ×
                     </button>
                 </div>
+
                 <form
                     onSubmit={handleSubmit(submitHandler)}
-                    className="flex flex-col"
+                    className="flex flex-col gap-4"
                 >
                     <div>
                         <input
@@ -95,7 +94,7 @@ export default function ReviewCreateModal({
                                     clearErrors('product_id');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="rounded-lg p-2 border border-slate-300 w-full focus:outline-none focus:ring-2 focus:ring-purple-400"
                         />
                         {errors.product_id && (
                             <p className="text-red-500 text-sm mt-1">
@@ -103,6 +102,7 @@ export default function ReviewCreateModal({
                             </p>
                         )}
                     </div>
+
                     <div>
                         <textarea
                             placeholder="Komentaras"
@@ -113,7 +113,7 @@ export default function ReviewCreateModal({
                                     clearErrors('comment');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="rounded-lg p-2 border border-slate-300 w-full h-24 resize-none focus:outline-none focus:ring-2 focus:ring-purple-400"
                         />
                         {errors.comment && (
                             <p className="text-red-500 text-sm mt-1">
@@ -121,6 +121,7 @@ export default function ReviewCreateModal({
                             </p>
                         )}
                     </div>
+
                     <div>
                         <input
                             type="number"
@@ -142,7 +143,7 @@ export default function ReviewCreateModal({
                                     clearErrors('stars');
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="rounded-lg p-2 border border-slate-300 w-full focus:outline-none focus:ring-2 focus:ring-purple-400"
                         />
                         {errors.stars && (
                             <p className="text-red-500 text-sm mt-1">
@@ -150,6 +151,7 @@ export default function ReviewCreateModal({
                             </p>
                         )}
                     </div>
+
                     <div>
                         <input
                             type="file"
@@ -172,7 +174,7 @@ export default function ReviewCreateModal({
                                     },
                                 },
                             })}
-                            className="rounded p-1 border-1 border-slate-300 w-full"
+                            className="rounded-lg p-2 border border-slate-300 w-full text-sm file:mr-2 file:py-1 file:px-3 file:border file:rounded file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
                         />
                         {errors.images && (
                             <p className="text-red-500 text-sm mt-1">
@@ -180,11 +182,13 @@ export default function ReviewCreateModal({
                             </p>
                         )}
                     </div>
+
                     <span className="text-red-500 text-sm mt-1">{error}</span>
+
                     <input
                         type="submit"
                         value="Pateikti atsiliepimą"
-                        className="bg-purple-500 mt-2 rounded text-center text-white"
+                        className="bg-purple-600 hover:bg-purple-700 transition-colors text-white py-2 px-4 rounded-lg mt-2 font-medium"
                     />
                 </form>
             </dialog>
