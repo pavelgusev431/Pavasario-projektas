@@ -43,16 +43,19 @@ export const banUser = async (req, res) => {
 // Ištrinti naudotoją
 export const deleteUser = async (req, res) => {
     const { id } = req.params;
-    const user = await User.findByPk(id);
-    const secret = await Secret.findOne({ where: { userId: id } });
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    try {
+        await Event.destroy({ where: { user_id: id } });
+        await Secret.destroy({ where: { userId: id } });
+        await User.destroy({ where: { id } });
 
-    if (secret) await secret.destroy();
-    await user.destroy();
-
-    res.status(204).send();
+        res.status(204).send();
+    } catch (err) {
+        console.error('Klaida tryniant naudotoją:', err);
+        res.status(500).json({ error: 'Nepavyko ištrinti naudotojo' });
+    }
 };
+
 // Naudotojo vaidmens keitimas
 export const updateUserRole = async (req, res) => {
     const { id } = req.params;
@@ -80,7 +83,6 @@ export const createUser = async (req, res) => {
         username: username,
         email: email,
         contacts: contacts,
-        role: role,
     });
 
     await Secret.create({
