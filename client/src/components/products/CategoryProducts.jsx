@@ -59,15 +59,17 @@ const CategoryProducts = () => {
                 <p>{error}</p>
             ) : (
                 <>
-                    <h2 className="text-2xl ml-10 font-bold mb-4">
-                        Products in: {categoryName || 'Selected Category'}
-                    </h2>
-                    <div className="ml-10 flex justify-self-end mb-5">
-                        <Sort
-                            onSortChange={setSortValue}
-                            sortValue={sortValue}
-                            resetFilters={resetFilters}
-                        />
+                    <div className="flex justify-between">
+                        <h2 className="text-2xl ml-10 font-bold mb-4">
+                            Products in: {categoryName || 'Selected Category'}
+                        </h2>
+                        <div className="ml-10  mb-5">
+                            <Sort
+                                onSortChange={setSortValue}
+                                sortValue={sortValue}
+                                resetFilters={resetFilters}
+                            />
+                        </div>
                     </div>
 
                     {products.length === 0 ? (

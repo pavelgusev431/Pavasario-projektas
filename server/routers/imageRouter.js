@@ -4,11 +4,6 @@ import {
     getImages,
     getCommentImages,
 } from '../controllers/imageController.js';
-import {
-    getImage,
-    getImages,
-    getCommentImages,
-} from '../controllers/imageController.js';
 
 const imageRouter = express.Router();
 
