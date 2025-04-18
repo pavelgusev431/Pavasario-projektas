@@ -1,1 +1,1 @@
-server/validators/validateSearch.js
+client/src/helpers/getSubcategoryProducts.js

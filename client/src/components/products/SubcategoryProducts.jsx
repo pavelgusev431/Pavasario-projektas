@@ -1,27 +1,45 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
-import getProductsBySubcategory from '../../helpers/getProductsBySubcategory';
+import getSubcategoryProducts from '../../helpers/getSubcategoryProducts';
 
-const ProductsPage = () => {
+const SubcategoryProducts = () => {
     const { subcategoryId } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const [subcategory, setSubcategory] = useState({});
     const [products, setProducts] = useState([]);
+    const [pagination, setPagination] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [noProducts, setNoProducts] = useState(false);
 
+    const initialSort = searchParams.get('sort') || 'timestamp-desc';
+    const initialPage = parseInt(searchParams.get('page') || '1');
+
+    const [sortValue, setSortValue] = useState(initialSort);
+    const [page, setPage] = useState(initialPage);
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await getProductsBySubcategory(subcategoryId);
-                const products = response.data.products;
+                setIsLoading(true);
+                const [sort, order] = sortValue.split('-');
 
-                if (products.length === 0) {
+                const response = await getSubcategoryProducts(subcategoryId, {
+                    page,
+                    limit: 8,
+                    sort,
+                    order,
+                });
+
+                if (response.products.length === 0) {
                     setNoProducts(true);
                 } else {
-                    setProducts(products);
-                    setSubcategory(products[0].subcategory);
+                    setProducts(response.products);
+                    setSubcategory({ name: response.subcategoryName });
+                    setPagination(response.pagination);
+                    setNoProducts(false);
                 }
             } catch (err) {
                 console.error('Error fetching products:', err);
@@ -32,7 +50,18 @@ const ProductsPage = () => {
         };
 
         fetchProducts();
-    }, [subcategoryId]);
+    }, [subcategoryId, sortValue, page]);
+
+    const handleSortChange = (value) => {
+        setSortValue(value);
+        setPage(1);
+        setSearchParams({ sort: value, page: 1 });
+    };
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+        setSearchParams({ sort: sortValue, page: newPage });
+    };
 
     if (noProducts) {
         return (
@@ -47,14 +76,41 @@ const ProductsPage = () => {
 
     return (
         <div className="mt-10 w-full">
-            <div className="flex ml-10 flex-row gap-2 mt-2">
-                <div className="w-2 h-6 bg-red-500"></div>
-                <h2 className="text-l text-red-500 font-bold mb-2">Products</h2>
+            <div className="flex items-center justify-between px-10 mb-4">
+                <h2 className="text-2xl font-bold">
+                    Products in: {subcategory.name}
+                </h2>
+
+                <div className="flex items-center">
+                    <label
+                        htmlFor="sort"
+                        className="mr-2 text-sm font-medium text-gray-700"
+                    >
+                        Sort by:
+                    </label>
+                    <select
+                        id="sort"
+                        value={sortValue}
+                        onChange={(e) => handleSortChange(e.target.value)}
+                        className="p-2 border rounded-md"
+                    >
+                        <option value="timestamp-desc">Newest</option>
+                        <option value="timestamp-asc">Oldest</option>
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                        <option value="avgRating-desc">
+                            Rating (High to Low)
+                        </option>
+                        <option value="avgRating-asc">
+                            Rating (Low to High)
+                        </option>
+                        <option value="name-asc">Name (A–Z)</option>
+                        <option value="name-desc">Name (Z–A)</option>
+                    </select>
+                </div>
             </div>
-            <div>{error}</div>
-            <h2 className="text-2xl font-bold ml-10 mb-2">
-                Products in: {subcategory.name}
-            </h2>
+
+            {error && <div className="text-red-500 text-center">{error}</div>}
 
             {products.length === 0 ? (
                 <p className="text-gray-500 text-center">
@@ -72,8 +128,26 @@ const ProductsPage = () => {
                     ))}
                 </div>
             )}
+
+            {pagination.totalPages > 1 && (
+                <div className="flex justify-center mt-6 space-x-2">
+                    {[...Array(pagination.totalPages).keys()].map((num) => (
+                        <button
+                            key={num}
+                            onClick={() => handlePageChange(num + 1)}
+                            className={`px-3 py-1 rounded ${
+                                page === num + 1
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-200'
+                            }`}
+                        >
+                            {num + 1}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
 
-export default ProductsPage;
+export default SubcategoryProducts;

@@ -1,9 +1,10 @@
 import User from '../models/userModel.js';
-import Product from '../models/productModel.js';
 import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
 import AppError from '../utilities/AppError.js';
 import { Op } from 'sequelize';
+import Subcategory from '../models/subcategoryModel.js';
+import Product from '../models/productModel.js';
 
 const getUserProductsByUserName = async (req, res) => {
     try {
@@ -853,6 +854,108 @@ const deleteProduct = async (req, res, next) => {
 const getSearchRegex = (req, res) => {
     const zalgoRegex = process.env.ZALGO_REGEX;
     res.json({ zalgoRegex });
+};
+
+// -------------------
+// Get products by subcategory with filters
+// -------------------
+export const getFilteredProductsBySubcategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { minPrice, maxPrice, minDate, maxDate, sort, order } = req.query;
+        let { page = 1, limit = 8 } = req.query;
+
+        page = Math.max(Number(page), 1);
+        limit = Math.max(Number(limit), 1);
+        const offset = (page - 1) * limit;
+
+        if (!id || isNaN(id)) {
+            return res.status(400).json({ message: 'Invalid subcategory ID' });
+        }
+
+        const allProducts = await Product.findAll({
+            where: { subcategory_id: id },
+        });
+
+        const subcategory = await Subcategory.findOne({ where: { id } });
+
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: { [Op.in]: allProducts.map((p) => p.id) },
+            },
+        });
+
+        const productsWithRatings = allProducts.map((product) => {
+            const productRatings = ratings.filter(
+                (r) => r.product_id === product.id
+            );
+            const ratingCount = productRatings.length;
+            const avgRating =
+                ratingCount > 0
+                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
+                      ratingCount
+                    : 0;
+
+            return {
+                ...product.toJSON(),
+                ratingCount,
+                avgRating,
+            };
+        });
+
+        let filtered = [...productsWithRatings];
+
+        if (minPrice || maxPrice) {
+            filtered = filtered.filter((p) => {
+                const price = parseFloat(p.price);
+                return (
+                    (!minPrice || price >= minPrice) &&
+                    (!maxPrice || price <= maxPrice)
+                );
+            });
+        }
+
+        if (minDate || maxDate) {
+            filtered = filtered.filter((p) => {
+                const date = new Date(p.createdAt);
+                return (
+                    (!minDate || date >= new Date(minDate)) &&
+                    (!maxDate || date <= new Date(maxDate))
+                );
+            });
+        }
+
+        if (sort) {
+            filtered.sort((a, b) => {
+                const direction = order === 'desc' ? -1 : 1;
+                const fieldA = a[sort];
+                const fieldB = b[sort];
+
+                if (fieldA < fieldB) return -1 * direction;
+                if (fieldA > fieldB) return 1 * direction;
+                return 0;
+            });
+        }
+
+        const total = filtered.length;
+        const paginated = filtered.slice(offset, offset + limit);
+
+        return res.status(200).json({
+            subcategoryName: subcategory?.name || null,
+            products: paginated,
+            pagination: {
+                currentPage: page,
+                totalPages: Math.ceil(total / limit),
+                totalProducts: total,
+            },
+        });
+    } catch (err) {
+        console.error(
+            'Failed to fetch paginated products by subcategory:',
+            err
+        );
+        res.status(500).json({ message: 'Internal server error' });
+    }
 };
 
 export {
