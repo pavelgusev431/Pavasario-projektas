@@ -1,47 +1,46 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../ProductCard';
-import getProductsBySubcategory from '../../helpers/getProductsBySubcategory';
+import getSubcategoryProducts from '../../helpers/getSubcategoryProducts';
 
-const ProductsPage = () => {
+const SubcategoryProducts = () => {
     const { subcategoryId } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const [subcategory, setSubcategory] = useState({});
     const [products, setProducts] = useState([]);
+    const [pagination, setPagination] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [noProducts, setNoProducts] = useState(false);
-    const [pageSize, setPageSize] = useState(8);
-    const [pagination, setPagination] = useState({
-        currentPage: 1,
-        totalPages: 0,
-        totalProducts: 0,
-    });
+
+    const initialSort = searchParams.get('sort') || 'timestamp-desc';
+    const initialPage = parseInt(searchParams.get('page') || '1');
+
+    const [sortValue, setSortValue] = useState(initialSort);
+    const [page, setPage] = useState(initialPage);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await getProductsBySubcategory(
-                    subcategoryId,
-                    pageSize,
-                    pagination.currentPage
-                );
-                const products = response.data.products;
-                const totalProducts = response.totalProducts;
+                setIsLoading(true);
+                const [sort, order] = sortValue.split('-');
 
-                if (products.length === 0) {
+                const response = await getSubcategoryProducts(subcategoryId, {
+                    page,
+                    limit: 8,
+                    sort,
+                    order,
+                });
+
+                if (response.products.length === 0) {
                     setNoProducts(true);
                 } else {
-                    setProducts(products);
-                    setSubcategory(products[0].subcategory);
+                    setProducts(response.products);
+                    setSubcategory({ name: response.subcategoryName });
+                    setPagination(response.pagination);
+                    setNoProducts(false);
                 }
-                setPagination({
-                    currentPage: pagination.currentPage,
-                    totalPages:
-                        totalProducts % pageSize != 0
-                            ? Math.trunc(totalProducts / pageSize) + 1
-                            : Math.trunc(totalProducts / pageSize),
-                    totalProducts: totalProducts,
-                });
             } catch (err) {
                 console.error('Error fetching products:', err);
                 setError('Failed to load products');
@@ -51,20 +50,17 @@ const ProductsPage = () => {
         };
 
         fetchProducts();
-    }, [subcategoryId, pageSize, pagination.currentPage]);
+    }, [subcategoryId, sortValue, page]);
 
-    console.log(pagination, 'totalPages');
-
-    const handlePageSizeChange = (event) => {
-        setPageSize(parseInt(event.target.value));
-        setPagination({ ...pagination, currentPage: 1 });
+    const handleSortChange = (value) => {
+        setSortValue(value);
+        setPage(1);
+        setSearchParams({ sort: value, page: 1 });
     };
-    console.log(products);
+
     const handlePageChange = (newPage) => {
-        if (newPage > 0 && newPage <= pagination.totalPages) {
-            setPagination({ ...pagination, currentPage: newPage });
-            console.log(pagination.currentPage, 'currentPage');
-        }
+        setPage(newPage);
+        setSearchParams({ sort: sortValue, page: newPage });
     };
 
     if (noProducts) {
@@ -80,108 +76,78 @@ const ProductsPage = () => {
 
     return (
         <div className="mt-10 w-full">
-            <div className="flex ml-10 flex-row gap-2 mt-2">
-                <div className="w-2 h-6 bg-red-500"></div>
-                <h2 className="text-l text-red-500 font-bold mb-2">Products</h2>
-            </div>
-            <div>{error}</div>
-            <h2 className="text-2xl font-bold ml-10 mb-2">
-                Products in:{' '}
-                {products[0]?.subcategory?.name || 'Selected Category'}
-            </h2>
+            <div className="flex items-center justify-between px-10 mb-4">
+                <h2 className="text-2xl font-bold">
+                    Products in: {subcategory.name}
+                </h2>
 
-            <div className="mb-4">
-                <label htmlFor="pageSize" className="mr-2">
-                    Products per page:
-                </label>
-                <select
-                    id="pageSize"
-                    value={pageSize}
-                    onChange={handlePageSizeChange}
-                    className="p-2 dark:text-white dark:bg-gray-900 border rounded-md"
-                >
-                    <option value={6}>6</option>
-                    <option value={12}>12</option>
-                    <option value={18}>18</option>
-                    <option value={24}>24</option>
-                    <option value={30}>30</option>
-                </select>
+                <div className="flex items-center">
+                    <label
+                        htmlFor="sort"
+                        className="mr-2 text-sm font-medium text-gray-700"
+                    >
+                        Sort by:
+                    </label>
+                    <select
+                        id="sort"
+                        value={sortValue}
+                        onChange={(e) => handleSortChange(e.target.value)}
+                        className="p-2 border rounded-md"
+                    >
+                        <option value="timestamp-desc">Newest</option>
+                        <option value="timestamp-asc">Oldest</option>
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                        <option value="avgRating-desc">
+                            Rating (High to Low)
+                        </option>
+                        <option value="avgRating-asc">
+                            Rating (Low to High)
+                        </option>
+                        <option value="name-asc">Name (A–Z)</option>
+                        <option value="name-desc">Name (Z–A)</option>
+                    </select>
+                </div>
             </div>
+
+            {error && <div className="text-red-500 text-center">{error}</div>}
 
             {products.length === 0 ? (
                 <p className="text-gray-500 text-center">
                     No products available for this category
                 </p>
             ) : (
-                <div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-                        {products.map((product) => (
-                            <ProductCard
-                                key={product.id}
-                                product={product}
-                                avgRating={product.avgRating}
-                                ratingCount={product.ratingCount}
-                            />
-                        ))}
-                    </div>
-                    {pagination.totalProducts > pageSize && (
-                        <div className="mt-6 flex justify-center items-center space-x-2">
-                            <button
-                                className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
-                                    pagination.currentPage <= 1
-                                        ? 'opacity-50 cursor-not-allowed'
-                                        : ''
-                                }`}
-                                onClick={() =>
-                                    handlePageChange(pagination.currentPage - 1)
-                                }
-                                disabled={pagination.currentPage <= 1}
-                            >
-                                Previous
-                            </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+                    {products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                            avgRating={product.avgRating}
+                            ratingCount={product.ratingCount}
+                        />
+                    ))}
+                </div>
+            )}
 
-                            {Array.from(
-                                { length: pagination.totalPages },
-                                (_, index) => (
-                                    <button
-                                        key={index + 1}
-                                        className={`px-4 py-2 text-sm rounded-md ${
-                                            pagination.currentPage === index + 1
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-gray-200'
-                                        } hover:bg-blue-400`}
-                                        onClick={() =>
-                                            handlePageChange(index + 1)
-                                        }
-                                    >
-                                        {index + 1}
-                                    </button>
-                                )
-                            )}
-
-                            <button
-                                className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
-                                    pagination.currentPage >=
-                                    pagination.totalPages
-                                        ? 'opacity-50 cursor-not-allowed'
-                                        : ''
-                                }`}
-                                onClick={() =>
-                                    handlePageChange(pagination.currentPage + 1)
-                                }
-                                disabled={
-                                    pagination.currentPage >=
-                                    pagination.totalPages
-                                }
-                            >
-                                Next
-                            </button>
-                        </div>
-                    )}
+            {pagination.totalPages > 1 && (
+                <div className="flex justify-center mt-6 space-x-2">
+                    {[...Array(pagination.totalPages).keys()].map((num) => (
+                        <button
+                            key={num}
+                            onClick={() => handlePageChange(num + 1)}
+                            className={`px-3 py-1 rounded ${
+                                page === num + 1
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-200'
+                            }`}
+                        >
+                            {num + 1}
+                        </button>
+                    ))}
                 </div>
             )}
         </div>
     );
 };
 
-export default ProductsPage;
+export default SubcategoryProducts;

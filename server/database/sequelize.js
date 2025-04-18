@@ -16,6 +16,7 @@ const sq = new Sequelize({
     username: DB_USER,
     password: DB_PASS,
     logging: false,
+    sync: { force: false, alter: true },
 });
 
 try {

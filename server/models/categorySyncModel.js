@@ -65,8 +65,6 @@ const syncModels = async () => {
         const officeCategory = await Category.findOne({
             where: { name: 'Office Supplies' },
         });
-        await Product.sync({ alter: true, force: true });
-        console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
         await Subcategory.bulkCreate([
             {
                 categoryId: electronicsCategory.id,
@@ -114,6 +112,8 @@ const syncModels = async () => {
             { categoryId: officeCategory.id, name: 'Technology & Electronics' },
         ]);
         console.log('\x1b[35mSubcategory\x1b[36m table populated\x1b[0m');
+        await Product.sync({ alter: true, force: true });
+        console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
     } catch (error) {
         console.error(error);
     }

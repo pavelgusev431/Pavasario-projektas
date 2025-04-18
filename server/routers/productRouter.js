@@ -20,6 +20,7 @@ import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
 
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
+import { getFilteredProductsBySubcategory } from '../controllers/productController.js';
 
 const productRouter = express.Router();
 
@@ -38,6 +39,7 @@ productRouter.route('/rated/:username').get(getRatedProductsByUserName);
 productRouter.route('/:id').get(getUserProducts);
 productRouter.route('/selected/:id').get(getProductById);
 productRouter.route('/user/:id').get(getUserProducts);
+productRouter.get('/subcategory/:id', getFilteredProductsBySubcategory);
 productRouter.use(protect);
 productRouter.route('/user').post(createProduct);
 productRouter

@@ -20,7 +20,7 @@ export default function ProductList() {
             const savedPriceRange = JSON.parse(
                 localStorage.getItem('priceRange')
             );
-            return savedPriceRange || [0, 5000];
+            return savedPriceRange ? savedPriceRange : [0, 5000];
         } catch {
             return [0, 5000];
         }
