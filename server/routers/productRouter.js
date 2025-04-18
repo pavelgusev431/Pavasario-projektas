@@ -20,13 +20,16 @@ import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
 
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
+import { searchProductsPaginated } from '../controllers/paginatedSearchController.js';
 
 const productRouter = express.Router();
 
 productRouter.route('/').get(getPaginatedProducts);
 productRouter
     .route('/search')
-    .get(validateSearchQuery, validate, getAllProducts);
+    .get(searchProductsPaginated, validateSearchQuery, validate, getAllProducts);
+    // .get(validateSearchQuery, validate, getAllProducts, searchProductsPaginated);
+
 productRouter.route('/searchregex').get(getSearchRegex);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
 productRouter.route('/trending').get(getTrendingUserProducts);
