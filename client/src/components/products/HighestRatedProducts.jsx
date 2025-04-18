@@ -29,7 +29,7 @@ export default function HighestRatedProducts() {
         <div className="mt-10 w-full">
             <div className="flex flex-row gap-2 mt-5 ml-10">
                 <div className="w-2 h-6 bg-red-500"></div>
-                <h2 className="text-l text-red-500 font-bold mb-2">{error}</h2>
+                <h2 className="text-l text-red-500 font-bold mb-2">All time</h2>
             </div>
             <div className="flex flex-row justify-between">
                 <h2 className="text-2xl font-bold py-2 ml-10">
