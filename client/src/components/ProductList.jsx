@@ -356,7 +356,11 @@ export default function ProductList() {
         }, 250),
         [pageSize, priceRange, dateRange, sortValue]
     );
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> main
     useEffect(() => {
         fetchProducts(pagination.currentPage);
         return () => fetchProducts.cancel();

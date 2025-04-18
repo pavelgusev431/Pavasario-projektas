@@ -6,6 +6,7 @@ import { Op } from 'sequelize';
 export const getPaginatedProducts = async (req, res) => {
     try {
         const { minPrice, maxPrice, minDate, maxDate, sort, order } = req.query;
+        console.log('working sorting query=', req.query);
 
         let { page = 1, limit = 8 } = req.query;
         page = Math.max(Number(page), 1);

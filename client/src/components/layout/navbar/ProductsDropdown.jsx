@@ -90,22 +90,39 @@ const ProductsDropdown = () => {
                             {categories.length > 0 ? (
                                 categories.map((category) => (
                                     <li key={category.id}>
-                                        <button
-                                            className="w-full text-left px-4 py-2 text-lg font-medium text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200 flex justify-between items-center"
+                                        <div
+                                            className="w-full text-left px-4 py-2 text-lg font-medium text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200 flex justify-between items-center cursor-pointer"
                                             onClick={() =>
                                                 handleCategoryClick(category.id)
                                             }
                                         >
-                                            {category.name}
-                                            {category.subcategories && (
-                                                <span className="ml-2">
-                                                    {openCategory ===
-                                                    category.id
-                                                        ? '−'
-                                                        : '+'}
-                                                </span>
-                                            )}
-                                        </button>
+                                            <span>{category.name}</span>
+                                            <div className="flex items-center space-x-2">
+                                                <button
+                                                    className="text-sm text-blue-800 hover:bg-gray-200 hover:rounded-md p-1"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        navigate(
+                                                            `categories/${category.id}`
+                                                        );
+                                                        setIsDropdownOpen(
+                                                            false
+                                                        );
+                                                        setOpenCategory(null);
+                                                    }}
+                                                >
+                                                    View All
+                                                </button>
+                                                {category.subcategories && (
+                                                    <span>
+                                                        {openCategory ===
+                                                        category.id
+                                                            ? '−'
+                                                            : '+'}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
 
                                         <div
                                             className={`overflow-hidden transition-all duration-300 ease-in-out 
