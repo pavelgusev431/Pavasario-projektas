@@ -1,4 +1,5 @@
-npm warn Unknown env config "s". This will stop working in the next major version of npm.
+npm warn Unknown env config "s
+". This will stop working in the next major version of npm.
 client/src/App.jsx
 client/src/components/layout/navbar/ProductsDropdown.jsx
 client/src/components/layout/navbar/SearchBar.jsx
