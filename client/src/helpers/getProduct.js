@@ -20,7 +20,7 @@ const getProductById = async (id) => {
 const getProductsById = async (id, params = {}) => {
     try {
         const response = await axios.get(url(`products/user/${id}`), { params });
-        return response.data; 
+        return response.data || []; 
     } catch (error) {
         console.error('Klaida gaunant produktus:', error);
         throw error;

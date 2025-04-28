@@ -189,7 +189,7 @@ const getUserProductsSortedPaginated = async (req, res) => {
 
         if (products.length === 0) {
             return res
-                .status(404)
+                .status(200)
                 .json({ message: 'Šiam vartotojui produktų nerasta' });
         }
 

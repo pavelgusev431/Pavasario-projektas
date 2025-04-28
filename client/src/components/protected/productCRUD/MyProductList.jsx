@@ -24,12 +24,12 @@ const MyProductList = ({ update, setUpdate }) => {
       setError(null);
       const [sort, order] = sortValue ? sortValue.split("-") : ["", ""];
       const response = await getProductsById(id, {
-        page: pagination.currentPage, 
+        page: pagination.currentPage,
         limit: 5,
         sort,
         order,
       });
-
+  
       setProducts(response.products || []);
       setPagination(
         response.pagination || {
@@ -39,7 +39,18 @@ const MyProductList = ({ update, setUpdate }) => {
         }
       );
     } catch (err) {
-      setError(err.message || "Nepavyko užkrauti produktų");
+      if (err.response && err.response.status === 404) {
+        
+        setProducts([]);
+        setPagination({
+          currentPage: 1,
+          totalPages: 1,
+          totalProducts: 0,
+        });
+      } else {
+        
+        setError(err.message || "Nepavyko užkrauti produktų");
+      }
     } finally {
       setLoading(false);
     }
