@@ -1,14 +1,12 @@
-import { DataTypes } from 'sequelize';
+// @ts-check
+import { DataTypes, Model } from 'sequelize';
 import sq from '../database/sequelize.js';
 import User from './userModel.js';
 import Rating from './ratingModel.js';
 import Subcategory from './subcategoryModel.js';
 import AppError from '../utilities/AppError.js';
 
-// Aprašome User modelį
-// Define User model
-
-// Aprašome Product modelį
+/**@type {import("sequelize").ModelStatic<Model<any, any>>}*/
 const Product = sq.define(
     'Product',
     {
@@ -40,7 +38,14 @@ Product.belongsTo(Subcategory, {
 Subcategory.hasMany(Product, { foreignKey: 'subcategory_id', as: 'products' });
 
 try {
-    await Product.sync({ truncate: true, force: true });
+    /**@type {object}*/
+    const syncOptions = {
+        /**@type {boolean}*/
+        truncate: true,
+        /**@type {boolean}*/
+        force: true,
+    };
+    await Product.sync(syncOptions);
     console.log('\x1b[35mProduct\x1b[34m table created\x1b[0m');
 } catch (error) {
     throw new AppError(`Error while creating Product model: ${error}`, 500);

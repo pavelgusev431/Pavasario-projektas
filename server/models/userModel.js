@@ -1,7 +1,9 @@
+// @ts-check
 import sq from '../database/sequelize.js';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import AppError from '../utilities/AppError.js';
 
+/**@type {import("sequelize").ModelStatic<Model<any, any>>}*/
 const User = sq.define(
     'User',
     {

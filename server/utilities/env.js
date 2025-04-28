@@ -1,8 +1,10 @@
+// @ts-check
 import fs from 'fs';
 
+/**@type {Buffer<ArrayBufferLike> | null | undefined} */
 const env = fs.existsSync('.env') ? fs.readFileSync('.env') : null;
 
-if (!env || env == undefined || env == null || String(env).match(/^\s*$/)) {
+if (!env || env == undefined || env == null || /^\s*$/.exec(String(env))) {
     fs.writeFileSync('.env', '');
     fs.appendFileSync(
         '.env',

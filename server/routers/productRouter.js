@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import {
     getUserProductsByUserName,
@@ -18,17 +19,22 @@ import {
 import protect from '../validators/validateJWT.js';
 import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
-
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
 import { searchProductsPaginated } from '../controllers/paginatedSearchController.js';
 
+/**@type {express.Router}*/
 const productRouter = express.Router();
 
 productRouter.route('/').get(getPaginatedProducts);
 productRouter
     .route('/search')
-    .get(searchProductsPaginated, validateSearchQuery, validate, getAllProducts);
-    // .get(validateSearchQuery, validate, getAllProducts, searchProductsPaginated);
+    .get(
+        searchProductsPaginated,
+        validateSearchQuery,
+        validate,
+        getAllProducts
+    );
+// .get(validateSearchQuery, validate, getAllProducts, searchProductsPaginated);
 
 productRouter.route('/searchregex').get(getSearchRegex);
 productRouter.route('/alltopuserproducts').get(getTopUserProducts);
