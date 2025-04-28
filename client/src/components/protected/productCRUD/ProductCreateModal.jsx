@@ -72,6 +72,7 @@ const ProductCreateModal = ({ setShowModal, setUpdate }) => {
                 style: { background: '#161D2F', color: '#FFFFFF' },
                 hideProgressBar: true,
             });
+            setTimeout(() => window.location.reload(), 2000);
         } catch (error) {
             setError(error.message || 'Nepavyko sukurti produkto');
         }

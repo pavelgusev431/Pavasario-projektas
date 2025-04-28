@@ -20,7 +20,29 @@ VALUES
 (2, 1, 1, 'Apple Magic Mouse', 699.00, 'Ergonomiška Apple pelė', 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MXK63?wid=2000&hei=2000&fmt=jpeg&qlt=95&.v=1730508287136', 30),
 (2, 1, 1, 'Apple Keyboard', 999.00, 'Elegantiška Apple klaviatūra', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRdHj0aRrA7hlxfiXu8SQEuNLxWyxed2i_Vg&s', 40),
 (2, 1, 1, 'iPhone 14 Pro', 1199.00, 'Ankstesnis modelis, vis dar puikus', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW8lvCIRMAbJ0RuaeQP74f90i8dQR-IMqXDA&s', 60),
- 
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+
 -- Vardenis Vardenis
 (3, 1, 1, 'Samsung Galaxy S24', 999.00, 'Galingas Samsung flagmanas', 'https://kainos-img.dgn.lt/photos2_25_268648490/img.jpg', 30),
 (3, 1, 1, 'Samsung Galaxy Tab S8', 849.00, 'Samsung planšetinis kompiuteris', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoK3wn3Ep9Yx3evtt8QWedwsnH8vRTo3dsmA&s', 50),
@@ -89,16 +111,16 @@ VALUES
 (5, 25, 1, 2, 'ikele Testo ausinės', '2025-03-25T15:58:44.450Z'),
 (5, 26, 1, 2, 'ikele Testo laikrodis', '2025-03-25T15:58:44.450Z'),
 (5, 27, 1, 2, 'ikele tikrinu', '2025-03-25T15:58:44.450Z'),
- 
+
 --new user products
- 
+
 (6, 28, 1, 2, 'ikele Testo kompiuteris', '2025-04-14T15:58:44.450Z'),
 (6, 29, 1, 2, 'ikele Testo ausinės', '2025-04-15T15:58:44.450Z'),
 (6, 30, 1, 2, 'ikele Testo laikrodis', '2025-04-16T15:58:44.450Z'),
 (6, 31, 1, 2, 'ikele tikrinu', '2025-04-15T15:58:44.450Z'),
  
  -- ratingai naujam useriui
- 
+
  (3,28, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,28, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
 (4,28, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
@@ -119,8 +141,8 @@ VALUES
 (4,31, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
 (5,31, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
 --visi kiti
- 
- 
+
+
 (3,1, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,1, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
 (4,1, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
@@ -196,9 +218,9 @@ VALUES
 (5, 1, 'blogas telefonas, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (2, 27, 'Puikus laikrodis, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (2, 27, 'labai prastas laikrodis, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
- 
+
 --naujo userio eventas
- 
+
 (3, 28, 'Puikus telefonas, labai rekomenduoju!', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 28, 'Puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 28, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
