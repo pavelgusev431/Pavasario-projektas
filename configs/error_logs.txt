@@ -1,0 +1,5 @@
+client/src/components/protected/productCRUD/MyProduct.jsx
+client/src/components/protected/productCRUD/MyProductList.jsx
+client/src/components/protected/productCRUD/ProductDeleteModal.jsx
+client/src/components/protected/productCRUD/ProductEditModal.jsx
+server/utilities/multerTester.js

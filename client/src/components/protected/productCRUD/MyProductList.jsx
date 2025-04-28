@@ -1,8 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext.jsx';
 import { getProductById } from '../../../helpers/getProduct.js';
+import MyProduct from './MyProduct.jsx';
 
-const MyProductList = ({ update }) => {
+const MyProductList = ({ update, setUpdate }) => {
     const {
         auth: { id },
     } = useContext(AuthContext);
@@ -22,14 +23,11 @@ const MyProductList = ({ update }) => {
                 ? products.map((product) => {
                       const { id } = product;
                       return (
-                          <div
+                          <MyProduct
                               key={id}
-                              className="flex flex-col shadow-md rounded-md my-3"
-                          >
-                              <p>{product.name}</p>
-                              <p>{product.description}</p>
-                              <p>{product.price}</p>
-                          </div>
+                              product={product}
+                              setUpdate={setUpdate}
+                          />
                       );
                   })
                 : ''}
