@@ -1,6 +1,7 @@
 // @ts-check
 import express from 'express';
 import {
+    getUserProductsSortedPaginated,
     getUserProductsByUserName,
     getHotProducts,
     getTopRatedProducts,
@@ -46,7 +47,7 @@ productRouter.route('/u/:username').get(getUserProductsByUserName);
 productRouter.route('/rated/:username').get(getRatedProductsByUserName);
 productRouter.route('/:id').get(getUserProducts);
 productRouter.route('/selected/:id').get(getProductById);
-productRouter.route('/user/:id').get(getUserProducts);
+productRouter.route('/user/:id').get(getUserProductsSortedPaginated);
 productRouter.use(protect);
 productRouter.route('/user').post(createProduct);
 productRouter
