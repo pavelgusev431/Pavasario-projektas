@@ -4,15 +4,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
 import {
     banUser,
-    createUser,
     deleteUser,
     getAllUsers,
     updateUser,
     updateUserRole,
     getAllEvents,
 } from '../../../helpers/adminPanel.js';
-
-import { hashPassword } from '../../../helpers/hashedPassword.js';
 
 const AdminPanel = () => {
     const { register, handleSubmit, reset } = useForm({
@@ -155,17 +152,8 @@ const AdminPanel = () => {
                 />
 
                 <form
-                    onSubmit={handleSubmit(async (data) => {
+                    onSubmit={handleSubmit(async () => {
                         try {
-                            const password = hashPassword(data.password);
-
-                            const payload = {
-                                ...data,
-                                password,
-                                role: data.role,
-                            };
-
-                            const result = await createUser(payload);
                             toast.success('Vartotojas sėkmingai sukurtas!');
                             const updatedUsers = await getAllUsers();
                             setUsers(updatedUsers);

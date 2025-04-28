@@ -5,11 +5,7 @@ import createComment from '../../../helpers/createComment.js';
 import { FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function ReviewCreateModal({
-    showModal,
-    setShowModal,
-    setUpdate,
-}) {
+export default function ReviewCreateModal({ setShowModal, setUpdate }) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
     const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
         useState('');

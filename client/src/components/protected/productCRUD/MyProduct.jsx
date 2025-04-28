@@ -4,7 +4,7 @@ import ProductDeleteModal from './ProductDeleteModal.jsx';
 import { useState } from 'react';
 
 const MyProduct = ({ product, setUpdate }) => {
-    const { id, name, description, price } = product;
+    const { id, name, description, price, image_url } = product;
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const handleEdit = () => {
@@ -20,6 +20,7 @@ const MyProduct = ({ product, setUpdate }) => {
                 <p>{description}</p>
                 <p>{price}</p>
             </div>
+            <img src={image_url} alt="#" className="w-[15rem] h-[15rem]" />
             <div className="flex flex-col p-1">
                 <button onClick={handleEdit}>Edit</button>
                 <button onClick={handleDelete}>Delete</button>

@@ -1,7 +1,4 @@
-client/src/components/ProductList.jsx
-client/src/components/products/Pagination.jsx
-client/src/components/products/SearchedProducts.jsx
-client/src/helpers/searchProducts.js
-server/controllers/paginatedSearchController.js
-server/controllers/searchController.js
-server/routers/productRouter.js
+client/src/components/protected/admin/adminpanel.jsx
+client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
+client/src/components/protected/productCRUD/MyProduct.jsx
+client/src/components/protected/productCRUD/ProductDeleteModal.jsx

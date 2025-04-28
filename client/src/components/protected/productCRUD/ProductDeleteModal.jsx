@@ -11,14 +11,17 @@ const ProductDeleteModal = ({ id, toggleShow }) => {
     const submitHandler = async () => {
         try {
             await deleteProduct(id);
-            toast.success('Product deleted successfully!', {
+            toast.success('Product successfully deleted!', {
                 position: 'bottom-right',
                 autoClose: 2000,
                 style: { background: '#161D2F', color: '#FFFFFF' },
                 hideProgressBar: true,
             });
-            toggleShow();
-            setTimeout(() => window.location.reload(), 2000);
+
+            setTimeout(() => {
+                toggleShow();
+                window.location.reload();
+            }, 2500);
         } catch (error) {
             setError(error.message || 'Nepavyko nutrinti produkto');
         }
