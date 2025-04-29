@@ -4,7 +4,7 @@ import {
     getUserBalance,
     topUp,
     getBalanceHistory,
-} from '../controllers/BalanceController.js';
+} from '../controllers/balanceController.js';
 import validateTopUp from '../validators/validateTopUp.js';
 import validate from '../middlewares/validate.js';
 
