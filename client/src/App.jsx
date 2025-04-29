@@ -18,36 +18,45 @@ import AdminPanel from './components/protected/admin/adminpanel.jsx';
 import BalancePage from './components/protected/productCRUD/BalancePage.jsx';
 import MyReviews from './components/protected/commentCRUD/MyReviews.jsx';
 import CategoryProducts from './components/products/CategoryProducts.jsx';
+import TransactionsList from './components/protected/couriers/TransactionList.jsx';
+import TransactionDetail from './components/protected/couriers/TransactionDetails.jsx';
+import CourierDashboard from './components/protected/couriers/CourierDashboard.jsx';
+
 function App() {
     return (
         <>
             <NavBar />
             <Routes>
                 <Route index element={<Auth />} />
+                <Route path="signup" element={<Auth authType="signup" />} />
+                <Route path="reset/:userid/:salt" element={<PasswordReset />} />
                 <Route path="home" element={<Home />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="about" element={<About />} />
+                <Route path="products" element={<ProductList />} />
                 <Route path="products/:id" element={<UserProducts />} />
-                <Route path="categories/:id" element={<CategoryProducts />} />
-
-                <Route path="/search" element={<SearchedProducts />} />
                 <Route
                     path="products/selected/:id"
                     element={<ProductDetails />}
                 />
                 <Route path="products/u/:username" element={<UserProducts />} />
-                <Route path="users/:username" element={<PublicUserProfile />} />
-                <Route path="products" element={<ProductList />} />
-                <Route path="/" element={<ProductsDropdown />} />
-                <Route path="/balance" element={<BalancePage />} />
-                <Route path="/reviews" element={<MyReviews />} />
                 <Route
-                    path="/products/s/:subcategoryId"
+                    path="products/s/:subcategoryId"
                     element={<ProductsPage />}
                 />
+                <Route path="/" element={<ProductsDropdown />} />
+                <Route path="/search" element={<SearchedProducts />} />
+                <Route path="categories/:id" element={<CategoryProducts />} />
+                <Route path="users/:username" element={<PublicUserProfile />} />
+                <Route path="orders" element={<TransactionsList />} />
+                <Route path="orders/:id" element={<TransactionDetail />} />
+                <Route
+                    path="courier-dashboard"
+                    element={<CourierDashboard />}
+                />
+                <Route path="/balance" element={<BalancePage />} />
+                <Route path="/reviews" element={<MyReviews />} />
                 <Route path="/adminpanel" element={<AdminPanel />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="about" element={<About />} />
-                <Route path="signup" element={<Auth authType="signup" />} />
-                <Route path="reset/:userid/:salt" element={<PasswordReset />} />
                 {ProtectedRoutes()}
                 <Route path="*" element={<NotFound />} />
             </Routes>
