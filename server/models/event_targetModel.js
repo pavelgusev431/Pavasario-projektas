@@ -1,6 +1,9 @@
-import { DataTypes } from 'sequelize';
+// @ts-check
+import { DataTypes, Model } from 'sequelize';
 import sq from '../database/sequelize.js';
+import AppError from '../utilities/AppError.js';
 
+/**@type {import("sequelize").ModelStatic<Model<any, any>>}*/
 const EventTarget = sq.define(
     'EventTarget',
     {

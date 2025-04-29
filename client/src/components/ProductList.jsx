@@ -20,7 +20,7 @@ export default function ProductList() {
             const savedPriceRange = JSON.parse(
                 localStorage.getItem('priceRange')
             );
-            return savedPriceRange || [0, 5000];
+            return savedPriceRange ? savedPriceRange : [0, 5000];
         } catch {
             return [0, 5000];
         }
@@ -84,6 +84,8 @@ export default function ProductList() {
                     order: order.toUpperCase(),
                 });
                 setProducts(data.products);
+                console.log(data);
+                console.log(data.products);
                 setPagination({
                     currentPage: data.pagination.currentPage,
                     totalPages: data.pagination.totalPages,

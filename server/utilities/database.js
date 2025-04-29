@@ -1,5 +1,7 @@
+// @ts-check
 import fs from 'fs';
 
+/**@type {boolean} */
 const database = fs.existsSync('database/database.sql');
 
 if (!database) {

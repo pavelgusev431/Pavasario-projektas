@@ -1,3 +1,4 @@
+// @ts-check
 import app from './app.js';
 import dotenv from 'dotenv';
 import cleanup from './cleanup.js';
@@ -6,8 +7,10 @@ import { createAdmin } from '../controllers/userController.js';
 import Category from '../models/categoryModel.js';
 import Subcategory from '../models/subcategoryModel.js';
 import { syncModels } from '../models/categorySyncModel.js';
+import { Model } from 'sequelize';
 
 dotenv.config();
+/**@type {string | undefined}*/
 const port = process.env.PORT;
 const setup = async () => {
     try {
@@ -15,11 +18,13 @@ const setup = async () => {
         await Subcategory.sync();
         await syncModels();
 
+        /**@type {Model<any, any> | null}*/
         const categoryExists = await Category.findOne();
+        /**@type {Model<any, any> | null}*/
         const subcategoryExists = await Subcategory.findOne();
 
         if (!categoryExists) {
-            console.warn(' No categories found!');
+            console.warn('No categories found!');
         }
         if (!subcategoryExists) {
             console.warn('No subcategories found!');

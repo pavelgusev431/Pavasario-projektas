@@ -45,7 +45,7 @@ const MyProducts = () => {
                         )}
                     </div>
                     <section>
-                        <MyProductList update={update} />
+                        <MyProductList update={update} setUpdate={setUpdate} />
                     </section>
                 </div>
             </div>

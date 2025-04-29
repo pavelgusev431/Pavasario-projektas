@@ -5,7 +5,7 @@ import createProduct from '../../../helpers/createProduct.js';
 import getAllCategories from '../../../helpers/getAllCategories.js';
 import { ToastContainer, toast } from 'react-toastify';
 
-const ProductCreateModal = ({ showModal, setShowModal, setUpdate }) => {
+const ProductCreateModal = ({ setShowModal, setUpdate }) => {
     const [availableFileTypes, setAvailableFileTypes] = useState();
     const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
         useState();

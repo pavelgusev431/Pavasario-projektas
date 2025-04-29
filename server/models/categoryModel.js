@@ -1,6 +1,8 @@
-import { DataTypes } from 'sequelize';
+// @ts-check
+import { DataTypes, Model } from 'sequelize';
 import sq from '../database/sequelize.js';
 
+/**@type {import("sequelize").ModelStatic<Model<any, any>>}*/
 const Category = sq.define(
     'Category',
     {

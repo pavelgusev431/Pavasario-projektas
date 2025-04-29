@@ -1,3 +1,4 @@
+// @ts-check
 import express from 'express';
 import cors from 'cors';
 import errorHandler from '../middlewares/errorHandler.js';
@@ -12,27 +13,34 @@ import categoryRouter from '../routers/categoryRouter.js';
 import adminRouter from '../routers/adminRouter.js';
 import uploadRouter from '../routers/uploadRouter.js';
 import imageRouter from '../routers/imageRouter.js';
-import balanceRouter from '../routers/BalanceRouter.js';
+import balanceRouter from '../routers/balanceRouter.js';
 import eventRouter from '../routers/eventRouter.js';
 import transactionRouter from '../routers/transactionRouter.js';
 
 dotenv.config();
+/**@type {string}*/
 const CLIENT_HOST = process.env.CLIENT_HOST || 'localhost';
+/**@type {string}*/
 const CLIENT_PORT = process.env.CLIENT_PORT || '3000';
 
+/**@type {express.Express}*/
 const app = express();
 app.use(
     morgan(
         'Received request \x1b[32m:method\x1b[35m :url\x1b[33m :status\x1b[0m'
     )
 );
+
+/**@type {object}*/
+const corsOptions = {
+    /**@type {string}*/
+    origin: `http://${CLIENT_HOST}:${CLIENT_PORT}`,
+    /**@type {boolean}*/
+    credentials: true,
+};
+
 app.use(express.json());
-app.use(
-    cors({
-        origin: `http://${CLIENT_HOST}:${CLIENT_PORT}`,
-        credentials: true,
-    })
-);
+app.use(cors(corsOptions));
 app.use(cookieParser());
 //==============
 //routes go here

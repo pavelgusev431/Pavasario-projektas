@@ -7,7 +7,7 @@ const password = 'Admin123.';
 /**@type {string}*/
 const hashedPassword = sha256(sha1(password));
 /**@type {string}*/
-const username = 'courier';
+const username = 'admin';
 /**@type {string}*/
 const salt = sha256(sha1(new Date().toString() + username));
 /**@type {string}*/

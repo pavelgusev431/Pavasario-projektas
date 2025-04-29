@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+/**@type {Buffer<ArrayBufferLike | null | undefined>}*/
 const envbackup = fs.readFileSync('.env', 'utf8');
 
 fs.writeFileSync('.env.backup', envbackup);
