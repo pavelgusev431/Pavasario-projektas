@@ -1,2 +1,1 @@
-client/src/App.jsx
 client/src/components/layout/Footer.jsx
