@@ -1,6 +1,6 @@
 const Footer = () => (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-        <div className="max-w-screen-xl mx-auto px-1 py-8">
+        <div className="w-full px-4 sm:px-6 lg:px-17 py-17">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Company Links - Left */}
                 <div>
@@ -121,9 +121,11 @@ const Footer = () => (
                     </div>
                 </div>
             </div>
+
             <div className="my-4 border-t border-gray-200 dark:border-gray-700" />
+
             {/* Bottom Section */}
-            <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400 px-1">
+            <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
                 <span>
                     © {new Date().getFullYear()} Marketplace. All Rights
                     Reserved.
