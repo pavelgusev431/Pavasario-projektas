@@ -44,6 +44,7 @@ const populate = async () => {
     try {
         if (usersArray[0])
             for (let i = 0; i < usersArray.length; i += 4) {
+                if (usersArray[i] == '') i++;
                 await createUser({
                     username: usersArray[i],
                     email: usersArray[i + 1],
