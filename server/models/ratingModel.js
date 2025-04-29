@@ -38,7 +38,7 @@ const Rating = sq.define(
 
 try {
     await Rating.sync({ alter: true, force: true });
-    console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
+    console.log('\x1b[35mRating\x1b[34m table created\x1b[0m');
 } catch (error) {
     throw new AppError(`Error while creating rating model: ${error}`, 500);
 }

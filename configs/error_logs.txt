@@ -1,2 +1,4 @@
 README.md
-server/database/populate.js
+server/models/event_targetModel.js
+server/server/server.js
+server/server/swagger.js
