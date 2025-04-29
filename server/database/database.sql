@@ -1,12 +1,15 @@
+
 INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
 ('Pavel gusev', 'pavel.gusev431@gmail.com', 'https://c8.alamy.com/zooms/9/305f98cf4d084cefbe7d506128e11ecb/pxx5p8.jpg', 'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('Vardenis Vardenis', 'vardenis@gmail.com', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC-gxW7tUW_zWRnuZbcfV35ypZZvBoRbKZrA&s', 'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('pavardenis Vardenis', 'pavardenis@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', 'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('trending', 'trending@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', 'text text write here more 5 words',  'Konstutucijos 45, Vilnius'),
-('bestnew', 'bestnew@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
- 
- 
- 
+('bestnew', 'bestnew@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
+('courier', 'courier@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
+
+INSERT INTO "user_secrets" ("userId", password, role, balance) VALUES 
+(7, '05bb60162fc7c8397ba6db76334d92809b920ab4abff50618509be602720fe82:b555f54624d225cac623785cf9880b90056daf2b7178d608a126cb95911b29fe', 'courier', 100000);
+
 INSERT INTO products (user_id, category_id, subcategory_id, name, price, description, image_url, amount_in_stock)
 VALUES
 -- Pavel Gusev
@@ -89,16 +92,16 @@ VALUES
 (5, 25, 1, 2, 'ikele Testo ausinės', '2025-03-25T15:58:44.450Z'),
 (5, 26, 1, 2, 'ikele Testo laikrodis', '2025-03-25T15:58:44.450Z'),
 (5, 27, 1, 2, 'ikele tikrinu', '2025-03-25T15:58:44.450Z'),
-
+ 
 --new user products
-
+ 
 (6, 28, 1, 2, 'ikele Testo kompiuteris', '2025-04-14T15:58:44.450Z'),
 (6, 29, 1, 2, 'ikele Testo ausinės', '2025-04-15T15:58:44.450Z'),
 (6, 30, 1, 2, 'ikele Testo laikrodis', '2025-04-16T15:58:44.450Z'),
 (6, 31, 1, 2, 'ikele tikrinu', '2025-04-15T15:58:44.450Z'),
  
  -- ratingai naujam useriui
-
+ 
  (3,28, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,28, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
 (4,28, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
@@ -119,8 +122,8 @@ VALUES
 (4,31, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
 (5,31, 1, 6,  'sUKURE KOMETARA', '2020-01-25T15:58:44.450Z'),
 --visi kiti
-
-
+ 
+ 
 (3,1, 1, 6,  'sukure kometara', '2025-03-25T15:58:44.450Z'),
 (4,1, 1, 6,  'sUKURE KOMETARA', '2025-01-25T15:58:44.450Z'),
 (4,1, 1, 6,  'sUKURE KOMETARA', '2023-09-14T15:58:44.450Z'),
@@ -196,9 +199,9 @@ VALUES
 (5, 1, 'blogas telefonas, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (2, 27, 'Puikus laikrodis, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (2, 27, 'labai prastas laikrodis, ', 1, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
-
+ 
 --naujo userio eventas
-
+ 
 (3, 28, 'Puikus telefonas, labai rekomenduoju!', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 28, 'Puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 28, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),

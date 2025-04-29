@@ -143,6 +143,20 @@ const NavBar = () => {
                                     </button>
                                 </li>
                             )}
+                            {auth?.role?.toLowerCase() === 'courier' && (
+                                <li>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation(
+                                                '/courier-dashboard'
+                                            )
+                                        }
+                                        className={`block dark:text-white dark:hover:bg-gray-600 md:p-3 hover:bg-gray-200 rounded-sm md:border-0 ${isActive('/adminpanel')}`}
+                                    >
+                                        Dashboard
+                                    </button>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>

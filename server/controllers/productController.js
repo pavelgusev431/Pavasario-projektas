@@ -4,8 +4,10 @@ import Rating from '../models/ratingModel.js';
 import Event from '../models/eventModel.js';
 import AppError from '../utilities/AppError.js';
 import { Op } from 'sequelize';
-import { sortHelper,filterItemsByRange } from './paginatedProductController.js';
-
+import {
+    sortHelper,
+    filterItemsByRange,
+} from './paginatedProductController.js';
 
 const getUserProductsByUserName = async (req, res) => {
     try {
@@ -166,7 +168,8 @@ const getUserProducts = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const { q, minPrice, maxPrice, minDate, maxDate, sort, order  } = req.query;
+        const { q, minPrice, maxPrice, minDate, maxDate, sort, order } =
+            req.query;
 
         let { page = 1, limit = 8 } = req.query;
         page = Math.max(Number(page), 1);
@@ -259,15 +262,13 @@ const getAllProducts = async (req, res) => {
             );
         }
 
-        console.log("controller:" ,sort,order)
-        console.log("query!!!!!!!!: ",req.query)
+        console.log('controller:', sort, order);
+        console.log('query!!!!!!!!: ', req.query);
         const sortedProducts = await sortHelper(
             allFilteredProducts,
             sort,
             order
         );
-      
-        
 
         return res.json({ data: sortedProducts });
     } catch (err) {

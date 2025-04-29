@@ -41,7 +41,6 @@ const SearchedProducts = () => {
     });
 
     const [sortValue, setSortValue] = useState(() => {
-
         const savedSortValue = localStorage.getItem('sortValue');
         const validSortValues = [
             'timestamp-asc',
@@ -83,8 +82,7 @@ const SearchedProducts = () => {
 
         fetchRegex();
     }, []);
-    
-    
+
     const fetchSearchResults = async (query) => {
         if (!query) return;
 
@@ -93,7 +91,7 @@ const SearchedProducts = () => {
 
         try {
             const [sort, order] = sortValue.split('-');
-            const response = await searchProducts(query,sort,order)
+            const response = await searchProducts(query, sort, order);
             if (response?.data) {
                 const productsData = response.data.data || response.data;
                 setProducts(productsData);
@@ -112,10 +110,6 @@ const SearchedProducts = () => {
             setLoading(false);
         }
     };
- 
-
-
-    
 
     useEffect(() => {
         const query = searchParams.get('q');
@@ -146,7 +140,7 @@ const SearchedProducts = () => {
         } else {
             setProducts([]);
         }
-    }, [searchParams, navigate, zalgoRegex,sortValue]);
+    }, [searchParams, navigate, zalgoRegex, sortValue]);
 
     const searchQuery = searchParams.get('q');
 
@@ -192,17 +186,17 @@ const SearchedProducts = () => {
         <div className="p-4">
             <div className="mt-8 w-full">
                 {/* Įrankių juosta */}
-            <Tools
-                priceRange={priceRange}
-                setPriceRange={setPriceRange}
-                dateRange={dateRange}
-                setDateRange={setDateRange}
-                minDate={minDate}
-                maxDate={maxDate}
-                onSortChange={handleSortChange}
-                sortValue={sortValue}
-                resetFilters={resetFilters}
-            />
+                <Tools
+                    priceRange={priceRange}
+                    setPriceRange={setPriceRange}
+                    dateRange={dateRange}
+                    setDateRange={setDateRange}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    onSortChange={handleSortChange}
+                    sortValue={sortValue}
+                    resetFilters={resetFilters}
+                />
                 <div className="flex ml-10 flex-row gap-2 mt-2">
                     <div className="w-2 h-6 bg-red-500"></div>
                     <h2 className="text-l text-red-500 font-bold mb-2">
