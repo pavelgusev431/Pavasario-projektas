@@ -70,6 +70,70 @@ const Footer = () => (
                     </a>
                 </div>
             </div>
+            <div className="px-4 py-4 bg-gray-50 dark:bg-gray-800">
+                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-300">
+                    <a
+                        href="http://localhost:5173/categories/1"
+                        className="hover:underline"
+                    >
+                        Electronics
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/2"
+                        className="hover:underline"
+                    >
+                        Fashion &amp; Apparel
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/3"
+                        className="hover:underline"
+                    >
+                        Home &amp; Furniture
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/4"
+                        className="hover:underline"
+                    >
+                        Health &amp; Beauty
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/5"
+                        className="hover:underline"
+                    >
+                        Sports &amp; Outdoors
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/6"
+                        className="hover:underline"
+                    >
+                        Toys &amp; Games
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/7"
+                        className="hover:underline"
+                    >
+                        Automotive
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/8"
+                        className="hover:underline"
+                    >
+                        Books &amp; Media
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/9"
+                        className="hover:underline"
+                    >
+                        Groceries &amp; Food
+                    </a>
+                    <a
+                        href="http://localhost:5173/categories/10"
+                        className="hover:underline"
+                    >
+                        Office Supplies
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
 );
