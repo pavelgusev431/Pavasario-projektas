@@ -1,6 +1,6 @@
 const Footer = () => (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-        <div className="w-full px-4 sm:px-6 lg:px-17 py-17">
+        <div className="w-full px-4 sm:px-6 lg:px-45 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Company Links - Left */}
                 <div>
