@@ -1,5 +1,5 @@
 const url = (resource) => {
-    return `http://localhost:3000/${resource}`;
+    return `http://localhost:5173/${resource}`;
 };
 
 export default url;
