@@ -240,15 +240,6 @@ const NavBar = () => {
                                     </button>
                                     <button
                                         onClick={() =>
-                                            handleNavigation('/cancellations')
-                                        }
-                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    >
-                                        <i className="fas fa-times-circle mr-3"></i>
-                                        <span>Cancellations</span>
-                                    </button>
-                                    <button
-                                        onClick={() =>
                                             handleNavigation('/reviews')
                                         }
                                         className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"

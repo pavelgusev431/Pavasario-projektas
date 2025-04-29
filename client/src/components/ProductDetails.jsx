@@ -227,7 +227,7 @@ const ProductDetails = () => {
             setBuyError(null);
 
             const response = await axios.post(
-                url(`/transactions/buy`),
+                url(`transactions/buy`),
                 {
                     product_id: product.id,
                     quantity,
