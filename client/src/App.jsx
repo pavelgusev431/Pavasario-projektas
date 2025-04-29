@@ -18,6 +18,8 @@ import AdminPanel from './components/protected/admin/adminpanel.jsx';
 import BalancePage from './components/protected/productCRUD/BalancePage.jsx';
 import MyReviews from './components/protected/commentCRUD/MyReviews.jsx';
 import CategoryProducts from './components/products/CategoryProducts.jsx';
+import Footer from './components/layout/Footer.jsx';
+
 function App() {
     return (
         <>
@@ -51,6 +53,7 @@ function App() {
                 {ProtectedRoutes()}
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <Footer />
         </>
     );
 }
