@@ -1,13 +1,13 @@
 const Footer = () => (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-        <div className="w-full px-4 sm:px-6 lg:px-45 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="w-full px-4 sm:px-6 lg:px-45 py-8 pb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6">
                 {/* Company Links - Left */}
                 <div>
-                    <h2 className="text-sm font-bold text-gray-700 dark:text-white uppercase mb-3">
+                    <h2 className="text-base sm:text-lg font-bold text-gray-700 dark:text-white uppercase mb-3">
                         Company
                     </h2>
-                    <ul className="text-gray-500 dark:text-gray-400 space-y-1">
+                    <ul className="text-base sm:text-lg text-gray-500 dark:text-gray-400 space-y-1">
                         <li>
                             <a href="/home" className="hover:text-blue-500">
                                 Home
@@ -30,102 +30,101 @@ const Footer = () => (
                         </li>
                     </ul>
                 </div>
+
                 {/* Product Categories - Right */}
-                <div className="flex justify-end">
-                    <div>
-                        <h2 className="text-sm font-bold text-gray-700 dark:text-white uppercase mb-3">
-                            Categories
-                        </h2>
-                        <ul className="grid grid-cols-2 gap-x-9 gap-y-1 text-gray-500 dark:text-gray-400 text-sm">
-                            <li>
-                                <a
-                                    href="/categories/1"
-                                    className="hover:text-blue-500"
-                                >
-                                    Electronics
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/2"
-                                    className="hover:text-blue-500"
-                                >
-                                    Fashion &amp; Apparel
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/3"
-                                    className="hover:text-blue-500"
-                                >
-                                    Home &amp; Furniture
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/4"
-                                    className="hover:text-blue-500"
-                                >
-                                    Health &amp; Beauty
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/5"
-                                    className="hover:text-blue-500"
-                                >
-                                    Sports &amp; Outdoors
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/6"
-                                    className="hover:text-blue-500"
-                                >
-                                    Toys &amp; Games
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/7"
-                                    className="hover:text-blue-500"
-                                >
-                                    Automotive
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/8"
-                                    className="hover:text-blue-500"
-                                >
-                                    Books &amp; Media
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/9"
-                                    className="hover:text-blue-500"
-                                >
-                                    Groceries &amp; Food
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/categories/10"
-                                    className="hover:text-blue-500"
-                                >
-                                    Office Supplies
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                <div className="lg:justify-self-end">
+                    <h2 className="text-base sm:text-lg font-bold text-gray-700 dark:text-white uppercase mb-3">
+                        Categories
+                    </h2>
+                    <ul className="grid grid-cols-2 gap-x-13 gap-y-0.5 text-base sm:text-lg text-gray-500 dark:text-gray-400">
+                        <li>
+                            <a
+                                href="/categories/1"
+                                className="hover:text-blue-500"
+                            >
+                                Electronics
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/2"
+                                className="hover:text-blue-500"
+                            >
+                                Fashion &amp; Apparel
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/3"
+                                className="hover:text-blue-500"
+                            >
+                                Home &amp; Furniture
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/4"
+                                className="hover:text-blue-500"
+                            >
+                                Health &amp; Beauty
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/5"
+                                className="hover:text-blue-500"
+                            >
+                                Sports &amp; Outdoors
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/6"
+                                className="hover:text-blue-500"
+                            >
+                                Toys &amp; Games
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/7"
+                                className="hover:text-blue-500"
+                            >
+                                Automotive
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/8"
+                                className="hover:text-blue-500"
+                            >
+                                Books &amp; Media
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/9"
+                                className="hover:text-blue-500"
+                            >
+                                Groceries &amp; Food
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/categories/10"
+                                className="hover:text-blue-500"
+                            >
+                                Office Supplies
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             <div className="my-4 border-t border-gray-200 dark:border-gray-700" />
 
             {/* Bottom Section */}
-            <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex flex-col md:flex-row justify-between items-center text-base sm:text-lg text-gray-500 dark:text-gray-400">
                 <span>
                     © {new Date().getFullYear()} Marketplace. All Rights
                     Reserved.
@@ -137,7 +136,7 @@ const Footer = () => (
                     className="flex items-center mt-4 md:mt-0 hover:text-gray-900 dark:hover:text-white"
                 >
                     <svg
-                        className="w-5 h-5 mr-1"
+                        className="w-6 h-6 mr-1"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                         aria-hidden="true"
