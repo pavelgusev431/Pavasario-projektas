@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
-import User from '../models/userModel';
-import AppError from '../utilities/AppError';
+import User from '../models/userModel.js';
+import AppError from '../utilities/AppError.js';
 
 const validateTopUp = [
     body('userId')

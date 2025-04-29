@@ -1,5 +1,5 @@
 import { body, param } from 'express-validator';
-import Product from '../models/productModel';
+import Product from '../models/productModel.js';
 
 const validateEditComment = [
     param('commentId')

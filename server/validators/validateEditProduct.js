@@ -1,6 +1,6 @@
 import { body, param } from 'express-validator';
-import AppError from '../utilities/AppError';
-import Product from '../models/productModel';
+import AppError from '../utilities/AppError.js';
+import Product from '../models/productModel.js';
 
 const validateEditProduct = [
     param('productId')
