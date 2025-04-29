@@ -17,6 +17,18 @@ const getProductById = async (id) => {
     return response;
 };
 
+const getProductsById = async (id, params = {}) => {
+    try {
+        const response = await axios.get(url(`products/user/${id}`), {
+            params,
+        });
+        return response.data || [];
+    } catch (error) {
+        console.error('Klaida gaunant produktus:', error);
+        throw error;
+    }
+};
+
 const getAllProducts = async () => {
     const response = await axios.get(url(`products`)).catch((error) => {
         console.log(error);
@@ -74,4 +86,5 @@ export {
     getAllProducts,
     getUserProductsByUserName,
     getRatedProductsByUserName,
+    getProductsById,
 };

@@ -166,6 +166,111 @@ const getUserProducts = async (req, res) => {
     }
 };
 
+const getUserProductsSortedPaginated = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+        const { sort, order } = req.query;
+        let { page = 1, limit = 8 } = req.query;
+
+        // Validuojame userId
+        if (!userId) {
+            return res
+                .status(400)
+                .json({ message: 'Neteisingas vartotojo ID' });
+        }
+
+        // Užtikriname, kad page ir limit yra teigiami skaičiai
+        page = Math.max(Number(page), 1);
+        limit = Math.max(Number(limit), 1);
+        const offset = (page - 1) * limit;
+
+        // Gauname vartotojo produktus
+        const products = await Product.findAll({
+            where: { user_id: userId },
+        });
+
+        if (products.length === 0) {
+            return res
+                .status(200)
+                .json({ message: 'Šiam vartotojui produktų nerasta' });
+        }
+
+        // Gauname susijusius įvykius
+        const events = await Event.findAll({
+            where: {
+                type_id: 1,
+                target_id: 2,
+                user_id: userId,
+            },
+        });
+
+        // Gauname reitingus produktams
+        const ratings = await Rating.findAll({
+            where: {
+                product_id: {
+                    [Op.in]: products.map((product) => product.id),
+                },
+            },
+        });
+
+        // Pridedame laiko žymes ir reitingų informaciją
+        const productsWithTimestamps = products.map((product) => {
+            const productEvents = events.filter(
+                (event) =>
+                    event.user_id === product.user_id &&
+                    event.product_id === product.id
+            );
+            const latestEvent = productEvents.length
+                ? productEvents.sort(
+                      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+                  )[0]
+                : null;
+
+            const productRatings = ratings.filter(
+                (r) => r.product_id === product.id
+            );
+            const ratingCount = productRatings.length;
+            const avgRating =
+                ratingCount > 0
+                    ? productRatings.reduce((sum, r) => sum + r.stars, 0) /
+                      ratingCount
+                    : 0;
+
+            return {
+                ...product.toJSON(),
+                timestamp: latestEvent ? latestEvent.timestamp : null,
+                ratingCount,
+                avgRating,
+            };
+        });
+
+        // Rūšiuojame produktus
+        const sortedProducts = await sortHelper(
+            productsWithTimestamps,
+            sort,
+            order
+        );
+
+        // Apskaičiuojame puslapiavimą
+        const totalProducts = sortedProducts.length;
+        const totalPages = Math.ceil(totalProducts / limit);
+        const paginatedProducts = sortedProducts.slice(offset, offset + limit);
+
+        // Grąžiname atsakymą
+        res.json({
+            products: paginatedProducts,
+            pagination: {
+                currentPage: Number(page),
+                totalPages,
+                totalProducts,
+            },
+        });
+    } catch (error) {
+        console.error('Klaida gaunant vartotojo produktus:', error);
+        return res.status(500).json({ message: 'Serverio klaida' });
+    }
+};
+
 const getAllProducts = async (req, res) => {
     try {
         const { q, minPrice, maxPrice, minDate, maxDate, sort, order } =
@@ -917,6 +1022,7 @@ const getSearchRegex = (req, res) => {
 };
 
 export {
+    getUserProductsSortedPaginated,
     getAllProductCount,
     getUserProductsByUserName,
     getAllProducts,

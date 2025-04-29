@@ -1,1 +1,5 @@
-server/database/populate.js
+client/src/components/ProductList.jsx
+client/src/components/protected/admin/adminpanel.jsx
+client/src/components/protected/productCRUD/MyProductList.jsx
+client/src/helpers/getProduct.js
+server/controllers/productController.js
