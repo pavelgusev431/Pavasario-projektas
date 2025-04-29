@@ -1,48 +1,24 @@
 import url from './getURL.js';
 import axios from 'axios';
 
-export async function searchProducts(
-    query,
-    {
-        page = 1,
-        limit = 12,
-        minPrice,
-        maxPrice,
-        minDate,
-        maxDate,
-        sort,
-        order,
-    } = {}
-) {
+export const searchProducts = async (query, sort, order) => {
     try {
-        const params = {
-            q: query,
-            page,
-            limit,
-            ...(minPrice != null && { minPrice }),
-            ...(maxPrice != null && { maxPrice }),
-            ...(minDate && { minDate }),
-            ...(maxDate && { maxDate }),
-            sort,
-            order,
-        };
-
-        const { data } = await axios.get(url('products/search'), { params });
-
-        return data;
+        const response = await axios.get(
+            url(`products/search?q=${query}&order=${order}&sort=${sort}`)
+        );
+        return response;
     } catch (error) {
-        console.error('API error in searchProducts:', error);
-        throw error;
+        console.log(error);
+        return null;
     }
-}
+};
 
-export async function searchSuggestions(query) {
+export const searchSuggestions = async (query) => {
     try {
-        const params = { q: query };
-        const { data } = await axios.get(url('products/search'), { params });
-        return data;
+        const response = await axios.get(url(`products/search?q=${query}`));
+        return response.data;
     } catch (error) {
-        console.error('API error in searchSuggestions:', error);
+        console.error('API error:', error);
         return [];
     }
-}
+};
