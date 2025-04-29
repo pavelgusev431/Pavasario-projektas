@@ -20,6 +20,8 @@ import {
 import protect from '../validators/validateJWT.js';
 import validate from '../middlewares/validate.js';
 import validateSearchQuery from '../validators/validateSearch.js';
+import validateCreateProduct from '../validators/validateCreateProduct.js';
+import validateEditProduct from '../validators/validateEditProduct.js';
 import { getPaginatedProducts } from '../controllers/paginatedProductController.js';
 import { searchProductsPaginated } from '../controllers/paginatedSearchController.js';
 
@@ -49,10 +51,12 @@ productRouter.route('/:id').get(getUserProducts);
 productRouter.route('/selected/:id').get(getProductById);
 productRouter.route('/user/:id').get(getUserProductsSortedPaginated);
 productRouter.use(protect);
-productRouter.route('/user').post(createProduct);
+productRouter
+    .route('/user')
+    .post(validateCreateProduct, validate, createProduct);
 productRouter
     .route('/user/p/:productId')
-    .patch(editProduct)
+    .patch(validateEditProduct, validate, editProduct)
     .delete(deleteProduct);
 
 export default productRouter;

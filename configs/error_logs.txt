@@ -1,4 +1,0 @@
-client/src/components/protected/admin/adminpanel.jsx
-client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
-client/src/components/protected/productCRUD/MyProduct.jsx
-client/src/components/protected/productCRUD/ProductDeleteModal.jsx

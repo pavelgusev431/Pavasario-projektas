@@ -137,13 +137,13 @@ const AdminPanel = () => {
     return (
         <div className="p-4 sm:p-6 max-w-7xl mx-auto text-gray-900 dark:text-white">
             <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-            Admin panel
+                Admin panel
             </h1>
 
             {/* Forma */}
             <div className="bg-neutral-100 dark:bg-gray-800 p-4 sm:p-6 rounded-lg mb-8 sm:mb-10 shadow-lg">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-4">
-                Create a user
+                    Create a user
                 </h2>
                 <ToastContainer
                     position="top-right"
@@ -241,7 +241,7 @@ const AdminPanel = () => {
                     {/* Lentelė */}
                     <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl sm:text-2xl font-semibold mb-4">
-                        List of users
+                            List of users
                         </h2>
 
                         {users.length > 0 ? (
@@ -327,7 +327,7 @@ const AdminPanel = () => {
                                                     {user.email}
                                                 </p>
                                                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                Contact:{' '}
+                                                    Contact:{' '}
                                                     {user.contacts || '—'}
                                                 </p>
                                             </>

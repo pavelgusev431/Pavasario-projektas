@@ -174,7 +174,9 @@ const getUserProductsSortedPaginated = async (req, res) => {
 
         // Validuojame userId
         if (!userId) {
-            return res.status(400).json({ message: 'Neteisingas vartotojo ID' });
+            return res
+                .status(400)
+                .json({ message: 'Neteisingas vartotojo ID' });
         }
 
         // Užtikriname, kad page ir limit yra teigiami skaičiai
@@ -243,7 +245,11 @@ const getUserProductsSortedPaginated = async (req, res) => {
         });
 
         // Rūšiuojame produktus
-        const sortedProducts = await sortHelper(productsWithTimestamps, sort, order);
+        const sortedProducts = await sortHelper(
+            productsWithTimestamps,
+            sort,
+            order
+        );
 
         // Apskaičiuojame puslapiavimą
         const totalProducts = sortedProducts.length;
