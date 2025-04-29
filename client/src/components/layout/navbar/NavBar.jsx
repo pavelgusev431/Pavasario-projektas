@@ -143,6 +143,20 @@ const NavBar = () => {
                                     </button>
                                 </li>
                             )}
+                            {auth?.role?.toLowerCase() === 'courier' && (
+                                <li>
+                                    <button
+                                        onClick={() =>
+                                            handleNavigation(
+                                                '/courier-dashboard'
+                                            )
+                                        }
+                                        className={`block dark:text-white dark:hover:bg-gray-600 md:p-3 hover:bg-gray-200 rounded-sm md:border-0 ${isActive('/adminpanel')}`}
+                                    >
+                                        Dashboard
+                                    </button>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
@@ -223,15 +237,6 @@ const NavBar = () => {
                                     >
                                         <i className="fas fa-box mr-3"></i>
                                         <span> My Orders</span>
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleNavigation('/cancellations')
-                                        }
-                                        className="flex items-center w-full px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    >
-                                        <i className="fas fa-times-circle mr-3"></i>
-                                        <span>Cancellations</span>
                                     </button>
                                     <button
                                         onClick={() =>
