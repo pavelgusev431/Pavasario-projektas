@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
 import Modal from 'react-modal';
 import ProductComments from './ProductComments';
 import { nanoid } from 'nanoid';
 import getSelectedProduct from '../helpers/getSelectedProducts';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import loginMe from '../helpers/loginMe';
+import url from '../helpers/getURL';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -14,9 +17,16 @@ const ProductDetails = () => {
     const [allImages, setAllImages] = useState([]);
     const thumbnailsRef = useRef(null);
 
-    // Swipe state
+    const [quantity, setQuantity] = useState(1);
+    const [showBuyModal, setShowBuyModal] = useState(false);
+    const [buyLoading, setBuyLoading] = useState(false);
+    const [buyError, setBuyError] = useState(null);
+    const [userBalance, setUserBalance] = useState(0);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
     const [touchStartX, setTouchStartX] = useState(null);
-    const [slideDirection, setSlideDirection] = useState(null); // "left" or "right"
+    const [slideDirection, setSlideDirection] = useState(null);
     const [animating, setAnimating] = useState(false);
 
     useEffect(() => {
@@ -30,7 +40,6 @@ const ProductDetails = () => {
             }
         };
 
-        // Fetch all images from the server for this product
         const fetchAllImages = async () => {
             try {
                 const res = await axios.get(
@@ -44,16 +53,54 @@ const ProductDetails = () => {
                 setAllImages(
                     res.data.data.length ? res.data.data : [product?.image_url]
                 );
-                // Set the main image as selected if not already set
                 if (urls.length && !selectedImage) setSelectedImage(urls[0]);
             } catch (e) {
                 setAllImages([product?.image_url]);
             }
         };
 
+        const checkLoginStatus = async () => {
+            try {
+                const userResponse = await loginMe();
+
+                if (userResponse?.data?.status === 'success') {
+                    console.log('User is logged in:', userResponse.data);
+                    setIsLoggedIn(true);
+
+                    const userId = userResponse.data.data?.id;
+
+                    if (!userId) {
+                        console.error('User ID not found');
+                        return;
+                    }
+
+                    try {
+                        const response = await axios.get(
+                            `http://localhost:3000/balance/${userId}`,
+                            {
+                                withCredentials: true,
+                            }
+                        );
+                        if (response.data?.status === 'success') {
+                            setUserBalance(response.data.balance || 0);
+                        }
+                        console.log(response.data);
+                    } catch (error) {
+                        console.error('Failed to fetch balance:', error);
+                    }
+                } else {
+                    console.log('User is not logged in');
+                    setIsLoggedIn(false);
+                }
+            } catch (error) {
+                console.error('Login status check failed:', error);
+                setIsLoggedIn(false);
+            }
+        };
+
         fetchProduct();
         fetchAllImages();
-        // eslint-disable-next-line
+        checkLoginStatus();
     }, [id]);
 
     if (!product) {
@@ -111,10 +158,8 @@ const ProductDetails = () => {
         }
     };
 
-    // Find the index of the currently selected image
     const currentIndex = allImages.findIndex((img) => img === selectedImage);
 
-    // Handlers for arrows
     const handlePrevImage = (e) => {
         e.stopPropagation();
         if (allImages.length > 0) {
@@ -132,7 +177,6 @@ const ProductDetails = () => {
         }
     };
 
-    // Touch event handlers
     const handleTouchStart = (e) => {
         setTouchStartX(e.touches[0].clientX);
     };
@@ -142,7 +186,6 @@ const ProductDetails = () => {
         const touchEndX = e.changedTouches[0].clientX;
         const diff = touchEndX - touchStartX;
         if (Math.abs(diff) > 50) {
-            // Minimum swipe distance
             if (diff > 0) {
                 handlePrevImage(e);
             } else {
@@ -151,6 +194,65 @@ const ProductDetails = () => {
         }
         setTouchStartX(null);
     };
+
+    const handleBuyClick = () => {
+        console.log('Buy button clicked, isLoggedIn:', isLoggedIn);
+
+        if (!isLoggedIn) {
+            toast.info('Please log in to make a purchase', {
+                position: 'top-center',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            navigate('/signup');
+            return;
+        }
+
+        setShowBuyModal(true);
+    };
+
+    const handleQuantityChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (value > 0 && value <= product.amount_in_stock) {
+            setQuantity(value);
+        }
+    };
+
+    const handleConfirmPurchase = async () => {
+        try {
+            setBuyLoading(true);
+            setBuyError(null);
+
+            const response = await axios.post(
+                url(`transactions/buy`),
+                {
+                    product_id: product.id,
+                    quantity,
+                },
+                { withCredentials: true }
+            );
+
+            setShowBuyModal(false);
+            toast.success('Purchase successful! Transaction created.');
+            navigate('/orders');
+        } catch (err) {
+            setBuyError(
+                err.response?.data?.message || 'Failed to complete purchase'
+            );
+        } finally {
+            setBuyLoading(false);
+        }
+    };
+
+    const handleCancelPurchase = () => {
+        setShowBuyModal(false);
+    };
+
+    const totalCost = product.price * quantity;
+    const insufficientFunds = totalCost > userBalance;
 
     return (
         <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white transition-colors duration-300">
@@ -288,15 +390,32 @@ const ProductDetails = () => {
                         Contact: {product.User.contacts}
                     </p>
 
+                    <div className="mb-4">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Your balance:{' '}
+                            <span className="font-semibold">
+                                ${userBalance.toFixed(2)}
+                            </span>
+                            {!isLoggedIn && (
+                                <span className="ml-2 text-xs text-red-500">
+                                    (Login required to buy)
+                                </span>
+                            )}
+                        </p>
+                    </div>
+
                     {product.amount_in_stock > 0 && (
-                        <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300">
+                        <button
+                            onClick={handleBuyClick}
+                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300"
+                        >
                             Buy Now
                         </button>
                     )}
                 </div>
             </div>
 
-            {/* modal */}
+            {/* Product Image Modal */}
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -367,6 +486,120 @@ const ProductDetails = () => {
                             </svg>
                         </button>
                     )}
+                </div>
+            </Modal>
+
+            {/* Purchase Confirmation Modal */}
+            <Modal
+                isOpen={showBuyModal}
+                onRequestClose={handleCancelPurchase}
+                contentLabel="Confirm Purchase"
+                className="fixed inset-0 flex items-center justify-center"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-50 backdrop-blur"
+            >
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md mx-auto relative transition-colors duration-300">
+                    <button
+                        onClick={handleCancelPurchase}
+                        className="absolute top-4 right-4 text-black dark:text-white text-2xl"
+                        disabled={buyLoading}
+                    >
+                        &times;
+                    </button>
+
+                    <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
+                        Confirm Purchase
+                    </h3>
+
+                    {buyError && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            {buyError}
+                        </div>
+                    )}
+
+                    <div className="mb-4">
+                        <label
+                            htmlFor="quantity"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                        >
+                            Quantity
+                        </label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            min="1"
+                            max={product.amount_in_stock}
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                            disabled={buyLoading}
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                            You are about to purchase:
+                        </p>
+                        <p className="font-semibold mt-2 text-gray-800 dark:text-white">
+                            {product.name}
+                        </p>
+
+                        <div className="flex justify-between mt-2 text-gray-700 dark:text-gray-300">
+                            <p>Quantity:</p>
+                            <p>{quantity}</p>
+                        </div>
+
+                        <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                            <p>Price per item:</p>
+                            <p>${Number(product.price).toFixed(2)}</p>
+                        </div>
+
+                        <div className="flex justify-between font-bold mt-2 pt-2 border-t text-gray-800 dark:text-white">
+                            <p>Total:</p>
+                            <p>${(product.price * quantity).toFixed(2)}</p>
+                        </div>
+
+                        <div className="flex justify-between mt-2 text-gray-700 dark:text-gray-300">
+                            <p>Your Balance:</p>
+                            <p>${userBalance.toFixed(2)}</p>
+                        </div>
+                    </div>
+
+                    {insufficientFunds && (
+                        <p className="text-red-600 text-sm mb-4">
+                            Insufficient funds. You need $
+                            {(totalCost - userBalance).toFixed(2)} more to
+                            complete this purchase.
+                        </p>
+                    )}
+
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        This will create a transaction that requires a courier
+                        to deliver the item. The money will be held in escrow
+                        until the delivery is completed.
+                    </p>
+
+                    <div className="flex justify-end space-x-3">
+                        <button
+                            onClick={handleCancelPurchase}
+                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            disabled={buyLoading}
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            onClick={handleConfirmPurchase}
+                            className={`px-4 py-2 rounded-md text-white ${
+                                insufficientFunds || buyLoading
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-red-500 hover:bg-red-600'
+                            }`}
+                            disabled={insufficientFunds || buyLoading}
+                        >
+                            {buyLoading ? 'Processing...' : 'Confirm Purchase'}
+                        </button>
+                    </div>
                 </div>
             </Modal>
 

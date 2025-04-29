@@ -15,6 +15,7 @@ import uploadRouter from '../routers/uploadRouter.js';
 import imageRouter from '../routers/imageRouter.js';
 import balanceRouter from '../routers/balanceRouter.js';
 import eventRouter from '../routers/eventRouter.js';
+import transactionRouter from '../routers/transactionRouter.js';
 
 dotenv.config();
 /**@type {string}*/
@@ -52,6 +53,7 @@ app.use('/upload', uploadRouter);
 app.use('/images', imageRouter);
 app.use('/balance', balanceRouter);
 app.use('/events', eventRouter);
+app.use('/transactions', transactionRouter);
 
 //==============
 //last

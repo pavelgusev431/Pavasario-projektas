@@ -7,7 +7,7 @@ export const getUserBalance = async (req, res) => {
         const user = await Secret.findOne({ where: { userId } });
         if (!user) return res.status(404).json({ error: 'User not found' });
 
-        res.json({ balance: user.balance || 0 });
+        res.json({ status: 'success', balance: user.balance || 0 });
     } catch (err) {
         res.status(500).json({ error: `Server error: ${err}` });
     }
