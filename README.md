@@ -8,6 +8,7 @@ User-driven marketplace platform "Just Do It"
 - [Installation](#installation)
 - [Usage](#usage)
 - [API endpoints](#api-endpoints)
+- [License](#license)
 
 ## Abstract
 
@@ -75,4 +76,8 @@ Now you can open [this url](http://localhost:5173) to see your started project o
 
 ## API endpoints
 
-If you've managed to successfully run the server part of the application, you can go [here](http://localhost:3000/api-docs) to see the full list of enpoints that are available. The app uses automatic API endpoint documentation through Swagger, and SwaggerUI to show that documentation in the browser.
+If you've managed to successfully run the server part of the application, you can go [here](http://localhost:3000/api-docs) to see the full list of endpoints that are available. The app uses automatic API endpoint documentation through Swagger, and SwaggerUI to show that documentation in the browser.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
