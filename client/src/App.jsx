@@ -21,6 +21,7 @@ import CategoryProducts from './components/products/CategoryProducts.jsx';
 import TransactionsList from './components/protected/couriers/TransactionList.jsx';
 import TransactionDetail from './components/protected/couriers/TransactionDetails.jsx';
 import CourierDashboard from './components/protected/couriers/CourierDashboard.jsx';
+import FinanceReport from './components/FinanceReport';
 
 function App() {
     return (
@@ -57,6 +58,7 @@ function App() {
                 <Route path="/balance" element={<BalancePage />} />
                 <Route path="/reviews" element={<MyReviews />} />
                 <Route path="/adminpanel" element={<AdminPanel />} />
+                <Route path="/finance-report" element={<FinanceReport />} />
                 {ProtectedRoutes()}
                 <Route path="*" element={<NotFound />} />
             </Routes>
