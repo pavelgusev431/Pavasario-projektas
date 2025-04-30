@@ -18,15 +18,15 @@ const validateEditProduct = [
 
     body('category_id')
         .trim()
-        .optional(),
-        // .isNumeric()
-        // .withMessage('Category Id must be a number'),
+        .optional()
+        .isNumeric()
+        .withMessage('Category Id must be a number'),
 
     body('subcategory_id')
         .trim()
-        .optional(),
-        // .isNumeric()
-        // .withMessage('Subcategory Id must be a number'),
+        .optional()
+        .isNumeric()
+        .withMessage('Subcategory Id must be a number'),
 
     body('name')
         .trim()
