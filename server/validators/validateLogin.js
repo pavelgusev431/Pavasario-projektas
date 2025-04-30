@@ -1,4 +1,5 @@
 import { body } from 'express-validator';
+import User from '../models/userModel.js';
 
 const validateLogin = [
     body('username')
@@ -17,7 +18,7 @@ const validateLogin = [
         .custom(async (username) => {
             const user = await User.findOne({ where: { username: username } });
             if (!user) {
-                throw new AppError('User not foung', 404);
+                throw new AppError('User not found', 404);
             }
         }),
 
