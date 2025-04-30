@@ -22,6 +22,8 @@ import TransactionsList from './components/protected/couriers/TransactionList.js
 import TransactionDetail from './components/protected/couriers/TransactionDetails.jsx';
 import CourierDashboard from './components/protected/couriers/CourierDashboard.jsx';
 
+import Footer from './components/layout/Footer.jsx';
+
 function App() {
     return (
         <>
@@ -60,6 +62,7 @@ function App() {
                 {ProtectedRoutes()}
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <Footer />
         </>
     );
 }
