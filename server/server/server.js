@@ -1,4 +1,5 @@
 // @ts-check
+import swaggerUi from 'swagger-ui-express';
 import app from './app.js';
 import dotenv from 'dotenv';
 import cleanup from './cleanup.js';
@@ -8,6 +9,7 @@ import Category from '../models/categoryModel.js';
 import Subcategory from '../models/subcategoryModel.js';
 import { syncModels } from '../models/categorySyncModel.js';
 import { Model } from 'sequelize';
+import fs from 'fs';
 
 dotenv.config();
 /**@type {string | undefined}*/
@@ -33,6 +35,12 @@ const setup = async () => {
         console.error('Database setup error:', error);
     }
 };
+
+const outputFile = JSON.parse(
+    fs.readFileSync('./server/swagger_output.json', 'utf8')
+);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(outputFile));
 
 app.listen(port, async () => {
     cleanup();

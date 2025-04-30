@@ -26,9 +26,9 @@ const EventType = sq.define(
 
 try {
     await EventType.sync({ alter: true, force: true });
-    console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
+    console.log('\x1b[35mEvent Type\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError(`Error while creating EventType model: ${error}`, 500);
+    throw new AppError(`Error while creating Event Type model: ${error}`, 500);
 }
 
 try {
@@ -42,11 +42,10 @@ try {
     await EventType.create({ name: 'expired' });
     await EventType.create({ name: 'cancelled' });
     await EventType.create({ name: 'executed' });
-
-    console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
+    console.log('\x1b[35mEvent Type\x1b[36m table populated\x1b[0m');
 } catch (error) {
     throw new AppError(
-        `Error while populating event type model: ${error}`,
+        `Error while populating Event Type model: ${error}`,
         500
     );
 }
