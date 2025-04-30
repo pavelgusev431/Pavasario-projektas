@@ -140,6 +140,7 @@ If you've managed to successfully run the server part of the application, you ca
                     - ProductEditModal.jsx
                     - ProductDeleteModal.jsx
         - NotFound.jsx
+    - Footer
 
 ## Database Structure
 
