@@ -1,6 +1,5 @@
 import ProductEditModal from './ProductEditModal.jsx';
 import ProductDeleteModal from './ProductDeleteModal.jsx';
-2;
 import { useState } from 'react';
 
 const MyProduct = ({ product, setUpdate }) => {
