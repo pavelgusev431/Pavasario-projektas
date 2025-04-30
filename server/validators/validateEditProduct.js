@@ -16,13 +16,19 @@ const validateEditProduct = [
             }
         }),
 
-    body('category_id').trim().optional(),
-    // .isNumeric()
-    // .withMessage('Category Id must be a number'),
+    body('category_id')
+        .trim()
+        .optional()
+        .custom((value) => {
+            if (isNaN(Number(value))) throw new AppError('Invalid category id');
+        }),
 
-    body('subcategory_id').trim().optional(),
-    // .isNumeric()
-    // .withMessage('Subcategory Id must be a number'),
+    body('subcategory_id')
+        .trim()
+        .optional()
+        .custom((value) => {
+            if (isNaN(Number(value))) throw new AppError('Invalid category id');
+        }),
 
     body('name')
         .trim()
@@ -56,9 +62,9 @@ const validateEditProduct = [
         .isString()
         .withMessage('Image URL must be a string')
         .custom((value) => {
-            return /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg))|(^\/uploads\/.+\.(jpg|jpeg|png|gif|webp|svg))$/.test(
-                value
-            );
+            const reg =
+                /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg))|(^\/uploads\/.+\.(jpg|jpeg|png|gif|webp|svg))$/;
+            return reg.test(value);
         })
         .withMessage('Image URL must be a valid image path or URL'),
 ];
