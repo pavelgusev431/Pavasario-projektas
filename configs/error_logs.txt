@@ -1,4 +1,0 @@
-client/src/helpers/editProduct.js
-server/validators/validateChangeUserInfo.js
-server/validators/validateEditProduct.js
-server/validators/validateUpdateUserData.js
