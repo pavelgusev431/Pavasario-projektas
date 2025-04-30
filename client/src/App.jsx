@@ -21,7 +21,6 @@ import CategoryProducts from './components/products/CategoryProducts.jsx';
 import TransactionsList from './components/protected/couriers/TransactionList.jsx';
 import TransactionDetail from './components/protected/couriers/TransactionDetails.jsx';
 import CourierDashboard from './components/protected/couriers/CourierDashboard.jsx';
-
 import Footer from './components/layout/Footer.jsx';
 
 function App() {

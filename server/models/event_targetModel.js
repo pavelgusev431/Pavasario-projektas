@@ -26,9 +26,12 @@ const EventTarget = sq.define(
 
 try {
     await EventTarget.sync({ alter: true, force: true });
-    console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
+    console.log('\x1b[35mEvent Target\x1b[34m table created\x1b[0m');
 } catch (error) {
-    throw new AppError(`Error while creating EventTarget model: ${error}`, 500);
+    throw new AppError(
+        `Error while creating Event Target model: ${error}`,
+        500
+    );
 }
 
 try {
@@ -39,10 +42,10 @@ try {
     await EventTarget.create({ name: 'subcategory' });
     await EventTarget.create({ name: 'rating' });
 
-    console.log('\x1b[35mCategory\x1b[36m table populated\x1b[0m');
+    console.log('\x1b[35mEvent Target\x1b[36m table populated\x1b[0m');
 } catch (error) {
     throw new AppError(
-        `Error while populating event target model: ${error}`,
+        `Error while populating Event Target model: ${error}`,
         500
     );
 }

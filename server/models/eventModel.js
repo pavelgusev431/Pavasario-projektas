@@ -50,7 +50,7 @@ Event.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 try {
     await Event.sync({ alter: true, force: true });
-    console.log('\x1b[35mCategory\x1b[34m table created\x1b[0m');
+    console.log('\x1b[35mEvent\x1b[34m table created\x1b[0m');
 } catch (error) {
     throw new AppError(`Error while creating event model: ${error}`, 500);
 }
