@@ -16,17 +16,13 @@ const validateEditProduct = [
             }
         }),
 
-    body('category_id')
-        .trim()
-        .optional(),
-        // .isNumeric()
-        // .withMessage('Category Id must be a number'),
+    body('category_id').trim().optional(),
+    // .isNumeric()
+    // .withMessage('Category Id must be a number'),
 
-    body('subcategory_id')
-        .trim()
-        .optional(),
-        // .isNumeric()
-        // .withMessage('Subcategory Id must be a number'),
+    body('subcategory_id').trim().optional(),
+    // .isNumeric()
+    // .withMessage('Subcategory Id must be a number'),
 
     body('name')
         .trim()
@@ -60,9 +56,11 @@ const validateEditProduct = [
         .isString()
         .withMessage('Image URL must be a string')
         .custom((value) => {
-          return /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg))|(^\/uploads\/.+\.(jpg|jpeg|png|gif|webp|svg))$/.test(value);
-          })
-          .withMessage('Image URL must be a valid image path or URL')
+            return /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg))|(^\/uploads\/.+\.(jpg|jpeg|png|gif|webp|svg))$/.test(
+                value
+            );
+        })
+        .withMessage('Image URL must be a valid image path or URL'),
 ];
 
 export default validateEditProduct;

@@ -1,0 +1,2 @@
+client/src/components/protected/productCRUD/MyProductList.jsx
+server/validators/validateEditProduct.js
