@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthContext.jsx";
 import getUserComments from "../../../helpers/getUserComments.js";
-import ReviewCreateModal from "./ReviewCreateModal.jsx";
 import axios from "axios";
 import url from "../../../helpers/getURL.js";
 
@@ -10,12 +9,10 @@ export default function MyReviews() {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [reviewCreateModal, setReviewCreateModal] = useState(false);
-  const [update, setUpdate] = useState(0);
+  
+  
 
-  const handleReviewCreate = () => {
-    setReviewCreateModal(true);
-  };
+  
 
   useEffect(() => {
     if (!loading && auth?.id) {
@@ -55,7 +52,7 @@ export default function MyReviews() {
       };
       fetchComments();
     }
-  }, [auth, loading, update]);
+  }, [auth, loading]);
 
   if (loading || isLoading) return <p>Loading...</p>;
   if (!auth) return <p>Not logged in</p>;
@@ -63,22 +60,7 @@ export default function MyReviews() {
 
   return (
     <div>
-      <button
-        onClick={handleReviewCreate}
-        className="text-white bg-orange-600 hover:bg-orange-700 transition-colors duration-200 shadow-lg rounded-full w-14 h-14 flex justify-center items-center fixed bottom-6 right-6 z-50"
-        title="Add Review"
-      >
-        +
-      </button>
-
-      {reviewCreateModal && (
-        <ReviewCreateModal
-          showModal={reviewCreateModal}
-          setShowModal={setReviewCreateModal}
-          setUpdate={setUpdate}
-        />
-      )}
-
+     
       <div className="flex items-center mb-6 ml-6 mt-4">
         <div className="w-2 h-8 bg-red-500 mr-3"></div>
         <h2 className="text-xl font-bold text-gray-800 dark:text-white">
