@@ -1,2 +1,0 @@
-client/src/helpers/Balance.js
-server/validators/validateTopUp.js
