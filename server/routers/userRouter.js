@@ -35,7 +35,7 @@ userRouter
     .get(getAllUsers);
 userRouter.route('/count').get(getAllUsersCount);
 userRouter.route('/id/:id').get(getUserById);
-userRouter.route('/login').post(validate, login);
+userRouter.route('/login').post(validateLogin, validate, login);
 userRouter.route('/logout').post(logout);
 userRouter.route('/forgot').post(validateForgot, validate, forgot);
 userRouter.route('/:username').get(getUserByUsername);

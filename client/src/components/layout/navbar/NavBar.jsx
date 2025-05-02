@@ -92,7 +92,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-5 shadow-md dark:bg-gray-900">
+        <nav className="bg-white p-2 md:p-2 sticky top-0 w-full z-50 shadow-md dark:bg-gray-900">
             <div className="flex items-center justify-between mx-auto px-2 md:px-4 w-full">
                 <ThemeToggleButton />
 

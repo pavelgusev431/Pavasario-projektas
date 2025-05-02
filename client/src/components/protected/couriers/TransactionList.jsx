@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import url from '../../../helpers/getURL.js';
+import ReviewCreateModal from '../commentCRUD/ReviewCreateModal.jsx';
 
 const TransactionsList = () => {
     const [transactions, setTransactions] = useState([]);
@@ -9,6 +10,9 @@ const TransactionsList = () => {
     const [error, setError] = useState(null);
     const [activeRole, setActiveRole] = useState('buyer');
     const [activeTab, setActiveTab] = useState('all');
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [activeProductId, setActiveProductId] = useState(null);
+    const [update, setUpdate] = useState(0);
 
     const fetchTransactions = async () => {
         try {
@@ -244,6 +248,24 @@ const TransactionsList = () => {
                                                 >
                                                     {transaction.status}
                                                 </p>
+                                                {transaction.status ===
+                                                    'done' && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setActiveProductId(
+                                                                transaction
+                                                                    .Product.id
+                                                            );
+                                                            setShowReviewModal(
+                                                                true
+                                                            );
+                                                        }}
+                                                        className="ml-2 text-blue-600 hover:underline text-sm"
+                                                    >
+                                                        Rate
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="mt-2 sm:flex sm:justify-between">
@@ -309,6 +331,14 @@ const TransactionsList = () => {
                             </li>
                         ))}
                     </ul>
+
+                    {showReviewModal && (
+                        <ReviewCreateModal
+                            setShowModal={setShowReviewModal}
+                            setUpdate={setUpdate}
+                            productId={activeProductId}
+                        />
+                    )}
                 </div>
             ) : (
                 <div className="bg-white shadow overflow-hidden sm:rounded-md p-6 text-center">

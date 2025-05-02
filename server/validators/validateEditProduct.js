@@ -19,14 +19,16 @@ const validateEditProduct = [
     body('category_id')
         .trim()
         .optional()
-        .isNumeric()
-        .withMessage('Category Id must be a number'),
+        .custom((value) => {
+            if (isNaN(Number(value))) throw new AppError('Invalid category id');
+        }),
 
     body('subcategory_id')
         .trim()
         .optional()
-        .isNumeric()
-        .withMessage('Subcategory Id must be a number'),
+        .custom((value) => {
+            if (isNaN(Number(value))) throw new AppError('Invalid category id');
+        }),
 
     body('name')
         .trim()
@@ -56,12 +58,15 @@ const validateEditProduct = [
 
     body('image_url')
         .trim()
-        .escape()
         .optional()
         .isString()
         .withMessage('Image URL must be a string')
-        .isURL()
-        .withMessage('Image URL must be a valid URL'),
+        .custom((value) => {
+            const reg =
+                /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg))|(^\/uploads\/.+\.(jpg|jpeg|png|gif|webp|svg))$/;
+            return reg.test(value);
+        })
+        .withMessage('Image URL must be a valid image path or URL'),
 ];
 
 export default validateEditProduct;

@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "renew": "node ./utilities/env.js && node ./utilities/envBackup.js && node ./utilities/database.js && node ./utilities/createNewJWTSecret.js && node ./utilities/mailerTester.js && node ./utilities/multerTester.js",
+    "renew": "node ./utilities/env.js && node ./utilities/envBackup.js && node ./utilities/database.js && node ./utilities/createNewJWTSecret.js && node ./utilities/mailerTester.js && node ./utilities/multerTester.js && node ./server/swagger.js",
     "start": "npm i && npm run renew -s && nodemon --quiet server/server.js"
   },
   "keywords": [],
@@ -32,6 +32,8 @@
     "pg": "^8.13.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
     "url": "^0.11.4"
   }
 }
