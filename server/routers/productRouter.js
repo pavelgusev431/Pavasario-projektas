@@ -31,12 +31,7 @@ const productRouter = express.Router();
 productRouter.route('/').get(getPaginatedProducts);
 productRouter
     .route('/search')
-    .get(
-        searchProductsPaginated,
-        validateSearchQuery,
-        validate,
-        getAllProducts
-    );
+    .get(validateSearchQuery, validate, getAllProducts);
 // .get(validateSearchQuery, validate, getAllProducts, searchProductsPaginated);
 
 productRouter.route('/searchregex').get(getSearchRegex);

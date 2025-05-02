@@ -1,57 +1,26 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import debounce from 'lodash.debounce';
 import ProductCard from '../ProductCard';
-import Tools from '../Tools';
-import BackToTopButton from '../buttons/BackToTopButton';
 import Sort from '../Sort';
 import { searchProducts } from '../../helpers/searchProducts';
 import getSearchRegex from '../../helpers/getSearchRegex';
-//betkas  konfliktas
-export default function SearchedProducts() {
+import BackToTopButton from '../buttons/BackToTopButton';
+
+const SearchedProducts = () => {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [zalgoRegex, setZalgoRegex] = useState(null);
+    const navigate = useNavigate();
+
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 0,
         totalProducts: 0,
+        perPage: 8,
     });
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const [pageSize, setPageSize] = useState(12);
-
-    const [dateRange, setDateRange] = useState(() => {
-        try {
-            const savedDateRange = JSON.parse(
-                localStorage.getItem('dateRange')
-            );
-            return savedDateRange
-                ? savedDateRange
-                : [
-                      new Date('2024-01-01').getTime(),
-                      new Date().setDate(new Date().getDate() + 1),
-                  ];
-        } catch {
-            return [
-                new Date('2024-01-01').getTime(),
-                new Date().setDate(new Date().getDate() + 1),
-            ];
-        }
-    });
-
-    const [priceRange, setPriceRange] = useState(() => {
-        try {
-            const savedPriceRange = JSON.parse(
-                localStorage.getItem('priceRange')
-            );
-            return savedPriceRange ? savedPriceRange : [0, 5000];
-        } catch {
-            return [0, 5000];
-        }
-    });
-
-    //   const [sortValue, setSortValue] = useState("timestamp-desc");
 
     const [sortValue, setSortValue] = useState(() => {
         const savedSortValue = localStorage.getItem('sortValue');
@@ -70,214 +39,287 @@ export default function SearchedProducts() {
             : 'timestamp-desc';
     });
 
-    // Zalgo regex
-    const [zalgoRegex, setZalgoRegex] = useState(null);
-
-    const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
-    const query = searchParams.get('q')?.trim().toLowerCase();
-
-    // fetch Zalgo rules once
     useEffect(() => {
-        getSearchRegex()
-            .then(
-                (res) =>
-                    res.zalgoRegex && setZalgoRegex(new RegExp(res.zalgoRegex))
-            )
-            .catch(() => {});
+        const fetchRegex = async () => {
+            try {
+                const response = await getSearchRegex();
+                if (response?.zalgoRegex) {
+                    const regex = new RegExp(response.zalgoRegex);
+                    setZalgoRegex(regex);
+                }
+            } catch (err) {
+                console.error('Failed to fetch Zalgo regex:', err);
+            }
+        };
+
+        fetchRegex();
     }, []);
 
-    // the main fetch function, debounced
-    const fetchResults = useCallback(
-        debounce(async (page = 1) => {
-            if (!query) return;
+    const fetchSearchResults = async (query, page = 1) => {
+        if (!query) return;
 
-            setLoading(true);
-            setError(null);
+        setLoading(true);
+        setError(null);
 
-            try {
-                const [sort, order] = sortValue.split('-');
-                const { products: pageItems, pagination } =
-                    await searchProducts(query, {
-                        page,
-                        limit: pageSize,
-                        minPrice: priceRange[0],
-                        maxPrice: priceRange[1],
-                        // re‑enable date filtering if you want:
-                        minDate: new Date(dateRange[0])
-                            .toISOString()
-                            .slice(0, 10),
-                        maxDate: new Date(dateRange[1])
-                            .toISOString()
-                            .slice(0, 10),
-                        sort,
-                        order: order.toUpperCase(),
+        try {
+            const [sort, order] = sortValue.split('-');
+            const response = await searchProducts(
+                query,
+                sort,
+                order,
+                page,
+                pagination.perPage
+            );
+
+            if (response?.data) {
+                setProducts(response.data.data || []);
+
+                if (response.data.pagination) {
+                    setPagination({
+                        currentPage: response.data.pagination.currentPage,
+                        totalPages: response.data.pagination.totalPages,
+                        totalProducts: response.data.pagination.totalProducts,
+                        perPage: response.data.pagination.perPage,
                     });
-                setProducts(pageItems);
-                setPagination(pagination);
-            } catch (err) {
-                setError('Failed to load search results');
-            } finally {
-                setLoading(false);
+                }
+            } else {
+                setProducts([]);
+                setPagination({
+                    currentPage: 1,
+                    totalPages: 0,
+                    totalProducts: 0,
+                    perPage: pagination.perPage,
+                });
             }
-        }, 250),
-        [query, pageSize, priceRange, dateRange, sortValue]
-    );
-
-    // validate & trigger initial fetch
-    useEffect(() => {
-        if (!query) return setProducts([]);
-
-        const invalid =
-            query.length < 3 ||
-            query.length > 30 ||
-            !/^[a-zA-Z0-9 ]+$/.test(query) ||
-            (zalgoRegex && zalgoRegex.test(query));
-
-        if (invalid) {
-            toast.error('Invalid search term');
-            navigate('*');
-        } else {
-            fetchResults(1);
+        } catch (err) {
+            console.error('Error fetching search results:', err);
+            if (err.response && err.response.status === 404) {
+                setProducts([]);
+            } else {
+                setError('Failed to load search results');
+                setProducts([]);
+            }
+        } finally {
+            setLoading(false);
         }
-
-        return () => fetchResults.cancel();
-    }, [query, zalgoRegex, fetchResults, navigate]);
-
-    // on page change
-    useEffect(() => {
-        fetchResults(pagination.currentPage);
-    }, [pagination.currentPage, fetchResults]);
-
-    // UI handlers
-    const handlePageChange = (n) =>
-        setPagination((p) => ({ ...p, currentPage: n }));
-
-    const handlePageSizeChange = (e) => {
-        setPageSize(+e.target.value);
-        setPagination((p) => ({ ...p, currentPage: 1 }));
     };
-    const handleSortChange = (val) => {
-        setSortValue(val);
-        setPagination((p) => ({ ...p, currentPage: 1 }));
-    };
-    const resetFilters = () => {
-        setPriceRange([0, 5000]);
-        setDateRange([new Date('2024-01-01').getTime(), new Date().getTime()]);
-        setSortValue('timestamp-asc');
-        setPagination((p) => ({ ...p, currentPage: 1 }));
-    };
-
-    const filtered = useMemo(
-        () =>
-            products.filter(
-                (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
-            ),
-        [products, priceRange]
-    );
 
     useEffect(() => {
-        localStorage.setItem('priceRange', JSON.stringify(priceRange));
-        localStorage.setItem('dateRange', JSON.stringify(dateRange));
+        const query = searchParams.get('q');
+        const page = parseInt(searchParams.get('page') || '1', 10);
+
+        const isZalgo = (text) => {
+            try {
+                return zalgoRegex ? zalgoRegex.test(text) : false;
+            } catch (e) {
+                console.error('Error in Zalgo check:', e);
+                return false;
+            }
+        };
+
+        if (zalgoRegex && query) {
+            const trimmedQuery = query.trim().toLowerCase();
+
+            const isInvalid =
+                trimmedQuery.length < 3 ||
+                trimmedQuery.length > 30 ||
+                !/^[a-zA-Z0-9 ]+$/.test(trimmedQuery) ||
+                isZalgo(trimmedQuery);
+
+            if (isInvalid) {
+                toast.error('Zalgo? Not on my watch.');
+                navigate('*');
+                return;
+            }
+
+            fetchSearchResults(trimmedQuery, page);
+        } else {
+            setProducts([]);
+        }
+    }, [searchParams, navigate, zalgoRegex, sortValue]);
+
+    const searchQuery = searchParams.get('q');
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
+
+    useEffect(() => {
         localStorage.setItem('sortValue', sortValue);
-    }, [priceRange, dateRange, sortValue]);
+    }, [sortValue]);
+
+    const handleSortChange = (newSortValue) => {
+        setSortValue(newSortValue);
+        setSearchParams((params) => {
+            params.set('page', '1');
+            return params;
+        });
+    };
+
+    const handlePageChange = (newPage) => {
+        setSearchParams((params) => {
+            params.set('page', newPage.toString());
+            return params;
+        });
+        window.scrollTo(0, 0);
+    };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-4">
-                Search Results for “{query}”
-            </h1>
+        <div className="p-4">
+            <div className="mt-8 w-full">
+                {/* Sort component */}
+                <div className="flex justify-end mb-4 mx-10">
+                    <Sort
+                        onSortChange={handleSortChange}
+                        sortValue={sortValue}
+                    />
+                </div>
 
-            <Tools
-                priceRange={priceRange}
-                setPriceRange={setPriceRange}
-                // setPriceRange = {handlePriceRangeChange}
-                dateRange={dateRange}
-                setDateRange={setDateRange}
-                minDate={new Date('2024-01-01').getTime()}
-                maxDate={new Date().getTime()}
-                onSortChange={handleSortChange}
-                sortValue={sortValue}
-                resetFilters={resetFilters}
-            />
+                <div className="flex ml-10 flex-row gap-2 mt-2">
+                    <div className="w-2 h-6 bg-red-500"></div>
+                    <h2 className="text-l text-red-500 font-bold mb-2">
+                        Search Results
+                    </h2>
+                </div>
+                <h2 className="text-2xl font-bold ml-10 mb-2">
+                    {searchQuery
+                        ? `Products matching "${searchQuery}"`
+                        : 'Search Results'}
+                </h2>
 
-            <div className="mb-4 flex items-center space-x-4">
-                <label>Products per page:</label>
-                <select
-                    value={pageSize}
-                    onChange={handlePageSizeChange}
-                    className="p-2 border rounded"
-                >
-                    {[6, 12, 18, 24, 30].map((n) => (
-                        <option key={n} value={n}>
-                            {n}
-                        </option>
+                {loading && (
+                    <div className="text-center py-8">
+                        <p>Loading...</p>
+                    </div>
+                )}
+
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-10 mb-4">
+                        {error}
+                    </div>
+                )}
+
+                {!loading &&
+                    !error &&
+                    (products.length === 0 ? (
+                        <p className="text-gray-500 text-center mx-10 py-8">
+                            {searchQuery
+                                ? `No products found matching "${searchQuery}"`
+                                : 'Enter a search term to find products.'}
+                        </p>
+                    ) : (
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mx-6">
+                                {products.map((product) => (
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                        avgRating={product.avgRating}
+                                        ratingCount={product.ratingCount}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* Pagination Controls */}
+                            {pagination.totalPages > 1 && (
+                                <div className="flex justify-center mt-8 mb-4">
+                                    <nav className="flex items-center">
+                                        <button
+                                            onClick={() =>
+                                                handlePageChange(
+                                                    Math.max(currentPage - 1, 1)
+                                                )
+                                            }
+                                            disabled={currentPage === 1}
+                                            className={`px-3 py-1 mr-1 rounded ${
+                                                currentPage === 1
+                                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                            }`}
+                                        >
+                                            Previous
+                                        </button>
+
+                                        {Array.from(
+                                            { length: pagination.totalPages },
+                                            (_, i) => i + 1
+                                        )
+                                            .filter(
+                                                (page) =>
+                                                    page === 1 ||
+                                                    page ===
+                                                        pagination.totalPages ||
+                                                    (page >= currentPage - 1 &&
+                                                        page <= currentPage + 1)
+                                            )
+                                            .map((page, index, array) => {
+                                                // Show ellipsis when pages are skipped
+                                                if (
+                                                    index > 0 &&
+                                                    page - array[index - 1] > 1
+                                                ) {
+                                                    return (
+                                                        <span
+                                                            key={`ellipsis-${page}`}
+                                                            className="mx-1"
+                                                        >
+                                                            ...
+                                                        </span>
+                                                    );
+                                                }
+
+                                                return (
+                                                    <button
+                                                        key={page}
+                                                        onClick={() =>
+                                                            handlePageChange(
+                                                                page
+                                                            )
+                                                        }
+                                                        className={`w-8 h-8 mx-1 rounded ${
+                                                            currentPage === page
+                                                                ? 'bg-blue-500 text-white'
+                                                                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                                        }`}
+                                                    >
+                                                        {page}
+                                                    </button>
+                                                );
+                                            })}
+
+                                        <button
+                                            onClick={() =>
+                                                handlePageChange(
+                                                    Math.min(
+                                                        currentPage + 1,
+                                                        pagination.totalPages
+                                                    )
+                                                )
+                                            }
+                                            disabled={
+                                                currentPage ===
+                                                pagination.totalPages
+                                            }
+                                            className={`px-3 py-1 ml-1 rounded ${
+                                                currentPage ===
+                                                pagination.totalPages
+                                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                            }`}
+                                        >
+                                            Next
+                                        </button>
+                                    </nav>
+                                </div>
+                            )}
+
+                            <div className="text-center text-gray-500 mb-8">
+                                Showing {products.length} of{' '}
+                                {pagination.totalProducts} products
+                            </div>
+                        </>
                     ))}
-                </select>
             </div>
-
-            {loading && <p>Loading…</p>}
-            {error && <p className="text-red-500">{error}</p>}
-
-            {filtered.length > 0 ? (
-                <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {filtered.map((p) => (
-                            <ProductCard
-                                key={p.id}
-                                product={p}
-                                avgRating={p.avgRating}
-                                ratingCount={p.ratingCount}
-                            />
-                        ))}
-                    </div>
-
-                    <div className="mt-6 flex justify-center space-x-2">
-                        <button
-                            onClick={() =>
-                                handlePageChange(pagination.currentPage - 1)
-                            }
-                            disabled={pagination.currentPage <= 1}
-                            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                        >
-                            Previous
-                        </button>
-
-                        {Array.from(
-                            { length: pagination.totalPages },
-                            (_, i) => (
-                                <button
-                                    key={i + 1}
-                                    onClick={() => handlePageChange(i + 1)}
-                                    className={`px-3 py-1 rounded ${
-                                        pagination.currentPage === i + 1
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-200'
-                                    }`}
-                                >
-                                    {i + 1}
-                                </button>
-                            )
-                        )}
-
-                        <button
-                            onClick={() =>
-                                handlePageChange(pagination.currentPage + 1)
-                            }
-                            disabled={
-                                pagination.currentPage >= pagination.totalPages
-                            }
-                            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                        >
-                            Next
-                        </button>
-                    </div>
-                </>
-            ) : (
-                !loading && <p>No products match your filters.</p>
-            )}
-
             <BackToTopButton />
         </div>
     );
-}
+};
+
+export default SearchedProducts;
