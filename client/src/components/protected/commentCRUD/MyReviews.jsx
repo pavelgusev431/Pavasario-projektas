@@ -79,14 +79,14 @@ export default function MyReviews() {
                 />
             )}
 
-            <div className="mb-4">
-                <h2 className="text-3xl flex font-extrabold text-red-600 mt-4 mb-4">
-                    <div className="w-2 h-8 bg-red-500 mr-3"></div>
-                    My Reviews
+            <div className="flex items-center mb-6 ml-6 mt-4">
+                <div className="w-2 h-8 bg-red-500 mr-3"></div>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                    My reviews
                 </h2>
             </div>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 ml-6">
                 {comments.length === 0 ? (
                     <p className="text-gray-400 text-lg">You have no reviews</p>
                 ) : (

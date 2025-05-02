@@ -1,2 +1,4 @@
-client/src/components/protected/admin/adminpanel.jsx
-client/src/helpers/adminPanel.js
+client/src/components/protected/commentCRUD/MyReviews.jsx
+client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
+client/src/components/protected/couriers/TransactionList.jsx
+client/src/components/protected/productCRUD/MyProduct.jsx
