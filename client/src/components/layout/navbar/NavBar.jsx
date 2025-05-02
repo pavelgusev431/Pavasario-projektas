@@ -208,15 +208,19 @@ const NavBar = () => {
                                 }
                                 className={`${auth.image_url ? '' : 'fas fa-user-circle'} text-4xl cursor-pointer text-gray-500 hover:text-[#800020] transition-transform duration-300 hover:scale-110`}
                             >
-                                <img
-                                    src={auth.image_url}
-                                    style={{
-                                        borderRadius: '50%',
-                                        width: '40px',
-                                        height: '40px',
-                                    }}
-                                    alt=""
-                                />
+                                {auth.image_url ? (
+                                    <img
+                                        src={auth.image_url}
+                                        style={{
+                                            borderRadius: '50%',
+                                            width: '40px',
+                                            height: '40px',
+                                        }}
+                                        alt=""
+                                    />
+                                ) : (
+                                    <></>
+                                )}
                             </button>
 
                             {isDropdownOpen && (
