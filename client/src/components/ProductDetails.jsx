@@ -262,7 +262,7 @@ const ProductDetails = () => {
                 {/* LEFT SIDE: Main Image and Thumbnails */}
                 <div className="w-full md:w-1/2 flex flex-col items-center p-4">
                     {/* Main Image with pretty arrows and swipe */}
-                    <div className="relative w-full max-w-2xl h-[600px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-100 border-4 border-red-400 shadow-lg">
+                    <div className="relative w-full max-w-2xl h-[600px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-100 object-cover  shadow-lg">
                         {/* Left Arrow */}
                         {!modalIsOpen && allImages.length > 1 && (
                             <button
@@ -291,7 +291,7 @@ const ProductDetails = () => {
                         <img
                             src={selectedImage}
                             alt={product.name}
-                            className="w-full h-full object-contain transition-transform duration-300 ease-in-out cursor-pointer"
+                            className=" w-full object-cover mx-auto  transition-transform duration-300 ease-in-out cursor-pointer"
                             onClick={openModal}
                         />
 
@@ -422,8 +422,8 @@ const ProductDetails = () => {
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
                 contentLabel="Product Image Zoom"
-                className="fixed inset-0 flex items-center justify-center"
-                overlayClassName="fixed inset-0 bg-black bg-opacity-50 backdrop-blur"
+                className="fixed inset-0 flex items-center justify-center mt-25"
+                overlayClassName="fixed inset-0 bg-black/25 bg-opacity-50 backdrop-blur"
             >
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg max-w-4xl mx-auto relative transition-colors duration-300">
                     {/* Close Button */}
