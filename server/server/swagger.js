@@ -10,7 +10,7 @@ const routers = path.join(__dirname, '..', 'routers');
 const outputFile = './swagger_output.json';
 const endpointsFiles = fs
     .readdirSync(routers)
-    .map((router) => `../routers/${router}`);
+    .map((router) => `routers/${router}`);
 
 swaggerAutogen(outputFile, endpointsFiles);
 
