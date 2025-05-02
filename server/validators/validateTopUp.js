@@ -19,7 +19,7 @@ const validateTopUp = [
         .notEmpty()
         .withMessage('Amount is a required field')
         .custom((amount) => {
-            if (amount == 0) {
+            if (amount <= 0) {
                 throw new AppError('Amount can not be zero', 403);
             }
         }),
