@@ -1,5 +1,2 @@
-client/src/components/ProductDetails.jsx
-client/src/components/products/HighestRatedProducts.jsx
-client/src/components/products/TopUserProducts.jsx
-client/src/components/products/TrendingUserProducts.jsx
-client/src/components/protected/commentCRUD/MyReviews.jsx
+client/src/helpers/Balance.js
+server/validators/validateTopUp.js
