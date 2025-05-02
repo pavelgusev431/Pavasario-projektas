@@ -42,12 +42,10 @@ const ProductDetails = () => {
 
         const fetchAllImages = async () => {
             try {
-                const res = await axios.get(
-                    `http://localhost:3000/images/d/product${id}`
-                );
+                const res = await axios.get(url(`images/d/product${id}`));
                 const urls = res.data.data.map((img) =>
                     typeof img === 'string'
-                        ? `http://localhost:3000/images/d/product${id}/${img}`
+                        ? url(`images/d/product${id}/${img}`)
                         : img.url
                 );
                 setAllImages(
@@ -76,7 +74,8 @@ const ProductDetails = () => {
 
                     try {
                         const response = await axios.get(
-                            `http://localhost:3000/balance/${userId}`,
+                            url(`balance/${userId}`),
+
                             {
                                 withCredentials: true,
                             }
