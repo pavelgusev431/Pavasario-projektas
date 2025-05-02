@@ -11,6 +11,10 @@ import {
 
 const getUserProductsByUserName = async (req, res) => {
     try {
+        let { page = 1, limit = 8 } = req.query;
+        page = Math.max(Number(page), 1);
+        limit = Math.max(Number(limit), 1);
+        const offset = (page - 1) * limit;
         const username = req.params.username;
 
         if (!username) {
@@ -129,12 +133,23 @@ const getUserProductsByUserName = async (req, res) => {
 
         const avgUserRating =
             totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : 0;
-
+            const totalProducts = processedProducts.length;
+            const totalPages = Math.ceil(totalProducts / limit);
+            const paginatedProducts = processedProducts.slice(offset, offset + limit);
         return res.json({
             avgUserRating,
             totalRatings,
-            data: processedProducts,
+            data: paginatedProducts,
+            pagination: {
+                currentPage: Number(page),
+                totalPages,
+                totalProducts,
+            },
         });
+       
+
+        
+
     } catch (err) {
         console.error('Klaida gaunant duomenis:', err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });

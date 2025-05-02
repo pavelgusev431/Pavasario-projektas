@@ -166,7 +166,7 @@ const NavBar = () => {
                     {!auth && (
                         <button
                             onClick={() => handleNavigation('/signup')}
-                            className="block p-3 dark:text-white dark:hover:bg-gray-600 rounded-md hover:bg-gray-200 font-medium cursor-pointer"
+                            className="md:block hidden p-3 dark:text-white dark:hover:bg-gray-600 rounded-md hover:bg-gray-200 font-medium cursor-pointer"
                         >
                             Sign Up
                         </button>
