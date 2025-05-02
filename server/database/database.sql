@@ -4,20 +4,15 @@ INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
 ('pavardenis Vardenis', 'pavardenis@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', 'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('trending', 'trending@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', 'text text write here more 5 words',  'Konstutucijos 45, Vilnius'),
 ('bestnew', 'bestnew@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
-('courier', 'courier@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
+('kurjeris2', 'kurjeris2@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
  
 INSERT INTO "user_secrets" ("userId", password, role, balance) VALUES
-(2, 'hash2:dummySalt', 'user', 100),
-(3, 'hash3:dummySalt', 'user', 100),
-(4, 'hash4:dummySalt', 'user', 100),
-(5, 'hash5:dummySalt', 'user', 100),
-(6, 'hash6:dummySalt', 'user', 100),
-(7, '05bb60162fc7c8397ba6db76334d92809b920ab4abff50618509be602720fe82:b555f54624d225cac623785cf9880b90056daf2b7178d608a126cb95911b29fe', 'courier', 100000),
-(8, 'hash8:dummySalt', 'user', 100),
-(9, 'hash9:dummySalt', 'user', 100),
-(10, 'hash10:dummySalt', 'user', 100),
-(11, 'hash11:dummySalt', 'user', 100);
- 
+(2, '6900a341e4511860d6576b76944941c90ff9e7103cddf86ecc6f15c1631ad70b:1c829e0096ba7439390766bd3e6b8279e04035603585881ed240b34ffc647ab6', 'user', 1000),
+(3, '6900a341e4511860d6576b76944941c90ff9e7103cddf86ecc6f15c1631ad70b:1c829e0096ba7439390766bd3e6b8279e04035603585881ed240b34ffc647ab6', 'user', 1000),
+(4, '6900a341e4511860d6576b76944941c90ff9e7103cddf86ecc6f15c1631ad70b:1c829e0096ba7439390766bd3e6b8279e04035603585881ed240b34ffc647ab6', 'user', 1000),
+(5, '210cd033c6ea8d4e2781caaae4eb358227da09ea07ca432f70f871775b9aa091:179785e05354e5a689a126bc9fa1fbc5a4752451ce697acb082a89604a7df365', 'user', 1000),
+(6, '6900a341e4511860d6576b76944941c90ff9e7103cddf86ecc6f15c1631ad70b:1c829e0096ba7439390766bd3e6b8279e04035603585881ed240b34ffc647ab6', 'user', 1000),
+(7, '6900a341e4511860d6576b76944941c90ff9e7103cddf86ecc6f15c1631ad70b:1c829e0096ba7439390766bd3e6b8279e04035603585881ed240b34ffc647ab6', 'courier', 1000);
  
 INSERT INTO products (user_id, category_id, subcategory_id, name, price, description, image_url, amount_in_stock)
 VALUES
@@ -32,28 +27,6 @@ VALUES
 (2, 1, 1, 'Apple Magic Mouse', 699.00, 'Ergonomiška Apple pelė', 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MXK63?wid=2000&hei=2000&fmt=jpeg&qlt=95&.v=1730508287136', 30),
 (2, 1, 1, 'Apple Keyboard', 999.00, 'Elegantiška Apple klaviatūra', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRdHj0aRrA7hlxfiXu8SQEuNLxWyxed2i_Vg&s', 40),
 (2, 1, 1, 'iPhone 14 Pro', 1199.00, 'Ankstesnis modelis, vis dar puikus', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW8lvCIRMAbJ0RuaeQP74f90i8dQR-IMqXDA&s', 60),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1599.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1699.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 199.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 5699.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 4599.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 2399.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 12199.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 599.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 12499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
  
 -- Vardenis Vardenis
 (3, 1, 1, 'Samsung Galaxy S24', 999.00, 'Galingas Samsung flagmanas', 'https://kainos-img.dgn.lt/photos2_25_268648490/img.jpg', 30),
@@ -90,7 +63,7 @@ VALUES
 (4, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
 (5, NULL, 1, 1, 'vartotojas sukurtas', '2025-03-25T15:58:44.450Z'),
 --new user
-(6, NULL, 1, 1, 'vartotojas sukurtas', '2025-04-15T15:58:44.450Z'),
+(6, NULL, 1, 1, 'vartotojas sukurtas', '2025-04-30T15:58:44.450Z'),
  
 -- 📦 Создание продуктов
 (2, 1, 1, 2, 'ikele iPhone 15 Pro', '2024-03-25T15:58:44.450Z'),
@@ -126,10 +99,10 @@ VALUES
  
 --new user products
  
-(6, 28, 1, 2, 'ikele Testo kompiuteris', '2025-04-14T15:58:44.450Z'),
-(6, 29, 1, 2, 'ikele Testo ausinės', '2025-04-15T15:58:44.450Z'),
-(6, 30, 1, 2, 'ikele Testo laikrodis', '2025-04-16T15:58:44.450Z'),
-(6, 31, 1, 2, 'ikele tikrinu', '2025-04-15T15:58:44.450Z'),
+(6, 28, 1, 2, 'ikele Testo kompiuteris', '2025-04-30T15:58:44.450Z'),
+(6, 29, 1, 2, 'ikele Testo ausinės', '2025-04-30T15:58:44.450Z'),
+(6, 30, 1, 2, 'ikele Testo laikrodis', '2025-04-30T15:58:44.450Z'),
+(6, 31, 1, 2, 'ikele tikrinu', '2025-04-30T15:58:44.450Z'),
  
  -- ratingai naujam useriui
  
@@ -185,7 +158,7 @@ VALUES
 (5, NULL, 1, 4, 'ADDENDUM: +5€', '2025-04-07T11:00:00.000Z'),
 (5, NULL, 1, 4, 'ADDENDUM: +30€', '2025-04-07T12:00:00.000Z'),
 (5, NULL, 1, 4, 'ADDENDUM: +25€', '2025-04-07T13:00:00.000Z'),
- -- some comment
+ 
 -- 🛒 Покупки
 (5, 11, 2, 5, 'PURCHASE: Samsung Galaxy S24', '2025-04-07T14:00:00.000Z'),
 (5, 13, 2, 5, 'PURCHASE: Samsung Galaxy Buds2', '2025-04-07T15:00:00.000Z'),
@@ -243,7 +216,7 @@ VALUES
 (4, 29, 'Puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 29, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (5, 29, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
-
+ 
 (3, 30, 'Puikios ausines, labai rekomenduoju!', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 30, 'Puikios ausines, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 30, 'Puikios ausines, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
