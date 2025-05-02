@@ -104,7 +104,7 @@ export default function PublicUserProfile() {
                 </div>
             </header>
             <div className="flex justify-center md:justify-end my-2">
-                {products.length > 0 && (
+                {(
                     <Link to={`/products/u/${username}`}>
                         <button className="bg-red-500 dark:bg-red-700 md:mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
                             View All Products
