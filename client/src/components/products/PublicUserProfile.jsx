@@ -103,7 +103,15 @@ export default function PublicUserProfile() {
                     </div>
                 </div>
             </header>
-
+            <div className="flex justify-center md:justify-end my-2">
+                {products.length > 0 && (
+                    <Link to={`/products/u/${username}`}>
+                        <button className="bg-red-500 dark:bg-red-700 md:mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
+                            View All Products
+                        </button>
+                    </Link>
+                )}
+            </div>
             {/* User Info Section */}
             <section className="py-10 px-6 mt-8 bg-white dark:bg-[#1a1f2b] rounded-xl shadow-md transition-all duration-300 max-w-5xl mx-auto">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
