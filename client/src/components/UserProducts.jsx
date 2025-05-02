@@ -12,38 +12,73 @@ export default function UserProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        totalPages: 0,
+        totalProducts: 0,
+    });
+    const [pageSize, setPageSize] = useState(12);
+
+    const fetchProducts = async (page = 1) => {
+        setLoading(true);
+        try {
+            const response = await getUserProductsByUserName(username, page, pageSize);
+            setProducts(response.data.data);
+
+            setPagination({
+                currentPage: response.data.pagination.currentPage,
+                totalPages: response.data.pagination.totalPages,
+                totalProducts: response.data.pagination.totalProducts,
+            });
+
+            const userResponse = await getUserByUsername(username);
+            setUserName(userResponse.data.data.username);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await getUserProductsByUserName(username);
-                setProducts(response.data.data);
+        fetchProducts(pagination.currentPage);
+    }, [username, pagination.currentPage, pageSize]);
 
-                const userResponse = await getUserByUsername(username);
-                setUserName(userResponse.data.data.username);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const handlePageChange = (newPage) => {
+        if (newPage > 0 && newPage <= pagination.totalPages) {
+            setPagination({ ...pagination, currentPage: newPage });
+        }
+    };
 
-        fetchProducts();
-    }, [username]);
+    const handlePageSizeChange = (event) => {
+        setPageSize(parseInt(event.target.value));
+        setPagination({ ...pagination, currentPage: 1 });
+    };
 
-    if (loading) return <p>Kraunama...</p>;
-    if (error) return <p>Klaida: {error}</p>;
-    if (products.length === 0) return <p>Produktų nerasta</p>;
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+    if (products.length === 0) return <p>No products found</p>;
 
     return (
         <div>
-            <div className="flex flex-row gap-2 mt-5 ml-10">
-                <div className="w-2 h-6 bg-red-500"></div>
-                <h2 className="text-l text-red-500 font-bold mb-2">{error}</h2>
-            </div>
             <h2 className="text-2xl font-bold ml-10 mt-2 mb-2">
                 {userName} Products
             </h2>
+
+            <div className="mb-4 ml-10">
+                <label htmlFor="pageSize" className="mr-2">Products per page:</label>
+                <select
+                    id="pageSize"
+                    value={pageSize}
+                    onChange={handlePageSizeChange}
+                    className="p-2 border rounded-md"
+                >
+                    {[6, 12, 18, 24].map((size) => (
+                        <option key={size} value={size}>{size}</option>
+                    ))}
+                </select>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
                 {products.map((product) => (
                     <ProductCard
@@ -54,6 +89,37 @@ export default function UserProducts() {
                     />
                 ))}
             </div>
+
+            {pagination.totalProducts > pageSize && (
+                <div className="mt-6 flex justify-center items-center space-x-2">
+                    <button
+                        className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={() => handlePageChange(pagination.currentPage - 1)}
+                        disabled={pagination.currentPage <= 1}
+                    >
+                        Previous
+                    </button>
+
+                    {Array.from({ length: pagination.totalPages }, (_, index) => (
+                        <button
+                            key={index + 1}
+                            className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} hover:bg-blue-400`}
+                            onClick={() => handlePageChange(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+
+                    <button
+                        className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage >= pagination.totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={() => handlePageChange(pagination.currentPage + 1)}
+                        disabled={pagination.currentPage >= pagination.totalPages}
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
+
             <BackToTopButton />
         </div>
     );
