@@ -1,1 +1,1 @@
-client/src/components/layout/ProtectedRoutes.jsx
+client/src/components/layout/navbar/NavBar.jsx

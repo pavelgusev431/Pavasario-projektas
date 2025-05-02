@@ -206,8 +206,18 @@ const NavBar = () => {
                                 onClick={() =>
                                     setIsDropdownOpen(!isDropdownOpen)
                                 }
-                                className="fas fa-user-circle text-4xl cursor-pointer text-gray-500 hover:text-[#800020] transition-transform duration-300 hover:scale-110"
-                            ></button>
+                                className={`${auth.image_url ? '' : 'fas fa-user-circle'} text-4xl cursor-pointer text-gray-500 hover:text-[#800020] transition-transform duration-300 hover:scale-110`}
+                            >
+                                <img
+                                    src={auth.image_url}
+                                    style={{
+                                        borderRadius: '50%',
+                                        width: '40px',
+                                        height: '40px',
+                                    }}
+                                    alt=""
+                                />
+                            </button>
 
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg py-2 z-5">
