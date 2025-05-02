@@ -36,23 +36,33 @@ export default function HighestRatedProducts() {
                     Most popular products
                 </h2>
                 <div>
-                    <Link to={`/products`}>
-                        <button className="bg-red-500 dark:bg-red-700 mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
-                            View All Products
-                        </button>
-                    </Link>
+                    {products.length > 0 && (
+                        <Link to="/products">
+                            <button className="bg-red-500 dark:bg-red-700 mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
+                                View All Products
+                            </button>
+                        </Link>
+                    )}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                        avgRating={product.avgRating}
-                        ratingCount={product.ratingCount}
-                    />
-                ))}
+            <div className="w-full text-center">
+                {products.length === 0 ? (
+                    <p className=" text-gray-500 mt-4">
+                        Currently, no top rated products. Check back later!
+                    </p>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+                        {products.map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                avgRating={product.avgRating}
+                                ratingCount={product.ratingCount}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
