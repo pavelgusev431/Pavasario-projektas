@@ -1,4 +1,1 @@
-client/src/components/protected/commentCRUD/MyReviews.jsx
-client/src/components/protected/commentCRUD/ReviewCreateModal.jsx
-client/src/components/protected/couriers/TransactionList.jsx
-client/src/components/protected/productCRUD/MyProduct.jsx
+client/src/components/layout/ProtectedRoutes.jsx
