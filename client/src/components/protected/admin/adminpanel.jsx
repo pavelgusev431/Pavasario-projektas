@@ -9,6 +9,7 @@ import {
     updateUser,
     updateUserRole,
     getAllEvents,
+    createUser,
 } from '../../../helpers/adminPanel.js';
 
 const AdminPanel = () => {
@@ -31,6 +32,7 @@ const AdminPanel = () => {
     const [events, setEvents] = useState([]);
     const [activeTab, setActiveTab] = useState('users');
     const [searchTerm, setSearchTerm] = useState('');
+    const [updateItems, setUpdateItems] = useState(0);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -59,13 +61,7 @@ const AdminPanel = () => {
 
         fetchUsers();
         fetchEvents();
-
-        const interval = setInterval(() => {
-            fetchEvents();
-        }, 2000); //Update every 5 seconds
-
-        return () => clearInterval(interval);
-    }, []);
+    }, [updateItems]);
 
     const handleDelete = async (userId) => {
         if (!window.confirm('Ištrinti naudotoją?')) return;
@@ -152,8 +148,9 @@ const AdminPanel = () => {
                 />
 
                 <form
-                    onSubmit={handleSubmit(async () => {
+                    onSubmit={handleSubmit(async (data) => {
                         try {
+                            await createUser(data);
                             toast.success('Vartotojas sėkmingai sukurtas!');
                             const updatedUsers = await getAllUsers();
                             setUsers(updatedUsers);
@@ -216,7 +213,10 @@ const AdminPanel = () => {
 
             <div className="mb-3 justify-end flex gap-4">
                 <button
-                    onClick={() => setActiveTab('users')}
+                    onClick={() => {
+                        setActiveTab('users');
+                        setUpdateItems((items) => items + 1);
+                    }}
                     className={`px-4 py-2 rounded ${
                         activeTab === 'users'
                             ? 'bg-blue-600 text-white'
@@ -226,7 +226,10 @@ const AdminPanel = () => {
                     Users
                 </button>
                 <button
-                    onClick={() => setActiveTab('events')}
+                    onClick={() => {
+                        setActiveTab('events');
+                        setUpdateItems((items) => items - 1);
+                    }}
                     className={`px-4 py-2 rounded ${
                         activeTab === 'events'
                             ? 'bg-blue-600 text-white'

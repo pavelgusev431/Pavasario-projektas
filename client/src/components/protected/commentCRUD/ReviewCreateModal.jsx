@@ -5,9 +5,14 @@ import createComment from '../../../helpers/createComment.js';
 import { FaStar } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function ReviewCreateModal({ setShowModal, setUpdate, productId }) {
+export default function ReviewCreateModal({
+    setShowModal,
+    setUpdate,
+    productId,
+}) {
     const [availableFileTypes, setAvailableFileTypes] = useState([]);
-    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] = useState('');
+    const [strippedAvailableFileTypes, setStrippedAvailableFileTypes] =
+        useState('');
     const [error, setError] = useState('');
 
     const {
@@ -52,7 +57,9 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                 window.location.reload();
             }, 2500);
         } catch (error) {
-            setError(error.response?.data?.message || 'Nepavyko sukurti komentaro');
+            setError(
+                error.response?.data?.message || 'Nepavyko sukurti komentaro'
+            );
         }
     };
 
@@ -76,7 +83,10 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit(submitHandler)} className="dark:bg-gray-800 p-6">
+                <form
+                    onSubmit={handleSubmit(submitHandler)}
+                    className="dark:bg-gray-800 p-6"
+                >
                     <div className="mb-4">
                         <textarea
                             placeholder="Komentaras"
@@ -91,7 +101,9 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                             className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
                         {errors.comment && (
-                            <p className="text-red-500 text-sm mt-2">{errors.comment.message}</p>
+                            <p className="text-red-500 text-sm mt-2">
+                                {errors.comment.message}
+                            </p>
                         )}
                     </div>
 
@@ -113,7 +125,11 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                                 >
                                     <FaStar
                                         size={28}
-                                        color={watch('stars') >= star ? '#facc15' : '#d1d5db'}
+                                        color={
+                                            watch('stars') >= star
+                                                ? '#facc15'
+                                                : '#d1d5db'
+                                        }
                                         className="transition-colors hover:scale-110"
                                     />
                                 </button>
@@ -129,7 +145,9 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                             })}
                         />
                         {errors.stars && (
-                            <p className="text-red-500 text-sm mt-2">{errors.stars.message}</p>
+                            <p className="text-red-500 text-sm mt-2">
+                                {errors.stars.message}
+                            </p>
                         )}
                     </div>
 
@@ -147,9 +165,12 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                                 },
                                 validate: {
                                     fileType: (value) => {
-                                        if (!value || !Array.from(value)[0]) return true;
+                                        if (!value || !Array.from(value)[0])
+                                            return true;
                                         return (
-                                            availableFileTypes.includes(Array.from(value)[0].type) ||
+                                            availableFileTypes.includes(
+                                                Array.from(value)[0].type
+                                            ) ||
                                             `Leistini formatai: ${strippedAvailableFileTypes}`
                                         );
                                     },
@@ -158,7 +179,9 @@ export default function ReviewCreateModal({ setShowModal, setUpdate, productId }
                             className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
                         {errors.images && (
-                            <p className="text-red-500 text-sm mt-2">{errors.images.message}</p>
+                            <p className="text-red-500 text-sm mt-2">
+                                {errors.images.message}
+                            </p>
                         )}
                     </div>
 

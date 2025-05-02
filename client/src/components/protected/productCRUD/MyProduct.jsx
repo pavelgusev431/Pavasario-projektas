@@ -14,54 +14,57 @@ const MyProduct = ({ product, setUpdate }) => {
     };
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col sm:flex-row items-center gap-4 p-4 my-4">
-    {/* Product Image */}
-    <img
-        src={image_url}
-        alt={name}
-        className="w-40 h-40 object-cover rounded-lg border border-gray-200"
-    />
+            {/* Product Image */}
+            <img
+                src={image_url}
+                alt={name}
+                className="w-40 h-40 object-cover rounded-lg border border-gray-200"
+            />
 
-    {/* Product Info */}
-    <div className="flex flex-col flex-1 text-center sm:text-left">
-        <p className="text-xl font-semibold text-gray-800 dark:text-white">{name}</p>
-        <p className="text-gray-600 dark:text-gray-300 mt-1">{description}</p>
-        <p className="text-red-500 font-bold text-lg mt-2">${price}</p>
-    </div>
+            {/* Product Info */}
+            <div className="flex flex-col flex-1 text-center sm:text-left">
+                <p className="text-xl font-semibold text-gray-800 dark:text-white">
+                    {name}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300 mt-1">
+                    {description}
+                </p>
+                <p className="text-red-500 font-bold text-lg mt-2">${price}</p>
+            </div>
 
-    {/* Action Buttons */}
-    <div className="flex flex-col gap-2">
-        <button
-            onClick={handleEdit}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md transition"
-        >
-            Edit
-        </button>
-        <button
-            onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md transition"
-        >
-            Delete
-        </button>
-    </div>
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-2">
+                <button
+                    onClick={handleEdit}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md transition"
+                >
+                    Edit
+                </button>
+                <button
+                    onClick={handleDelete}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-md transition"
+                >
+                    Delete
+                </button>
+            </div>
 
-    {/* Modals */}
-    {showEdit && (
-        <ProductEditModal
-            id={id}
-            toggleShow={handleEdit}
-            setUpdate={setUpdate}
-            productInfo={product}
-        />
-    )}
-    {showDelete && (
-        <ProductDeleteModal
-            id={id}
-            toggleShow={handleDelete}
-            setUpdate={setUpdate}
-        />
-    )}
-</div>
-
+            {/* Modals */}
+            {showEdit && (
+                <ProductEditModal
+                    id={id}
+                    toggleShow={handleEdit}
+                    setUpdate={setUpdate}
+                    productInfo={product}
+                />
+            )}
+            {showDelete && (
+                <ProductDeleteModal
+                    id={id}
+                    toggleShow={handleDelete}
+                    setUpdate={setUpdate}
+                />
+            )}
+        </div>
     );
 };
 

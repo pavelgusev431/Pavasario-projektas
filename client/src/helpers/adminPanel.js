@@ -1,5 +1,7 @@
 import axios from 'axios';
 import url from './getURL';
+import { sha1 } from 'js-sha1';
+import { sha256 } from 'js-sha256';
 
 const API = axios.create({
     withCredentials: true,
@@ -11,7 +13,12 @@ export const getAllUsers = async () => {
 };
 
 export const createUser = async (userData) => {
-    const res = await API.post(url('admin/users'), userData);
+    const hashedPassword = sha256(sha1(userData.password));
+    userData.password = undefined;
+    const res = await API.post(url('admin/users'), {
+        ...userData,
+        password: hashedPassword,
+    });
     return res.data;
 };
 
