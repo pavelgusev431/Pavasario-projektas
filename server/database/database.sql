@@ -7,8 +7,18 @@ INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
 ('bestnew', 'bestnew@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('courier', 'courier@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
 
-INSERT INTO "user_secrets" ("userId", password, role, balance) VALUES 
-(7, '05bb60162fc7c8397ba6db76334d92809b920ab4abff50618509be602720fe82:b555f54624d225cac623785cf9880b90056daf2b7178d608a126cb95911b29fe', 'courier', 100000);
+INSERT INTO "user_secrets" ("userId", password, role, balance) VALUES
+(2, 'hash2:dummySalt', 'user', 100),
+(3, 'hash3:dummySalt', 'user', 100),
+(4, 'hash4:dummySalt', 'user', 100),
+(5, 'hash5:dummySalt', 'user', 100),
+(6, 'hash6:dummySalt', 'user', 100),
+(7, '05bb60162fc7c8397ba6db76334d92809b920ab4abff50618509be602720fe82:b555f54624d225cac623785cf9880b90056daf2b7178d608a126cb95911b29fe', 'courier', 100000),
+(8, 'hash8:dummySalt', 'user', 100),
+(9, 'hash9:dummySalt', 'user', 100),
+(10, 'hash10:dummySalt', 'user', 100),
+(11, 'hash11:dummySalt', 'user', 100);
+
 
 INSERT INTO products (user_id, category_id, subcategory_id, name, price, description, image_url, amount_in_stock)
 VALUES
