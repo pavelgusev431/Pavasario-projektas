@@ -176,7 +176,7 @@ VALUES
 (5, NULL, 1, 4, 'ADDENDUM: +5€', '2025-04-07T11:00:00.000Z'),
 (5, NULL, 1, 4, 'ADDENDUM: +30€', '2025-04-07T12:00:00.000Z'),
 (5, NULL, 1, 4, 'ADDENDUM: +25€', '2025-04-07T13:00:00.000Z'),
- 
+ -- some comment
 -- 🛒 Покупки
 (5, 11, 2, 5, 'PURCHASE: Samsung Galaxy S24', '2025-04-07T14:00:00.000Z'),
 (5, 13, 2, 5, 'PURCHASE: Samsung Galaxy Buds2', '2025-04-07T15:00:00.000Z'),
@@ -234,7 +234,7 @@ VALUES
 (4, 29, 'Puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 29, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (5, 29, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
- 
+
 (3, 30, 'Puikios ausines, labai rekomenduoju!', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 30, 'Puikios ausines, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 30, 'Puikios ausines, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
