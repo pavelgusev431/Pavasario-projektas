@@ -1,13 +1,2 @@
 npm warn Unknown env config "s". This will stop working in the next major version of npm.
-client/src/components/layout/navbar/NavBar.jsx
-client/src/components/ProductDetails.jsx
-client/src/components/products/HighestRatedProducts.jsx
-client/src/components/products/SearchedProducts.jsx
-client/src/components/products/TopUserProducts.jsx
-client/src/components/products/TrendingUserProducts.jsx
-client/src/components/protected/commentCRUD/MyReviews.jsx
-client/src/helpers/Balance.js
-client/src/helpers/searchProducts.js
-server/controllers/productController.js
-server/routers/productRouter.js
-server/validators/validateTopUp.js
+client/src/components/products/PublicUserProfile.jsx
