@@ -42,7 +42,7 @@ const ProductDetails = () => {
 
         const fetchAllImages = async () => {
             try {
-                const res = await axios.get(url(`images/d/product${id}`));
+                const res = await axios.get(url(`images/d/product${id}/${img}`));
                 const urls = res.data.data.map((img) =>
                     typeof img === 'string'
                         ? url(`images/d/product${id}/${img}`)
