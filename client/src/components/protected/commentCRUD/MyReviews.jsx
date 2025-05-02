@@ -1,72 +1,67 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../contexts/AuthContext.jsx";
-import getUserComments from "../../../helpers/getUserComments.js";
-import axios from "axios";
-import url from "../../../helpers/getURL.js";
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../contexts/AuthContext.jsx';
+import getUserComments from '../../../helpers/getUserComments.js';
+import axios from 'axios';
+import url from '../../../helpers/getURL.js';
 
 export default function MyReviews() {
-  const { auth, loading } = useContext(AuthContext);
-  const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  
+    const { auth, loading } = useContext(AuthContext);
+    const [comments, setComments] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  
-
-  useEffect(() => {
-    if (!loading && auth?.id) {
-      const fetchComments = async () => {
-        try {
-          const response = await getUserComments(auth.id);
-          const commentsData = response.data.data || [];
-          const commentsWithImages = await Promise.all(
-            commentsData.map(async (comment) => {
-              try {
-                const imgResponse = await axios.get(
-                  url(`images/c/comment${comment.id}`),
-                  {
-                    withCredentials: true,
-                  }
-                );
-                return {
-                  ...comment,
-                  images: imgResponse.data.data || [],
-                };
-              } catch (imgErr) {
-                console.error(
-                  `Klaida gaunant komentaro ${comment.id} paveikslėlius:`,
-                  imgErr
-                );
-                return { ...comment, images: [] };
-              }
-            })
-          );
-          setComments(commentsWithImages);
-        } catch (err) {
-          console.error("Klaida gaunant komentarus:", err);
-          setError(err.message || "Nepavyko gauti komentarų");
-        } finally {
-          setIsLoading(false);
+    useEffect(() => {
+        if (!loading && auth?.id) {
+            const fetchComments = async () => {
+                try {
+                    const response = await getUserComments(auth.id);
+                    const commentsData = response.data.data || [];
+                    const commentsWithImages = await Promise.all(
+                        commentsData.map(async (comment) => {
+                            try {
+                                const imgResponse = await axios.get(
+                                    url(`images/c/comment${comment.id}`),
+                                    {
+                                        withCredentials: true,
+                                    }
+                                );
+                                return {
+                                    ...comment,
+                                    images: imgResponse.data.data || [],
+                                };
+                            } catch (imgErr) {
+                                console.error(
+                                    `Klaida gaunant komentaro ${comment.id} paveikslėlius:`,
+                                    imgErr
+                                );
+                                return { ...comment, images: [] };
+                            }
+                        })
+                    );
+                    setComments(commentsWithImages);
+                } catch (err) {
+                    console.error('Klaida gaunant komentarus:', err);
+                    setError(err.message || 'Nepavyko gauti komentarų');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchComments();
         }
-      };
-      fetchComments();
-    }
-  }, [auth, loading]);
+    }, [auth, loading]);
 
     if (loading || isLoading) return <p>Loading...</p>;
     if (!auth) return <p>Not logged in</p>;
     if (error) return <p>error: {error}</p>;
 
-  return (
-    <div>
-     
-      <div className="flex items-center mb-6 ml-6 mt-4">
-        <div className="w-2 h-8 bg-red-500 mr-3"></div>
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-          My reviews
-        </h2>
-      </div>
+    return (
+        <div>
+            <div className="flex items-center mb-6 ml-6 mt-4">
+                <div className="w-2 h-8 bg-red-500 mr-3"></div>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                    My reviews
+                </h2>
+            </div>
 
             <div className="flex flex-wrap gap-4 ml-6">
                 {comments.length === 0 ? (

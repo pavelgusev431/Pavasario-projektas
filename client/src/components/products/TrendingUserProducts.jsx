@@ -57,13 +57,13 @@ export default function TrendingUserProducts() {
                         : `Trending ${userName} products`}
                 </h2>
                 <div className="text-center mt-4 mr-10">
-                {products.length > 0 && (
-                    <Link to={`/products/u/${userName}`}>
-                        <button className="bg-red-500 dark:bg-red-700 mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
-                            View All Products
-                        </button>
-                    </Link>
-                )}
+                    {products.length > 0 && (
+                        <Link to={`/products/u/${userName}`}>
+                            <button className="bg-red-500 dark:bg-red-700 mr-10 hover:bg-red-700 dark:hover:bg-red-800 text-white font-bold rounded py-2 px-4">
+                                View All Products
+                            </button>
+                        </Link>
+                    )}
                 </div>
             </div>
             {noUser ? (

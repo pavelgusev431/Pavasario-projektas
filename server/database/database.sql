@@ -1,4 +1,3 @@
-
 INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
 ('Pavel gusev', 'pavel.gusev431@gmail.com', 'https://c8.alamy.com/zooms/9/305f98cf4d084cefbe7d506128e11ecb/pxx5p8.jpg', 'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('Vardenis Vardenis', 'vardenis@gmail.com', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC-gxW7tUW_zWRnuZbcfV35ypZZvBoRbKZrA&s', 'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
@@ -6,10 +5,20 @@ INSERT INTO "users" (username, email, image_url, description, contacts) VALUES
 ('trending', 'trending@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', 'text text write here more 5 words',  'Konstutucijos 45, Vilnius'),
 ('bestnew', 'bestnew@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius'),
 ('courier', 'courier@gmail.com', 'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',  'text text write here more 5 words', 'Konstutucijos 45, Vilnius');
-
-INSERT INTO "user_secrets" ("userId", password, role, balance) VALUES 
-(7, '05bb60162fc7c8397ba6db76334d92809b920ab4abff50618509be602720fe82:b555f54624d225cac623785cf9880b90056daf2b7178d608a126cb95911b29fe', 'courier', 100000);
-
+ 
+INSERT INTO "user_secrets" ("userId", password, role, balance) VALUES
+(2, 'hash2:dummySalt', 'user', 100),
+(3, 'hash3:dummySalt', 'user', 100),
+(4, 'hash4:dummySalt', 'user', 100),
+(5, 'hash5:dummySalt', 'user', 100),
+(6, 'hash6:dummySalt', 'user', 100),
+(7, '05bb60162fc7c8397ba6db76334d92809b920ab4abff50618509be602720fe82:b555f54624d225cac623785cf9880b90056daf2b7178d608a126cb95911b29fe', 'courier', 100000),
+(8, 'hash8:dummySalt', 'user', 100),
+(9, 'hash9:dummySalt', 'user', 100),
+(10, 'hash10:dummySalt', 'user', 100),
+(11, 'hash11:dummySalt', 'user', 100);
+ 
+ 
 INSERT INTO products (user_id, category_id, subcategory_id, name, price, description, image_url, amount_in_stock)
 VALUES
 -- Pavel Gusev
@@ -24,15 +33,20 @@ VALUES
 (2, 1, 1, 'Apple Keyboard', 999.00, 'Elegantiška Apple klaviatūra', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRdHj0aRrA7hlxfiXu8SQEuNLxWyxed2i_Vg&s', 40),
 (2, 1, 1, 'iPhone 14 Pro', 1199.00, 'Ankstesnis modelis, vis dar puikus', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW8lvCIRMAbJ0RuaeQP74f90i8dQR-IMqXDA&s', 60),
 (2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1599.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1699.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
 (2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 1, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 199.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 1499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 5699.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 1, 'iPhone 15 Pro', 4599.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 2399.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 12199.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 599.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
+(2, 1, 4, 'iPhone 15 Pro', 12499.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
 (2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
 (2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
 (2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
@@ -40,12 +54,7 @@ VALUES
 (2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
 (2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
 (2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-(2, 1, 4, 'iPhone 15 Pro', 1299.00, 'Naujausias Apple telefonas', 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png', 50),
-
+ 
 -- Vardenis Vardenis
 (3, 1, 1, 'Samsung Galaxy S24', 999.00, 'Galingas Samsung flagmanas', 'https://kainos-img.dgn.lt/photos2_25_268648490/img.jpg', 30),
 (3, 1, 1, 'Samsung Galaxy Tab S8', 849.00, 'Samsung planšetinis kompiuteris', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoK3wn3Ep9Yx3evtt8QWedwsnH8vRTo3dsmA&s', 50),
@@ -176,7 +185,7 @@ VALUES
 (5, NULL, 1, 4, 'ADDENDUM: +5€', '2025-04-07T11:00:00.000Z'),
 (5, NULL, 1, 4, 'ADDENDUM: +30€', '2025-04-07T12:00:00.000Z'),
 (5, NULL, 1, 4, 'ADDENDUM: +25€', '2025-04-07T13:00:00.000Z'),
- 
+ -- some comment
 -- 🛒 Покупки
 (5, 11, 2, 5, 'PURCHASE: Samsung Galaxy S24', '2025-04-07T14:00:00.000Z'),
 (5, 13, 2, 5, 'PURCHASE: Samsung Galaxy Buds2', '2025-04-07T15:00:00.000Z'),
@@ -234,7 +243,7 @@ VALUES
 (4, 29, 'Puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 29, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (5, 29, 'puikus telefonas, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
- 
+
 (3, 30, 'Puikios ausines, labai rekomenduoju!', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 30, 'Puikios ausines, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
 (4, 30, 'Puikios ausines, ', 5, 'https://cdn.pixabay.com/photo/2013/07/12/18/39/smartphone-153650_640.png'),
