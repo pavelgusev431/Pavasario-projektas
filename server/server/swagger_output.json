@@ -551,42 +551,22 @@
             "type": "string"
           },
           {
-            "name": "page",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "minPrice",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "maxPrice",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "minDate",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "maxDate",
-            "in": "query",
-            "type": "string"
-          },
-          {
             "name": "sort",
             "in": "query",
             "type": "string"
           },
           {
             "name": "order",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
             "in": "query",
             "type": "string"
           }

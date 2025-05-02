@@ -1,43 +1,25 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ProductCard from '../ProductCard';
-import Tools from '../Tools';
+import Sort from '../Sort';
 import { searchProducts } from '../../helpers/searchProducts';
 import getSearchRegex from '../../helpers/getSearchRegex';
 import BackToTopButton from '../buttons/BackToTopButton';
-import debounce from 'lodash.debounce';
 
 const SearchedProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [zalgoRegex, setZalgoRegex] = useState(null);
     const navigate = useNavigate();
+
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 0,
         totalProducts: 0,
-    });
-
-    const [dateRange, setDateRange] = useState(() => {
-        try {
-            const savedDateRange = JSON.parse(
-                localStorage.getItem('dateRange')
-            );
-            return (
-                savedDateRange || [
-                    new Date('2024-01-01').getTime(),
-                    new Date().setDate(new Date().getDate() + 1),
-                ]
-            );
-        } catch {
-            return [
-                new Date('2024-01-01').getTime(),
-                new Date().setDate(new Date().getDate() + 1),
-            ];
-        }
+        perPage: 8,
     });
 
     const [sortValue, setSortValue] = useState(() => {
@@ -56,16 +38,6 @@ const SearchedProducts = () => {
             ? savedSortValue
             : 'timestamp-desc';
     });
-    const [priceRange, setPriceRange] = useState(() => {
-        try {
-            const savedPriceRange = JSON.parse(
-                localStorage.getItem('priceRange')
-            );
-            return savedPriceRange || [0, 5000];
-        } catch {
-            return [0, 5000];
-        }
-    });
 
     useEffect(() => {
         const fetchRegex = async () => {
@@ -83,7 +55,7 @@ const SearchedProducts = () => {
         fetchRegex();
     }, []);
 
-    const fetchSearchResults = async (query) => {
+    const fetchSearchResults = async (query, page = 1) => {
         if (!query) return;
 
         setLoading(true);
@@ -91,12 +63,33 @@ const SearchedProducts = () => {
 
         try {
             const [sort, order] = sortValue.split('-');
-            const response = await searchProducts(query, sort, order);
+            const response = await searchProducts(
+                query,
+                sort,
+                order,
+                page,
+                pagination.perPage
+            );
+
             if (response?.data) {
-                const productsData = response.data.data || response.data;
-                setProducts(productsData);
+                setProducts(response.data.data || []);
+
+                if (response.data.pagination) {
+                    setPagination({
+                        currentPage: response.data.pagination.currentPage,
+                        totalPages: response.data.pagination.totalPages,
+                        totalProducts: response.data.pagination.totalProducts,
+                        perPage: response.data.pagination.perPage,
+                    });
+                }
             } else {
                 setProducts([]);
+                setPagination({
+                    currentPage: 1,
+                    totalPages: 0,
+                    totalProducts: 0,
+                    perPage: pagination.perPage,
+                });
             }
         } catch (err) {
             console.error('Error fetching search results:', err);
@@ -113,6 +106,8 @@ const SearchedProducts = () => {
 
     useEffect(() => {
         const query = searchParams.get('q');
+        const page = parseInt(searchParams.get('page') || '1', 10);
+
         const isZalgo = (text) => {
             try {
                 return zalgoRegex ? zalgoRegex.test(text) : false;
@@ -121,6 +116,7 @@ const SearchedProducts = () => {
                 return false;
             }
         };
+
         if (zalgoRegex && query) {
             const trimmedQuery = query.trim().toLowerCase();
 
@@ -136,67 +132,46 @@ const SearchedProducts = () => {
                 return;
             }
 
-            fetchSearchResults(trimmedQuery);
+            fetchSearchResults(trimmedQuery, page);
         } else {
             setProducts([]);
         }
     }, [searchParams, navigate, zalgoRegex, sortValue]);
 
     const searchQuery = searchParams.get('q');
-
-    const minDate = new Date('2024-01-01').getTime();
-    const maxDate = (() => {
-        const today = new Date();
-        today.setDate(today.getDate() + 1);
-        return today.getTime();
-    })();
-
-    const filteredProducts = useMemo(() => {
-        return products.filter(
-            (product) =>
-                product.name.toLowerCase().includes(searchQuery) &&
-                product.price >= priceRange[0] &&
-                product.price <= priceRange[1] &&
-                new Date(product.timestamp).getTime() >= dateRange[0] &&
-                new Date(product.timestamp).getTime() <= dateRange[1]
-        );
-    }, [products, priceRange, dateRange, sortValue]);
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
     useEffect(() => {
-        localStorage.setItem('priceRange', JSON.stringify(priceRange));
-        localStorage.setItem('dateRange', JSON.stringify(dateRange));
         localStorage.setItem('sortValue', sortValue);
-    }, [priceRange, dateRange, sortValue]);
+    }, [sortValue]);
 
     const handleSortChange = (newSortValue) => {
         setSortValue(newSortValue);
-        setPagination({ ...pagination, currentPage: 1 });
+        setSearchParams((params) => {
+            params.set('page', '1');
+            return params;
+        });
     };
-    const resetFilters = () => {
-        setPriceRange([0, 5000]);
-        setDateRange([
-            new Date('2024-01-01').getTime(),
-            new Date().setDate(new Date().getDate() + 1),
-        ]);
-        setSortValue('timestamp-asc');
-        setPagination({ ...pagination, currentPage: 1 });
+
+    const handlePageChange = (newPage) => {
+        setSearchParams((params) => {
+            params.set('page', newPage.toString());
+            return params;
+        });
+        window.scrollTo(0, 0);
     };
 
     return (
         <div className="p-4">
             <div className="mt-8 w-full">
-                {/* Įrankių juosta */}
-                <Tools
-                    priceRange={priceRange}
-                    setPriceRange={setPriceRange}
-                    dateRange={dateRange}
-                    setDateRange={setDateRange}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    onSortChange={handleSortChange}
-                    sortValue={sortValue}
-                    resetFilters={resetFilters}
-                />
+                {/* Sort component */}
+                <div className="flex justify-end mb-4 mx-10">
+                    <Sort
+                        onSortChange={handleSortChange}
+                        sortValue={sortValue}
+                    />
+                </div>
+
                 <div className="flex ml-10 flex-row gap-2 mt-2">
                     <div className="w-2 h-6 bg-red-500"></div>
                     <h2 className="text-l text-red-500 font-bold mb-2">
@@ -223,23 +198,123 @@ const SearchedProducts = () => {
 
                 {!loading &&
                     !error &&
-                    (filteredProducts.length === 0 ? (
+                    (products.length === 0 ? (
                         <p className="text-gray-500 text-center mx-10 py-8">
                             {searchQuery
                                 ? `No products found matching "${searchQuery}"`
                                 : 'Enter a search term to find products.'}
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mx-6">
-                            {filteredProducts.map((product) => (
-                                <ProductCard
-                                    key={product.id}
-                                    product={product}
-                                    avgRating={product.avgRating}
-                                    ratingCount={product.ratingCount}
-                                />
-                            ))}
-                        </div>
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mx-6">
+                                {products.map((product) => (
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                        avgRating={product.avgRating}
+                                        ratingCount={product.ratingCount}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* Pagination Controls */}
+                            {pagination.totalPages > 1 && (
+                                <div className="flex justify-center mt-8 mb-4">
+                                    <nav className="flex items-center">
+                                        <button
+                                            onClick={() =>
+                                                handlePageChange(
+                                                    Math.max(currentPage - 1, 1)
+                                                )
+                                            }
+                                            disabled={currentPage === 1}
+                                            className={`px-3 py-1 mr-1 rounded ${
+                                                currentPage === 1
+                                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                            }`}
+                                        >
+                                            Previous
+                                        </button>
+
+                                        {Array.from(
+                                            { length: pagination.totalPages },
+                                            (_, i) => i + 1
+                                        )
+                                            .filter(
+                                                (page) =>
+                                                    page === 1 ||
+                                                    page ===
+                                                        pagination.totalPages ||
+                                                    (page >= currentPage - 1 &&
+                                                        page <= currentPage + 1)
+                                            )
+                                            .map((page, index, array) => {
+                                                // Show ellipsis when pages are skipped
+                                                if (
+                                                    index > 0 &&
+                                                    page - array[index - 1] > 1
+                                                ) {
+                                                    return (
+                                                        <span
+                                                            key={`ellipsis-${page}`}
+                                                            className="mx-1"
+                                                        >
+                                                            ...
+                                                        </span>
+                                                    );
+                                                }
+
+                                                return (
+                                                    <button
+                                                        key={page}
+                                                        onClick={() =>
+                                                            handlePageChange(
+                                                                page
+                                                            )
+                                                        }
+                                                        className={`w-8 h-8 mx-1 rounded ${
+                                                            currentPage === page
+                                                                ? 'bg-blue-500 text-white'
+                                                                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                                        }`}
+                                                    >
+                                                        {page}
+                                                    </button>
+                                                );
+                                            })}
+
+                                        <button
+                                            onClick={() =>
+                                                handlePageChange(
+                                                    Math.min(
+                                                        currentPage + 1,
+                                                        pagination.totalPages
+                                                    )
+                                                )
+                                            }
+                                            disabled={
+                                                currentPage ===
+                                                pagination.totalPages
+                                            }
+                                            className={`px-3 py-1 ml-1 rounded ${
+                                                currentPage ===
+                                                pagination.totalPages
+                                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                                                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                            }`}
+                                        >
+                                            Next
+                                        </button>
+                                    </nav>
+                                </div>
+                            )}
+
+                            <div className="text-center text-gray-500 mb-8">
+                                Showing {products.length} of{' '}
+                                {pagination.totalProducts} products
+                            </div>
+                        </>
                     ))}
             </div>
             <BackToTopButton />

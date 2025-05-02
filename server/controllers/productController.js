@@ -273,29 +273,52 @@ const getUserProductsSortedPaginated = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const { q, minPrice, maxPrice, minDate, maxDate, sort, order } =
-            req.query;
+        const { q, sort, order } = req.query;
 
         let { page = 1, limit = 8 } = req.query;
         page = Math.max(Number(page), 1);
         limit = Math.max(Number(limit), 1);
         const offset = (page - 1) * limit;
 
-        let products;
+        const whereClause = {};
         if (q) {
-            products = await Product.findAll({
-                where: {
-                    name: {
-                        [Op.iLike]: `%${q}%`,
-                    },
-                },
-            });
-        } else {
-            products = await Product.findAll();
+            whereClause.name = {
+                [Op.iLike]: `%${q}%`,
+            };
         }
 
-        if (products.length === 0) {
-            return res.status(404).json({ message: 'Nėra produktų' });
+        const count = await Product.count({
+            where: whereClause,
+        });
+
+        const queryOptions = {
+            where: whereClause,
+            limit: Number(limit),
+            offset: Number(offset),
+        };
+
+        if (sort && order) {
+            if (sort === 'timestamp') {
+                console.log(
+                    'Timestamp sorting will be applied after fetching data'
+                );
+            } else {
+                queryOptions.order = [[sort, order.toUpperCase()]];
+            }
+        }
+
+        const products = await Product.findAll(queryOptions);
+
+        if (products.length === 0 && page === 1) {
+            return res.status(404).json({
+                message: 'Nėra produktų',
+                pagination: {
+                    currentPage: Number(page),
+                    totalPages: 0,
+                    totalProducts: 0,
+                    perPage: Number(limit),
+                },
+            });
         }
 
         const events = await Event.findAll({
@@ -343,39 +366,27 @@ const getAllProducts = async (req, res) => {
             };
         });
 
-        let allFilteredProducts = processedProducts;
+        const sortedProducts = [...processedProducts];
+        if (sort === 'timestamp' && order) {
+            sortedProducts.sort((a, b) => {
+                const dateA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+                const dateB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
 
-        if (minPrice || maxPrice) {
-            allFilteredProducts = await filterItemsByRange(
-                minPrice,
-                maxPrice,
-                allFilteredProducts,
-                null,
-                null,
-                'price'
-            );
+                return order.toLowerCase() === 'asc'
+                    ? dateA - dateB
+                    : dateB - dateA;
+            });
         }
 
-        if (minDate || maxDate) {
-            allFilteredProducts = await filterItemsByRange(
-                minDate,
-                maxDate,
-                allFilteredProducts,
-                null,
-                null,
-                'date'
-            );
-        }
-
-        console.log('controller:', sort, order);
-        console.log('query!!!!!!!!: ', req.query);
-        const sortedProducts = await sortHelper(
-            allFilteredProducts,
-            sort,
-            order
-        );
-
-        return res.json({ data: sortedProducts });
+        return res.json({
+            data: sortedProducts,
+            pagination: {
+                currentPage: Number(page),
+                totalPages: Math.ceil(count / limit),
+                totalProducts: count,
+                perPage: Number(limit),
+            },
+        });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });
