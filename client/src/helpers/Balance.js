@@ -9,7 +9,11 @@ export const getBalance = async (userId) => {
 };
 
 export const topUpBalance = async (userId, amount) => {
-    const res = await axios.post(`${BASE_URL}/topup`, { userId, amount });
+    const res = await axios.post(
+        `${BASE_URL}/topup`,
+        { userId, amount },
+        { withCredentials: true }
+    );
     return res.data;
 };
 
