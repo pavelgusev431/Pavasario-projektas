@@ -90,7 +90,7 @@ const ProductsPage = () => {
                 {products[0]?.subcategory?.name || 'Selected Category'}
             </h2>
 
-            <div className="mb-4">
+            <div className="mb-4 ml-10">
                 <label htmlFor="pageSize" className="mr-2">
                     Products per page:
                 </label>
