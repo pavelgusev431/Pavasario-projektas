@@ -194,7 +194,7 @@ const AdminPanel = () => {
 
                     <select
                         {...register('role')}
-                        className="w-[2.5cm] p-2 rounded bg-[#364153] dark:bg-gray-700 text-gray-900 dark:text-white"
+                        className="w-[2.5cm] p-2 rounded bg-[#0062ff] dark:bg-gray-700 text-white dark:text-white"
                     >
                         <option value="user">User</option>
                         <option value="admin">Admin</option>

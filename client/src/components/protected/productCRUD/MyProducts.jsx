@@ -27,7 +27,7 @@ const MyProducts = () => {
                         </h2>
                     </div>
                     <div className="flex items-center">
-                        <h2 className="">Add a product</h2>
+                        <h2>Add a product</h2>
                         <button
                             onClick={handleProductCreate}
                             className="text-white bg-orange-600 rounded-xl px-4 py-2 ml-2 flex justify-center items-center hover:cursor-pointer"

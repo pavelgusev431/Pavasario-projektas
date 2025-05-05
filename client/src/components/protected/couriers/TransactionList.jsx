@@ -114,7 +114,7 @@ const TransactionsList = () => {
             <h1 className="text-2xl font-bold mb-6">My Transactions</h1>
 
             {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 transition-colors duration-200 dark:bg-red-900 dark:border-red-700 dark:text-red-100">
                     <p>{error}</p>
                     <button
                         onClick={fetchTransactions}
@@ -127,13 +127,13 @@ const TransactionsList = () => {
 
             {/* Role Selector */}
             <div className="mb-6">
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
+                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md dark:bg-gray-800">
                     <button
                         onClick={() => setActiveRole('buyer')}
                         className={`flex-1 py-2 px-4 rounded-md transition ${
                             activeRole === 'buyer'
-                                ? 'bg-white shadow-sm font-medium text-blue-600'
-                                : 'text-gray-600 hover:bg-gray-200'
+                                ? 'bg-white shadow-sm font-medium text-blue-600 dark:text-blue-400 dark:bg-gray-600 '
+                                : 'text-gray-600 hover:bg-gray-400 dark:text-gray-700 '
                         }`}
                     >
                         As Buyer
@@ -142,8 +142,8 @@ const TransactionsList = () => {
                         onClick={() => setActiveRole('seller')}
                         className={`flex-1 py-2 px-4 rounded-md transition ${
                             activeRole === 'seller'
-                                ? 'bg-white shadow-sm font-medium text-blue-600'
-                                : 'text-gray-600 hover:bg-gray-200'
+                                ? 'bg-white shadow-sm font-medium text-blue-600 dark:text-blue-400 dark:bg-gray-600 '
+                                : 'text-gray-600 hover:bg-gray-400 dark:text-gray-700'
                         }`}
                     >
                         As Seller
@@ -341,7 +341,7 @@ const TransactionsList = () => {
                     )}
                 </div>
             ) : (
-                <div className="bg-white shadow overflow-hidden sm:rounded-md p-6 text-center">
+                <div className="bg-white shadow overflow-hidden sm:rounded-md p-6 text-center dark:bg-gray-800 dark:border-[0.1cm] border-gray-600">
                     <svg
                         className="mx-auto h-12 w-12 text-gray-400"
                         fill="none"
@@ -356,7 +356,7 @@ const TransactionsList = () => {
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         ></path>
                     </svg>
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">
+                    <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
                         No transactions found
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">
@@ -368,7 +368,7 @@ const TransactionsList = () => {
                         <div className="mt-6">
                             <Link
                                 to="/products"
-                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 dark:bg-gray-500 dark:focus:bg-gray-700 dark:hover:bg-gray-700"
                             >
                                 Browse Products
                             </Link>
