@@ -34,7 +34,8 @@ const ProductDetails = () => {
             try {
                 const productData = await getSelectedProduct(id);
                 setProduct(productData);
-                setSelectedImage(productData.image_url);
+                console.log(productData);
+                setSelectedImage(productData?.image_url);
             } catch (error) {
                 console.log(error.message);
             }
@@ -42,7 +43,7 @@ const ProductDetails = () => {
 
         const fetchAllImages = async () => {
             try {
-                const res = await axios.get(url(`images/d/product${id}/${img}`));
+                const res = await axios.get(url(`images/d/product${id}`));
                 const urls = res.data.data.map((img) =>
                     typeof img === 'string'
                         ? url(`images/d/product${id}/${img}`)
