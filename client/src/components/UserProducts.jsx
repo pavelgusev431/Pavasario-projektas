@@ -22,7 +22,11 @@ export default function UserProducts() {
     const fetchProducts = async (page = 1) => {
         setLoading(true);
         try {
-            const response = await getUserProductsByUserName(username, page, pageSize);
+            const response = await getUserProductsByUserName(
+                username,
+                page,
+                pageSize
+            );
             setProducts(response.data.data);
 
             setPagination({
@@ -66,7 +70,9 @@ export default function UserProducts() {
             </h2>
 
             <div className="mb-4 ml-10">
-                <label htmlFor="pageSize" className="mr-2">Products per page:</label>
+                <label htmlFor="pageSize" className="mr-2">
+                    Products per page:
+                </label>
                 <select
                     id="pageSize"
                     value={pageSize}
@@ -74,7 +80,9 @@ export default function UserProducts() {
                     className="p-2 border rounded-md"
                 >
                     {[6, 12, 18, 24].map((size) => (
-                        <option key={size} value={size}>{size}</option>
+                        <option key={size} value={size}>
+                            {size}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -94,26 +102,35 @@ export default function UserProducts() {
                 <div className="mt-6 flex justify-center items-center space-x-2">
                     <button
                         className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => handlePageChange(pagination.currentPage - 1)}
+                        onClick={() =>
+                            handlePageChange(pagination.currentPage - 1)
+                        }
                         disabled={pagination.currentPage <= 1}
                     >
                         Previous
                     </button>
 
-                    {Array.from({ length: pagination.totalPages }, (_, index) => (
-                        <button
-                            key={index + 1}
-                            className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} hover:bg-blue-400`}
-                            onClick={() => handlePageChange(index + 1)}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
+                    {Array.from(
+                        { length: pagination.totalPages },
+                        (_, index) => (
+                            <button
+                                key={index + 1}
+                                className={`px-4 py-2 text-sm rounded-md ${pagination.currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} hover:bg-blue-400`}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        )
+                    )}
 
                     <button
                         className={`px-4 py-2 bg-blue-500 text-white rounded-md ${pagination.currentPage >= pagination.totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => handlePageChange(pagination.currentPage + 1)}
-                        disabled={pagination.currentPage >= pagination.totalPages}
+                        onClick={() =>
+                            handlePageChange(pagination.currentPage + 1)
+                        }
+                        disabled={
+                            pagination.currentPage >= pagination.totalPages
+                        }
                     >
                         Next
                     </button>

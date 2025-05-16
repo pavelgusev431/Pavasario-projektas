@@ -133,9 +133,12 @@ const getUserProductsByUserName = async (req, res) => {
 
         const avgUserRating =
             totalRatings > 0 ? +(totalStars / totalRatings).toFixed(2) : 0;
-            const totalProducts = processedProducts.length;
-            const totalPages = Math.ceil(totalProducts / limit);
-            const paginatedProducts = processedProducts.slice(offset, offset + limit);
+        const totalProducts = processedProducts.length;
+        const totalPages = Math.ceil(totalProducts / limit);
+        const paginatedProducts = processedProducts.slice(
+            offset,
+            offset + limit
+        );
         return res.json({
             avgUserRating,
             totalRatings,
@@ -146,10 +149,6 @@ const getUserProductsByUserName = async (req, res) => {
                 totalProducts,
             },
         });
-       
-
-        
-
     } catch (err) {
         console.error('Klaida gaunant duomenis:', err);
         return res.status(500).json({ message: 'Klaida gaunant duomenis' });

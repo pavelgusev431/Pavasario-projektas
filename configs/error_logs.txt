@@ -1,7 +1,3 @@
-npm warn Unknown env config "s". This will stop working in the next major version of npm.
-client/src/components/products/PublicUserProfile.jsx
-client/src/components/products/SearchedProducts.jsx
-client/src/helpers/searchProducts.js
+client/src/components/UserProducts.jsx
+client/src/helpers/getProduct.js
 server/controllers/productController.js
-server/routers/productRouter.js
-server/server/swagger.js
